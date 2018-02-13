@@ -1,4 +1,5 @@
-# ERPStudio a complete framework designed to develop desktop ERP solutions.
+# ERPStudio 
+# A complete framework designed to develop desktop ERP solutions.
 
 ERPStudio was born about 11 years ago with the .net Framework 2.0 to test the features offered by linking datasets with databases and binding with the controls.
 
@@ -7,4 +8,4 @@ Integrates a reporting system through Crystal Report.
 
 ERP Studio implements multi-user management with optimistic lock control, and a complete system of protection and update.
 
-Since 2016 ERP Studio uses and expands the Metro framework of Denis Magno to have a more modern look and feel.
+Since 2016 ERP Studio uses and expands th [Metro framework](http://denricdenise.info/2014/09/winforms-metro-style/) of Denis Magno to have a more modern look and feel.
