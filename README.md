@@ -1,4 +1,4 @@
-# ERPStudio 
+<h1><img src="http://i63.tinypic.com/xvg3l.jpg" width="60" height="60"> ERP Studio .net </h1>
 ### A complete framework designed to develop desktop ERP solutions.
 
 ERPStudio was born about 11 years ago with the .net Framework 2.0 to test the features offered by linking datasets with databases and binding with the controls.
