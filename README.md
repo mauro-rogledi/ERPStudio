@@ -6,6 +6,6 @@ ERPStudio was born about 11 years ago with the .net Framework 2.0 to test the fe
 Today the framework has a complete integration with the SqlServer, Sqlcompact and Sqllite relational databases with automatic database creation management and a fluent method for creating queries.
 It's integrates a reporting system through Crystal Report.
 
-ERP Studio implements multi-user management with optimistic lock control, and a complete system of protection and update.
+ERP Studio implements multi-language forms, multi-user management with optimistic lock control, and a complete system of protection and update.
 
 Since 2016 ERP Studio uses and expands th [Metro framework](http://denricdenise.info/2014/09/winforms-metro-style/) of Denis Magno to have a more modern look and feel.
