@@ -1,4 +1,4 @@
-<h1><img src="http://i63.tinypic.com/xvg3l.jpg" width="60" height="60"> ERP Studio.net </h1>
+<h1><img src="http://i63.tinypic.com/xvg3l.jpg" width="30" height="30"> ERP Studio.net </h1>
 <h3> A complete framework designed to develop desktop ERP solutions. </h3>
 
 ERP Studio.net was born about 11 years ago with the .net Framework 2.0 to test the features offered by linking datasets with databases and binding with the controls.
