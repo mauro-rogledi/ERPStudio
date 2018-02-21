@@ -1,0 +1,1189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{36D63709-057A-49E3-9448-E8CDDA16CC16}</ProjectGuid>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>ERPFramework</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>ERPFramework</RootNamespace>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE;DEBUG;SQLServer, SQLCompact, SQLite</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreGeneratedCode>true</CodeAnalysisIgnoreGeneratedCode>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE;SQLServer, SQLCompact, SQLite</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SQL_Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\SQL_Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;SQLServer</DefineConstants>
+    <BaseAddress>285212672</BaseAddress>
+    <FileAlignment>4096</FileAlignment>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Debug\ApplicationLibrary.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SQL_Release|AnyCPU'">
+    <OutputPath>bin\SQL_Release\</OutputPath>
+    <DefineConstants>TRACE;SQLServer</DefineConstants>
+    <BaseAddress>285212672</BaseAddress>
+    <Optimize>true</Optimize>
+    <FileAlignment>4096</FileAlignment>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Release\ApplicationLibrary.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SQLite_Release|AnyCPU'">
+    <OutputPath>bin\SQLite_Release\</OutputPath>
+    <DefineConstants>TRACE;SQLite</DefineConstants>
+    <BaseAddress>285212672</BaseAddress>
+    <Optimize>true</Optimize>
+    <FileAlignment>4096</FileAlignment>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Release\ApplicationLibrary.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SQLite_Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\SQLite_Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;SQLite</DefineConstants>
+    <BaseAddress>285212672</BaseAddress>
+    <FileAlignment>4096</FileAlignment>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Debug\ApplicationLibrary.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SQLCompact_Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\SQLCompact_Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;SQLCompact</DefineConstants>
+    <BaseAddress>285212672</BaseAddress>
+    <FileAlignment>4096</FileAlignment>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Debug\ApplicationLibrary.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SQLCompact_Release|AnyCPU'">
+    <OutputPath>bin\SQLCompact_Release\</OutputPath>
+    <DefineConstants>TRACE;SQLCompact</DefineConstants>
+    <BaseAddress>285212672</BaseAddress>
+    <Optimize>true</Optimize>
+    <FileAlignment>4096</FileAlignment>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Release\ApplicationLibrary.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <HintPath>..\packages\Crystal.Reports.Essentials.13.0.20.2399\lib\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <HintPath>..\packages\Crystal.Reports.Essentials.13.0.20.2399\lib\CrystalDecisions.ReportSource.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <HintPath>..\packages\Crystal.Reports.Essentials.13.0.20.2399\lib\CrystalDecisions.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Web, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <HintPath>..\packages\Crystal.Reports.Essentials.13.0.20.2399\lib\CrystalDecisions.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <HintPath>..\packages\CrystalDecisions.Windows.Forms.1.0.0\lib\CrystalDecisions.Windows.Forms.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MetroFramework.Design, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.Design.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MetroFramework.Fonts, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.Fonts.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.SqlServer.AzureStorageEnum, Version=14.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\lib\net40\Microsoft.SqlServer.AzureStorageEnum.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.BatchParserClient, Version=14.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\lib\net40\Microsoft.SqlServer.BatchParserClient.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.ConnectionInfo, Version=14.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\lib\net40\Microsoft.SqlServer.ConnectionInfo.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.ConnectionInfoExtended, Version=14.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\lib\net40\Microsoft.SqlServer.ConnectionInfoExtended.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Diagnostics.Strace, Version=14.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\lib\net40\Microsoft.SqlServer.Diagnostics.Strace.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Dmf, Version=14.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\lib\net40\Microsoft.SqlServer.Dmf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Dmf.Common, Version=14.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\lib\net40\Microsoft.SqlServer.Dmf.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Management.Collector, Version=14.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\lib\net40\Microsoft.SqlServer.Management.Collector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Management.CollectorEnum, Version=14.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\lib\net40\Microsoft.SqlServer.Management.CollectorEnum.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Management.RegisteredServers, Version=14.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\lib\net40\Microsoft.SqlServer.Management.RegisteredServers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Management.Sdk.Sfc, Version=14.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\lib\net40\Microsoft.SqlServer.Management.Sdk.Sfc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Management.Utility, Version=14.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\lib\net40\Microsoft.SqlServer.Management.Utility.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Management.UtilityEnum, Version=14.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\lib\net40\Microsoft.SqlServer.Management.UtilityEnum.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Management.XEvent, Version=14.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\lib\net40\Microsoft.SqlServer.Management.XEvent.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Management.XEventDbScoped, Version=14.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\lib\net40\Microsoft.SqlServer.Management.XEventDbScoped.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Management.XEventDbScopedEnum, Version=14.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\lib\net40\Microsoft.SqlServer.Management.XEventDbScopedEnum.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Management.XEventEnum, Version=14.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\lib\net40\Microsoft.SqlServer.Management.XEventEnum.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.PolicyEnum, Version=14.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\lib\net40\Microsoft.SqlServer.PolicyEnum.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.RegSvrEnum, Version=14.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\lib\net40\Microsoft.SqlServer.RegSvrEnum.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.ServiceBrokerEnum, Version=14.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\lib\net40\Microsoft.SqlServer.ServiceBrokerEnum.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Smo, Version=14.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\lib\net40\Microsoft.SqlServer.Smo.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.SmoExtended, Version=14.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\lib\net40\Microsoft.SqlServer.SmoExtended.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.SqlClrProvider, Version=14.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\lib\net40\Microsoft.SqlServer.SqlClrProvider.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.SqlEnum, Version=14.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\lib\net40\Microsoft.SqlServer.SqlEnum.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.SqlTDiagm, Version=14.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\lib\net40\Microsoft.SqlServer.SqlTDiagm.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.SqlWmiManagement, Version=14.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\lib\net40\Microsoft.SqlServer.SqlWmiManagement.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.SString, Version=14.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\lib\net40\Microsoft.SqlServer.SString.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Types, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\lib\net40\Microsoft.SqlServer.Types.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.WmiEnum, Version=14.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\lib\net40\Microsoft.SqlServer.WmiEnum.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NHunspellComponent, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>P:\Clothes\ExternalDll\NHunspellComponent.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Data.SQLite, Version=1.0.107.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.Core.1.0.107.0\lib\net46\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Design">
+      <Name>System.Design</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controls\ExMetroToolbar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\FindableIntelliTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\MetroGridContainerPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\MetroGridFooterPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\MetroGridFooterPanel.Designer.cs">
+      <DependentUpon>MetroGridFooterPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MetroGridHeaderPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\MetroGridTotalControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\MetroGridTotalFooterPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\MetroGridTotalFooterPanel.Designer.cs">
+      <DependentUpon>MetroGridTotalFooterPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MetroInputDateRange.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\MetroInputDateRange.Designer.cs">
+      <DependentUpon>MetroInputDateRange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MetroMailTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\MetroFiscalTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CounterManager\CodesForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CounterManager\codesForm.Designer.cs">
+      <DependentUpon>CodesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CounterManager\CodesManager.cs" />
+    <Compile Include="CounterManager\counterForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CounterManager\counterForm.Designer.cs">
+      <DependentUpon>counterForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CounterManager\ICounter.cs" />
+    <Compile Include="CounterManager\MetroCounterTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CounterManager\RadarCodes.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CounterManager\RadarCodes.Designer.cs">
+      <DependentUpon>RadarCodes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CounterManager\CounterManager.cs" />
+    <Compile Include="CounterManager\CodesControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CounterManager\CodesControl.Designer.cs">
+      <DependentUpon>CodesControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataGridViewControls\CustomComboBox.cs" />
+    <Compile Include="DataGridViewControls\DateTimeTextBoxDataGridViewControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DataGridViewControls\MetroComboBoxDataGridViewControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DataGridViewControls\RadarCounterDataGridViewControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Data\ImportExportData.cs" />
+    <Compile Include="Data\ImportExportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Data\ImportExportForm.Designer.cs">
+      <DependentUpon>ImportExportForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Defaults.cs" />
+    <Compile Include="Extender.cs" />
+    <Compile Include="Forms\AskForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AskForm.Designer.cs">
+      <DependentUpon>AskForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ControlFinder.cs" />
+    <Compile Include="Data\DataReaderUpdater.cs" />
+    <Compile Include="Data\Table.cs" />
+    <Compile Include="Forms\FastInsertForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FastInsertForm.Designer.cs">
+      <DependentUpon>FastInsertForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\iAddons.cs" />
+    <Compile Include="Controls\DateTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\ExCheckedListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\ExToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\FindableTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\HorizontalSeparator.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\PopUpListBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\PopUpListBox.Designer.cs">
+      <DependentUpon>PopUpListBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SnapLinesDesigner.cs" />
+    <Compile Include="Controls\UserTabControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Forms\iDocument.cs" />
+    <Compile Include="Forms\BatchForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\BatchForm.Designer.cs">
+      <DependentUpon>BatchForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Libraries\MetroComboBoxManager.cs" />
+    <Compile Include="Login\ChgPwdForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login\ChgPwdForm.Designer.cs">
+      <DependentUpon>ChgPwdForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModulesHelper\DllManager.cs" />
+    <Compile Include="ModulesHelper\ModuleManager.cs" />
+    <Compile Include="ModulesHelper\OpenDocument.cs" />
+    <Compile Include="ModulesHelper\SerialManager.cs" />
+    <Compile Include="ModulesHelper\USBSerialNumber.cs" />
+    <Compile Include="Preferences\PreferencePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Preferences\PreferencePanel.Designer.cs">
+      <DependentUpon>PreferencePanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModulesHelper\UserControlHelper.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ModuleData\DBRadar.cs" />
+    <Compile Include="ModuleData\DBTables.cs" />
+    <Compile Include="ModuleData\RegisterModule.cs" />
+    <Compile Include="DataGridViewControls\CalendarTextBoxDataGridViewControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DataGridViewControls\ComboboxDataGridViewControl.cs" />
+    <Compile Include="DataGridViewControls\RadarCodesDataGridViewControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DataGridViewControls\NumericTextBoxDataGridViewControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DataGridViewControls\RadarTextBoxDataGridViewControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DataGridViewControls\TextBoxDataGridViewControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DataGridViewControls\TrimMaskedTextBoxDataGridViewControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Data\Columns.cs" />
+    <Compile Include="Forms\ControlBinder.cs" />
+    <Compile Include="Forms\IDocumentDataManager.cs" />
+    <Compile Include="Forms\ReportForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\ReportForm.Designer.cs">
+      <DependentUpon>ReportForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Data\DBManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Forms\DocumentForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\DocumentForm.Designer.cs">
+      <DependentUpon>DocumentForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\printerForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\printerForm.Designer.cs">
+      <DependentUpon>printerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Emailer\emailAddress.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Emailer\emailAddress.Designer.cs">
+      <DependentUpon>emailAddress.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Emailer\emailForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Emailer\emailForm.Designer.cs">
+      <DependentUpon>emailForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Enums.cs" />
+    <Compile Include="Libraries\ComboBoxManager.cs" />
+    <Compile Include="Controls\EnumsManager.cs" />
+    <Compile Include="Controls\Multiselect.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Multiselect.designer.cs">
+      <DependentUpon>Multiselect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ToolstripNumericUpDown.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GlobalInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controls\DBCheckBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\ExTabPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\ExtendedDataGridView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\PanelUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PopUpCalendar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\PopUpCalendar.Designer.cs">
+      <DependentUpon>PopUpCalendar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PopUpComboBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\ProgressStatusBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\RadarComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\RadarForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\RadarForm.Designer.cs">
+      <DependentUpon>RadarForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\RadarTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\StringTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\Wizard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\WizardPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\WizardPagesCollection.cs" />
+    <Compile Include="Interfaces.cs" />
+    <Compile Include="Emailer\EmailSender.cs" />
+    <Compile Include="Libraries\ThreadHelper.cs" />
+    <Compile Include="Preferences\GlobalPreferencePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Preferences\GlobalPreferencePanel.Designer.cs">
+      <DependentUpon>GlobalPreferencePanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Preferences\MailPreferencePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Preferences\MailPreferencePanel.Designer.cs">
+      <DependentUpon>MailPreferencePanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Preferences\NHunspellPreferencePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Preferences\NHunspellPreferencePanel.Designer.cs">
+      <DependentUpon>NHunspellPreferencePanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Preferences\GenericPreferencePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Preferences\GenericPreferencePanel.Designer.cs">
+      <DependentUpon>GenericPreferencePanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Preferences\PreferenceControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Preferences\PreferenceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Preferences\PreferenceForm.Designer.cs">
+      <DependentUpon>PreferenceForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Preferences\Preferences.cs" />
+    <Compile Include="Preferences\PrinterPreferencePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Preferences\PrinterPreferencePanel.Designer.cs">
+      <DependentUpon>PrinterPreferencePanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Libraries\RegistryManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RicherTextBox\FindForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RicherTextBox\FindForm.Designer.cs">
+      <DependentUpon>FindForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RicherTextBox\ReplaceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RicherTextBox\ReplaceForm.Designer.cs">
+      <DependentUpon>ReplaceForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RicherTextBox\RicherTextBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ModuleData\DBReader.cs" />
+    <Compile Include="RicherTextBox\RicherTextBox.Designer.cs">
+      <DependentUpon>RicherTextBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login\ConnectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login\ConnectionForm.Designer.cs">
+      <DependentUpon>ConnectionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login\CryptionManager.cs" />
+    <Compile Include="Data\FormatData.cs" />
+    <Compile Include="Login\loginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login\loginForm.Designer.cs">
+      <DependentUpon>loginForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login\PasswordManager.cs" />
+    <Compile Include="Data\QueryBuilder.cs" />
+    <Compile Include="Login\RegisterModule.cs" />
+    <Compile Include="Data\SqlApplicationBuilder.cs" />
+    <Compile Include="Data\SqlManager.cs" />
+    <None Include="Resources\SortRight32g.png" />
+    <None Include="Resources\SortRight32.png" />
+    <None Include="Resources\SortLeft32g.png" />
+    <None Include="Resources\SortLeft32.png" />
+    <None Include="Resources\ZoomOut32g.png" />
+    <None Include="Resources\ZoomOut32.png" />
+    <None Include="Resources\ZoomIn32g.png" />
+    <None Include="Resources\ZoomIn32.png" />
+    <None Include="Resources\User32ckg.png" />
+    <None Include="Resources\User32ck.png" />
+    <EmbeddedResource Include="Controls\MetroGridFooterPanel.resx">
+      <DependentUpon>MetroGridFooterPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\MetroGridTotalFooterPanel.resx">
+      <DependentUpon>MetroGridTotalFooterPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\MetroInputDateRange.it-IT.resx">
+      <DependentUpon>MetroInputDateRange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\MetroInputDateRange.resx">
+      <DependentUpon>MetroInputDateRange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CounterManager\CodesForm.it-IT.resx">
+      <DependentUpon>CodesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CounterManager\counterForm.it-IT.resx">
+      <DependentUpon>counterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataGridViewControls\MetroComboBoxDataGridViewControl.resx">
+      <DependentUpon>MetroComboBoxDataGridViewControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataGridViewControls\RadarCounterDataGridViewControl.resx">
+      <DependentUpon>RadarCounterDataGridViewControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\ImportExportForm.resx">
+      <DependentUpon>ImportExportForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AskForm.it-IT.resx">
+      <DependentUpon>AskForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AskForm.resx">
+      <DependentUpon>AskForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FastInsertForm.it-IT.resx">
+      <DependentUpon>FastInsertForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FastInsertForm.resx">
+      <DependentUpon>FastInsertForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\printerForm.it-IT.resx">
+      <DependentUpon>printerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\BatchForm.it-IT.resx">
+      <DependentUpon>BatchForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\BatchForm.resx">
+      <DependentUpon>BatchForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ReportForm.it-IT.resx">
+      <DependentUpon>ReportForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login\ChgPwdForm.it-IT.resx">
+      <DependentUpon>ChgPwdForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login\ChgPwdForm.resx">
+      <DependentUpon>ChgPwdForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login\ConnectionForm.it-IT.resx">
+      <DependentUpon>ConnectionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login\loginForm.it-IT.resx">
+      <DependentUpon>loginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Preferences\GenericPreferencePanel.it-IT.resx">
+      <DependentUpon>GenericPreferencePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Preferences\GenericPreferencePanel.resx">
+      <DependentUpon>GenericPreferencePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Preferences\PreferenceForm.it-IT.resx">
+      <DependentUpon>PreferenceForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Preferences\PreferencePanel.it-IT.resx">
+      <DependentUpon>PreferencePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Preferences\PreferencePanel.resx">
+      <DependentUpon>PreferencePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login\loginForm.resx">
+      <DependentUpon>loginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Resources\User32g.png" />
+    <None Include="Resources\User32.png" />
+    <None Include="Resources\UserChecked32.png" />
+    <None Include="Resources\UserChecked32g.png" />
+    <None Include="packages.config" />
+    <None Include="Resources\Search24g.png" />
+    <None Include="Resources\Edit24.png" />
+    <None Include="Resources\Edit24g.png" />
+    <None Include="Resources\Exit24.png" />
+    <None Include="Resources\Exit24g.png" />
+    <None Include="Resources\Filter24.png" />
+    <None Include="Resources\Filter24g.png" />
+    <None Include="Resources\New24.png" />
+    <None Include="Resources\New24g.png" />
+    <None Include="Resources\Preview24.png" />
+    <None Include="Resources\Preview24g.png" />
+    <None Include="Resources\Print24.png" />
+    <None Include="Resources\Print24g.png" />
+    <None Include="Resources\Save24.png" />
+    <None Include="Resources\Save24g.png" />
+    <None Include="Resources\Search24.png" />
+    <None Include="Resources\Settings24.png" />
+    <None Include="Resources\Settings24g.png" />
+    <None Include="Resources\Delete24.png" />
+    <None Include="Resources\Delete24g.png" />
+    <None Include="Resources\Calendar24.png" />
+    <None Include="Resources\Calendar24g.png" />
+    <None Include="Resources\Link24.png" />
+    <None Include="Resources\Link24g.png" />
+    <None Include="Resources\Logo.png" />
+    <None Include="Resources\Computer32g.png" />
+    <None Include="Resources\Computer32.png" />
+    <None Include="Resources\Setting32g.png" />
+    <None Include="Resources\Setting32.png" />
+    <None Include="Resources\Search32.png" />
+    <None Include="Resources\Search32g.png" />
+    <None Include="Resources\Preview32g.png" />
+    <None Include="Resources\Preview32.png" />
+    <None Include="Resources\Print32.png" />
+    <None Include="Resources\Print32g.png" />
+    <None Include="Resources\Filter32g.png" />
+    <None Include="Resources\Filter32.png" />
+    <None Include="Resources\Exit32g.png" />
+    <None Include="Resources\Delete32.png" />
+    <None Include="Resources\Delete32g.png" />
+    <None Include="Resources\Edit32.png" />
+    <None Include="Resources\CircledLeft32g.png" />
+    <None Include="Resources\CircledLeft32.png" />
+    <EmbeddedResource Include="CounterManager\codesForm.resx">
+      <DependentUpon>CodesForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CounterManager\counterForm.resx">
+      <DependentUpon>counterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataGridViewControls\RadarCodesDataGridViewControl.resx">
+      <DependentUpon>RadarCodesDataGridViewControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Emailer\emailAddress.resx">
+      <DependentUpon>emailAddress.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Emailer\emailForm.it-IT.resx">
+      <DependentUpon>emailForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Emailer\emailForm.resx">
+      <DependentUpon>emailForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PopUpListBox.resx">
+      <DependentUpon>PopUpListBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Preferences\GlobalPreferencePanel.it-IT.resx">
+      <DependentUpon>GlobalPreferencePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Preferences\GlobalPreferencePanel.resx">
+      <DependentUpon>GlobalPreferencePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Preferences\MailPreferencePanel.it-IT.resx">
+      <DependentUpon>MailPreferencePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Preferences\MailPreferencePanel.resx">
+      <DependentUpon>MailPreferencePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login\ConnectionForm.resx">
+      <DependentUpon>ConnectionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Resources\Calendar16.png" />
+    <None Include="Resources\Calendar16g.png" />
+    <None Include="Resources\Automatic16.png" />
+    <None Include="Resources\Automatic16g.png" />
+    <None Include="Resources\Collate32.png" />
+    <None Include="Resources\Collate32g.png" />
+    <None Include="Resources\CollateK32.png" />
+    <None Include="Resources\CollateK32g.png" />
+    <None Include="Resources\Manual16g.png" />
+    <None Include="Resources\Manual16.png" />
+    <None Include="Resources\Edit32g.png" />
+    <None Include="Resources\Exit32.png" />
+    <None Include="Resources\New32.png" />
+    <None Include="Resources\New32g.png" />
+    <None Include="Resources\Copy32.png" />
+    <None Include="Resources\Copy32g.png" />
+    <None Include="Resources\Message32.png" />
+    <None Include="Resources\Message32g.png" />
+    <None Include="Resources\List32.png" />
+    <None Include="Resources\List32g.png" />
+    <None Include="Resources\Laptop32.png" />
+    <None Include="Resources\Laptop32ck.png" />
+    <None Include="Resources\Laptop32ckg.png" />
+    <None Include="Resources\Laptop32g.png" />
+    <None Include="Resources\Form32.png" />
+    <None Include="Resources\Form32ck.png" />
+    <None Include="Resources\Form32ckg.png" />
+    <None Include="Resources\Form32g.png" />
+    <None Include="Resources\Download32.png" />
+    <None Include="Resources\Download32g.png" />
+    <None Include="Resources\Message16.png" />
+    <None Include="Resources\Play32.png" />
+    <None Include="Resources\Play32g.png" />
+    <None Include="Resources\Checked32.png" />
+    <None Include="Resources\Checked32g.png" />
+    <Content Include="Resources\More32.png" />
+    <Content Include="Resources\More32g.png" />
+    <None Include="Resources\Undo24.png" />
+    <None Include="Resources\Undo24g.png" />
+    <None Include="Resources\TriangleDown16.png" />
+    <None Include="Resources\TriangleDown16g.png" />
+    <None Include="Resources\TriangleRight16.png" />
+    <None Include="Resources\TriangleRight16g.png" />
+    <None Include="Resources\TriangleLeft16.png" />
+    <None Include="Resources\TriangleLeft16g.png" />
+    <None Include="Resources\TriangleUp16.png" />
+    <None Include="Resources\TriangleUp16g.png" />
+    <None Include="Resources\Search16.png" />
+    <None Include="Resources\Search16g.png" />
+    <None Include="Resources\Save32.png" />
+    <None Include="Resources\Save32g.png" />
+    <None Include="Resources\Undo32.png" />
+    <None Include="Resources\Undo32g.png" />
+    <None Include="Resources\SortDown32.png" />
+    <None Include="Resources\SortDown32g.png" />
+    <None Include="Resources\SortUp32.png" />
+    <None Include="Resources\SortUp32g.png" />
+    <None Include="Resources\Shutdown32.png" />
+    <None Include="Resources\Shutdown32g.png" />
+    <None Include="Resources\Stop32.png" />
+    <None Include="Resources\Stop32g.png" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <EmbeddedResource Include="CounterManager\CodesControl.resx">
+      <DependentUpon>CodesControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CounterManager\RadarCodes.resx">
+      <DependentUpon>RadarCodes.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataGridViewControls\NumericTextBoxDataGridViewControl.resx">
+      <DependentUpon>NumericTextBoxDataGridViewControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataGridViewControls\RadarTextBoxDataGridViewControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>RadarTextBoxDataGridViewControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ReportForm.resx">
+      <DependentUpon>ReportForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DocumentForm.it-IT.resx">
+      <DependentUpon>DocumentForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DocumentForm.resx">
+      <DependentUpon>DocumentForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\printerForm.resx">
+      <DependentUpon>printerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DBCheckBox.resx">
+      <DependentUpon>DBCheckBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Multiselect.resx">
+      <DependentUpon>Multiselect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PanelUserControl.resx">
+      <DependentUpon>PanelUserControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PopUpCalendar.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PopUpCalendar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PopUpComboBox.resx">
+      <DependentUpon>PopUpComboBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ProgressStatusBar.resx">
+      <DependentUpon>ProgressStatusBar.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\RadarForm.it-IT.resx">
+      <DependentUpon>RadarForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\RadarForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>RadarForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\StringTextBox.resx">
+      <DependentUpon>StringTextBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Wizard.it-IT.resx">
+      <DependentUpon>Wizard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Wizard.resx">
+      <DependentUpon>Wizard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\WizardPage.resx">
+      <DependentUpon>WizardPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Preferences\NHunspellPreferencePanel.it-IT.resx">
+      <DependentUpon>NHunspellPreferencePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Preferences\NHunspellPreferencePanel.resx">
+      <DependentUpon>NHunspellPreferencePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Preferences\PreferenceControl.resx">
+      <DependentUpon>PreferenceControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Preferences\PreferenceForm.resx">
+      <DependentUpon>PreferenceForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Preferences\PrinterPreferencePanel.it-IT.resx">
+      <DependentUpon>PrinterPreferencePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Preferences\PrinterPreferencePanel.resx">
+      <DependentUpon>PrinterPreferencePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.it-IT.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RicherTextBox\FindForm.resx">
+      <DependentUpon>FindForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RicherTextBox\ReplaceForm.resx">
+      <DependentUpon>ReplaceForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RicherTextBox\RicherTextBox.it-IT.resx">
+      <DependentUpon>RicherTextBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RicherTextBox\RicherTextBox.resx">
+      <DependentUpon>RicherTextBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MetroFramework.Extender\MetroFramework.Extender.csproj">
+      <Project>{1eccfebf-5410-45aa-aa37-a30ee601a5b6}</Project>
+      <Name>MetroFramework.Extender</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>if exist "$(TargetPath).locked" del "$(TargetPath).locked"
+if exist "$(TargetPath)" if not exist "$(TargetPath).locked" move "$(TargetPath)" "$(TargetPath).locked"</PreBuildEvent>
+    <PostBuildEvent>
+    if not exist "$(TargetDir)x86" md "$(TargetDir)x86"
+    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\x86\*.*" "$(TargetDir)x86"
+    if not exist "$(TargetDir)amd64" md "$(TargetDir)amd64"
+    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\amd64\*.*" "$(TargetDir)amd64"</PostBuildEvent>
+  </PropertyGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\build\net40\Microsoft.SqlServer.SqlManagementObjects.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\build\net40\Microsoft.SqlServer.SqlManagementObjects.targets'))" />
+    <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.107.0\build\net46\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.107.0\build\net46\System.Data.SQLite.Core.targets'))" />
+  </Target>
+  <Import Project="..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\build\net40\Microsoft.SqlServer.SqlManagementObjects.targets" Condition="Exists('..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17218.0\build\net40\Microsoft.SqlServer.SqlManagementObjects.targets')" />
+  <Import Project="..\packages\System.Data.SQLite.Core.1.0.107.0\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.107.0\build\net46\System.Data.SQLite.Core.targets')" />
+</Project>

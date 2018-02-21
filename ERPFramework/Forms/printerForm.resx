@@ -1,0 +1,1036 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="btnPrint.ToolTip" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="&gt;&gt;btnRg.Name" xml:space="preserve">
+    <value>btnRg</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="cbbPages.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="lblCopies.Location" type="System.Drawing.Point, System.Drawing">
+    <value>263, 0</value>
+  </data>
+  <data name="crystalReportViewer1.ShowParameterPanelButton" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="btnCollate.ToolTip" xml:space="preserve">
+    <value>Fascicola</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="btnSep1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="nudFromPage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>54, 46</value>
+  </data>
+  <data name="lblFrom.Size" type="System.Drawing.Size, System.Drawing">
+    <value>36, 46</value>
+  </data>
+  <data name="&gt;&gt;lblFrom.Parent" xml:space="preserve">
+    <value>metroToolbar1</value>
+  </data>
+  <data name="btnSep2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>437, 0</value>
+  </data>
+  <data name="&gt;&gt;nudToPage.Name" xml:space="preserve">
+    <value>nudToPage</value>
+  </data>
+  <data name="&gt;&gt;lblCopies.Name" xml:space="preserve">
+    <value>lblCopies</value>
+  </data>
+  <data name="nudFromPage.Text" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;btnExport.Parent" xml:space="preserve">
+    <value>metroToolbar1</value>
+  </data>
+  <data name="crystalReportViewer1.ShowGotoPageButton" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;nudToPage.Parent" xml:space="preserve">
+    <value>metroToolbar1</value>
+  </data>
+  <data name="nudCopies.ToolTip" xml:space="preserve">
+    <value>Numero di Copie</value>
+  </data>
+  <data name="btnExport.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 46</value>
+  </data>
+  <data name="btnExit.Location" type="System.Drawing.Point, System.Drawing">
+    <value>914, 0</value>
+  </data>
+  <data name="&gt;&gt;crystalReportViewer1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="btnLf.Size" type="System.Drawing.Size, System.Drawing">
+    <value>20, 43</value>
+  </data>
+  <data name="&gt;&gt;btnLfRg.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="btnCollate.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="nudToPage.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="btnSep4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>4, 46</value>
+  </data>
+  <data name="&gt;&gt;btnCollate.Type" xml:space="preserve">
+    <value>MetroFramework.Extender.MetroToolbarLinkChecked, MetroFramework.Extender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="cbbPages.Size" type="System.Drawing.Size, System.Drawing">
+    <value>128, 46</value>
+  </data>
+  <data name="btnUpDn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>485, 0</value>
+  </data>
+  <data name="&gt;&gt;crystalReportViewer1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;lblOn.Name" xml:space="preserve">
+    <value>lblOn</value>
+  </data>
+  <data name="btnSep4.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="cbbPages.ToolTip" xml:space="preserve">
+    <value>Intervallo</value>
+  </data>
+  <data name="&gt;&gt;cbbPages.Parent" xml:space="preserve">
+    <value>metroToolbar1</value>
+  </data>
+  <data name="btnSep3.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="crystalReportViewer1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="btnSep1.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;nudFromPage.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="nudToPage.Text" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="cbbPrinter.ToolTip" xml:space="preserve">
+    <value>Stampante</value>
+  </data>
+  <data name="&gt;&gt;btnSep2.Type" xml:space="preserve">
+    <value>MetroFramework.Extender.MetroToolbarSeparator, MetroFramework.Extender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="nudFromPage.ToolTip" xml:space="preserve">
+    <value>Da Pagina</value>
+  </data>
+  <data name="btnLfRg.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;nudCopies.Name" xml:space="preserve">
+    <value>nudCopies</value>
+  </data>
+  <data name="btnSep1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;metroToolbar1.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="nudToPage.Location" type="System.Drawing.Point, System.Drawing">
+    <value>856, 0</value>
+  </data>
+  <data name="lblCopies.Size" type="System.Drawing.Size, System.Drawing">
+    <value>45, 46</value>
+  </data>
+  <data name="&gt;&gt;btnZoomIn.Parent" xml:space="preserve">
+    <value>metroToolbar1</value>
+  </data>
+  <data name="&gt;&gt;btnCollate.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
+  <data name="&gt;&gt;btnLf.Name" xml:space="preserve">
+    <value>btnLf</value>
+  </data>
+  <data name="&gt;&gt;btnExport.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="btnDn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 23</value>
+  </data>
+  <data name="&gt;&gt;crystalReportViewer1.Name" xml:space="preserve">
+    <value>crystalReportViewer1</value>
+  </data>
+  <data name="&gt;&gt;btnLfRg.Type" xml:space="preserve">
+    <value>MetroFramework.Extender.MetroToolbarContainer, MetroFramework.Extender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="btnSep2.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="btnSep4.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="nudFromPage.Location" type="System.Drawing.Point, System.Drawing">
+    <value>776, 0</value>
+  </data>
+  <data name="&gt;&gt;lblPages.Type" xml:space="preserve">
+    <value>MetroFramework.Extender.MetroToolbarLabel, MetroFramework.Extender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;metroToolTip1.Type" xml:space="preserve">
+    <value>MetroFramework.Components.MetroToolTip, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
+  </data>
+  <data name="&gt;&gt;metroToolbar1.Name" xml:space="preserve">
+    <value>metroToolbar1</value>
+  </data>
+  <data name="lblOn.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="&gt;&gt;lblOn.Type" xml:space="preserve">
+    <value>MetroFramework.Extender.MetroToolbarLabel, MetroFramework.Extender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="crystalReportViewer1.DisplayToolbar" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="btnLfRg.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="btnSep1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="btnSep1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>393, 0</value>
+  </data>
+  <data name="btnLfRg.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="btnSep3.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="cbbPrinter.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="btnUp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 23</value>
+  </data>
+  <data name="nudToPage.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="lblTo.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="lblPages.Text" xml:space="preserve">
+    <value>Pages</value>
+  </data>
+  <data name="crystalReportViewer1.ShowCloseButton" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;btnSep3.Name" xml:space="preserve">
+    <value>btnSep3</value>
+  </data>
+  <data name="btnSep1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>4, 46</value>
+  </data>
+  <data name="&gt;&gt;toolTip1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="lblFrom.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="btnCollate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>353, 0</value>
+  </data>
+  <data name="lblTo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 46</value>
+  </data>
+  <data name="btnPrint.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="&gt;&gt;lblPages.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="lblPages.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="btnUpDn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 46</value>
+  </data>
+  <data name="nudCopies.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="&gt;&gt;btnCollate.Parent" xml:space="preserve">
+    <value>metroToolbar1</value>
+  </data>
+  <data name="btnSep2.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="lblPages.Size" type="System.Drawing.Size, System.Drawing">
+    <value>43, 46</value>
+  </data>
+  <data name="cbbPrinter.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 16, 6, 6</value>
+  </data>
+  <data name="&gt;&gt;lblPages.Name" xml:space="preserve">
+    <value>lblPages</value>
+  </data>
+  <data name="btnSep3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>565, 0</value>
+  </data>
+  <data name="lblFrom.Location" type="System.Drawing.Point, System.Drawing">
+    <value>740, 0</value>
+  </data>
+  <data name="&gt;&gt;btnLf.Type" xml:space="preserve">
+    <value>MetroFramework.Extender.MetroToolbarButton, MetroFramework.Extender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;lblTo.Parent" xml:space="preserve">
+    <value>metroToolbar1</value>
+  </data>
+  <data name="&gt;&gt;lblFrom.Name" xml:space="preserve">
+    <value>lblFrom</value>
+  </data>
+  <data name="&gt;&gt;nudFromPage.Parent" xml:space="preserve">
+    <value>metroToolbar1</value>
+  </data>
+  <data name="nudCopies.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>16, 6, 16, 6</value>
+  </data>
+  <data name="&gt;&gt;nudFromPage.Type" xml:space="preserve">
+    <value>MetroFramework.Extender.MetroToolbarNumericUpDown, MetroFramework.Extender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="crystalReportViewer1.ShowPageNavigateButtons" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="btnExport.Location" type="System.Drawing.Point, System.Drawing">
+    <value>397, 0</value>
+  </data>
+  <data name="&gt;&gt;crystalReportViewer1.Type" xml:space="preserve">
+    <value>CrystalDecisions.Windows.Forms.CrystalReportViewer, CrystalDecisions.Windows.Forms, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304</value>
+  </data>
+  <data name="crystalReportViewer1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="nudCopies.Text" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;lblTo.Type" xml:space="preserve">
+    <value>MetroFramework.Extender.MetroToolbarLabel, MetroFramework.Extender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;lblFrom.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="btnSep4.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="&gt;&gt;btnRg.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;cbbPages.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;btnSep4.Type" xml:space="preserve">
+    <value>MetroFramework.Extender.MetroToolbarSeparator, MetroFramework.Extender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="cbbPrinter.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="cbbPages.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="&gt;&gt;btnSep1.Name" xml:space="preserve">
+    <value>btnSep1</value>
+  </data>
+  <data name="cbbPrinter.Location" type="System.Drawing.Point, System.Drawing">
+    <value>67, 0</value>
+  </data>
+  <data name="crystalReportViewer1.ShowPrintButton" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;btnSep3.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="btnSep3.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="btnUp.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopCenter</value>
+  </data>
+  <data name="btnUpDn.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="&gt;&gt;btnPrint.Type" xml:space="preserve">
+    <value>MetroFramework.Extender.MetroToolbarPushButton, MetroFramework.Extender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;toolTip1.Name" xml:space="preserve">
+    <value>toolTip1</value>
+  </data>
+  <data name="crystalReportViewer1.ShowGroupTreeButton" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <assembly alias="CrystalDecisions.Windows.Forms" name="CrystalDecisions.Windows.Forms, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
+  <data name="crystalReportViewer1.ToolPanelView" type="CrystalDecisions.Windows.Forms.ToolPanelViewType, CrystalDecisions.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="btnExit.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="btnUpDn.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="btnSep2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="&gt;&gt;btnLfRg.Parent" xml:space="preserve">
+    <value>metroToolbar1</value>
+  </data>
+  <data name="btnExit.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="nudFromPage.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="crystalReportViewer1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 13, 3, 3</value>
+  </data>
+  <data name="cbbPrinter.Size" type="System.Drawing.Size, System.Drawing">
+    <value>196, 46</value>
+  </data>
+  <data name="&gt;&gt;btnRg.Parent" xml:space="preserve">
+    <value>btnLfRg</value>
+  </data>
+  <data name="&gt;&gt;nudCopies.Type" xml:space="preserve">
+    <value>MetroFramework.Extender.MetroToolbarNumericUpDown, MetroFramework.Extender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="btnZoomIn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 46</value>
+  </data>
+  <data name="&gt;&gt;btnZoomIn.Name" xml:space="preserve">
+    <value>btnZoomIn</value>
+  </data>
+  <data name="nudFromPage.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
+  </data>
+  <data name="btnSep3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>4, 46</value>
+  </data>
+  <data name="btnPrint.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="crystalReportViewer1.ShowRefreshButton" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;cbbPrinter.ZOrder" xml:space="preserve">
+    <value>18</value>
+  </data>
+  <data name="&gt;&gt;btnCollate.Name" xml:space="preserve">
+    <value>btnCollate</value>
+  </data>
+  <data name="&gt;&gt;metroToolTip1.Name" xml:space="preserve">
+    <value>metroToolTip1</value>
+  </data>
+  <data name="&gt;&gt;btnExit.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="btnRg.ToolTip" xml:space="preserve">
+    <value>Ultima Pagina</value>
+  </data>
+  <data name="&gt;&gt;btnUp.Type" xml:space="preserve">
+    <value>MetroFramework.Extender.MetroToolbarButton, MetroFramework.Extender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="btnZoomIn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>441, 0</value>
+  </data>
+  <data name="btnSep4.TabIndex" type="System.Int32, mscorlib">
+    <value>22</value>
+  </data>
+  <data name="&gt;&gt;btnUp.Name" xml:space="preserve">
+    <value>btnUp</value>
+  </data>
+  <data name="&gt;&gt;lblFrom.Type" xml:space="preserve">
+    <value>MetroFramework.Extender.MetroToolbarLabel, MetroFramework.Extender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;btnSep4.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="btnSep4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>910, 0</value>
+  </data>
+  <data name="btnZoomIn.ToolTip" xml:space="preserve">
+    <value>Ingrandisci</value>
+  </data>
+  <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1045, 435</value>
+  </data>
+  <data name="btnSep4.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="crystalReportViewer1.ShowExportButton" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;btnSep1.ZOrder" xml:space="preserve">
+    <value>14</value>
+  </data>
+  <data name="btnZoomIn.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="btnRg.Location" type="System.Drawing.Point, System.Drawing">
+    <value>20, 0</value>
+  </data>
+  <data name="&gt;&gt;lblOn.Parent" xml:space="preserve">
+    <value>metroToolbar1</value>
+  </data>
+  <data name="lblTo.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
+  </data>
+  <data name="&gt;&gt;lblPages.Parent" xml:space="preserve">
+    <value>metroToolbar1</value>
+  </data>
+  <data name="cbbPages.Location" type="System.Drawing.Point, System.Drawing">
+    <value>612, 0</value>
+  </data>
+  <data name="&gt;&gt;btnPrint.Parent" xml:space="preserve">
+    <value>metroToolbar1</value>
+  </data>
+  <data name="btnSep3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt</value>
+  </data>
+  <data name="&gt;&gt;btnExit.Parent" xml:space="preserve">
+    <value>metroToolbar1</value>
+  </data>
+  <data name="btnUpDn.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;btnExport.Name" xml:space="preserve">
+    <value>btnExport</value>
+  </data>
+  <data name="lblOn.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="btnSep2.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="btnDn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 23</value>
+  </data>
+  <data name="&gt;&gt;btnSep3.Type" xml:space="preserve">
+    <value>MetroFramework.Extender.MetroToolbarSeparator, MetroFramework.Extender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="btnCollate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 46</value>
+  </data>
+  <data name="&gt;&gt;nudCopies.Parent" xml:space="preserve">
+    <value>metroToolbar1</value>
+  </data>
+  <data name="lblCopies.Text" xml:space="preserve">
+    <value>Copies</value>
+  </data>
+  <data name="btnExit.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="crystalReportViewer1.ShowTextSearchButton" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="lblPages.Location" type="System.Drawing.Point, System.Drawing">
+    <value>569, 0</value>
+  </data>
+  <data name="lblCopies.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="btnCollate.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="btnUp.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="nudCopies.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="btnDn.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;btnZoomIn.Type" xml:space="preserve">
+    <value>MetroFramework.Extender.MetroToolbarDropDownButton, MetroFramework.Extender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="btnRg.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="crystalReportViewer1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="lblOn.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;lblCopies.ZOrder" xml:space="preserve">
+    <value>17</value>
+  </data>
+  <data name="&gt;&gt;lblCopies.Parent" xml:space="preserve">
+    <value>metroToolbar1</value>
+  </data>
+  <data name="metroToolbar1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="&gt;&gt;btnDn.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="btnLf.ToolTip" xml:space="preserve">
+    <value>Prima Pagina</value>
+  </data>
+  <data name="lblPages.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="metroToolbar1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="btnLfRg.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 46</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>PrinterForm</value>
+  </data>
+  <data name="&gt;&gt;btnLfRg.Name" xml:space="preserve">
+    <value>btnLfRg</value>
+  </data>
+  <data name="&gt;&gt;btnDn.Name" xml:space="preserve">
+    <value>btnDn</value>
+  </data>
+  <data name="crystalReportViewer1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 46</value>
+  </data>
+  <data name="&gt;&gt;btnPrint.Name" xml:space="preserve">
+    <value>btnPrint</value>
+  </data>
+  <data name="crystalReportViewer1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1045, 389</value>
+  </data>
+  <data name="lblCopies.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="btnExport.ToolTip" xml:space="preserve">
+    <value>Esporta</value>
+  </data>
+  <data name="lblPages.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="btnRg.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="lblCopies.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="crystalReportViewer1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 10, 0, 0</value>
+  </data>
+  <data name="&gt;&gt;btnSep1.Parent" xml:space="preserve">
+    <value>metroToolbar1</value>
+  </data>
+  <data name="btnLf.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>MetroFramework.Controls.MetroUserControl, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
+  </data>
+  <data name="&gt;&gt;btnSep3.Parent" xml:space="preserve">
+    <value>metroToolbar1</value>
+  </data>
+  <data name="&gt;&gt;btnUp.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="nudCopies.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>16, 0, 16, 0</value>
+  </data>
+  <data name="btnLf.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;btnSep1.Type" xml:space="preserve">
+    <value>MetroFramework.Extender.MetroToolbarSeparator, MetroFramework.Extender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="btnExit.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 46</value>
+  </data>
+  <data name="btnSep2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="lblTo.Location" type="System.Drawing.Point, System.Drawing">
+    <value>830, 0</value>
+  </data>
+  <data name="btnExit.ToolTip" xml:space="preserve">
+    <value>Esci</value>
+  </data>
+  <data name="&gt;&gt;btnSep2.Name" xml:space="preserve">
+    <value>btnSep2</value>
+  </data>
+  <data name="btnLf.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;btnDn.Type" xml:space="preserve">
+    <value>MetroFramework.Extender.MetroToolbarButton, MetroFramework.Extender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;cbbPages.Name" xml:space="preserve">
+    <value>cbbPages</value>
+  </data>
+  <data name="btnPrint.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;btnUpDn.Type" xml:space="preserve">
+    <value>MetroFramework.Extender.MetroToolbarContainer, MetroFramework.Extender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;btnSep4.Parent" xml:space="preserve">
+    <value>metroToolbar1</value>
+  </data>
+  <data name="&gt;&gt;nudFromPage.Name" xml:space="preserve">
+    <value>nudFromPage</value>
+  </data>
+  <data name="btnUp.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="nudFromPage.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="&gt;&gt;lblTo.Name" xml:space="preserve">
+    <value>lblTo</value>
+  </data>
+  <data name="&gt;&gt;btnPrint.ZOrder" xml:space="preserve">
+    <value>20</value>
+  </data>
+  <data name="btnSep1.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="lblOn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>27, 46</value>
+  </data>
+  <data name="&gt;&gt;lblOn.ZOrder" xml:space="preserve">
+    <value>19</value>
+  </data>
+  <data name="&gt;&gt;btnUpDn.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="btnUp.ToolTip" xml:space="preserve">
+    <value>Pagine Precedente</value>
+  </data>
+  <data name="lblPages.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="$this.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;cbbPages.Type" xml:space="preserve">
+    <value>MetroFramework.Extender.MetroToolbarComboBox, MetroFramework.Extender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="lblFrom.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblCopies.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="&gt;&gt;btnExit.Type" xml:space="preserve">
+    <value>MetroFramework.Extender.MetroToolbarPushButton, MetroFramework.Extender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="btnPrint.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="lblTo.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="nudToPage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>54, 46</value>
+  </data>
+  <data name="metroToolbar1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 18</value>
+  </data>
+  <data name="btnSep2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>4, 46</value>
+  </data>
+  <data name="lblFrom.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="&gt;&gt;btnUpDn.Name" xml:space="preserve">
+    <value>btnUpDn</value>
+  </data>
+  <data name="btnExport.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="&gt;&gt;lblTo.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="btnExport.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="btnCollate.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="btnZoomIn.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;btnLf.Parent" xml:space="preserve">
+    <value>btnLfRg</value>
+  </data>
+  <data name="&gt;&gt;metroToolbar1.Type" xml:space="preserve">
+    <value>MetroFramework.Extender.MetroToolbar, MetroFramework.Extender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="lblOn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>40, 0</value>
+  </data>
+  <data name="nudCopies.Size" type="System.Drawing.Size, System.Drawing">
+    <value>45, 46</value>
+  </data>
+  <data name="nudCopies.Location" type="System.Drawing.Point, System.Drawing">
+    <value>308, 0</value>
+  </data>
+  <data name="&gt;&gt;nudCopies.ZOrder" xml:space="preserve">
+    <value>16</value>
+  </data>
+  <data name="&gt;&gt;btnUp.Parent" xml:space="preserve">
+    <value>btnUpDn</value>
+  </data>
+  <data name="metroToolbar1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1045, 46</value>
+  </data>
+  <data name="&gt;&gt;cbbPrinter.Name" xml:space="preserve">
+    <value>cbbPrinter</value>
+  </data>
+  <data name="&gt;&gt;cbbPrinter.Parent" xml:space="preserve">
+    <value>metroToolbar1</value>
+  </data>
+  <data name="metroToolbar1.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="btnLfRg.Location" type="System.Drawing.Point, System.Drawing">
+    <value>525, 0</value>
+  </data>
+  <data name="&gt;&gt;btnSep4.Name" xml:space="preserve">
+    <value>btnSep4</value>
+  </data>
+  <data name="&gt;&gt;btnUpDn.Parent" xml:space="preserve">
+    <value>metroToolbar1</value>
+  </data>
+  <data name="lblFrom.Text" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="&gt;&gt;cbbPrinter.Type" xml:space="preserve">
+    <value>MetroFramework.Extender.MetroToolbarComboBox, MetroFramework.Extender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="lblOn.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="btnDn.ToolTip" xml:space="preserve">
+    <value>Pagine Successiva</value>
+  </data>
+  <data name="&gt;&gt;btnLf.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 13</value>
+  </data>
+  <data name="&gt;&gt;btnSep2.Parent" xml:space="preserve">
+    <value>metroToolbar1</value>
+  </data>
+  <data name="btnDn.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomCenter</value>
+  </data>
+  <data name="&gt;&gt;btnSep2.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="nudToPage.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="nudToPage.ToolTip" xml:space="preserve">
+    <value>A Pagina</value>
+  </data>
+  <data name="btnPrint.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 46</value>
+  </data>
+  <data name="lblTo.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="crystalReportViewer1.ShowZoomButton" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="lblOn.Text" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="btnSep3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="&gt;&gt;lblCopies.Type" xml:space="preserve">
+    <value>MetroFramework.Extender.MetroToolbarLabel, MetroFramework.Extender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;nudToPage.Type" xml:space="preserve">
+    <value>MetroFramework.Extender.MetroToolbarNumericUpDown, MetroFramework.Extender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="btnExport.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="lblTo.Text" xml:space="preserve">
+    <value>To</value>
+  </data>
+  <data name="&gt;&gt;btnDn.Parent" xml:space="preserve">
+    <value>btnUpDn</value>
+  </data>
+  <data name="&gt;&gt;metroToolbar1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;nudToPage.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="crystalReportViewer1.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Comic Sans MS, 8.25pt</value>
+  </data>
+  <data name="btnRg.Size" type="System.Drawing.Size, System.Drawing">
+    <value>20, 40</value>
+  </data>
+  <data name="&gt;&gt;btnExit.Name" xml:space="preserve">
+    <value>btnExit</value>
+  </data>
+  <data name="lblFrom.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;btnRg.Type" xml:space="preserve">
+    <value>MetroFramework.Extender.MetroToolbarButton, MetroFramework.Extender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;btnExport.Type" xml:space="preserve">
+    <value>MetroFramework.Extender.MetroToolbarPushButton, MetroFramework.Extender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="metroToolbar1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;btnZoomIn.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="btnZoomIn.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <metadata name="metroToolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>35, 15</value>
+  </metadata>
+  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>it-IT</value>
+  </metadata>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>167, 15</value>
+  </metadata>
+</root>

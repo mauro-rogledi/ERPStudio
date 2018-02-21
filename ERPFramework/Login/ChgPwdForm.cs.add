@@ -1,0 +1,64 @@
+﻿using ERPFramework.Data;
+using ERPFramework.Forms;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace ERPFramework.Login
+{
+    public partial class ChgPwdForm : AskForm
+    {
+        string oldPwd;
+
+        public ChgPwdForm()
+        {
+            InitializeComponent();
+        }
+
+        public ChgPwdForm(string oldpwd)
+        {
+            //
+            // Required for Windows Form Designer support
+            //
+            InitializeComponent();
+            oldPwd = oldpwd;
+        }
+
+        public override bool OnOk()
+        {
+            if (Cryption.Encrypt(txtOldPwd.Text) != oldPwd)
+            {
+                MessageBox.Show(
+                    Properties.Resources.Password_Different,
+                    Properties.Resources.Warning,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            if (txtNewPwd.Text != txtConfirmPwd.Text)
+            {
+                MessageBox.Show(
+                    Properties.Resources.Password_Different,
+                    Properties.Resources.Warning,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            //if (txtNewPwd.Text.Trim() == string.Empty)
+            //{
+            //    MessageBox.Show(
+            //        Properties.Resources.Password_NoBlank,
+            //        Properties.Resources.Warning,
+            //        MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //    e.Cancel = true;
+            //}
+            return base.OnOk();
+        }
+    }
+}

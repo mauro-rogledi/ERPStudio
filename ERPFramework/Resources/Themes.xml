@@ -1,0 +1,10 @@
+<Themes>
+  <Theme name="blue">
+    <DocumentForm>
+      <BackColor>240, 247, 255</BackColor>
+    </DocumentForm>
+    <ToolStrip>
+      <BackgroundImage>Blu</BackgroundImage>
+    </ToolStrip>
+  </Theme>
+</Themes>

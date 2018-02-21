@@ -1,0 +1,488 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ApplicationYear" xml:space="preserve">
+    <value>Anno applicazione</value>
+  </data>
+  <data name="ApplicationYearShort" xml:space="preserve">
+    <value>Anno applicazione breve</value>
+  </data>
+  <data name="Attention" xml:space="preserve">
+    <value>Attentione</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Colore</value>
+  </data>
+  <data name="Custom" xml:space="preserve">
+    <value>Personalizzato</value>
+  </data>
+  <data name="Database_Create" xml:space="preserve">
+    <value>Il database è stato creato con successo</value>
+  </data>
+  <data name="Database_WrongType" xml:space="preserve">
+    <value>Il database non sembra essere del tipo corretto.
+Creo ugualmente le tabelle ?</value>
+  </data>
+  <data name="Database_WrongVersion" xml:space="preserve">
+    <value>Versione Errata.
+La corrente versione di database è {0}, mentre la versione del programma è  {1}</value>
+  </data>
+  <data name="DeleteRow" xml:space="preserve">
+    <value>Cancella riga</value>
+  </data>
+  <data name="DeleteSetting" xml:space="preserve">
+    <value>Cancella impostazioni</value>
+  </data>
+  <data name="Doc_Edit" xml:space="preserve">
+    <value>Modifica</value>
+  </data>
+  <data name="Doc_New" xml:space="preserve">
+    <value>Nuovo</value>
+  </data>
+  <data name="Doc_Ready" xml:space="preserve">
+    <value>Pronto</value>
+  </data>
+  <data name="Doc_Run" xml:space="preserve">
+    <value>VAI</value>
+  </data>
+  <data name="Doc_Running" xml:space="preserve">
+    <value>In elaborazione</value>
+  </data>
+  <data name="Doc_Stop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="Empty" xml:space="preserve">
+    <value>Vuoto</value>
+  </data>
+  <data name="en_US" xml:space="preserve">
+    <value>Inglese</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Errore</value>
+  </data>
+  <data name="Exit_Close" xml:space="preserve">
+    <value>Sei sicuro di chiudere senza salvare i dati ?</value>
+  </data>
+  <data name="Exit_Undo" xml:space="preserve">
+    <value>Sei sicuro di annullare senza salvare i dati ?</value>
+  </data>
+  <data name="E_100Perc" xml:space="preserve">
+    <value>100 %</value>
+  </data>
+  <data name="E_10Perc" xml:space="preserve">
+    <value>10 %</value>
+  </data>
+  <data name="E_200Perc" xml:space="preserve">
+    <value>200 %</value>
+  </data>
+  <data name="E_20Perc" xml:space="preserve">
+    <value>20 %</value>
+  </data>
+  <data name="E_400Perc" xml:space="preserve">
+    <value>400 %</value>
+  </data>
+  <data name="E_40Perc" xml:space="preserve">
+    <value>40 %</value>
+  </data>
+  <data name="E_50Perc" xml:space="preserve">
+    <value>50 %</value>
+  </data>
+  <data name="E_70Perc" xml:space="preserve">
+    <value>70%</value>
+  </data>
+  <data name="E_Integer" xml:space="preserve">
+    <value>Intero</value>
+  </data>
+  <data name="E_Numeric" xml:space="preserve">
+    <value>Numerico</value>
+  </data>
+  <data name="E_Page_Width" xml:space="preserve">
+    <value>Larghezza pagina</value>
+  </data>
+  <data name="E_Text" xml:space="preserve">
+    <value>Testo</value>
+  </data>
+  <data name="E_Whole_Page" xml:space="preserve">
+    <value>Tutta la pagina</value>
+  </data>
+  <data name="ForceLanguage" xml:space="preserve">
+    <value>Forza linguaggio</value>
+  </data>
+  <data name="Generic" xml:space="preserve">
+    <value>Generico</value>
+  </data>
+  <data name="InsertRow" xml:space="preserve">
+    <value>Inserisci Riga</value>
+  </data>
+  <data name="it_IT" xml:space="preserve">
+    <value>Italiano</value>
+  </data>
+  <data name="Landscape" xml:space="preserve">
+    <value>Panorama</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Linguaggio</value>
+  </data>
+  <data name="Localization" xml:space="preserve">
+    <value>Localizzazione</value>
+  </data>
+  <data name="Msg_CodeNotFound" xml:space="preserve">
+    <value>Codice non trovato!</value>
+  </data>
+  <data name="Msg_Continue" xml:space="preserve">
+    <value>
+Continuo ugualmente ?</value>
+  </data>
+  <data name="Msg_Delete" xml:space="preserve">
+    <value>Sei proprio sicuro di voler cancellare i dati ?</value>
+  </data>
+  <data name="Msg_DocumentNotFound" xml:space="preserve">
+    <value>Documento non trovato</value>
+  </data>
+  <data name="Msg_EmailDataMissing" xml:space="preserve">
+    <value>Mancano alcuni dati nelle impostazioni della mail</value>
+  </data>
+  <data name="Msg_FiscalCode" xml:space="preserve">
+    <value>Codice fiscale non corretto</value>
+  </data>
+  <data name="Msg_InsertNewCode" xml:space="preserve">
+    <value>Codice non trovato!
+Vuoi inserirlo ora ?</value>
+  </data>
+  <data name="Msg_LenIncorrect" xml:space="preserve">
+    <value>La lunghezza del codice fiscale deve essere di 11 o 16 caratteri</value>
+  </data>
+  <data name="Msg_Locked" xml:space="preserve">
+    <value>Il dato è bloccato dall'utente  {0} dal giorno {1}</value>
+  </data>
+  <data name="Msg_MailIncorrect" xml:space="preserve">
+    <value>L'indirizzo mail non è nel formato corretto</value>
+  </data>
+  <data name="Msg_MissingCodeDef" xml:space="preserve">
+    <value>Manca la definizione del codice</value>
+  </data>
+  <data name="Msg_MissingCounter" xml:space="preserve">
+    <value>Manca la definizione del contatore</value>
+  </data>
+  <data name="Msg_RecordLock" xml:space="preserve">
+    <value>Il dato è bloccato</value>
+  </data>
+  <data name="Msg_TaxNo" xml:space="preserve">
+    <value>Partita Iva non corretta</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Nessuno</value>
+  </data>
+  <data name="Numeric" xml:space="preserve">
+    <value>Numerico</value>
+  </data>
+  <data name="Password_Different" xml:space="preserve">
+    <value>La nuova password e la password di conferma non coincidono</value>
+  </data>
+  <data name="Password_Error" xml:space="preserve">
+    <value>La vecchia password è errata</value>
+  </data>
+  <data name="Password_NoBlank" xml:space="preserve">
+    <value>La password non può essere lasciata vuota</value>
+  </data>
+  <data name="Portrait" xml:space="preserve">
+    <value>Ritratto</value>
+  </data>
+  <data name="Prefix" xml:space="preserve">
+    <value>Prefisso</value>
+  </data>
+  <data name="PrefixAndSuffix" xml:space="preserve">
+    <value>Prefisso + Suffisso</value>
+  </data>
+  <data name="Rdr_CodeNotFound" xml:space="preserve">
+    <value>Codice '{0}' non trovato!
+Vuoi inserirlo ora ?</value>
+  </data>
+  <data name="Rdr_NotFound" xml:space="preserve">
+    <value>Codice '{0}' non trovato!</value>
+  </data>
+  <data name="Report" xml:space="preserve">
+    <value>Stampa</value>
+  </data>
+  <data name="SaveSetting" xml:space="preserve">
+    <value>Memorizza impostazione</value>
+  </data>
+  <data name="Setting" xml:space="preserve">
+    <value>Impostazioni griglia</value>
+  </data>
+  <data name="SQLCompact" xml:space="preserve">
+    <value>SQL Compact</value>
+  </data>
+  <data name="SQLite" xml:space="preserve">
+    <value>SQLite</value>
+  </data>
+  <data name="SQLServer" xml:space="preserve">
+    <value>Sql Server</value>
+  </data>
+  <data name="Suffix" xml:space="preserve">
+    <value>Suffisso</value>
+  </data>
+  <data name="Text" xml:space="preserve">
+    <value>Testo</value>
+  </data>
+  <data name="T_Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="T_GlobalPref" xml:space="preserve">
+    <value>Generiche</value>
+  </data>
+  <data name="T_OfChar" xml:space="preserve">
+    <value> di 4000</value>
+  </data>
+  <data name="T_Printer" xml:space="preserve">
+    <value>Stampante</value>
+  </data>
+  <data name="T_Thesaurus" xml:space="preserve">
+    <value>Dizionario</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Attenzione</value>
+  </data>
+  <data name="Xml_Delete" xml:space="preserve">
+    <value>Non cancellare o modificare questo file</value>
+  </data>
+  <data name="Xml_Setting" xml:space="preserve">
+    <value>Settings for login</value>
+  </data>
+  <data name="Preview" xml:space="preserve">
+    <value>Anteprima</value>
+  </data>
+  <data name="Collate" xml:space="preserve">
+    <value>Fascicola</value>
+  </data>
+  <data name="Copies" xml:space="preserve">
+    <value>Copie</value>
+  </data>
+  <data name="Envelope" xml:space="preserve">
+    <value>Buste</value>
+  </data>
+  <data name="Letter" xml:space="preserve">
+    <value>Formato A4</value>
+  </data>
+  <data name="Orientation" xml:space="preserve">
+    <value>Orientamento</value>
+  </data>
+  <data name="PageSize" xml:space="preserve">
+    <value>Formato</value>
+  </data>
+  <data name="PrinterName" xml:space="preserve">
+    <value>Stampante</value>
+  </data>
+  <data name="Source" xml:space="preserve">
+    <value>Alimentazione</value>
+  </data>
+  <data name="Msg_StopBatch" xml:space="preserve">
+    <value>Vuoi fermare l'esecuzione ?</value>
+  </data>
+  <data name="E_Page_All" xml:space="preserve">
+    <value>Tutte</value>
+  </data>
+  <data name="E_Page_Current" xml:space="preserve">
+    <value>Corrente</value>
+  </data>
+  <data name="E_Page_Range" xml:space="preserve">
+    <value>Intervallo</value>
+  </data>
+  <data name="Label" xml:space="preserve">
+    <value>Etichette</value>
+  </data>
+  <data name="E_AllDate" xml:space="preserve">
+    <value>Tutte le date</value>
+  </data>
+  <data name="E_CurrentMonth" xml:space="preserve">
+    <value>Mese Corrente</value>
+  </data>
+  <data name="E_CurrentQuarter" xml:space="preserve">
+    <value>Trimestre Corrente</value>
+  </data>
+  <data name="E_CurrentSemester" xml:space="preserve">
+    <value>Semestre Corrente</value>
+  </data>
+  <data name="E_CurrentTrimester" xml:space="preserve">
+    <value>Quadrimestre Corrente</value>
+  </data>
+  <data name="E_CurrentTwoMonth" xml:space="preserve">
+    <value>Bimestre Corrente</value>
+  </data>
+  <data name="E_CurrentWeek" xml:space="preserve">
+    <value>Settimana Corrente</value>
+  </data>
+  <data name="E_CurrentYear" xml:space="preserve">
+    <value>Anno Corrente</value>
+  </data>
+  <data name="E_Custom" xml:space="preserve">
+    <value>Date Personalizzate</value>
+  </data>
+  <data name="E_LastFourMonths" xml:space="preserve">
+    <value>Ultimi 4 Mesi</value>
+  </data>
+  <data name="E_LastMonth" xml:space="preserve">
+    <value>Ultimo Mese</value>
+  </data>
+  <data name="E_LastNineMonths" xml:space="preserve">
+    <value>Ultimi 9 Mesi</value>
+  </data>
+  <data name="E_LastSixMonths" xml:space="preserve">
+    <value>Ultimi 6 Mesi</value>
+  </data>
+  <data name="E_LastThreeMonths" xml:space="preserve">
+    <value>Ultimi 3 mesi</value>
+  </data>
+  <data name="E_LastTwoMonths" xml:space="preserve">
+    <value>Ultimi 2 mesi</value>
+  </data>
+  <data name="E_LastWeek" xml:space="preserve">
+    <value>Ultima Settimana</value>
+  </data>
+  <data name="E_LastYear" xml:space="preserve">
+    <value>Ultimo Anno</value>
+  </data>
+  <data name="E_PreviousQuarter" xml:space="preserve">
+    <value>Trimestre Precedente</value>
+  </data>
+  <data name="E_PreviousSemester" xml:space="preserve">
+    <value>Semestre Precedente</value>
+  </data>
+  <data name="E_PreviousTrimester" xml:space="preserve">
+    <value>Quadrimestre Precedente</value>
+  </data>
+  <data name="E_PreviousTwoMonth" xml:space="preserve">
+    <value>Bimestre Precedente</value>
+  </data>
+  <data name="E_PreviousWeek" xml:space="preserve">
+    <value>Settimana Precedente</value>
+  </data>
+  <data name="E_PreviousYear" xml:space="preserve">
+    <value>Anno Precedente</value>
+  </data>
+  <data name="E_PreviousMonth" xml:space="preserve">
+    <value>Mese Precedente</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Cerca</value>
+  </data>
+  <data name="SelectAll" xml:space="preserve">
+    <value>Seleziona tutto</value>
+  </data>
+</root>

@@ -1,0 +1,390 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1ECCFEBF-5410-45AA-AA37-A30EE601A5B6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MetroFramework.Extender</RootNamespace>
+    <AssemblyName>MetroFramework.Extender</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MetroFramework.Design, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.Design.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MetroFramework.Fonts, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.Fonts.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Dictionary.cs" />
+    <Compile Include="Interfaces.cs" />
+    <Compile Include="MetroAutosizePanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MetroLinkChecked.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MetroNumericUpDown.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MetroPropertyGrid.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MetroTableLayoutPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MetroFrameworkExtenderDefaults.cs" />
+    <Compile Include="MetroAddOnPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MetroCollapsiblePanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MetroFlowLayoutPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MetroBreadCrumbs.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MetroIntelliTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MetroListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MetroRichTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MetroMaskedTextbox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MetroTextBoxButtonState.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MetroProvaTile.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MetroToolbar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MetroToolbarButtons\MetroToolbarContainer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MetroToolbarButtons\MetroToolbarDropDownButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MetroToolbarButtons\MetroToolbarNumericUpDown.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MetroToolbarButtons\MetroToolbarCombobox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MetroToolbarButtons\MetroToolbarLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MetroToolbarButtons\MetroToolbarLinkChecked.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MetroToolbarButtons\MetroToolbarButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MetroToolbarButtons\MetroToolbarSeparator.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MetroToolbarButtons\MetroToolbarPushButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MetroTreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MetroNumericTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="MetroTextFolderBrowse.cs">
+      <SubType>Component</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MetroNumericUpDown.resx">
+      <DependentUpon>MetroNumericUpDown.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetroTextBoxButtonState.resx">
+      <DependentUpon>MetroTextBoxButtonState.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Resources\Edit32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Edit32g.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Exit32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Exit32g.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Filter32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Filter32g.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\New32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\New32g.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Preview32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Preview32g.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Print32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Print32g.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Save32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Save32g.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Search32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Search32g.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Setting32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Setting32g.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Undo32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Undo32g.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TriangleLeft16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TriangleLeft16g.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TriangleUp16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TriangleUp16g.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TriangleDown16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TriangleDown16g.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TriangleRight16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TriangleRight16g.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Delete32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Delete32g.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\More32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\More32g.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Pin32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Pin32g.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Unpin32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Unpin32g.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Pin24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Pin24g.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Unpin24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Unpin24g.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TriangleFillDown16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TriangleFillDown16g.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TriangleFillDown8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TriangleFillDown8g.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Down8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Down8g.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Up8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Up8g.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AlphabeticalSorting24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AlphabeticalSorting24ck.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AlphabeticalSorting24ckg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AlphabeticalSorting24g.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GroupofQuestions24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GroupofQuestions24ck.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GroupofQuestions24ckg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GroupofQuestions24g.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Play32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Play32g.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Minus8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Minus8g.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Plus8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Plus8g.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SortRight10.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Circle10.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SortDown10.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Search16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Search16g.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Stop32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Stop32g.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\VerticalLine32.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
