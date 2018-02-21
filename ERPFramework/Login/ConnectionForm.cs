@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Sql;
 using System.Windows.Forms;
 using ERPFramework.Controls;
 using Microsoft.SqlServer.Management.Smo;
@@ -94,10 +95,10 @@ namespace ERPFramework.Login
                         e.NewIndex = 0;
                         break;
 
-                    //case 4:
-                    //    if (cbbProvider.SelectedIndex == 1)
-                    //        e.NewIndex = 1;
-                    //    break;
+                        //case 4:
+                        //    if (cbbProvider.SelectedIndex == 1)
+                        //        e.NewIndex = 1;
+                        //    break;
                 }
             }
         }
@@ -136,6 +137,9 @@ namespace ERPFramework.Login
             this.cbbServer.DropDownStyle = ComboBoxStyle.DropDown;
             this.cbbServer.Text = "Search SqlServer";
             Application.DoEvents();
+
+            //var instance = SqlDataSourceEnumerator.Instance;
+            //System.Data.DataTable table = instance.GetDataSources();
 
             DataTable dt = SmoApplication.EnumAvailableSqlServers(false);
 
