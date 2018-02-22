@@ -8,4 +8,4 @@ It's integrates a reporting system through Crystal Report.
 
 ERP Studio.net implements multi-language forms, multi-user management with optimistic lock control, and a complete system of protection and update.
 
-Since 2016 ERP Studio.net uses and expands th [Metro framework](http://denricdenise.info/2014/09/winforms-metro-style/) of Denis Magno to have a more modern look and feel.
+Since 2016 ERP Studio.net uses and expands the [Metro framework](http://denricdenise.info/2014/09/winforms-metro-style/) of Denis Magno to have a more modern look and feel.
