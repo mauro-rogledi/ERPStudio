@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Microsoft.Win32;
 
 namespace ERPFramework.Libraries
@@ -7,21 +10,19 @@ namespace ERPFramework.Libraries
     /// Summary description for RegistryManager.
     /// </summary>
     ///
-    public class RegistryManager
+    public static class RegistryManager
     {
-        private RegistryKey registrykey = Registry.CurrentUser;
-        private string applicationName = string.Empty;
-        private string applicationPath = string.Empty;
+        private static RegistryKey registrykey = Registry.CurrentUser;
+        private static string applicationName = string.Empty;
+        private static string applicationPath = string.Empty;
 
-        public RegistryManager()
-        {
-        }
+        const string AutoRunSubKey = "Software\\Microsoft\\Windows\\CurrentVersion\\Run";
 
-        public RegistryKey registryKey { set { registrykey = value; } get { return registrykey; } }
+        public static RegistryKey registryKey { set { registrykey = value; } get { return registrykey; } }
 
-        public string ApplicationName { set { applicationName = value; } get { return applicationName; } }
+        public static string ApplicationName { set { applicationName = value; } get { return applicationName; } }
 
-        public string ApplicationPath { set { applicationPath = value; } get { return applicationPath; } }
+        public static string ApplicationPath { set { applicationPath = value; } get { return applicationPath; } }
 
         #region Enable/Disable AutoStart
 
@@ -30,15 +31,15 @@ namespace ERPFramework.Libraries
         /// Enable or Disable Autostart
         /// </summary>
         /// <param name="autostart"></param>
-        public void SetAutoStart(bool autostart)
+        public static void SetAutoStart(bool autostart)
         {
             bool result = (autostart) ? EnableAutostart() : DisableAutostart();
         }
 
-        public bool IsAutostartEnable()
+        public static bool IsAutostartEnable()
         {
-            Debug.Assert(applicationName.Length != 0, ERROR.NoApplicationName);
-            using (RegistryKey myVal = registrykey.OpenSubKey(SS.AutoRunSubKey, true))
+            Debug.Assert(applicationName.Length != 0, Properties.Resources.NoApplicationName);
+            using (RegistryKey myVal = registrykey.OpenSubKey(AutoRunSubKey, true))
             {
                 if (myVal.GetValue(applicationName) != null)
                     return true;
@@ -47,23 +48,23 @@ namespace ERPFramework.Libraries
             }
         }
 
-        private bool EnableAutostart()
+        private static bool EnableAutostart()
         {
-            Debug.Assert(applicationName.Length != 0, ERROR.NoApplicationName);
-            Debug.Assert(applicationPath.Length != 0, ERROR.NoApplicationPath);
+            Debug.Assert(applicationName.Length != 0, Properties.Resources.NoApplicationName);
+            Debug.Assert(applicationPath.Length != 0, Properties.Resources.NoApplicationPath);
 
-            using (RegistryKey myVal = registrykey.OpenSubKey(SS.AutoRunSubKey, true))
+            using (RegistryKey myVal = registrykey.OpenSubKey(AutoRunSubKey, true))
             {
                 myVal.SetValue(applicationName, applicationPath);
             }
             return true;
         }
 
-        private bool DisableAutostart()
+        private static bool DisableAutostart()
         {
-            Debug.Assert(applicationName.Length != 0, ERROR.NoApplicationName);
+            Debug.Assert(applicationName.Length != 0, Properties.Resources.NoApplicationName);
 
-            using (RegistryKey myVal = registrykey.OpenSubKey(SS.AutoRunSubKey, true))
+            using (RegistryKey myVal = registrykey.OpenSubKey(AutoRunSubKey, true))
             {
                 if (myVal.GetValue(applicationName) != null)
                     myVal.DeleteValue(applicationName);
@@ -73,15 +74,62 @@ namespace ERPFramework.Libraries
 
         #endregion
 
-        private struct SS
+        public static IEnumerable<string> ListLocalSqlInstances()
         {
-            public const string AutoRunSubKey = "Software\\Microsoft\\Windows\\CurrentVersion\\Run";
+            if (Environment.Is64BitOperatingSystem)
+            {
+                using (var hive = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64))
+                {
+                    foreach (string item in ListLocalSqlInstances(hive))
+                    {
+                        yield return item;
+                    }
+                }
+
+                using (var hive = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32))
+                {
+                    foreach (string item in ListLocalSqlInstances(hive))
+                    {
+                        yield return item;
+                    }
+                }
+            }
+            else
+            {
+                foreach (string item in ListLocalSqlInstances(Registry.LocalMachine))
+                {
+                    yield return item;
+                }
+            }
         }
 
-        private struct ERROR
+        private static IEnumerable<string> ListLocalSqlInstances(RegistryKey hive)
         {
-            public const string NoApplicationName = "Manca il nome dell'applicazione";
-            public const string NoApplicationPath = "Manca il path dell'applicazione";
+            const string keyName = @"Software\Microsoft\Microsoft SQL Server";
+            const string valueName = "InstalledInstances";
+            const string defaultName = "MSSQLSERVER";
+
+            using (var key = hive.OpenSubKey(keyName, false))
+            {
+                if (key == null) return Enumerable.Empty<string>();
+
+                var value = key.GetValue(valueName) as string[];
+                if (value == null) return Enumerable.Empty<string>();
+
+                for (int index = 0; index < value.Length; index++)
+                {
+                    if (string.Equals(value[index], defaultName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        value[index] = ".";
+                    }
+                    else
+                    {
+                        value[index] = @"\" + value[index];
+                    }
+                }
+
+                return value;
+            }
         }
     }
 }

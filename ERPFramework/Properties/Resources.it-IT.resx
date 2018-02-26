@@ -485,4 +485,10 @@ Vuoi inserirlo ora ?</value>
   <data name="SelectAll" xml:space="preserve">
     <value>Seleziona tutto</value>
   </data>
+  <data name="NoApplicationName" xml:space="preserve">
+    <value>Manca il nome dell'applicazione</value>
+  </data>
+  <data name="NoApplicationPath" xml:space="preserve">
+    <value>Manca il percorso dell'applicatione</value>
+  </data>
 </root>

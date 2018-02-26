@@ -2,8 +2,10 @@
 using System.ComponentModel;
 using System.Data;
 using System.Data.Sql;
+using System.Linq;
 using System.Windows.Forms;
 using ERPFramework.Controls;
+using ERPFramework.Libraries;
 using Microsoft.SqlServer.Management.Smo;
 
 namespace ERPFramework.Login
@@ -142,10 +144,13 @@ namespace ERPFramework.Login
             //System.Data.DataTable table = instance.GetDataSources();
 
             DataTable dt = SmoApplication.EnumAvailableSqlServers(false);
+            var localInstance = RegistryManager.ListLocalSqlInstances().ToList();
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                string srv = dt.Rows[i]["Name"].ToString();
+                var srv = dt.Rows[i]["Name"].ToString();
+                if (i == 0 && localInstance != null)
+                    srv += localInstance.ElementAt<string>(0);
                 cbbServer.Items.Add(srv);
             }
             if (this.cbbServer.Items.Count > 0)
