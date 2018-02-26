@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.Sql;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using ERPFramework.Controls;
 using ERPFramework.Libraries;
@@ -66,13 +67,12 @@ namespace ERPFramework.Login
 #endif
                         break;
 
-                    //case 1:
-                    //    if (e.NewIndex == 2)
-                    //    {
-                    //        e.Cancel = CheckConnection();
-                    //        e.NewIndex = 4;
-                    //    }
-                    //    break;
+                    case 1:
+                        if (e.NewIndex == 2)
+                        {
+                            e.Cancel = cbbServer.Text.IsEmpty();
+                        }
+                        break;
                     case 2:
                         if (e.NewIndex == 1)
                             e.NewIndex = 0;
@@ -133,7 +133,7 @@ namespace ERPFramework.Login
 
         #region SqlServer Methods
 
-        private void SearchSqlServer()
+        private async void SearchSqlServer()
         {
             this.cbbServer.Items.Clear();
             this.cbbServer.DropDownStyle = ComboBoxStyle.DropDown;
@@ -143,7 +143,7 @@ namespace ERPFramework.Login
             //var instance = SqlDataSourceEnumerator.Instance;
             //System.Data.DataTable table = instance.GetDataSources();
 
-            DataTable dt = SmoApplication.EnumAvailableSqlServers(false);
+            DataTable dt = await GetServers();
             var localInstance = RegistryManager.ListLocalSqlInstances().ToList();
 
             for (int i = 0; i < dt.Rows.Count; i++)
@@ -160,6 +160,15 @@ namespace ERPFramework.Login
             }
             else
                 this.cbbServer.Text = "<No available SQL Servers>";
+        }
+
+        private async Task<DataTable> GetServers()
+        {
+            DataTable dt = await Task.Run(
+                () => SmoApplication.EnumAvailableSqlServers(false)
+            );
+
+            return dt;
         }
 
         private void ListDataBase()
