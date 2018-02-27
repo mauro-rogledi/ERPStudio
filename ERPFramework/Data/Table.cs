@@ -27,12 +27,9 @@ namespace ERPFramework.Data
         public int VisibleInRadarCount { get { return visibleInRadar.Count; } }
 
 
-        public IColumn this[int index]
+        public IColumn VisibleInRadarColumn(int index)
         {
-            get
-            {
-                return (IColumn)visibleInRadar[index];
-            }
+                return visibleInRadar[index];
         }
     }
 

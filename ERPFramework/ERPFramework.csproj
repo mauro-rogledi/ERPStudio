@@ -520,9 +520,6 @@
     <Compile Include="Controls\ExCheckedListBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\ExToolStrip.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Controls\FindableTextBox.cs">
       <SubType>Component</SubType>
     </Compile>

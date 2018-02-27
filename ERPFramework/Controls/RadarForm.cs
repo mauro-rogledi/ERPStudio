@@ -256,7 +256,7 @@ namespace ERPFramework.Controls
             var rdrTable = rdrCodeColumn.Table;
             for (int t = 0; t < rdrTable.VisibleInRadarCount; t++)
             {
-                var col = rdrTable[t];
+                var col = rdrTable.VisibleInRadarColumn(t);
 
                 var txtColumn = new TrimMaskedTextBoxDataGridViewColumn
                 {
