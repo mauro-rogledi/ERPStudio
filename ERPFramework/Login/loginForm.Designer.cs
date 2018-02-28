@@ -44,19 +44,19 @@
             // 
             // btnExit
             // 
-            resources.ApplyResources(this.btnExit, "btnExit");
             this.btnExit.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnExit.FontSize = MetroFramework.MetroButtonSize.Medium;
             this.btnExit.FontWeight = MetroFramework.MetroButtonWeight.Regular;
+            resources.ApplyResources(this.btnExit, "btnExit");
             this.btnExit.Name = "btnExit";
             this.btnExit.UseSelectable = true;
             this.btnExit.UseStyleColors = true;
             // 
             // btnLogin
             // 
-            resources.ApplyResources(this.btnLogin, "btnLogin");
             this.btnLogin.FontSize = MetroFramework.MetroButtonSize.Medium;
             this.btnLogin.FontWeight = MetroFramework.MetroButtonWeight.Regular;
+            resources.ApplyResources(this.btnLogin, "btnLogin");
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.UseSelectable = true;
             this.btnLogin.UseStyleColors = true;
@@ -64,42 +64,26 @@
             // 
             // txtPassword
             // 
-            resources.ApplyResources(this.txtPassword, "txtPassword");
             // 
             // 
             // 
-            this.txtPassword.CustomButton.AccessibleDescription = resources.GetString("resource.AccessibleDescription");
-            this.txtPassword.CustomButton.AccessibleName = resources.GetString("resource.AccessibleName");
-            this.txtPassword.CustomButton.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("resource.Anchor")));
-            this.txtPassword.CustomButton.AutoSize = ((bool)(resources.GetObject("resource.AutoSize")));
-            this.txtPassword.CustomButton.AutoSizeMode = ((System.Windows.Forms.AutoSizeMode)(resources.GetObject("resource.AutoSizeMode")));
-            this.txtPassword.CustomButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("resource.BackgroundImage")));
-            this.txtPassword.CustomButton.BackgroundImageLayout = ((System.Windows.Forms.ImageLayout)(resources.GetObject("resource.BackgroundImageLayout")));
-            this.txtPassword.CustomButton.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("resource.Dock")));
-            this.txtPassword.CustomButton.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("resource.FlatStyle")));
-            this.txtPassword.CustomButton.Font = ((System.Drawing.Font)(resources.GetObject("resource.Font")));
             this.txtPassword.CustomButton.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image")));
-            this.txtPassword.CustomButton.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("resource.ImageAlign")));
-            this.txtPassword.CustomButton.ImageIndex = ((int)(resources.GetObject("resource.ImageIndex")));
-            this.txtPassword.CustomButton.ImageKey = resources.GetString("resource.ImageKey");
             this.txtPassword.CustomButton.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("resource.ImeMode")));
             this.txtPassword.CustomButton.Location = ((System.Drawing.Point)(resources.GetObject("resource.Location")));
-            this.txtPassword.CustomButton.MaximumSize = ((System.Drawing.Size)(resources.GetObject("resource.MaximumSize")));
             this.txtPassword.CustomButton.Name = "";
-            this.txtPassword.CustomButton.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("resource.RightToLeft")));
             this.txtPassword.CustomButton.Size = ((System.Drawing.Size)(resources.GetObject("resource.Size")));
             this.txtPassword.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
             this.txtPassword.CustomButton.TabIndex = ((int)(resources.GetObject("resource.TabIndex")));
-            this.txtPassword.CustomButton.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("resource.TextAlign")));
-            this.txtPassword.CustomButton.TextImageRelation = ((System.Windows.Forms.TextImageRelation)(resources.GetObject("resource.TextImageRelation")));
             this.txtPassword.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light;
             this.txtPassword.CustomButton.UseSelectable = true;
             this.txtPassword.CustomButton.Visible = ((bool)(resources.GetObject("resource.Visible")));
             this.txtPassword.FontSize = MetroFramework.MetroTextBoxSize.Medium;
             this.txtPassword.Lines = new string[0];
+            resources.ApplyResources(this.txtPassword, "txtPassword");
             this.txtPassword.MaxLength = 32767;
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '●';
+            this.txtPassword.PromptText = "Password";
             this.txtPassword.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.txtPassword.SelectedText = "";
             this.txtPassword.SelectionLength = 0;
@@ -114,44 +98,28 @@
             // 
             // txtUser
             // 
-            resources.ApplyResources(this.txtUser, "txtUser");
             this.txtUser.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.txtUser.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             // 
             // 
             // 
-            this.txtUser.CustomButton.AccessibleDescription = resources.GetString("resource.AccessibleDescription1");
-            this.txtUser.CustomButton.AccessibleName = resources.GetString("resource.AccessibleName1");
-            this.txtUser.CustomButton.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("resource.Anchor1")));
-            this.txtUser.CustomButton.AutoSize = ((bool)(resources.GetObject("resource.AutoSize1")));
-            this.txtUser.CustomButton.AutoSizeMode = ((System.Windows.Forms.AutoSizeMode)(resources.GetObject("resource.AutoSizeMode1")));
-            this.txtUser.CustomButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("resource.BackgroundImage1")));
-            this.txtUser.CustomButton.BackgroundImageLayout = ((System.Windows.Forms.ImageLayout)(resources.GetObject("resource.BackgroundImageLayout1")));
-            this.txtUser.CustomButton.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("resource.Dock1")));
-            this.txtUser.CustomButton.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("resource.FlatStyle1")));
-            this.txtUser.CustomButton.Font = ((System.Drawing.Font)(resources.GetObject("resource.Font1")));
             this.txtUser.CustomButton.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image1")));
-            this.txtUser.CustomButton.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("resource.ImageAlign1")));
-            this.txtUser.CustomButton.ImageIndex = ((int)(resources.GetObject("resource.ImageIndex1")));
-            this.txtUser.CustomButton.ImageKey = resources.GetString("resource.ImageKey1");
             this.txtUser.CustomButton.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("resource.ImeMode1")));
             this.txtUser.CustomButton.Location = ((System.Drawing.Point)(resources.GetObject("resource.Location1")));
-            this.txtUser.CustomButton.MaximumSize = ((System.Drawing.Size)(resources.GetObject("resource.MaximumSize1")));
             this.txtUser.CustomButton.Name = "";
-            this.txtUser.CustomButton.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("resource.RightToLeft1")));
             this.txtUser.CustomButton.Size = ((System.Drawing.Size)(resources.GetObject("resource.Size1")));
             this.txtUser.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
             this.txtUser.CustomButton.TabIndex = ((int)(resources.GetObject("resource.TabIndex1")));
-            this.txtUser.CustomButton.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("resource.TextAlign1")));
-            this.txtUser.CustomButton.TextImageRelation = ((System.Windows.Forms.TextImageRelation)(resources.GetObject("resource.TextImageRelation1")));
             this.txtUser.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light;
             this.txtUser.CustomButton.UseSelectable = true;
             this.txtUser.CustomButton.Visible = ((bool)(resources.GetObject("resource.Visible1")));
             this.txtUser.FontSize = MetroFramework.MetroTextBoxSize.Medium;
             this.txtUser.Lines = new string[0];
+            resources.ApplyResources(this.txtUser, "txtUser");
             this.txtUser.MaxLength = 16;
             this.txtUser.Name = "txtUser";
             this.txtUser.PasswordChar = '\0';
+            this.txtUser.PromptText = "Utente";
             this.txtUser.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.txtUser.SelectedText = "";
             this.txtUser.SelectionLength = 0;
@@ -185,8 +153,8 @@
             // 
             // pictureBox1
             // 
-            resources.ApplyResources(this.pictureBox1, "pictureBox1");
             this.pictureBox1.Image = global::ERPFramework.Properties.Resources.Logo;
+            resources.ApplyResources(this.pictureBox1, "pictureBox1");
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.TabStop = false;
             // 
@@ -198,16 +166,16 @@
             // 
             // metroLabel1
             // 
-            resources.ApplyResources(this.metroLabel1, "metroLabel1");
             this.metroLabel1.FontSize = MetroFramework.MetroLabelSize.Small;
             this.metroLabel1.FontWeight = MetroFramework.MetroLabelWeight.Regular;
+            resources.ApplyResources(this.metroLabel1, "metroLabel1");
             this.metroLabel1.Name = "metroLabel1";
             this.metroLabel1.UseStyleColors = true;
             // 
             // loginForm
             // 
-            resources.ApplyResources(this, "$this");
             this.ApplyImageInvert = true;
+            resources.ApplyResources(this, "$this");
             this.BackLocation = MetroFramework.Forms.BackLocation.TopRight;
             this.ControlBox = false;
             this.Controls.Add(this.metroLabel1);

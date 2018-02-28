@@ -7,10 +7,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("ERP Manager")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Green Emerald Solutions")]
+[assembly: AssemblyCompany("Mauro Rogledi")]
 [assembly: AssemblyProduct("ERP Studio")]
-[assembly: AssemblyCopyright("Copyright © 2008-2016 Green Emerald Solutions")]
-[assembly: AssemblyTrademark("© 2008-2016 Green Emerald Solutions")]
+[assembly: AssemblyCopyright("Copyright © 2008-2016 Mauro Rogledi")]
+[assembly: AssemblyTrademark("© 2008-2016 Mauro Rogledi")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible

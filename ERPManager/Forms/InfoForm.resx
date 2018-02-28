@@ -243,6 +243,9 @@
   <data name="&gt;&gt;label2.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
+  <data name="lblAppname.Size" type="System.Drawing.Size, System.Drawing">
+    <value>87, 25</value>
+  </data>
   <data name="lblLicensed.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
   </data>
@@ -252,8 +255,8 @@
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lblAppname.Size" type="System.Drawing.Size, System.Drawing">
-    <value>87, 25</value>
+  <data name="lsbVersions.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
   </data>
   <data name="lblAppname.Location" type="System.Drawing.Point, System.Drawing">
     <value>149, 12</value>
@@ -278,9 +281,6 @@
   </data>
   <data name="lsbVersions.Size" type="System.Drawing.Size, System.Drawing">
     <value>325, 129</value>
-  </data>
-  <data name="lsbVersions.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
   </data>
   <data name="$this.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>10, 60, 10, 9</value>

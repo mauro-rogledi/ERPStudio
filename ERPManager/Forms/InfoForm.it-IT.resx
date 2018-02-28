@@ -127,6 +127,9 @@
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
     <value>13, 269</value>
   </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>Copyright 2006 -2017  Mauro Rogledi</value>
+  </data>
   <data name="colModule.Text" xml:space="preserve">
     <value>Modulo</value>
   </data>

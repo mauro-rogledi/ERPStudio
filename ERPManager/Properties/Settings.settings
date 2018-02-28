@@ -5,5 +5,14 @@
     <Setting Name="FavoritesMenu" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="ftpServer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">myserver</Value>
+    </Setting>
+    <Setting Name="ftpUser" Type="System.String" Scope="User">
+      <Value Profile="(Default)">username</Value>
+    </Setting>
+    <Setting Name="ftpPassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)">password</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
