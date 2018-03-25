@@ -7,50 +7,57 @@ namespace SqlProvider
 {
     class SqlProviderConnection : IDbConnection
     {
-        public string ConnectionString { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        SqlConnection sqlConnection;
 
-        public int ConnectionTimeout => throw new NotImplementedException();
 
-        public string Database => throw new NotImplementedException();
+        public SqlProviderConnection() => sqlConnection = new SqlConnection();
 
-        public ConnectionState State => throw new NotImplementedException();
+
+        public SqlProviderConnection(string connectionString) => sqlConnection = new SqlConnection(connectionString);
+
+        public SqlProviderConnection(string connectionString, SqlCredential credential) => sqlConnection = new SqlConnection(connectionString, credential);
+
+        public string ConnectionString { get => sqlConnection.ConnectionString; set => sqlConnection.ConnectionString = value; }
+
+        public int ConnectionTimeout => sqlConnection.ConnectionTimeout;
+
+        public string Database => sqlConnection.Database;
+
+        public ConnectionState State => sqlConnection.State;
 
         public IDbTransaction BeginTransaction()
         {
-            IDbCommand dbCommand;
-            dbCommand = new SqlCommand();
-
-            throw new NotImplementedException();
+            return sqlConnection.BeginTransaction();
         }
 
         public IDbTransaction BeginTransaction(IsolationLevel il)
         {
-            throw new NotImplementedException();
+            return sqlConnection.BeginTransaction(il);
         }
 
         public void ChangeDatabase(string databaseName)
         {
-            throw new NotImplementedException();
+            sqlConnection.ChangeDatabase(databaseName);
         }
 
         public void Close()
         {
-            throw new NotImplementedException();
+            sqlConnection.Close();
         }
 
         public IDbCommand CreateCommand()
         {
-            throw new NotImplementedException();
+            return sqlConnection.CreateCommand();
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            sqlConnection.Dispose();
         }
 
         public void Open()
         {
-            throw new NotImplementedException();
+            sqlConnection.Open();
         }
     }
 }

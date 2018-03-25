@@ -34,7 +34,7 @@ namespace ERPFramework.Data
     #endregion
 
     #region SqlProxyConnection
-    public sealed class SqlProxyConnection : IDbConnection, ICloneable, IDisposable
+    public sealed class SqlProxyConnection : ICloneable, IDisposable
     {
         IDbConnection dbConnection;
 
@@ -103,7 +103,8 @@ namespace ERPFramework.Data
     }
     #endregion
 
-    public sealed class SqlProxyCommand : IDbCommand, ICloneable
+    #region SqlProxyCommand
+    public sealed class SqlProxyCommand : ICloneable
     {
         IDbCommand dbCommand;
 
@@ -166,9 +167,9 @@ namespace ERPFramework.Data
             return dbCommand.ExecuteReader();
         }
 
-        public IDataReader ExecuteReader(CommandBehavior behavior)
+        public SqlProxyDataReader ExecuteReader(CommandBehavior behavior)
         {
-            return dbCommand.ExecuteReader(behavior);
+            return new SqlProxyDataReader(dbCommand.ExecuteReader(behavior));
         }
 
         public object ExecuteScalar()
@@ -189,6 +190,178 @@ namespace ERPFramework.Data
             };
 
             return Cloned;
+        }
+    }
+    #endregion
+
+    #region SqlProxyTransaction
+    public sealed class SqlProxyTransaction : ICloneable
+    {
+        IDbTransaction _dbTransaction;
+
+        public SqlProxyTransaction(IDbTransaction dbTransaction) => _dbTransaction = dbTransaction;
+
+        public IDbConnection Connection => _dbTransaction.Connection;
+
+        public IsolationLevel IsolationLevel => _dbTransaction.IsolationLevel;
+
+        public object Clone()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Commit()
+        {
+            _dbTransaction.Commit();
+        }
+
+        public void Dispose()
+        {
+            _dbTransaction.Dispose();
+        }
+
+        public void Rollback()
+        {
+            _dbTransaction.Rollback();
+        }
+    }
+    #endregion
+
+    public sealed class SqlProxyDataReader
+    {
+        IDataReader _idataReader;
+
+        public SqlProxyDataReader(IDataReader idatareader) => _idataReader = idatareader;
+
+        public object this[int i] => _idataReader[i];
+
+        public object this[string name] => _idataReader[name];
+
+        public object this[IColumn column] => _idataReader[column.Name];
+
+        public int Depth => _idataReader.Depth;
+
+        public bool IsClosed => _idataReader.IsClosed;
+
+        public int RecordsAffected => _idataReader.RecordsAffected;
+
+        public int FieldCount => _idataReader.FieldCount;
+
+        public void Close() => _idataReader.Close();
+
+        public void Dispose() => _idataReader.Dispose();
+
+        public bool GetBoolean(int i) => _idataReader.GetBoolean(i);
+
+        public byte GetByte(int i) => _idataReader.GetByte(i);
+
+        public long GetBytes(int i, long fieldOffset, byte[] buffer, int bufferoffset, int length) => _idataReader.GetBytes(i, fieldOffset, buffer, bufferoffset, length);
+
+        public char GetChar(int i) => _idataReader.GetChar(i);
+
+        public long GetChars(int i, long fieldoffset, char[] buffer, int bufferoffset, int length)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IDataReader GetData(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetDataTypeName(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DateTime GetDateTime(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public decimal GetDecimal(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public double GetDouble(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Type GetFieldType(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public float GetFloat(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Guid GetGuid(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public short GetInt16(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetInt32(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public long GetInt64(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetName(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetOrdinal(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataTable GetSchemaTable()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetString(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object GetValue(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetValues(object[] values)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsDBNull(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool NextResult()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Read()
+        {
+            throw new NotImplementedException();
         }
     }
 }

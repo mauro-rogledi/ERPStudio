@@ -4,11 +4,14 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.SQLite;
 
 namespace SqlProvider
 {
     class SqlProviderConnection : IDbConnection
     {
+        SQLiteConnection sqliteConnection;
+
         public string ConnectionString { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public int ConnectionTimeout => throw new NotImplementedException();

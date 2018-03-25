@@ -23,9 +23,9 @@ namespace SqlProvider
             dbCommand = new SqlCommand(cmdText, connection as SqlConnection);
         }
 
-        public IDbConnection Connection { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public IDbTransaction Transaction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string CommandText { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public IDbConnection Connection { get => dbCommand.Connection; set => dbCommand.Connection = value; }
+        public IDbTransaction Transaction { get => dbCommand.Transaction; set => dbCommand.Transaction = value; }
+        public string CommandText { get => dbCommand.CommandText; set => dbCommand.CommandText = value; }
         public int CommandTimeout { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public CommandType CommandType { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 

@@ -4,11 +4,14 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.SqlServerCe;
 
 namespace SqlceProviders
 {
     public class SqlProviderConnection : IDbConnection
     {
+        SqlCeConnection sqlConnection;
+
         string IDbConnection.ConnectionString { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         int IDbConnection.ConnectionTimeout => throw new NotImplementedException();
