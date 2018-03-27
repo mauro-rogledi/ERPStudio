@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SqlProxyProvider</RootNamespace>
-    <AssemblyName>SqlProxyProvider</AssemblyName>
+    <ProjectGuid>{3F9C64DF-8C7B-4766-9502-1A422CAD74FE}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>ProvaProviders</RootNamespace>
+    <AssemblyName>ProvaProviders</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -40,12 +42,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ISqlProviderCommand.cs" />
-    <Compile Include="ISqlProviderConnection.cs" />
-    <Compile Include="ISqlProviderParameter.cs" />
-    <Compile Include="ISqlProviderTransaction.cs" />
-    <Compile Include="ISqlProviderDataReader.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SqlProxy.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SqlProvider\SqlProvider.csproj">
+      <Project>{c2ab969d-0a4a-4aa2-9f29-c3ae7d42b7f6}</Project>
+      <Name>SqlProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SqlProxyProvider\SqlProxyProvider.csproj">
+      <Project>{65cef1e8-a2e7-44fd-b625-f1563abbca7a}</Project>
+      <Name>SqlProxyProvider</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

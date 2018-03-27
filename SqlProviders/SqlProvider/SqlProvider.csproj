@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>SqlProvider</RootNamespace>
     <AssemblyName>SqlProvider</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\ERPManager\bin\Debug\SqlProviders\</OutputPath>
+    <OutputPath>bin\debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -39,10 +39,17 @@
     <Compile Include="SqlProviderCommand.cs" />
     <Compile Include="SqlProviderConnection.cs" />
     <Compile Include="SqlProviderDataReader.cs" />
+    <Compile Include="SqlProviderTransaction.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SqlProxyProvider\SqlProxyProvider.csproj">
+      <Project>{65cef1e8-a2e7-44fd-b625-f1563abbca7a}</Project>
+      <Name>SqlProxyProvider</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

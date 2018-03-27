@@ -1,81 +1,46 @@
-﻿using System;
+﻿using SqlProxyProvider;
+using System;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 
 namespace SqlProvider
 {
-    class SqlProviderCommand : IDbCommand, ICloneable
+    class SqlProviderCommand : SqlProxyProvider.ISqlProviderCommand
     {
-        IDbCommand dbCommand;
+        SqlCommand sqlCommand;
+        public IDbCommand Command => sqlCommand;
 
-        public SqlProviderCommand()
-        {
-            dbCommand = new SqlCommand();
-        }
+        public SqlProviderCommand() => sqlCommand = new SqlCommand();
+        public SqlProviderCommand(string cmdText) => sqlCommand = new SqlCommand(cmdText);
+        public SqlProviderCommand(string cmdText, ISqlProviderConnection connection) => sqlCommand = new SqlCommand(cmdText, connection.Connection as SqlConnection);
+        public SqlProviderCommand(string cmdText, ISqlProviderConnection connection, ISqlProviderTransaction transaction) => sqlCommand = new SqlCommand(cmdText, connection.Connection as SqlConnection, transaction.Transaction as SqlTransaction);
+        //public SqlProviderCommand(string cmdText, SqlConnection connection, SqlTransaction transaction, SqlCommandColumnEncryptionSetting columnEncryptionSetting);
 
-        public SqlProviderCommand(string cmdText)
-        {
-            dbCommand = new SqlCommand(cmdText);
-        }
+        public IDbConnection Connection { get => sqlCommand.Connection; set => sqlCommand.Connection = null; }
+        public IDbTransaction Transaction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string CommandText { get => sqlCommand.CommandText; set => sqlCommand.CommandText = value; }
+        public int CommandTimeout { get => sqlCommand.CommandTimeout; set => sqlCommand.CommandTimeout = value; }
+        public CommandType CommandType { get => sqlCommand.CommandType; set => sqlCommand.CommandType = value; }
 
-        public SqlProviderCommand(string cmdText, IDbConnection connection)
-        {
-            dbCommand = new SqlCommand(cmdText, connection as SqlConnection);
-        }
+        public IDataParameterCollection Parameters => sqlCommand.Parameters;
 
-        public IDbConnection Connection { get => dbCommand.Connection; set => dbCommand.Connection = value; }
-        public IDbTransaction Transaction { get => dbCommand.Transaction; set => dbCommand.Transaction = value; }
-        public string CommandText { get => dbCommand.CommandText; set => dbCommand.CommandText = value; }
-        public int CommandTimeout { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public CommandType CommandType { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public UpdateRowSource UpdatedRowSource { get => sqlCommand.UpdatedRowSource; set => sqlCommand.UpdatedRowSource = value; }
 
-        public IDataParameterCollection Parameters => throw new NotImplementedException();
+        public void Cancel() => sqlCommand.Cancel();
 
-        public UpdateRowSource UpdatedRowSource { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public IDbDataParameter CreateParameter() => sqlCommand.CreateParameter();
 
-        public void Cancel()
-        {
-            throw new NotImplementedException();
-        }
+        public void Dispose() => sqlCommand.Dispose();
 
-        public object Clone()
-        {
-            throw new NotImplementedException();
-        }
+        public int ExecuteNonQuery() => sqlCommand.ExecuteNonQuery();
 
-        public IDbDataParameter CreateParameter()
-        {
-            throw new NotImplementedException();
-        }
+        public IDataReader ExecuteReader() => sqlCommand.ExecuteReader();
 
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
+        public IDataReader ExecuteReader(CommandBehavior behavior) => sqlCommand.ExecuteReader(behavior);
 
-        public int ExecuteNonQuery()
-        {
-            throw new NotImplementedException();
-        }
+        public object ExecuteScalar() => sqlCommand.ExecuteScalar();
 
-        public IDataReader ExecuteReader()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IDataReader ExecuteReader(CommandBehavior behavior)
-        {
-            throw new NotImplementedException();
-        }
-
-        public object ExecuteScalar()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Prepare()
-        {
-            throw new NotImplementedException();
-        }
+        public void Prepare() => sqlCommand.Prepare();
     }
 }

@@ -8,74 +8,78 @@ using System.Data.SqlClient;
 
 namespace SqlProvider
 {
-    class SqlProviderDataReader : IDataReader
+    class SqlProviderDataReader : SqlProxyProvider.ISqlProviderDataReader
     {
-        SqlDataReader dataReader;
+        SqlDataReader sqlDataReader;
+        public IDataReader DataReader => sqlDataReader;
 
-        public object this[int i] => dataReader[i];
+        SqlProviderDataReader(IDataReader idatareader) => sqlDataReader = idatareader as SqlDataReader;
 
-        public object this[string name] => dataReader[name];
+        public object this[int i] => sqlDataReader[i];
 
-        public int Depth => dataReader.Depth;
+        public object this[string name] => sqlDataReader[name];
 
-        public bool IsClosed => dataReader.IsClosed;
+        public int Depth => sqlDataReader.Depth;
 
-        public int RecordsAffected => dataReader.RecordsAffected;
+        public bool IsClosed => sqlDataReader.IsClosed;
 
-        public int FieldCount => dataReader.FieldCount;
+        public int RecordsAffected => sqlDataReader.RecordsAffected;
 
-        public void Close() => dataReader.Close();
+        public int FieldCount => sqlDataReader.FieldCount;
 
-        public void Dispose() => dataReader.Dispose();
 
-        public bool GetBoolean(int i) => dataReader.GetBoolean(i);
+        public void Close() => sqlDataReader.Close();
 
-        public byte GetByte(int i) => dataReader.GetByte(i);
+        public void Dispose() => sqlDataReader.Dispose();
 
-        public long GetBytes(int i, long fieldOffset, byte[] buffer, int bufferoffset, int length) => dataReader.GetBytes(i, fieldOffset, buffer, bufferoffset, length);
+        public bool GetBoolean(int i) => sqlDataReader.GetBoolean(i);
 
-        public char GetChar(int i) => dataReader.GetChar(i);
+        public byte GetByte(int i) => sqlDataReader.GetByte(i);
 
-        public long GetChars(int i, long fieldoffset, char[] buffer, int bufferoffset, int length) => dataReader.GetChars(i, fieldoffset, buffer, bufferoffset, length);
- 
-        public IDataReader GetData(int i) => dataReader.GetData(i);
+        public long GetBytes(int i, long fieldOffset, byte[] buffer, int bufferoffset, int length) => sqlDataReader.GetBytes(i, fieldOffset, buffer, bufferoffset, length);
 
-        public string GetDataTypeName(int i) => dataReader.GetDataTypeName(i);
+        public char GetChar(int i) => sqlDataReader.GetChar(i);
 
-        public DateTime GetDateTime(int i) => dataReader.GetDateTime(i);
+        public long GetChars(int i, long fieldoffset, char[] buffer, int bufferoffset, int length) => sqlDataReader.GetChars(i, fieldoffset, buffer, bufferoffset, length);
 
-        public decimal GetDecimal(int i) => dataReader.GetDecimal(i);
+        public IDataReader GetData(int i) => sqlDataReader.GetData(i);
 
-        public double GetDouble(int i) => dataReader.GetDouble(i);
+        public string GetDataTypeName(int i) => sqlDataReader.GetDataTypeName(i);
 
-        public Type GetFieldType(int i) => dataReader.GetFieldType(i);
+        public DateTime GetDateTime(int i) => sqlDataReader.GetDateTime(i);
 
-        public float GetFloat(int i) => dataReader.GetFloat(i);
+        public decimal GetDecimal(int i) => sqlDataReader.GetDecimal(i);
 
-        public Guid GetGuid(int i) => dataReader.GetGuid(i);
+        public double GetDouble(int i) => sqlDataReader.GetDouble(i);
 
-        public short GetInt16(int i) => dataReader.GetInt16(i);
+        public Type GetFieldType(int i) => sqlDataReader.GetFieldType(i);
 
-        public int GetInt32(int i) => dataReader.GetInt32(i);
+        public float GetFloat(int i) => sqlDataReader.GetFloat(i);
 
-        public long GetInt64(int i) => dataReader.GetInt64(i);
+        public Guid GetGuid(int i) => sqlDataReader.GetGuid(i);
 
-        public string GetName(int i) => dataReader.GetName(i);
+        public short GetInt16(int i) => sqlDataReader.GetInt16(i);
 
-        public int GetOrdinal(string name) => dataReader.GetOrdinal(name);
+        public int GetInt32(int i) => sqlDataReader.GetInt32(i);
 
-        public DataTable GetSchemaTable() => dataReader.GetSchemaTable(i);
+        public long GetInt64(int i) => sqlDataReader.GetInt64(i);
 
-        public string GetString(int i) => dataReader.GetString(i);
+        public string GetName(int i) => sqlDataReader.GetName(i);
 
-        public object GetValue(int i) => dataReader.GetValue(i);
+        public int GetOrdinal(string name) => sqlDataReader.GetOrdinal(name);
 
-        public int GetValues(object[] values) => dataReader.GetValues(values);
+        public DataTable GetSchemaTable() => sqlDataReader.GetSchemaTable();
 
-        public bool IsDBNull(int i) => dataReader.IsDBNull(i);
+        public string GetString(int i) => sqlDataReader.GetString(i);
 
-        public bool NextResult() => dataReader.NextResult();
+        public object GetValue(int i) => sqlDataReader.GetValue(i);
 
-        public bool Read() => dataReader.Read();
+        public int GetValues(object[] values) => sqlDataReader.GetValues(values);
+
+        public bool IsDBNull(int i) => sqlDataReader.IsDBNull(i);
+
+        public bool NextResult() => sqlDataReader.NextResult();
+
+        public bool Read() => sqlDataReader.Read();
     }
 }

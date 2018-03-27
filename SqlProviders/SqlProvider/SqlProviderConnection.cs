@@ -1,14 +1,16 @@
-﻿using System;
+﻿using SqlProxyProvider;
+using System;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 
 namespace SqlProvider
 {
-    class SqlProviderConnection : IDbConnection
+    class SqlProviderConnection : ISqlProviderConnection
     {
         SqlConnection sqlConnection;
 
+        public IDbConnection Connection => sqlConnection;
 
         public SqlProviderConnection() => sqlConnection = new SqlConnection();
 
@@ -25,14 +27,14 @@ namespace SqlProvider
 
         public ConnectionState State => sqlConnection.State;
 
-        public IDbTransaction BeginTransaction()
+        public ISqlProviderTransaction BeginTransaction()
         {
-            return sqlConnection.BeginTransaction();
+            return new SqlProviderTransaction(sqlConnection.BeginTransaction());
         }
 
-        public IDbTransaction BeginTransaction(IsolationLevel il)
+        public ISqlProviderTransaction BeginTransaction(IsolationLevel il)
         {
-            return sqlConnection.BeginTransaction(il);
+            return new SqlProviderTransaction(sqlConnection.BeginTransaction(il));
         }
 
         public void ChangeDatabase(string databaseName)
@@ -58,6 +60,16 @@ namespace SqlProvider
         public void Open()
         {
             sqlConnection.Open();
+        }
+
+        IDbTransaction IDbConnection.BeginTransaction()
+        {
+            throw new NotImplementedException();
+        }
+
+        IDbTransaction IDbConnection.BeginTransaction(IsolationLevel il)
+        {
+            throw new NotImplementedException();
         }
     }
 }
