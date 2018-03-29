@@ -62,14 +62,9 @@ namespace SqlProvider
             sqlConnection.Open();
         }
 
-        IDbTransaction IDbConnection.BeginTransaction()
-        {
-            throw new NotImplementedException();
-        }
+        IDbTransaction IDbConnection.BeginTransaction() => new SqlProviderTransaction(sqlConnection.BeginTransaction());
 
-        IDbTransaction IDbConnection.BeginTransaction(IsolationLevel il)
-        {
-            throw new NotImplementedException();
-        }
+
+        IDbTransaction IDbConnection.BeginTransaction(IsolationLevel il) => new SqlProviderTransaction(sqlConnection.BeginTransaction());
     }
 }

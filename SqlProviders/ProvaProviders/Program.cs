@@ -13,12 +13,19 @@ namespace ProvaProviders
     {
         static void Main(string[] args)
         {
+            //var sqlconnectiostring = new SqlConnectionStringBuilder
+            //{
+            //    DataSource = @"SALA\SQLEXPRESS",
+            //    UserID = "sa",
+            //    InitialCatalog = "PLUMBER",
+            //    Password = "sa."
+            //};
+
             var sqlconnectiostring = new SqlConnectionStringBuilder
             {
-                DataSource = @"SALA\SQLEXPRESS",
+                DataSource = @"USR-ROGLEDIMAU1",
                 UserID = "sa",
-                InitialCatalog = "PLUMBER",
-                Password = "sa."
+                InitialCatalog = "NORTHWIND"
             };
 
             using (var connection = new SqlProxyConnection(sqlconnectiostring.ConnectionString))
@@ -26,10 +33,17 @@ namespace ProvaProviders
                 connection.Open();
 
                 {
-                    var sqlCmd = new SqlProxyCommand("SELECT * FROM PL_MASTERS", connection);
-                    var sqldatareader = sqlCmd.ExecuteReader();
-                    sqldatareader.Read();
-                    var l = sqldatareader[0];
+                    var transaction = connection.BeginTransaction();
+                    //using (var sqlCmd = new SqlProxyCommand("SELECT * FROM PL_MASTERS", connection))
+                    using (var sqlCmd = new SqlProxyCommand("SELECT * FROM CUSTOMERS", connection))
+                    {
+                        sqlCmd.Transaction = transaction;
+                        var sqldatareader = sqlCmd.ExecuteReader();
+                        sqldatareader.Read();
+                        var l = sqldatareader[0];
+                    }
+
+                    transaction.Commit();
                 }
             }
         }

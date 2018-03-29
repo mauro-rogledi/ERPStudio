@@ -142,7 +142,7 @@ namespace ProvaProviders
 
 
         public IDbConnection Connection { get => dbCommand.Connection; set => dbCommand.Connection = value; }
-        public IDbTransaction Transaction { get => dbCommand.Transaction; set => dbCommand.Transaction = value; }
+        public IDbTransaction Transaction { get => dbCommand.Transaction; set => dbCommand.Transaction = (value as ISqlProviderTransaction).Transaction; }
         public string CommandText { get => dbCommand.CommandText; set => dbCommand.CommandText = value; }
         public int CommandTimeout { get => dbCommand.CommandTimeout; set => dbCommand.CommandTimeout = value; }
         public CommandType CommandType { get => dbCommand.CommandType; set => dbCommand.CommandType = value; }

@@ -18,7 +18,7 @@ namespace SqlProvider
         //public SqlProviderCommand(string cmdText, SqlConnection connection, SqlTransaction transaction, SqlCommandColumnEncryptionSetting columnEncryptionSetting);
 
         public IDbConnection Connection { get => sqlCommand.Connection; set => sqlCommand.Connection = null; }
-        public IDbTransaction Transaction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public IDbTransaction Transaction { get => sqlCommand.Transaction; set => sqlCommand.Transaction = value as SqlTransaction; }
         public string CommandText { get => sqlCommand.CommandText; set => sqlCommand.CommandText = value; }
         public int CommandTimeout { get => sqlCommand.CommandTimeout; set => sqlCommand.CommandTimeout = value; }
         public CommandType CommandType { get => sqlCommand.CommandType; set => sqlCommand.CommandType = value; }
