@@ -131,10 +131,10 @@ namespace ProvaProviders
         {
             dbCommand = ProxyProviderLoader.CreateInstance<ISqlProviderCommand>("SqlProvider.SqlProviderCommand", cmdText, connection.Connection);
         }
-        //public SqlProxyCommand(string cmdText, SqlProxyConnection connection, SqlTransaction transaction)
-        //{
-
-        //}
+        public SqlProxyCommand(string cmdText, SqlProxyConnection connection, SqlProxyTransaction transaction)
+        {
+            dbCommand = ProxyProviderLoader.CreateInstance<ISqlProviderCommand>("SqlProvider.SqlProviderCommand", cmdText, connection.Connection, transaction.Transaction);
+        }
         //public SqlProxyCommand(string cmdText, SqlProxyConnection connection, SqlTransaction transaction, SqlCommandColumnEncryptionSetting columnEncryptionSetting)
         //{
 
@@ -245,6 +245,7 @@ namespace ProvaProviders
     }
     #endregion
 
+    #region SqlProxyDataReader
     public sealed class SqlProxyDataReader : ISqlProviderDataReader
     {
         IDataReader dbDataReader;
@@ -317,7 +318,55 @@ namespace ProvaProviders
         public bool IsDBNull(int i) => dbDataReader.IsDBNull(i);
 
         public bool NextResult() => dbDataReader.NextResult();
- 
+
         public bool Read() => dbDataReader.Read();
+    }
+    #endregion
+
+    public class SqlProxyParameter : ISqlProviderParameter
+    {
+        ISqlProviderParameter dbParameter;
+        public IDbDataParameter Parameter => dbParameter as IDbDataParameter;
+
+        public SqlProxyParameter()
+        {
+            dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter");
+        }
+
+        public SqlProxyParameter(string parameterName, SqlDbType dbType)
+        {
+            dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", dbType);
+        }
+        public SqlProxyParameter(string parameterName, object value)
+        {
+            dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", value);
+        }
+        public SqlProxyParameter(string parameterName, SqlDbType dbType, int size)
+        {
+            dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", dbType, size);
+        }
+        public SqlProxyParameter(string parameterName, SqlDbType dbType, int size, string sourceColumn)
+        {
+            dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", dbType,size, sourceColumn);
+        }
+
+        public byte Precision { get => dbParameter.Precision; set => dbParameter.Precision = value; }
+        public byte Scale { get => dbParameter.Scale; set => dbParameter.Scale = value; }
+        public int Size { get => dbParameter.Size; set => dbParameter.Size = value; }
+        public DbType DbType { get => dbParameter.DbType; set => dbParameter.DbType = value; }
+        public ParameterDirection Direction { get => dbParameter.Direction; set => dbParameter.Direction = value; }
+
+        public bool IsNullable => dbParameter.IsNullable;
+
+        public string ParameterName { get => dbParameter.ParameterName; set => dbParameter.ParameterName = value; }
+        public string SourceColumn { get => dbParameter.SourceColumn; set => dbParameter.SourceColumn = value; }
+        public DataRowVersion SourceVersion { get => dbParameter.SourceVersion; set => dbParameter.SourceVersion = value; }
+        public object Value
+        {
+            // TODO
+            get => dbParameter.Value; set => dbParameter.Value = (value is Enum)
+               ? ((Enum)value)//.Int()
+               : value;
+        }
     }
 }
