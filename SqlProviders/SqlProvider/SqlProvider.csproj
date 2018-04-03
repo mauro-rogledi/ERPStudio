@@ -40,6 +40,7 @@
     <Compile Include="SqlProviderConnection.cs" />
     <Compile Include="SqlProviderDataReader.cs" />
     <Compile Include="SqlProviderParameter.cs" />
+    <Compile Include="SqlProviderParameterCollection.cs" />
     <Compile Include="SqlProviderTransaction.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -12,7 +12,7 @@ namespace SqlProvider
     internal class SqlProviderParameter : ISqlProviderParameter
     {
         private SqlParameter sqlParameter;
-        public IDbDataParameter DataParameter => sqlParameter;
+        public IDbDataParameter Parameter => sqlParameter;
 
         public SqlProviderParameter() => sqlParameter = new SqlParameter();
         public SqlProviderParameter(string parameterName, SqlDbType dbType) => new SqlParameter(parameterName, dbType);

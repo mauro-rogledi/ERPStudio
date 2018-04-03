@@ -43,6 +43,7 @@
     <Compile Include="ISqlProviderCommand.cs" />
     <Compile Include="ISqlProviderConnection.cs" />
     <Compile Include="ISqlProviderParameter.cs" />
+    <Compile Include="ISqlProviderParameterCollection.cs" />
     <Compile Include="ISqlProviderTransaction.cs" />
     <Compile Include="ISqlProviderDataReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

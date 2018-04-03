@@ -38,6 +38,7 @@ namespace ProvaProviders
                     //using (var sqlCmd = new SqlProxyCommand("SELECT * FROM CUSTOMERS", connection))
                     {
                         sqlCmd.Transaction = transaction;
+                        sqlCmd.Parameters.Add()
                         //sqlCmd.Parameters.Add()
                         var sqldatareader = sqlCmd.ExecuteReader();
                         sqldatareader.Read();
