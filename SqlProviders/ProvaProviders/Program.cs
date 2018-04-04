@@ -13,20 +13,20 @@ namespace ProvaProviders
     {
         static void Main(string[] args)
         {
-            var sqlconnectiostring = new SqlConnectionStringBuilder
-            {
-                DataSource = @"SALA\SQLEXPRESS",
-                UserID = "sa",
-                InitialCatalog = "PLUMBER",
-                Password = "sa."
-            };
-
             //var sqlconnectiostring = new SqlConnectionStringBuilder
             //{
-            //    DataSource = @"USR-ROGLEDIMAU1",
+            //    DataSource = @"SALA\SQLEXPRESS",
             //    UserID = "sa",
-            //    InitialCatalog = "NORTHWIND"
+            //    InitialCatalog = "PLUMBER",
+            //    Password = "sa."
             //};
+
+            var sqlconnectiostring = new SqlConnectionStringBuilder
+            {
+                DataSource = @"USR-ROGLEDIMAU1",
+                UserID = "sa",
+                InitialCatalog = "NORTHWIND"
+            };
 
             using (var connection = new SqlProxyConnection(sqlconnectiostring.ConnectionString))
             {
@@ -34,11 +34,12 @@ namespace ProvaProviders
 
                 {
                     var transaction = connection.BeginTransaction();
-                    using (var sqlCmd = new SqlProxyCommand("SELECT * FROM PL_MASTERS", connection))
-                    //using (var sqlCmd = new SqlProxyCommand("SELECT * FROM CUSTOMERS", connection))
+                    var p1 = new SqlProxyParameter("@p1", SqlDbType.Int);
+                    //using (var sqlCmd = new SqlProxyCommand("SELECT * FROM PL_MASTERS", connection))
+                    using (var sqlCmd = new SqlProxyCommand("SELECT * FROM CUSTOMERS", connection))
                     {
                         sqlCmd.Transaction = transaction;
-                        sqlCmd.Parameters.Add()
+                        sqlCmd.Parameters.Add(p1);
                         //sqlCmd.Parameters.Add()
                         var sqldatareader = sqlCmd.ExecuteReader();
                         sqldatareader.Read();

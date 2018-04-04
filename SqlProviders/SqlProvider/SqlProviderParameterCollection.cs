@@ -14,32 +14,33 @@ namespace SqlProvider
     {
         SqlCommand sqlCommand;
         public IDbCommand Command => sqlCommand;
-
-        public bool IsReadOnly => throw new NotImplementedException();
-
-        public bool IsFixedSize => throw new NotImplementedException();
-
-        public int Count => throw new NotImplementedException();
-
-        public object SyncRoot => throw new NotImplementedException();
-
-        public bool IsSynchronized => throw new NotImplementedException();
-
-        public object this[string parameterName] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
         public SqlProviderParameterCollection(IDbCommand command) => sqlCommand = command as SqlCommand;
+
+        public bool IsReadOnly => sqlCommand.Parameters.IsReadOnly;
+
+        public bool IsFixedSize => sqlCommand.Parameters.IsFixedSize;
+
+        public int Count => sqlCommand.Parameters.Count;
+
+        public object SyncRoot => sqlCommand.Parameters.SyncRoot;
+
+        public bool IsSynchronized => sqlCommand.Parameters.IsSynchronized;
+
+        public object this[string parameterName] { get => sqlCommand.Parameters[parameterName].Value; set => sqlCommand.Parameters[parameterName].Value = value; }
+
 
         public object this[int index] { get => sqlCommand.Parameters[index].Value; set => sqlCommand.Parameters[index].Value = value; }
 
 
         public void Add(ISqlProviderParameter parameter)
         {
-            sqlCommand.Parameters.Add(parameter);
+            sqlCommand.Parameters.Add(parameter.Parameter);
         }
 
         public void AddRange(ISqlProviderParameter[] parameters)
         {
-            sqlCommand.Parameters.AddRange(parameters);
+            foreach (var parameter in parameters)
+                Add(parameter);
         }
 
         public void AddRange(List<ISqlProviderParameter> parameters)
@@ -48,64 +49,28 @@ namespace SqlProvider
                 Add(parameter);
         }
 
-        public bool Contains(string parameterName)
-        {
-            throw new NotImplementedException();
-        }
+        public bool Contains(string parameterName) => sqlCommand.Parameters.Contains(parameterName);
 
-        public int IndexOf(string parameterName)
-        {
-            throw new NotImplementedException();
-        }
+        public int IndexOf(string parameterName) => sqlCommand.Parameters.IndexOf(parameterName);
 
-        public void RemoveAt(string parameterName)
-        {
-            throw new NotImplementedException();
-        }
+        public void RemoveAt(string parameterName) => sqlCommand.Parameters.RemoveAt(parameterName);
 
-        public int Add(object value)
-        {
-            throw new NotImplementedException();
-        }
+        public bool Contains(object value) => sqlCommand.Parameters.Contains(value);
 
-        public bool Contains(object value)
-        {
-            throw new NotImplementedException();
-        }
+        public void Clear() => sqlCommand.Parameters.Clear();
 
-        public void Clear()
-        {
-            throw new NotImplementedException();
-        }
+        public int IndexOf(object value) => sqlCommand.Parameters.IndexOf(value);
 
-        public int IndexOf(object value)
-        {
-            throw new NotImplementedException();
-        }
+        public void Insert(int index, object value) => sqlCommand.Parameters.Insert(index, value);
 
-        public void Insert(int index, object value)
-        {
-            throw new NotImplementedException();
-        }
+        public void Remove(object value) => sqlCommand.Parameters.Remove(value);
 
-        public void Remove(object value)
-        {
-            throw new NotImplementedException();
-        }
+        public void RemoveAt(int index) => sqlCommand.Parameters.RemoveAt(index);
 
-        public void RemoveAt(int index)
-        {
-            throw new NotImplementedException();
-        }
+        public void CopyTo(Array array, int index) => sqlCommand.Parameters.CopyTo(array, index);
 
-        public void CopyTo(Array array, int index)
-        {
-            throw new NotImplementedException();
-        }
+        public IEnumerator GetEnumerator() => sqlCommand.Parameters.GetEnumerator();
 
-        public IEnumerator GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
+        public int Add(object value) => sqlCommand.Parameters.Add(value);
     }
 }

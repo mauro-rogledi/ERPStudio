@@ -92,7 +92,7 @@ namespace ProvaProviders
 
         public object Clone()
         {
-            var Cloned = new SqlProxyConnection()
+            var Cloned = new SqlProxyConnection
             {
                 dbConnection = this.dbConnection
             };
@@ -147,10 +147,14 @@ namespace ProvaProviders
         public int CommandTimeout { get => dbCommand.CommandTimeout; set => dbCommand.CommandTimeout = value; }
         public CommandType CommandType { get => dbCommand.CommandType; set => dbCommand.CommandType = value; }
 
-        public IDataParameterCollection Parameters => dbCommand.Parameters;
+        //@@ TODO
+        //public ISqlProviderParameterCollection Parameters => new SqlProxyParameterCollection(sqlCommand);
 
         public UpdateRowSource UpdatedRowSource { get => dbCommand.UpdatedRowSource; set => dbCommand.UpdatedRowSource = value; }
 
+        IDataParameterCollection IDbCommand.Parameters => dbCommand.Parameters;
+
+        //public IDataParameterCollection dbCommand.Parameters => dbCommand.Parameters;
 
         public void Cancel()
         {
@@ -335,19 +339,19 @@ namespace ProvaProviders
 
         public SqlProxyParameter(string parameterName, SqlDbType dbType)
         {
-            dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", dbType);
+            dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", parameterName, dbType);
         }
         public SqlProxyParameter(string parameterName, object value)
         {
-            dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", value);
+            dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", parameterName, value);
         }
         public SqlProxyParameter(string parameterName, SqlDbType dbType, int size)
         {
-            dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", dbType, size);
+            dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", parameterName, dbType, size);
         }
         public SqlProxyParameter(string parameterName, SqlDbType dbType, int size, string sourceColumn)
         {
-            dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", dbType,size, sourceColumn);
+            dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", parameterName, dbType,size, sourceColumn);
         }
 
         public byte Precision { get => dbParameter.Precision; set => dbParameter.Precision = value; }

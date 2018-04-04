@@ -1227,6 +1227,7 @@ namespace ERPFramework.Data
 #endif
 #if(SQLCompact)
 
+
         public SqlABParameterCollection(SqlCeCommand SqlCeCommand)
         {
             this.SqlCeCommand = SqlCeCommand;

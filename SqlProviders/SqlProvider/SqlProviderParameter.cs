@@ -15,10 +15,10 @@ namespace SqlProvider
         public IDbDataParameter Parameter => sqlParameter;
 
         public SqlProviderParameter() => sqlParameter = new SqlParameter();
-        public SqlProviderParameter(string parameterName, SqlDbType dbType) => new SqlParameter(parameterName, dbType);
-        public SqlProviderParameter(string parameterName, object value) => new SqlParameter(parameterName, value);
-        public SqlProviderParameter(string parameterName, SqlDbType dbType, int size) => new SqlParameter(parameterName, dbType, size);
-        public SqlProviderParameter(string parameterName, SqlDbType dbType, int size, string sourceColumn) => new SqlParameter(parameterName, dbType, size, sourceColumn);
+        public SqlProviderParameter(string parameterName, SqlDbType dbType) => sqlParameter = new SqlParameter(parameterName, dbType);
+        public SqlProviderParameter(string parameterName, object value) => sqlParameter = new SqlParameter(parameterName, value);
+        public SqlProviderParameter(string parameterName, SqlDbType dbType, int size) => sqlParameter = new SqlParameter(parameterName, dbType, size);
+        public SqlProviderParameter(string parameterName, SqlDbType dbType, int size, string sourceColumn) => sqlParameter = new SqlParameter(parameterName, dbType, size, sourceColumn);
 
         public byte Precision { get => sqlParameter.Precision; set => sqlParameter.Precision = value; }
         public byte Scale { get => sqlParameter.Scale; set => sqlParameter.Scale = value; }
