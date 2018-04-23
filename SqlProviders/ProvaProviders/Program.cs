@@ -34,16 +34,17 @@ namespace ProvaProviders
 
                 {
                     var transaction = connection.BeginTransaction();
-                    var p1 = new SqlProxyParameter("@p1", SqlDbType.Int);
+                    var p1 = new SqlProxyParameter("@p1", SqlDbType.NVarChar, 8);
+                    p1.Value = "ALFKI";
                     //using (var sqlCmd = new SqlProxyCommand("SELECT * FROM PL_MASTERS", connection))
-                    using (var sqlCmd = new SqlProxyCommand("SELECT * FROM CUSTOMERS", connection))
+                    using (var sqlCmd = new SqlProxyCommand("SELECT * FROM CUSTOMERS where CustomerID = @p1", connection))
                     {
                         sqlCmd.Transaction = transaction;
                         sqlCmd.Parameters.Add(p1);
-                        //sqlCmd.Parameters.Add()
                         var sqldatareader = sqlCmd.ExecuteReader();
                         sqldatareader.Read();
                         var l = sqldatareader[0];
+                        sqldatareader.Close();
                     }
 
                     transaction.Commit();

@@ -9,12 +9,16 @@ namespace SqlProvider
     class SqlProviderCommand : SqlProxyProvider.ISqlProviderCommand
     {
         SqlCommand sqlCommand;
-        public IDbCommand Command => sqlCommand;
 
         public SqlProviderCommand() => sqlCommand = new SqlCommand();
         public SqlProviderCommand(string cmdText) => sqlCommand = new SqlCommand(cmdText);
         public SqlProviderCommand(string cmdText, ISqlProviderConnection connection) => sqlCommand = new SqlCommand(cmdText, connection.Connection as SqlConnection);
         public SqlProviderCommand(string cmdText, ISqlProviderConnection connection, ISqlProviderTransaction transaction) => sqlCommand = new SqlCommand(cmdText, connection.Connection as SqlConnection, transaction.Transaction as SqlTransaction);
+        public IDbCommand Command => sqlCommand;
+
+        public string CommandText { get => sqlCommand.CommandText; set => sqlCommand.CommandText = value; }
+        public int CommandTimeout { get => sqlCommand.CommandTimeout; set => sqlCommand.CommandTimeout = value; }
+        public CommandType CommandType { get => sqlCommand.CommandType; set => sqlCommand.CommandType = value; }
         //public SqlProviderCommand(string cmdText, SqlConnection connection, SqlTransaction transaction, SqlCommandColumnEncryptionSetting columnEncryptionSetting);
 
         public IDbConnection Connection
@@ -36,13 +40,9 @@ namespace SqlProvider
             }
         }
 
-        public string CommandText { get => sqlCommand.CommandText; set => sqlCommand.CommandText = value; }
-        public int CommandTimeout { get => sqlCommand.CommandTimeout; set => sqlCommand.CommandTimeout = value; }
-        public CommandType CommandType { get => sqlCommand.CommandType; set => sqlCommand.CommandType = value; }
-
-        public IDataParameterCollection Parameters => sqlCommand.Parameters;
-
         public UpdateRowSource UpdatedRowSource { get => sqlCommand.UpdatedRowSource; set => sqlCommand.UpdatedRowSource = value; }
+
+        IDataParameterCollection IDbCommand.Parameters => throw new NotImplementedException();
 
         public void Cancel() => sqlCommand.Cancel();
 

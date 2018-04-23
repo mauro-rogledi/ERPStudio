@@ -115,25 +115,31 @@ namespace ProvaProviders
     public sealed class SqlProxyCommand : ISqlProviderCommand
     {
         ISqlProviderCommand dbCommand;
+        ISqlProviderParameterCollection dbParameters;
+
         public IDbCommand Command => dbCommand as IDbCommand;
 
         public SqlProxyCommand()
         {
             dbCommand = ProxyProviderLoader.CreateInstance<ISqlProviderCommand>("SqlProvider.SqlProviderCommand");
+            dbParameters = ProxyProviderLoader.CreateInstance<ISqlProviderParameterCollection>("SqlProvider.SqlProviderParameterCollection", dbCommand.Command);
         }
 
         public SqlProxyCommand(string cmdText)
         {
             dbCommand = ProxyProviderLoader.CreateInstance<ISqlProviderCommand>("SqlProvider.SqlProviderCommand", cmdText);
+            dbParameters = ProxyProviderLoader.CreateInstance<ISqlProviderParameterCollection>("SqlProvider.SqlProviderParameterCollection", dbCommand.Command);
         }
 
         public SqlProxyCommand(string cmdText, SqlProxyConnection connection)
         {
             dbCommand = ProxyProviderLoader.CreateInstance<ISqlProviderCommand>("SqlProvider.SqlProviderCommand", cmdText, connection.Connection);
+            dbParameters = ProxyProviderLoader.CreateInstance<ISqlProviderParameterCollection>("SqlProvider.SqlProviderParameterCollection", dbCommand.Command);
         }
         public SqlProxyCommand(string cmdText, SqlProxyConnection connection, SqlProxyTransaction transaction)
         {
             dbCommand = ProxyProviderLoader.CreateInstance<ISqlProviderCommand>("SqlProvider.SqlProviderCommand", cmdText, connection.Connection, transaction.Transaction);
+            dbParameters = ProxyProviderLoader.CreateInstance<ISqlProviderParameterCollection>("SqlProvider.SqlProviderParameterCollection", dbCommand);
         }
         //public SqlProxyCommand(string cmdText, SqlProxyConnection connection, SqlTransaction transaction, SqlCommandColumnEncryptionSetting columnEncryptionSetting)
         //{
@@ -147,14 +153,11 @@ namespace ProvaProviders
         public int CommandTimeout { get => dbCommand.CommandTimeout; set => dbCommand.CommandTimeout = value; }
         public CommandType CommandType { get => dbCommand.CommandType; set => dbCommand.CommandType = value; }
 
-        //@@ TODO
-        //public ISqlProviderParameterCollection Parameters => new SqlProxyParameterCollection(sqlCommand);
+        public ISqlProviderParameterCollection Parameters => dbParameters;
 
         public UpdateRowSource UpdatedRowSource { get => dbCommand.UpdatedRowSource; set => dbCommand.UpdatedRowSource = value; }
 
-        IDataParameterCollection IDbCommand.Parameters => dbCommand.Parameters;
-
-        //public IDataParameterCollection dbCommand.Parameters => dbCommand.Parameters;
+        IDataParameterCollection IDbCommand.Parameters => throw new NotImplementedException();
 
         public void Cancel()
         {

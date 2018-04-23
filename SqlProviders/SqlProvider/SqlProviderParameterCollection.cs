@@ -14,6 +14,7 @@ namespace SqlProvider
     {
         SqlCommand sqlCommand;
         public IDbCommand Command => sqlCommand;
+        public SqlProviderParameterCollection() { }
         public SqlProviderParameterCollection(IDbCommand command) => sqlCommand = command as SqlCommand;
 
         public bool IsReadOnly => sqlCommand.Parameters.IsReadOnly;
@@ -34,7 +35,9 @@ namespace SqlProvider
 
         public void Add(ISqlProviderParameter parameter)
         {
-            sqlCommand.Parameters.Add(parameter.Parameter);
+            var param = parameter.Parameter as ISqlProviderParameter;
+
+            sqlCommand.Parameters.Add(param.Parameter);
         }
 
         public void AddRange(ISqlProviderParameter[] parameters)
