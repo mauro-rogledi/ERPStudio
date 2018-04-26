@@ -43,5 +43,11 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SqlProxyProvider\SqlProxyProvider.csproj">
+      <Project>{65cef1e8-a2e7-44fd-b625-f1563abbca7a}</Project>
+      <Name>SqlProxyProvider</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

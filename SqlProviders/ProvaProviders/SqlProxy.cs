@@ -112,7 +112,7 @@ namespace ProvaProviders
     #endregion
 
     #region SqlProxyCommand
-    public sealed class SqlProxyCommand : ISqlProviderCommand
+    public sealed class SqlProxyCommand : ISqlProviderCommand, ICloneable
     {
         ISqlProviderCommand dbCommand;
         ISqlProviderParameterCollection dbParameters;
@@ -200,15 +200,15 @@ namespace ProvaProviders
             dbCommand.Prepare();
         }
 
-        //object ICloneable.Clone()
-        //{
-        //    var Cloned = new SqlProxyCommand()
-        //    {
-        //        dbCommand = this.dbCommand
-        //    };
+        object ICloneable.Clone()
+        {
+            var Cloned = new SqlProxyCommand()
+            {
+                dbCommand = this.dbCommand
+            };
 
-        //    return Cloned;
-        //}
+            return Cloned;
+        }
 
         IDataReader IDbCommand.ExecuteReader()
         {
@@ -330,6 +330,7 @@ namespace ProvaProviders
     }
     #endregion
 
+    #region SqlProxyParameter
     public class SqlProxyParameter : ISqlProviderParameter
     {
         ISqlProviderParameter dbParameter;
@@ -354,7 +355,7 @@ namespace ProvaProviders
         }
         public SqlProxyParameter(string parameterName, SqlDbType dbType, int size, string sourceColumn)
         {
-            dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", parameterName, dbType,size, sourceColumn);
+            dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", parameterName, dbType, size, sourceColumn);
         }
 
         public byte Precision { get => dbParameter.Precision; set => dbParameter.Precision = value; }
@@ -375,5 +376,6 @@ namespace ProvaProviders
                ? ((Enum)value)//.Int()
                : value;
         }
-    }
+    } 
+    #endregion
 }

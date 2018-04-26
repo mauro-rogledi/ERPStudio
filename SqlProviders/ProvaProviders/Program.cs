@@ -43,7 +43,7 @@ namespace ProvaProviders
                         sqlCmd.Parameters.Add(p1);
                         var sqldatareader = sqlCmd.ExecuteReader();
                         sqldatareader.Read();
-                        var l = sqldatareader[0];
+                        var l = sqldatareader[1];
                         sqldatareader.Close();
                     }
 

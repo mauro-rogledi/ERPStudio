@@ -5,54 +5,67 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
+using SqlProxyProvider;
 
 namespace SqlProvider
 {
-    class SqlProviderConnection : IDbConnection
+    class SqlProviderConnection : ISqlProviderConnection
     {
-        SQLiteConnection sqliteConnection;
+        SQLiteConnection sqlConnection;
 
-        public string ConnectionString { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public IDbConnection Connection => sqlConnection;
 
-        public int ConnectionTimeout => throw new NotImplementedException();
+        public SqlProviderConnection() => sqlConnection = new SQLiteConnection();
 
-        public string Database => throw new NotImplementedException();
 
-        public ConnectionState State => throw new NotImplementedException();
+        public SqlProviderConnection(string connectionString) => sqlConnection = new SQLiteConnection(connectionString);
 
-        public IDbTransaction BeginTransaction()
+        public string ConnectionString { get => sqlConnection.ConnectionString; set => sqlConnection.ConnectionString = value; }
+
+        public int ConnectionTimeout => sqlConnection.ConnectionTimeout;
+
+        public string Database => sqlConnection.Database;
+
+        public ConnectionState State => sqlConnection.State;
+
+        public ISqlProviderTransaction BeginTransaction()
         {
-            throw new NotImplementedException();
+            return new SqlProviderTransaction(sqlConnection.BeginTransaction());
         }
 
-        public IDbTransaction BeginTransaction(IsolationLevel il)
+        public ISqlProviderTransaction BeginTransaction(IsolationLevel il)
         {
-            throw new NotImplementedException();
+            return new SqlProviderTransaction(sqlConnection.BeginTransaction(il));
         }
 
         public void ChangeDatabase(string databaseName)
         {
-            throw new NotImplementedException();
+            sqlConnection.ChangeDatabase(databaseName);
         }
 
         public void Close()
         {
-            throw new NotImplementedException();
+            sqlConnection.Close();
         }
 
         public IDbCommand CreateCommand()
         {
-            throw new NotImplementedException();
+            return sqlConnection.CreateCommand();
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            sqlConnection.Dispose();
         }
 
         public void Open()
         {
-            throw new NotImplementedException();
+            sqlConnection.Open();
         }
+
+        IDbTransaction IDbConnection.BeginTransaction() => new SqlProviderTransaction(sqlConnection.BeginTransaction());
+
+
+        IDbTransaction IDbConnection.BeginTransaction(IsolationLevel il) => new SqlProviderTransaction(sqlConnection.BeginTransaction());
     }
 }

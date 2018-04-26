@@ -40,7 +40,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SqlProviderCommand.cs" />
     <Compile Include="SqlProviderConnection.cs" />
+    <Compile Include="SqlProviderDataReader.cs" />
+    <Compile Include="SqlProviderParameter.cs" />
+    <Compile Include="SqlProviderParameterCollection.cs" />
+    <Compile Include="SqlProviderTransaction.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -48,6 +53,12 @@
     <Reference Include="System.Data.SQLite, Version=1.0.108.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.SQLite.Core.1.0.108.0\lib\net46\System.Data.SQLite.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SqlProxyProvider\SqlProxyProvider.csproj">
+      <Project>{65cef1e8-a2e7-44fd-b625-f1563abbca7a}</Project>
+      <Name>SqlProxyProvider</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.108.0\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.108.0\build\net46\System.Data.SQLite.Core.targets')" />
