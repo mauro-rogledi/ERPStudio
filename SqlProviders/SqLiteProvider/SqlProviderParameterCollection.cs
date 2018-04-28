@@ -1,12 +1,9 @@
-﻿using System;
+﻿using SqlProxyProvider;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SqlProxyProvider;
 
 namespace SqlProvider
 {

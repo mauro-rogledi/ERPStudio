@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SqlProxyProvider;
-using System.Data.SqlClient;
-using System.Data;
+﻿using System.Data;
 
 namespace ProvaProviders
 {
@@ -13,20 +6,28 @@ namespace ProvaProviders
     {
         static void Main(string[] args)
         {
-            //var sqlconnectiostring = new SqlConnectionStringBuilder
+            ProxyProviderLoader.UseProvider = ProviderType.SQL;
+            var sqlconnectiostring = new SqlProxyConnectionStringbuilder
+            {
+                DataSource = @"SALA\SQLEXPRESS",
+                //UserID = "sa",
+                InitialCatalog = "PLUMBER",
+                //Password = "sa.",
+                IntegratedSecurity = true
+            };
+
+            //var sqlconnectiostring = new SqlProxyConnectionStringbuilder
             //{
-            //    DataSource = @"SALA\SQLEXPRESS",
+            //    DataSource = @"USR-ROGLEDIMAU1",
             //    UserID = "sa",
-            //    InitialCatalog = "PLUMBER",
-            //    Password = "sa."
+            //    InitialCatalog = "NORTHWIND"
             //};
 
-            var sqlconnectiostring = new SqlConnectionStringBuilder
-            {
-                DataSource = @"USR-ROGLEDIMAU1",
-                UserID = "sa",
-                InitialCatalog = "NORTHWIND"
-            };
+            //ProxyProviderLoader.UseProvider = ProviderType.SQLite;
+            //var sqlconnectiostring = new SqlProxyConnectionStringbuilder
+            //{
+            //    DataSource = @"D:\Utenti\Mauro\Desktop\Clothes.db"
+            // };
 
             using (var connection = new SqlProxyConnection(sqlconnectiostring.ConnectionString))
             {
@@ -34,21 +35,24 @@ namespace ProvaProviders
 
                 {
                     var transaction = connection.BeginTransaction();
-                    var p1 = new SqlProxyParameter("@p1", SqlDbType.NVarChar, 8);
-                    p1.Value = "ALFKI";
-                    //using (var sqlCmd = new SqlProxyCommand("SELECT * FROM PL_MASTERS", connection))
-                    using (var sqlCmd = new SqlProxyCommand("SELECT * FROM CUSTOMERS where CustomerID = @p1", connection))
+                    var p1 = new SqlProxyParameter("@p1", DbType.String);
+                    p1.Value = "ARDUINO";
+                    using (var sqlCmd = new SqlProxyCommand("SELECT * FROM PL_MASTERS where CODE = @p1", connection))
+                    //using (var sqlCmd = new SqlProxyCommand("SELECT * FROM CUSTOMERS where CustomerID = @p1", connection))
+                    //using (var sqlCmd = new SqlProxyCommand("SELECT * FROM CL_MASTER where ID = @p1", connection))
                     {
                         sqlCmd.Transaction = transaction;
                         sqlCmd.Parameters.Add(p1);
                         var sqldatareader = sqlCmd.ExecuteReader();
                         sqldatareader.Read();
-                        var l = sqldatareader[1];
+                        var l = sqldatareader[3];
                         sqldatareader.Close();
                     }
 
                     transaction.Commit();
                 }
+
+                connection.Close();
             }
         }
     }

@@ -1,6 +1,4 @@
-﻿using System.Data;
-
-namespace SqlProxyProvider
+﻿namespace SqlProxyProvider
 {
     public interface ISqlProviderConnection : System.Data.IDbConnection
     {

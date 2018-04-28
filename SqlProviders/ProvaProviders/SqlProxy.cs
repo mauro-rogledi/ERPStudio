@@ -7,18 +7,22 @@ namespace ProvaProviders
 {
     #region ProxyProviderLoader
 
+    public enum ProviderType { SQL, SQLite };
+
     public static class ProxyProviderLoader
     {
-        public enum ProviderType { SQL, SQLite };
-        public static ProviderType ProviderTypes { get; set; } = ProviderType.SQL;
+        public static ProviderType UseProvider { get; set; } = ProviderType.SQL;
         public static Assembly assembly;
 
         public static void LoadProvider()
         {
-            switch (ProviderTypes)
+            switch (UseProvider)
             {
                 case ProviderType.SQL:
                     assembly = Assembly.LoadFrom(@"SQLProvider.dll");
+                    break;
+                case ProviderType.SQLite:
+                    assembly = Assembly.LoadFrom(@"SqLiteProvider.dll");
                     break;
             }
         }
@@ -341,7 +345,7 @@ namespace ProvaProviders
             dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter");
         }
 
-        public SqlProxyParameter(string parameterName, SqlDbType dbType)
+        public SqlProxyParameter(string parameterName, DbType dbType)
         {
             dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", parameterName, dbType);
         }
@@ -349,11 +353,11 @@ namespace ProvaProviders
         {
             dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", parameterName, value);
         }
-        public SqlProxyParameter(string parameterName, SqlDbType dbType, int size)
+        public SqlProxyParameter(string parameterName, DbType dbType, int size)
         {
             dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", parameterName, dbType, size);
         }
-        public SqlProxyParameter(string parameterName, SqlDbType dbType, int size, string sourceColumn)
+        public SqlProxyParameter(string parameterName, DbType dbType, int size, string sourceColumn)
         {
             dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", parameterName, dbType, size, sourceColumn);
         }
@@ -376,6 +380,24 @@ namespace ProvaProviders
                ? ((Enum)value)//.Int()
                : value;
         }
-    } 
+    }
     #endregion
+
+    public class SqlProxyConnectionStringbuilder : ISqlProviderConnectionStringBuilder
+    {
+        ISqlProviderConnectionStringBuilder sqlProviderConnectionStringBuilder;
+
+        public SqlProxyConnectionStringbuilder()
+        {
+            sqlProviderConnectionStringBuilder = ProxyProviderLoader.CreateInstance<ISqlProviderConnectionStringBuilder>("SqlProvider.SqlProviderConnectionStringBuilder");
+        }
+
+        public string ConnectionString => sqlProviderConnectionStringBuilder.ConnectionString;
+
+        public string DataSource { get => sqlProviderConnectionStringBuilder.DataSource; set => sqlProviderConnectionStringBuilder.DataSource = value; }
+        public string UserID { get => sqlProviderConnectionStringBuilder.UserID; set => sqlProviderConnectionStringBuilder.UserID = value; }
+        public string InitialCatalog { get => sqlProviderConnectionStringBuilder.InitialCatalog; set => sqlProviderConnectionStringBuilder.InitialCatalog = value; }
+        public string Password { get => sqlProviderConnectionStringBuilder.Password; set => sqlProviderConnectionStringBuilder.Password = value; }
+        public bool IntegratedSecurity { get => sqlProviderConnectionStringBuilder.IntegratedSecurity; set => sqlProviderConnectionStringBuilder.IntegratedSecurity = value; }
+    }
 }
