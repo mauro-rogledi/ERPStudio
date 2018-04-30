@@ -37,7 +37,7 @@ namespace ERPFramework.Data
         {
             get
             {
-                return GetConnectionString(false);
+                return GetConnectionString();
             }
         }
 
@@ -88,7 +88,7 @@ namespace ERPFramework.Data
         private bool ConnectToDatabase()
         {
             LoginInfo lI = GlobalInfo.LoginInfo;
-            string connectionString = GetConnectionString(false);
+            string connectionString = GetConnectionString();
 
             try
             {
@@ -163,7 +163,7 @@ namespace ERPFramework.Data
         /// </summary>
         private bool CreateNewDatabase()
         {
-            string connectionString = GetConnectionString(true);
+            string connectionString = GetConnectionString();
 
             try
             {
@@ -218,7 +218,7 @@ namespace ERPFramework.Data
         public SqlABConnection NewConnection()
         {
             SqlABConnection newConn = null;
-            string connectionString = GetConnectionString(false);
+            string connectionString = GetConnectionString();
 
             try
             {
@@ -591,54 +591,18 @@ namespace ERPFramework.Data
             return appName;
         }
 
-        private string GetConnectionString(bool isNew)
+        private string GetConnectionString()
         {
             LoginInfo li = GlobalInfo.LoginInfo;
-            return SqlManagerString.GetConnectionString(li.ProviderType, li.Host, li.UserName, li.Password, li.Datasource, li.AuthenicationMode == AuthenticationMode.Windows, isNew);
-        }
-    }
-
-    public class SqlManagerString
-    {
-        public static string GetConnectionString
-            (
-            ProviderType provider,
-            string server,
-            string user,
-            string password,
-            string catalog,
-            bool winNtAuthent,
-            bool isNew
-            )
-        {
-            string connectionString = string.Empty;
-
-            switch (provider)
+            var sqlconnectionstring = new SqlProxyConnectionStringbuilder
             {
-#if(SQLServer)
-                case ProviderType.SQLServer:
-                    connectionString = (winNtAuthent)
-                                ? string.Format(NameSolverDatabaseStrings.SQLWinNtConnection, server, catalog)
-                                : string.Format(NameSolverDatabaseStrings.SQLConnection, server, catalog, user, password);
-                    break;
-#endif
-#if(SQLCompact)
-                case ProviderType.SQLCompact:
-                    connectionString = string.Format(NameSolverDatabaseStrings.SQLCompactConnection, catalog, password);
-                    break;
-#endif
-#if(SQLite)
+                DataSource = li.Datasource,
+                UserID = li.UserName,
+                Password = li.Password,
+                IntegratedSecurity = li.AuthenicationMode == AuthenticationMode.Windows
+            };
 
-                // Data Source=mydb.db;Version=3;New=True;
-                case ProviderType.SQLite:
-                    connectionString = isNew
-                                ? string.Format(NameSolverDatabaseStrings.SQLiteConnectionNew, catalog, "True")
-                                : string.Format(NameSolverDatabaseStrings.SQLiteConnection, catalog);
-                    break;
-#endif
-            }
-
-            return connectionString;
+            return sqlconnectionstring.ConnectionString;
         }
     }
 

@@ -1163,6 +1163,10 @@
       <Project>{1eccfebf-5410-45aa-aa37-a30ee601a5b6}</Project>
       <Name>MetroFramework.Extender</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SqlProviders\SqlProxyProvider\SqlProxyProvider.csproj">
+      <Project>{65cef1e8-a2e7-44fd-b625-f1563abbca7a}</Project>
+      <Name>SqlProxyProvider</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
