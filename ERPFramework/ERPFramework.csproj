@@ -372,6 +372,10 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="SqlProxyProvider, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ERPManager\bin\Release\SqlProviders\SqlProxyProvider.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -1162,10 +1166,6 @@
     <ProjectReference Include="..\MetroFramework.Extender\MetroFramework.Extender.csproj">
       <Project>{1eccfebf-5410-45aa-aa37-a30ee601a5b6}</Project>
       <Name>MetroFramework.Extender</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SqlProviders\SqlProxyProvider\SqlProxyProvider.csproj">
-      <Project>{65cef1e8-a2e7-44fd-b625-f1563abbca7a}</Project>
-      <Name>SqlProxyProvider</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

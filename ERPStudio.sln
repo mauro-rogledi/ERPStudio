@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERPManager", "ERPManager\ER
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{123D045A-C8BC-4787-801E-2A969A3A33E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlProxyProvider", "SqlProviders\SqlProxyProvider\SqlProxyProvider.csproj", "{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -185,54 +183,6 @@ Global
 		{AF95C4D6-E651-4B51-8C69-562FDE7AC7E2}.SQLite_Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{AF95C4D6-E651-4B51-8C69-562FDE7AC7E2}.SQLite_Release|x86.ActiveCfg = SQLite_Release|Any CPU
 		{AF95C4D6-E651-4B51-8C69-562FDE7AC7E2}.SQLite_Release|x86.Build.0 = SQLite_Release|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.Debug|x86.Build.0 = Debug|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.Release|x86.ActiveCfg = Release|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.Release|x86.Build.0 = Release|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQL_Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQL_Debug|Any CPU.Build.0 = Debug|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQL_Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQL_Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQL_Debug|x86.ActiveCfg = Debug|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQL_Debug|x86.Build.0 = Debug|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQL_Release|Any CPU.ActiveCfg = Release|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQL_Release|Any CPU.Build.0 = Release|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQL_Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQL_Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQL_Release|x86.ActiveCfg = Release|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQL_Release|x86.Build.0 = Release|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQLCompact_Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQLCompact_Debug|Any CPU.Build.0 = Debug|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQLCompact_Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQLCompact_Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQLCompact_Debug|x86.ActiveCfg = Debug|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQLCompact_Debug|x86.Build.0 = Debug|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQLCompact_Release|Any CPU.ActiveCfg = Release|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQLCompact_Release|Any CPU.Build.0 = Release|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQLCompact_Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQLCompact_Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQLCompact_Release|x86.ActiveCfg = Release|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQLCompact_Release|x86.Build.0 = Release|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQLite_Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQLite_Debug|Any CPU.Build.0 = Debug|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQLite_Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQLite_Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQLite_Debug|x86.ActiveCfg = Debug|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQLite_Debug|x86.Build.0 = Debug|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQLite_Release|Any CPU.ActiveCfg = Release|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQLite_Release|Any CPU.Build.0 = Release|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQLite_Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQLite_Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQLite_Release|x86.ActiveCfg = Release|Any CPU
-		{65CEF1E8-A2E7-44FD-B625-F1563ABBCA7A}.SQLite_Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

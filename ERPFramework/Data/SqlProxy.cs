@@ -19,10 +19,10 @@ namespace ERPFramework.Data
             switch (UseProvider)
             {
                 case ProviderType.SQLServer:
-                    assembly = Assembly.LoadFrom(@"SQLProvider.dll");
+                    assembly = Assembly.LoadFrom(@"SqlProvider\SQLServerProvider.dll");
                     break;
                 case ProviderType.SQLite:
-                    assembly = Assembly.LoadFrom(@"SqLiteProvider.dll");
+                    assembly = Assembly.LoadFrom(@"SqlProvider\SqLiteProvider.dll");
                     break;
             }
         }
@@ -402,4 +402,13 @@ namespace ERPFramework.Data
         public bool IntegratedSecurity { get => sqlProviderConnectionStringBuilder.IntegratedSecurity; set => sqlProviderConnectionStringBuilder.IntegratedSecurity = value; }
     }
     #endregion
+
+    #region SqlProxyCreateDatabase
+    public class SqlProxyCreateDatabase : ISqlProxyCreateDatabase
+    {
+        public void CreateDatabase()
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

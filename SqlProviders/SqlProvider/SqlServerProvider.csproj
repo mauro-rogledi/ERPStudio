@@ -7,7 +7,7 @@
     <ProjectGuid>{C2AB969D-0A4A-4AA2-9F29-C3AE7D42B7F6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>SqlProvider</RootNamespace>
-    <AssemblyName>SqlProvider</AssemblyName>
+    <AssemblyName>SqlServerProvider</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\debug\</OutputPath>
+    <OutputPath>..\..\ERPManager\bin\Debug\SqlProviders\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
