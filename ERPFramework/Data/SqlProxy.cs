@@ -406,9 +406,15 @@ namespace ERPFramework.Data
     #region SqlProxyCreateDatabase
     public class SqlProxyCreateDatabase : ISqlProxyCreateDatabase
     {
+        ISqlProxyCreateDatabase createDatabase;
+        SqlProxyCreateDatabase()
+        {
+            createDatabase = ProxyProviderLoader.CreateInstance<ISqlProxyCreateDatabase>("SqlProvider.SqlProviderCreateDatabase");
+        }
+
         public void CreateDatabase()
         {
-            throw new NotImplementedException();
+            createDatabase.CreateDatabase();
         }
     }
 }
