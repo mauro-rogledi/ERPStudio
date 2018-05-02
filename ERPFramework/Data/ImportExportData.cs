@@ -67,12 +67,12 @@ namespace ERPFramework.Data
             var dataSet = new DataSet();
             var query = $"SELECT * FROM {tableName}";
 
-            var sqlCM = new SqlABCommand(GlobalInfo.DBaseInfo.dbManager.DB_Connection)
+            var sqlCM = new SqlProxyCommand(query, GlobalInfo.DBaseInfo.dbManager.DB_Connection)
             {
                 CommandText = query
             };
 
-            var sqlDA = new SqlABDataAdapter(sqlCM);
+            var sqlDA = new SqlProxyDataAdapter(sqlCM);
             sqlDA.Fill(dataSet, tableName);
 
             return dataSet;

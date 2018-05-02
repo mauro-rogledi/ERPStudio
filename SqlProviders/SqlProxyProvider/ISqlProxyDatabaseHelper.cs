@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SqlProxyProvider
 {
-    public interface ISqlProxyCreateDatabase
+    public interface ISqlProxyDataBaseHelper
     {
         string DataSource { get; set; }
         string UserID { get; set; }
@@ -16,5 +16,7 @@ namespace SqlProxyProvider
 
         void CreateDatabase();
         void CreateDatabase(string connectionString);
+
+        string QuerySearchTable(string tableName);
     }
 }

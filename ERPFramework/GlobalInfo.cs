@@ -142,7 +142,7 @@ namespace ERPFramework
         [XmlElement()]
         public AuthenticationMode AuthenicationMode { get; set; }
         [XmlElement()]
-        public string UserName { get; set; }
+        public string UserID { get; set; }
         [XmlElement()]
         public string Password { get; set; }
         [XmlElement()]

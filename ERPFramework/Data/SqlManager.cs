@@ -26,7 +26,7 @@ namespace ERPFramework.Data
         public Panel myPanel;
         private ConnectionForm myConnectionForm;
         private bool connected;
-        protected SqlABConnection MyConnection;
+        protected SqlProxyConnection MyConnection;
         private int currentVersion = 8;
 
         #region Public Variables
@@ -41,7 +41,7 @@ namespace ERPFramework.Data
             }
         }
 
-        public SqlABConnection DB_Connection
+        public SqlProxyConnection DB_Connection
         {
             get { return MyConnection; }
         }
@@ -92,7 +92,7 @@ namespace ERPFramework.Data
 
             try
             {
-                MyConnection = new SqlABConnection(lI.ProviderType, connectionString);
+                MyConnection = new SqlProxyConnection(connectionString);
                 MyConnection.Open();
                 connected = (MyConnection.State == ConnectionState.Open);
                 if (connected)
@@ -163,32 +163,41 @@ namespace ERPFramework.Data
         /// </summary>
         private bool CreateNewDatabase()
         {
-            string connectionString = GetConnectionString();
+            new SqlProxyDatabaseHelper
+            {
+                DataSource = GlobalInfo.LoginInfo.Datasource,
+                UserID = GlobalInfo.LoginInfo.UserID,
+                Password = GlobalInfo.LoginInfo.Password,
+                IntegratedSecurity = GlobalInfo.LoginInfo.AuthenicationMode == AuthenticationMode.Windows
+            }.CreateDatabase();
 
+            //            sqlCreate.CreateDatabase();
+
+            //                switch (GlobalInfo.LoginInfo.ProviderType)
+            //                {
+            //#if(SQLServer)
+            //                    case ProviderType.SQLServer:
+            //                        Server srv = new Server(GlobalInfo.LoginInfo.Host);
+            //                        Database db = new Database(srv, GlobalInfo.LoginInfo.Datasource);
+            //                        db.Create();
+            //                        break;
+            //#endif
+            //#if(SQLCompact)
+            //                    case ProviderType.SQLCompact:
+            //                        SqlCeEngine sqlceengine = new SqlCeEngine(connectionString);
+            //                        sqlceengine.CreateDatabase();
+            //                        break;
+            //#endif
+            //#if(SQLite)
+            //                    case ProviderType.SQLite:
+            //                        break;
+            //#endif
+            //                }
             try
             {
-                switch (GlobalInfo.LoginInfo.ProviderType)
-                {
-#if(SQLServer)
-                    case ProviderType.SQLServer:
-                        Server srv = new Server(GlobalInfo.LoginInfo.Host);
-                        Database db = new Database(srv, GlobalInfo.LoginInfo.Datasource);
-                        db.Create();
-                        break;
-#endif
-#if(SQLCompact)
-                    case ProviderType.SQLCompact:
-                        SqlCeEngine sqlceengine = new SqlCeEngine(connectionString);
-                        sqlceengine.CreateDatabase();
-                        break;
-#endif
-#if(SQLite)
-                    case ProviderType.SQLite:
-                        break;
-#endif
-                }
 
-                MyConnection = new SqlABConnection(GlobalInfo.LoginInfo.ProviderType, connectionString);
+                var connectionString = GetConnectionString();
+                MyConnection = new SqlProxyConnection(connectionString);
                 MyConnection.Open();
                 if (MyConnection.State == ConnectionState.Open)
                     MessageBox.Show(Properties.Resources.Database_Create,
@@ -237,7 +246,7 @@ namespace ERPFramework.Data
             return newConn;
         }
 
-        public void CloseConnection(SqlABConnection connection)
+        public void CloseConnection(SqlProxyConnection connection)
         {
             if (connection.State == ConnectionState.Open)
                 connection.Close();
@@ -250,12 +259,12 @@ namespace ERPFramework.Data
         /// </summary>
         private void SetDataBaseParameter()
         {
-            LoginInfo li = GlobalInfo.LoginInfo;
+            var li = GlobalInfo.LoginInfo;
             li.ProviderType = myConnectionForm.DataBase_Provider;
             li.Host = myConnectionForm.DataBase_Host;
             li.Datasource = myConnectionForm.DataBase_Name;
             li.AuthenicationMode = myConnectionForm.DataBase_Authentication;
-            li.UserName = myConnectionForm.DataBase_Username;
+            li.UserID = myConnectionForm.DataBase_Username;
             li.Password = myConnectionForm.DataBase_Password;
         }
 
@@ -286,19 +295,20 @@ namespace ERPFramework.Data
 
         private int ReadDBVersion()
         {
-            SqlABDataReader dr;
             int current = -1;
             try
             {
-                QueryBuilder qb = new QueryBuilder().
+                var qb = new QueryBuilder().
                     Select(AM_Version.Version).
                     From<AM_Version>();
 
-                SqlABCommand cmd = new SqlABCommand(qb.Query, MyConnection);
-                dr = cmd.ExecuteReader();
-                dr.Read();
-                current = dr.GetValue<int>(AM_Version.Version);
-                dr.Close();
+                using (var cmd = new SqlProxyCommand(qb.Query, MyConnection))
+                {
+                    var dr = cmd.ExecuteReader();
+                    dr.Read();
+                    current = dr.GetValue<int>(AM_Version.Version);
+                    dr.Close();
+                }
             }
             catch (Exception exc)
             {
@@ -310,37 +320,17 @@ namespace ERPFramework.Data
 
         protected bool SearchTable(string tablename)
         {
-            SqlABDataReader dr;
+            var dbHelper = new SqlProxyDatabaseHelper();
             bool notfound = false;
             try
             {
-                string command = string.Empty; ;
-                switch (GlobalInfo.LoginInfo.ProviderType)
+                using (var cmd = new SqlProxyCommand(dbHelper.QuerySearchTable(tablename), MyConnection))
                 {
-#if(SQLite)
-                    case ProviderType.SQLite:
-                        command = string.Format("select tbl_name from sqlite_master where type = 'table' and tbl_name = '{0}'", tablename);
-                        break;
-#endif
-#if(SQLCompact)
-                    case ProviderType.SQLCompact:
-                        command = string.Format("select table_name from information_schema.tables where table_name = '{0}'", tablename);
-                        break;
-#endif
-#if(SQLServer)
-                    case ProviderType.SQLServer:
-                        command = string.Format("select table_name from information_schema.tables where table_name = '{0}'", tablename);
-                        break;
-#endif
+                    var dr = cmd.ExecuteReader();
+
+                    notfound = !dr.Read();
+                    dr.Close();
                 }
-
-                //string command = string.Format("select table_name from information_schema.tables where table_name = '{0}'", tablename);
-
-                SqlABCommand cmd = new SqlABCommand(command, MyConnection);
-                dr = cmd.ExecuteReader();
-
-                notfound = !dr.Read();
-                dr.Close();
             }
             catch (Exception exc)
             {
@@ -350,29 +340,28 @@ namespace ERPFramework.Data
             return notfound;
         }
 
-        private bool InsertDBVersion(string application, string module, string version)
+        private bool InsertDBVersion(string module, string version)
         {
             try
             {
-                SqlABParameter dbApplication = new SqlABParameter("@p1", AM_Version.Application);
-                SqlABParameter dbModule = new SqlABParameter("@p2", AM_Version.Module);
-                SqlABParameter dbVersion = new SqlABParameter("@p3", AM_Version.Version);
+                var dbApplication = new SqlProxyParameter("@p1", AM_Version.Application);
+                var dbModule = new SqlProxyParameter("@p2", AM_Version.Module);
+                var dbVersion = new SqlProxyParameter("@p3", AM_Version.Version);
 
-                QueryBuilder qb = new QueryBuilder().
+                var qb = new QueryBuilder().
                     InsertInto<AM_Version>(AM_Version.Module).Values(dbModule).
                     Where(AM_Version.Application).IsEqualTo(dbApplication).
                     And(AM_Version.Version).IsEqualTo(dbVersion);
 
-                //qb.AddManualQuery("INSERT INTO {0} SET {1}=@p1 WHERE {2}=@p2",
-                //                       AM_Version.Name, AM_Version.Module, AM_Version.Version);
+                using (var cmd = new SqlProxyCommand(qb.Query, MyConnection))
+                {
+                    cmd.Parameters.Add(dbModule);
+                    cmd.Parameters.Add(dbVersion);
 
-                SqlABCommand cmd = new SqlABCommand(qb.Query, MyConnection);
-                cmd.Parameters.Add(dbModule);
-                cmd.Parameters.Add(dbVersion);
-
-                dbModule.Value = module;
-                dbVersion.Value = version;
-                cmd.ExecuteScalar();
+                    dbModule.Value = module;
+                    dbVersion.Value = version;
+                    cmd.ExecuteScalar();
+                }
             }
             catch (SqlException exc)
             {
@@ -597,7 +586,7 @@ namespace ERPFramework.Data
             var sqlconnectionstring = new SqlProxyConnectionStringbuilder
             {
                 DataSource = li.Datasource,
-                UserID = li.UserName,
+                UserID = li.UserID,
                 Password = li.Password,
                 IntegratedSecurity = li.AuthenicationMode == AuthenticationMode.Windows
             };

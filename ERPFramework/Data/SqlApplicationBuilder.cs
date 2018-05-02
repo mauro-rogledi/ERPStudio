@@ -612,7 +612,7 @@ namespace ERPFramework.Data
 #endif
 #if(SQLCompact)
                     case ProviderType.SQLCompact:
-                       SqlCeCommand.Transaction = value.sqlCeTransaction;
+                        SqlCeCommand.Transaction = value.sqlCeTransaction;
                         break;
 #endif
 #if(SQLite)
@@ -1107,7 +1107,7 @@ namespace ERPFramework.Data
                     {
                         return SQLiteDataReader.GetDouble(SQLiteDataReader.GetOrdinal(columnname));
                     }
-                    catch(Exception)
+                    catch (Exception)
                     { return 0; }
 #endif
                 default:
@@ -1820,8 +1820,8 @@ namespace ERPFramework.Data
 #if(SQLite)
                 case ProviderType.SQLite:
                     this.sQLiteDataAdapter = new SQLiteDataAdapter();
-                    sQLiteDataAdapter.RowUpdated+=new EventHandler<RowUpdatedEventArgs>(SQLiteDataAdapter_RowUpdated);
-                    sQLiteDataAdapter.RowUpdating+=new EventHandler<RowUpdatingEventArgs>(SQLiteDataAdapter_RowUpdating);
+                    sQLiteDataAdapter.RowUpdated += new EventHandler<RowUpdatedEventArgs>(SQLiteDataAdapter_RowUpdated);
+                    sQLiteDataAdapter.RowUpdating += new EventHandler<RowUpdatingEventArgs>(SQLiteDataAdapter_RowUpdating);
                     //SQLiteDataAdapter.RowUpdated += new SQLiteRowUpdatedEventHandler(SQLiteDataAdapter_RowUpdated);
                     //SQLiteDataAdapter.RowUpdating += new SQLiteRowUpdatingEventHandler(SQLiteDataAdapter_RowUpdating);
                     break;
@@ -1852,8 +1852,8 @@ namespace ERPFramework.Data
 #if(SQLite)
                 case ProviderType.SQLite:
                     this.sQLiteDataAdapter = new SQLiteDataAdapter(SqlABCommand.SQLiteCommand);
-                    sQLiteDataAdapter.RowUpdated+=new EventHandler<RowUpdatedEventArgs>(SQLiteDataAdapter_RowUpdated);
-                    sQLiteDataAdapter.RowUpdating+=new EventHandler<RowUpdatingEventArgs>(SQLiteDataAdapter_RowUpdating);
+                    sQLiteDataAdapter.RowUpdated += new EventHandler<RowUpdatedEventArgs>(SQLiteDataAdapter_RowUpdated);
+                    sQLiteDataAdapter.RowUpdating += new EventHandler<RowUpdatingEventArgs>(SQLiteDataAdapter_RowUpdating);
                     break;
 #endif
             }
@@ -2088,14 +2088,14 @@ namespace ERPFramework.Data
                 else
 #endif
                     if (SqlCe_e != null)
-                        return SqlCe_e.StatementType;
+                    return SqlCe_e.StatementType;
 #endif
-#if(SQLite)
-#if(SQLCompact || SQLServer)
-                    else
+#if (SQLite)
+#if (SQLCompact || SQLServer)
+                else
 #endif
                         if (SQLite_e != null)
-                            return SQLite_e.StatementType;
+                    return SQLite_e.StatementType;
 #endif
                 return new StatementType();
             }
@@ -2114,14 +2114,14 @@ namespace ERPFramework.Data
                 else
 #endif
                     if (SqlCe_e != null)
-                        return SqlCe_e.Row;
+                    return SqlCe_e.Row;
 #endif
-#if(SQLite)
-#if(SQLCompact || SQLServer)
-                    else
+#if (SQLite)
+#if (SQLCompact || SQLServer)
+                else
 #endif
                         if (SQLite_e != null)
-                            return SQLite_e.Row;
+                    return SQLite_e.Row;
 #endif
                 return null;
             }

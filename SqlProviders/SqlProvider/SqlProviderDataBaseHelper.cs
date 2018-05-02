@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 
 namespace SqlProvider
 {
-    class SqlProviderCreateDatabase : SqlProxyProvider.ISqlProxyCreateDatabase
+    class SqlProviderDataBaseHelper : SqlProxyProvider.ISqlProxyDataBaseHelper
     {
         public string DataSource { get; set; } = "";
         public string UserID { get; set; } = "";
@@ -41,5 +41,8 @@ namespace SqlProvider
                 throw new Exception($"can't create db {e.Message}");
             }
         }
+
+        public string QuerySearchTable(string tableName) => $"select table_name from information_schema.tables where table_name = '{tableName}";
+
     }
 }

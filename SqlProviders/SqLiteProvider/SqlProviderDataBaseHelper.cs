@@ -7,7 +7,7 @@ using System.Data.SQLite;
 
 namespace SqlProvider
 {
-    class SqlProviderCreateDatabase : SqlProxyProvider.ISqlProxyCreateDatabase
+    class SqlProviderDataBaseHelper : SqlProxyProvider.ISqlProxyDataBaseHelper
     {
         public string DataSource { get; set; } = "";
         public string UserID { get; set; } = "";
@@ -24,5 +24,7 @@ namespace SqlProvider
         {
             SQLiteConnection.CreateFile(connectionString);
         }
+
+        public string QuerySearchTable(string tableName) => $"select tbl_name from sqlite_master where type = 'table' and tbl_name = '{tableName}";
     }
 }

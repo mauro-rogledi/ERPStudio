@@ -282,6 +282,19 @@ namespace ERPFramework.Data
 
         public void Dispose() => dbDataReader.Dispose();
 
+        public T GetValue<T>(IColumn column) => GetValue<T>(column.Name);
+
+        public T GetValue<T>(string column)
+        {
+            return typeof(T).BaseType == typeof(Enum)
+                ? dbDataReader[column] != DBNull.Value
+                    ? (T)Enum.ToObject(typeof(T), dbDataReader[column])
+                    : (T)Enum.ToObject(typeof(T), 0)
+                : dbDataReader[column] != System.DBNull.Value
+                    ? (T)Convert.ChangeType(dbDataReader[column], typeof(T))
+                    : (T)Convert.ChangeType("", typeof(T));
+        }
+
         public bool GetBoolean(int i) => dbDataReader.GetBoolean(i);
 
         public byte GetByte(int i) => dbDataReader.GetByte(i);
@@ -345,6 +358,12 @@ namespace ERPFramework.Data
             dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter");
         }
 
+        public SqlProxyParameter(string parameterName, IColumn column)
+        {
+            var dbType = ConvertColumnType.GetDBType(column.ColType);
+            dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", parameterName, dbType);
+        }
+
         public SqlProxyParameter(string parameterName, DbType dbType)
         {
             dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", parameterName, dbType);
@@ -403,26 +422,28 @@ namespace ERPFramework.Data
     }
     #endregion
 
-    #region SqlProxyCreateDatabase
-    public class SqlProxyCreateDatabase : ISqlProxyCreateDatabase
+    #region SqlProxyDatabaseHelper
+    public class SqlProxyDatabaseHelper
     {
-        ISqlProxyCreateDatabase createDatabase;
+        ISqlProxyDataBaseHelper databaseHelper;
 
-        public string DataSource { get => createDatabase.DataSource; set => createDatabase.DataSource = value; }
-        public string UserID { get => createDatabase.UserID; set => createDatabase.UserID = value; }
-        public string InitialCatalog { get => createDatabase.InitialCatalog; set => createDatabase.InitialCatalog = value; }
-        public string Password { get => createDatabase.Password; set => createDatabase.Password = value; }
-        public bool IntegratedSecurity { get => createDatabase.IntegratedSecurity; set => createDatabase.IntegratedSecurity = value; }
+        public string DataSource { get => databaseHelper.DataSource; set => databaseHelper.DataSource = value; }
+        public string UserID { get => databaseHelper.UserID; set => databaseHelper.UserID = value; }
+        public string InitialCatalog { get => databaseHelper.InitialCatalog; set => databaseHelper.InitialCatalog = value; }
+        public string Password { get => databaseHelper.Password; set => databaseHelper.Password = value; }
+        public bool IntegratedSecurity { get => databaseHelper.IntegratedSecurity; set => databaseHelper.IntegratedSecurity = value; }
 
-        SqlProxyCreateDatabase()
+        public SqlProxyDatabaseHelper()
         {
-            createDatabase = ProxyProviderLoader.CreateInstance<ISqlProxyCreateDatabase>("SqlProvider.SqlProviderCreateDatabase");
+            databaseHelper = ProxyProviderLoader.CreateInstance<ISqlProxyDataBaseHelper>("SqlProvider.SqlProviderDatabaseHelper");
         }
 
-        public void CreateDatabase()
-        {
-            createDatabase.CreateDatabase();
-        }
+        public void CreateDatabase() => databaseHelper.CreateDatabase();
+
+        public void CreateDatabase(string connectionString) => databaseHelper.CreateDatabase(connectionString);
+
+        public string QuerySearchTable(string tableName) => databaseHelper.QuerySearchTable(tableName);
+
     }
     #endregion
 }

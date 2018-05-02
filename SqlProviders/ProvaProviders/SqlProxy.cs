@@ -401,13 +401,13 @@ namespace ProvaProviders
         public bool IntegratedSecurity { get => sqlProviderConnectionStringBuilder.IntegratedSecurity; set => sqlProviderConnectionStringBuilder.IntegratedSecurity = value; }
     }
 
-    #region SqlProxyCreateDatabase
-    public class SqlProxyCreateDatabase : ISqlProxyCreateDatabase
+    #region SqlProxyDataBaseHelper
+    public class SqlProxyDataBaseHelper
     {
-        ISqlProxyCreateDatabase createDatabase;
-        public SqlProxyCreateDatabase()
+        ISqlProxyDataBaseHelper createDatabase;
+        public SqlProxyDataBaseHelper()
         {
-            createDatabase = ProxyProviderLoader.CreateInstance<ISqlProxyCreateDatabase>("SqlProvider.SqlProviderCreateDatabase");
+            createDatabase = ProxyProviderLoader.CreateInstance<ISqlProxyDataBaseHelper>("SqlProvider.SqlProviderDataBaseHelper");
         }
 
         public string DataSource { get => createDatabase.DataSource; set => createDatabase.DataSource = value; }
@@ -419,6 +419,8 @@ namespace ProvaProviders
         public void CreateDatabase() => createDatabase.CreateDatabase();
 
         public void CreateDatabase(string connectionString) => createDatabase.CreateDatabase(connectionString);
+
+        public string QuerySearchTable(string tableName) => createDatabase.QuerySearchTable(tableName);
     }
     #endregion
 }

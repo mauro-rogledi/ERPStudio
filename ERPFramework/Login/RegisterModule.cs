@@ -50,9 +50,8 @@ namespace ERPFramework.Data
                 SqlCreateTable.CreateTable<T>();
         }
 
-        public bool CreateTable(SqlABConnection Connection, UserType user)
+        public bool CreateTable(SqlProxyConnection Connection, UserType user)
         {
-            this.ProviderType = Connection.providerType;
 
             SqlABConnection = Connection;
             CreateDBTables();

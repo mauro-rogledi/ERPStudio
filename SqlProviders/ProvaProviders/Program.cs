@@ -16,7 +16,7 @@ namespace ProvaProviders
                 IntegratedSecurity = true
             };
 
-            var creadb = new SqlProxyCreateDatabase
+            var creadb = new SqlProxyDataBaseHelper
             {
                 DataSource = @"C:\Users\Rogledi\Desktop\Clothes.db"
             };

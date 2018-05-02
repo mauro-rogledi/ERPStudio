@@ -25,18 +25,18 @@ namespace ERPFramework.Data
                 typeOut = "int";
             else
                     if (typeIn == typeof(bool) || typeIn == typeof(Boolean))
-                        typeOut = "bit";
-                    else
+                typeOut = "bit";
+            else
                         if (typeIn == typeof(Byte))
-                            typeOut = "tinyint";
-                        else
+                typeOut = "tinyint";
+            else
                             if (typeIn == typeof(Decimal) || typeIn == typeof(float) || typeIn == typeof(Double))
-                                typeOut = "decimal";
-                            else
+                typeOut = "decimal";
+            else
                                 if (typeIn == typeof(DateTime))
-                                    typeOut = "datetime";
-                                else
-                                    Debug.Assert(false, "CreateTable " + typeIn.ToString(), "Tipo colonna sconosciuto");
+                typeOut = "datetime";
+            else
+                Debug.Assert(false, "CreateTable " + typeIn.ToString(), "Tipo colonna sconosciuto");
 
             return typeOut;
         }
@@ -50,7 +50,7 @@ namespace ERPFramework.Data
                 typeOut = 4;
             else
                 if (typeIn == typeof(Decimal) || typeIn == typeof(float) || typeIn == typeof(double))
-                    typeOut = 9;
+                typeOut = 9;
 
             return typeOut;
         }
@@ -85,7 +85,7 @@ namespace ERPFramework.Data
                 typeOut = 0.0;
             else
                 if (typeIn == typeof(DateTime))
-                    typeOut = new DateTime().EmptyDate().ToString("dd/MM/yyyy");
+                typeOut = new DateTime().EmptyDate().ToString("dd/MM/yyyy");
             else
                                     if (typeIn == typeof(TimeSpan))
                 typeOut = 0;
@@ -93,6 +93,31 @@ namespace ERPFramework.Data
                 Debug.Assert(false, "CreateTable " + typeIn.ToString(), "Tipo colonna sconosciuto");
 
             return typeOut;
+        }
+
+        public static DbType GetDBType(Type typein)
+        {
+            var dictConver = new Dictionary<Type, DbType>
+            {
+                {typeof(string), DbType.String},
+                {typeof(String), DbType.String},
+                {typeof(Int32), DbType.Int32},
+                {typeof(int), DbType.Int32},
+                {typeof(Byte), DbType.Byte},
+                {typeof(Enum), DbType.UInt16},
+                {typeof(bool), DbType.Boolean},
+                {typeof(Boolean), DbType.Boolean},
+                {typeof(Decimal), DbType.Decimal},
+                {typeof(float), DbType.Single},
+                {typeof(Double), DbType.Double},
+                {typeof(DateTime), DbType.DateTime},
+                {typeof(TimeSpan), DbType.DateTime},
+            };
+
+            if (dictConver.ContainsKey(typein))
+                return dictConver[typein];
+
+            throw new Exception("Unknown Type");
         }
 
         public static SqlDbType SqlTypeOf(Type typeIn)
@@ -103,24 +128,24 @@ namespace ERPFramework.Data
                 typeOut = SqlDbType.VarChar;
             else
                 if (typeIn == typeof(Int32) || typeIn == typeof(int) || typeIn.BaseType == typeof(Enum))
-                    typeOut = SqlDbType.Int;
-                else
+                typeOut = SqlDbType.Int;
+            else
                     if (typeIn == typeof(bool) || typeIn == typeof(Boolean))
-                        typeOut = SqlDbType.Bit;
-                    else
+                typeOut = SqlDbType.Bit;
+            else
                         if (typeIn == typeof(Byte))
-                            typeOut = SqlDbType.SmallInt;
-                        else
+                typeOut = SqlDbType.SmallInt;
+            else
                             if (typeIn == typeof(Decimal) || typeIn == typeof(float) || typeIn == typeof(Double))
-                                typeOut = SqlDbType.Decimal;
-                            else
+                typeOut = SqlDbType.Decimal;
+            else
                                 if (typeIn == typeof(DateTime))
-                                    typeOut = SqlDbType.DateTime;
-                                else
+                typeOut = SqlDbType.DateTime;
+            else
                                     if (typeIn == typeof(TimeSpan))
-                                        typeOut = SqlDbType.DateTime;
-                                else
-                                    Debug.Assert(false, "SqlTypeOf " + typeIn.ToString(), "Tipo colonna sconosciuto");
+                typeOut = SqlDbType.DateTime;
+            else
+                Debug.Assert(false, "SqlTypeOf " + typeIn.ToString(), "Tipo colonna sconosciuto");
 
             return typeOut;
         }
@@ -133,21 +158,21 @@ namespace ERPFramework.Data
                 typeOut = SqlDbType.NVarChar;
             else
                 if (typeIn == typeof(Int32) || typeIn == typeof(int) || typeIn.BaseType == typeof(Enum))
-                    typeOut = SqlDbType.Int;
-                else
+                typeOut = SqlDbType.Int;
+            else
                     if (typeIn == typeof(bool) || typeIn == typeof(Boolean))
-                        typeOut = SqlDbType.Bit;
-                    else
+                typeOut = SqlDbType.Bit;
+            else
                         if (typeIn == typeof(Byte))
-                            typeOut = SqlDbType.SmallInt;
-                        else
+                typeOut = SqlDbType.SmallInt;
+            else
                             if (typeIn == typeof(Decimal) || typeIn == typeof(float) || typeIn == typeof(Double))
-                                typeOut = SqlDbType.Decimal;
-                            else
+                typeOut = SqlDbType.Decimal;
+            else
                                 if (typeIn == typeof(DateTime))
-                                    typeOut = SqlDbType.DateTime;
-                                else
-                                    Debug.Assert(false, "SqlTypeCEOf " + typeIn.ToString(), "Tipo colonna sconosciuto");
+                typeOut = SqlDbType.DateTime;
+            else
+                Debug.Assert(false, "SqlTypeCEOf " + typeIn.ToString(), "Tipo colonna sconosciuto");
 
             return typeOut;
         }
@@ -160,21 +185,21 @@ namespace ERPFramework.Data
                 typeOut = DbType.String;
             else
                 if (typeIn == typeof(Int32) || typeIn == typeof(int) || typeIn.BaseType == typeof(Enum))
-                    typeOut = DbType.Int32;
-                else
+                typeOut = DbType.Int32;
+            else
                     if (typeIn == typeof(bool) || typeIn == typeof(Boolean))
-                        typeOut = DbType.Boolean;
-                    else
+                typeOut = DbType.Boolean;
+            else
                         if (typeIn == typeof(Byte))
-                            typeOut = DbType.Byte;
-                        else
+                typeOut = DbType.Byte;
+            else
                             if (typeIn == typeof(Decimal) || typeIn == typeof(float) || typeIn == typeof(Double))
-                                typeOut = DbType.Decimal;
-                            else
+                typeOut = DbType.Decimal;
+            else
                                 if (typeIn == typeof(DateTime))
-                                    typeOut = DbType.DateTime;
-                                else
-                                    Debug.Assert(false, "SqlTypeLITOf " + typeIn.ToString(), "Tipo colonna sconosciuto");
+                typeOut = DbType.DateTime;
+            else
+                Debug.Assert(false, "SqlTypeLITOf " + typeIn.ToString(), "Tipo colonna sconosciuto");
 
             return typeOut;
         }
@@ -186,7 +211,7 @@ namespace ERPFramework.Data
 
     public interface IColumn
     {
-        Table   Table { get; }
+        Table Table { get; }
         string Tablename { get; }
         Type TableType { get; }
 
@@ -210,14 +235,14 @@ namespace ERPFramework.Data
 
         string QualifyName(Dictionary<string, string> qualifyMap = null);
 
-        bool IsVirtual { get;  }
+        bool IsVirtual { get; }
 
-        string ColumnName(bool qualified = false, Dictionary<string,string> qualifyMap = null);
+        string ColumnName(bool qualified = false, Dictionary<string, string> qualifyMap = null);
 
         bool AlignRight { get; }
     }
 
-    public class Column<T,F> : IColumn
+    public class Column<T, F> : IColumn
     {
         public string Description { get; private set; }
 
@@ -267,7 +292,7 @@ namespace ERPFramework.Data
 
         public Column(string name, string description)
             : this(name, null, description)
-        {}
+        { }
 
         public Column(string name, int? len = null, string description = "")
         {
