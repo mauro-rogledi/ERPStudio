@@ -15,5 +15,6 @@ namespace SqlProxyProvider
         bool IntegratedSecurity { get; set; }
 
         void CreateDatabase();
+        void CreateDatabase(string connectionString);
     }
 }

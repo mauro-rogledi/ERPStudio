@@ -19,10 +19,10 @@ namespace ProvaProviders
             switch (UseProvider)
             {
                 case ProviderType.SQL:
-                    assembly = Assembly.LoadFrom(@"SQLProvider.dll");
+                    assembly = Assembly.LoadFrom(@"..\..\..\..\ERPManager\bin\Debug\SqlProviders\SQLServerProvider.dll");
                     break;
                 case ProviderType.SQLite:
-                    assembly = Assembly.LoadFrom(@"SqLiteProvider.dll");
+                    assembly = Assembly.LoadFrom(@"..\..\..\..\ERPManager\bin\Debug\SqlProviders\SqLiteProvider.dll");
                     break;
             }
         }
@@ -400,4 +400,25 @@ namespace ProvaProviders
         public string Password { get => sqlProviderConnectionStringBuilder.Password; set => sqlProviderConnectionStringBuilder.Password = value; }
         public bool IntegratedSecurity { get => sqlProviderConnectionStringBuilder.IntegratedSecurity; set => sqlProviderConnectionStringBuilder.IntegratedSecurity = value; }
     }
+
+    #region SqlProxyCreateDatabase
+    public class SqlProxyCreateDatabase : ISqlProxyCreateDatabase
+    {
+        ISqlProxyCreateDatabase createDatabase;
+        public SqlProxyCreateDatabase()
+        {
+            createDatabase = ProxyProviderLoader.CreateInstance<ISqlProxyCreateDatabase>("SqlProvider.SqlProviderCreateDatabase");
+        }
+
+        public string DataSource { get => createDatabase.DataSource; set => createDatabase.DataSource = value; }
+        public string UserID { get => createDatabase.UserID; set => createDatabase.UserID = value; }
+        public string InitialCatalog { get => createDatabase.InitialCatalog; set => createDatabase.InitialCatalog = value; }
+        public string Password { get => createDatabase.Password; set => createDatabase.Password = value; }
+        public bool IntegratedSecurity { get => createDatabase.IntegratedSecurity; set => createDatabase.IntegratedSecurity = value; }
+
+        public void CreateDatabase() => createDatabase.CreateDatabase();
+
+        public void CreateDatabase(string connectionString) => createDatabase.CreateDatabase(connectionString);
+    }
+    #endregion
 }

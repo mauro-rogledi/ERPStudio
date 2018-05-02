@@ -36,6 +36,7 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlProviderCommand.cs" />
     <Compile Include="SqlProviderConnection.cs" />
     <Compile Include="SqlProviderConnectionStringBuilder.cs" />

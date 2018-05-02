@@ -5,11 +5,11 @@ namespace SqlProvider
 {
     class SqlProviderCreateDatabase : SqlProxyProvider.ISqlProxyCreateDatabase
     {
-        public string DataSource { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string UserID { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string InitialCatalog { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string Password { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public bool IntegratedSecurity { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string DataSource { get; set; } = "";
+        public string UserID { get; set; } = "";
+        public string InitialCatalog { get; set; } = "";
+        public string Password { get; set; } = "";
+        public bool IntegratedSecurity { get; set; } = false;
 
         public void CreateDatabase()
         {
@@ -20,10 +20,14 @@ namespace SqlProvider
                 Password = this.Password,
                 IntegratedSecurity = this.IntegratedSecurity
             };
+            CreateDatabase(connectionstringBuilder.ConnectionString);
+        }
 
+        public void CreateDatabase(string connectionString)
+        {
             try
             {
-                using (var connection = new SqlConnection(connectionstringBuilder.ConnectionString))
+                using (var connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
                     var command = connection.CreateCommand();
@@ -32,9 +36,9 @@ namespace SqlProvider
                     connection.Close();
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-
+                throw new Exception($"can't create db {e.Message}");
             }
         }
     }

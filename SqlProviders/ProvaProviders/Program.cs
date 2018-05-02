@@ -6,7 +6,7 @@ namespace ProvaProviders
     {
         static void Main(string[] args)
         {
-            ProxyProviderLoader.UseProvider = ProviderType.SQL;
+            ProxyProviderLoader.UseProvider = ProviderType.SQLite;
             var sqlconnectiostring = new SqlProxyConnectionStringbuilder
             {
                 DataSource = @"SALA\SQLEXPRESS",
@@ -15,6 +15,20 @@ namespace ProvaProviders
                 //Password = "sa.",
                 IntegratedSecurity = true
             };
+
+            var creadb = new SqlProxyCreateDatabase
+            {
+                DataSource = @"C:\Users\Rogledi\Desktop\Clothes.db"
+            };
+            creadb.CreateDatabase();
+
+            //var creadb = new SqlProxyCreateDatabase
+            //{
+            //    DataSource = "USR-ROGLEDIMAU1",
+            //    UserID = "sa",
+            //    InitialCatalog = "PROVADB",
+            //};
+            //creadb.CreateDatabase();
 
             //var sqlconnectiostring = new SqlProxyConnectionStringbuilder
             //{

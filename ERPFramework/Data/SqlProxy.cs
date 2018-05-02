@@ -407,6 +407,13 @@ namespace ERPFramework.Data
     public class SqlProxyCreateDatabase : ISqlProxyCreateDatabase
     {
         ISqlProxyCreateDatabase createDatabase;
+
+        public string DataSource { get => createDatabase.DataSource; set => createDatabase.DataSource = value; }
+        public string UserID { get => createDatabase.UserID; set => createDatabase.UserID = value; }
+        public string InitialCatalog { get => createDatabase.InitialCatalog; set => createDatabase.InitialCatalog = value; }
+        public string Password { get => createDatabase.Password; set => createDatabase.Password = value; }
+        public bool IntegratedSecurity { get => createDatabase.IntegratedSecurity; set => createDatabase.IntegratedSecurity = value; }
+
         SqlProxyCreateDatabase()
         {
             createDatabase = ProxyProviderLoader.CreateInstance<ISqlProxyCreateDatabase>("SqlProvider.SqlProviderCreateDatabase");
@@ -417,4 +424,5 @@ namespace ERPFramework.Data
             createDatabase.CreateDatabase();
         }
     }
+    #endregion
 }
