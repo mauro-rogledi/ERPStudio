@@ -44,6 +44,7 @@
     <Compile Include="ISqlProviderCommand.cs" />
     <Compile Include="ISqlProviderConnection.cs" />
     <Compile Include="ISqlProviderConnectionStringBuilder.cs" />
+    <Compile Include="ISqlProviderDataAdapter.cs" />
     <Compile Include="ISqlProviderParameter.cs" />
     <Compile Include="ISqlProviderParameterCollection.cs" />
     <Compile Include="ISqlProviderTransaction.cs" />

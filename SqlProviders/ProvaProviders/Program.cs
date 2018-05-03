@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Data.SqlClient;
 
 namespace ProvaProviders
 {
@@ -6,21 +7,21 @@ namespace ProvaProviders
     {
         static void Main(string[] args)
         {
-            ProxyProviderLoader.UseProvider = ProviderType.SQLite;
-            var sqlconnectiostring = new SqlProxyConnectionStringbuilder
-            {
-                DataSource = @"SALA\SQLEXPRESS",
-                //UserID = "sa",
-                InitialCatalog = "PLUMBER",
-                //Password = "sa.",
-                IntegratedSecurity = true
-            };
+            ProxyProviderLoader.UseProvider = ProviderType.SQL;
+            //var sqlconnectiostring = new SqlProxyConnectionStringbuilder
+            //{
+            //    DataSource = @"SALA\SQLEXPRESS",
+            //    //UserID = "sa",
+            //    InitialCatalog = "PLUMBER",
+            //    //Password = "sa.",
+            //    IntegratedSecurity = true
+            //};
 
-            var creadb = new SqlProxyDataBaseHelper
-            {
-                DataSource = @"C:\Users\Rogledi\Desktop\Clothes.db"
-            };
-            creadb.CreateDatabase();
+            //var creadb = new SqlProxyDataBaseHelper
+            //{
+            //    DataSource = @"C:\Users\Rogledi\Desktop\Clothes.db"
+            //};
+            //creadb.CreateDatabase();
 
             //var creadb = new SqlProxyCreateDatabase
             //{
@@ -30,12 +31,12 @@ namespace ProvaProviders
             //};
             //creadb.CreateDatabase();
 
-            //var sqlconnectiostring = new SqlProxyConnectionStringbuilder
-            //{
-            //    DataSource = @"USR-ROGLEDIMAU1",
-            //    UserID = "sa",
-            //    InitialCatalog = "NORTHWIND"
-            //};
+            var sqlconnectiostring = new SqlProxyConnectionStringbuilder
+            {
+                DataSource = @"USR-ROGLEDIMAU1",
+                UserID = "sa",
+                InitialCatalog = "NORTHWIND"
+            };
 
             //ProxyProviderLoader.UseProvider = ProviderType.SQLite;
             //var sqlconnectiostring = new SqlProxyConnectionStringbuilder
@@ -48,22 +49,34 @@ namespace ProvaProviders
                 connection.Open();
 
                 {
-                    var transaction = connection.BeginTransaction();
-                    var p1 = new SqlProxyParameter("@p1", DbType.String);
-                    p1.Value = "ARDUINO";
-                    using (var sqlCmd = new SqlProxyCommand("SELECT * FROM PL_MASTERS where CODE = @p1", connection))
-                    //using (var sqlCmd = new SqlProxyCommand("SELECT * FROM CUSTOMERS where CustomerID = @p1", connection))
-                    //using (var sqlCmd = new SqlProxyCommand("SELECT * FROM CL_MASTER where ID = @p1", connection))
+                    //var transaction = connection.BeginTransaction();
+                    var p1 = new SqlProxyParameter("@p1", DbType.String, 5)
                     {
-                        sqlCmd.Transaction = transaction;
+                        Value = "ALFKI"
+                    };
+
+
+                    var dataSet = new DataSet();
+                    using (var sqlCmd = new SqlProxyCommand("SELECT * FROM CUSTOMERS where CustomerID = @p1", connection))
+                    {
                         sqlCmd.Parameters.Add(p1);
-                        var sqldatareader = sqlCmd.ExecuteReader();
-                        sqldatareader.Read();
-                        var l = sqldatareader[3];
-                        sqldatareader.Close();
+                        var dAdapter = new SqlProxyDataAdapter
+                        {
+                            SelectCommand = sqlCmd
+                        };
+                        dAdapter.Fill(dataSet);
+
+                        //using (var sqlCmd = new SqlProxyCommand("SELECT * FROM CUSTOMERS where CustomerID = @p1", connection))
+                        //using (var sqlCmd = new SqlProxyCommand("SELECT * FROM CL_MASTER where ID = @p1", connection))
+
+                        //sqlCmd.Transaction = transaction;
+                        //var sqldatareader = sqlCmd.ExecuteReader();
+                        //sqldatareader.Read();
+                        //var l = sqldatareader[3];
+                        //sqldatareader.Close();
                     }
 
-                    transaction.Commit();
+                    //transaction.Commit();
                 }
 
                 connection.Close();

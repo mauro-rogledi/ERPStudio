@@ -43,6 +43,7 @@
     <Compile Include="SqlProviderCommand.cs" />
     <Compile Include="SqlProviderConnection.cs" />
     <Compile Include="SqlProviderConnectionStringBuilder.cs" />
+    <Compile Include="SqlProviderDataAdapter.cs" />
     <Compile Include="SqlProviderDataBaseHelper.cs" />
     <Compile Include="SqlProviderDataReader.cs" />
     <Compile Include="SqlProviderParameter.cs" />
