@@ -1,8 +1,32 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace SqlProvider
 {
+    internal static class ConvertDbType
+    {
+        static Dictionary<DbType, SqlDbType> dbTypeSqlType = new Dictionary<DbType, SqlDbType>
+        {
+            { DbType.String, SqlDbType.NVarChar },
+            { DbType.Int16, SqlDbType.SmallInt },
+            { DbType.Int32, SqlDbType.Int },
+            { DbType.Int64, SqlDbType.BigInt },
+            { DbType.Boolean, SqlDbType.Bit },
+            { DbType.Date, SqlDbType.Date },
+            { DbType.DateTime, SqlDbType.DateTime },
+            { DbType.Double, SqlDbType.Float },
+            { DbType.Decimal, SqlDbType.Decimal },
+            { DbType.Currency, SqlDbType.Money }
+        };
+
+        static public SqlDbType GetSqlDbType(DbType dbType)
+        {
+            return dbTypeSqlType[dbType];
+        }
+    }
+
     class SqlProviderDataBaseHelper : SqlProxyProvider.ISqlProxyDataBaseHelper
     {
         public string DataSource { get; set; } = "";

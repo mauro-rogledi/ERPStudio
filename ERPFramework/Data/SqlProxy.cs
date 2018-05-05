@@ -446,4 +446,75 @@ namespace ERPFramework.Data
 
     }
     #endregion
+
+    #region SqlProxyDataAdapter
+    public class SqlProxyDataAdapter
+    {
+        ISqlProviderDataAdapter dbDataAdapter;
+        public IDbDataAdapter DataAdapter => dbDataAdapter;
+
+        SqlProxyCommand selectCommand, insertCommand, updateCommand, deleteCommand;
+
+        public SqlProxyDataAdapter()
+        {
+            dbDataAdapter = ProxyProviderLoader.CreateInstance<ISqlProviderDataAdapter>("SqlProvider.SqlProviderDataAdapter");
+        }
+
+        public SqlProxyDataAdapter(ISqlProviderCommand selectCommand) => dbDataAdapter = ProxyProviderLoader.CreateInstance<ISqlProviderDataAdapter>("SqlProvider.SqlProviderDataAdapter", selectCommand.Command);
+
+        public SqlProxyDataAdapter(string selectCommandText, string selectConnectionString) => dbDataAdapter = ProxyProviderLoader.CreateInstance<ISqlProviderDataAdapter>("SqlProvider.SqlProviderDataAdapter", selectCommandText, selectConnectionString);
+
+        public SqlProxyDataAdapter(string selectCommandText, ISqlProviderConnection selectConnection) => dbDataAdapter = ProxyProviderLoader.CreateInstance<ISqlProviderDataAdapter>("SqlProvider.SqlProviderDataAdapter", selectConnection.Connection);
+
+        public SqlProxyCommand SelectCommand
+        {
+            get => selectCommand;
+            set
+            {
+                selectCommand = value;
+                dbDataAdapter.SelectCommand = (value.Command as ISqlProviderCommand).Command;
+            }
+        }
+
+        public SqlProxyCommand InsertCommand
+        {
+            get => insertCommand;
+            set
+            {
+                insertCommand = value;
+                dbDataAdapter.InsertCommand = (value.Command as ISqlProviderCommand).Command;
+            }
+        }
+        public SqlProxyCommand UpdateCommand
+        {
+            get => updateCommand;
+            set
+            {
+                updateCommand = value;
+                dbDataAdapter.UpdateCommand = (value.Command as ISqlProviderCommand).Command;
+            }
+        }
+        public SqlProxyCommand DeleteCommand
+        {
+            get => deleteCommand;
+            set
+            {
+                deleteCommand = value;
+                dbDataAdapter.DeleteCommand = (value.Command as ISqlProviderCommand).Command;
+            }
+        }
+        public MissingMappingAction MissingMappingAction { get => dbDataAdapter.MissingMappingAction; set => dbDataAdapter.MissingMappingAction = value; }
+        public MissingSchemaAction MissingSchemaAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public ITableMappingCollection TableMappings => dbDataAdapter.TableMappings;
+
+        public int Fill(DataSet dataSet) => dbDataAdapter.Fill(dataSet);
+        public int Fill(DataSet dataSet, string tableName) => dbDataAdapter.Fill(dataSet, tableName);
+
+        public DataTable[] FillSchema(DataSet dataSet, SchemaType schemaType) => dbDataAdapter.FillSchema(dataSet, schemaType);
+
+        public IDataParameter[] GetFillParameters() => dbDataAdapter.GetFillParameters();
+
+        public int Update(DataSet dataSet) => dbDataAdapter.Update(dataSet);
+    }
+    #endregion
 }

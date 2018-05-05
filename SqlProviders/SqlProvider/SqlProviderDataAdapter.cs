@@ -31,7 +31,10 @@ namespace SqlProvider
 
         public ITableMappingCollection TableMappings => sqlDataAdapter.TableMappings;
 
+        public int Fill(DataTable dataTable) => sqlDataAdapter.Fill(dataTable);
         public int Fill(DataSet dataSet) => sqlDataAdapter.Fill(dataSet);
+        public int Fill(DataSet dataSet, string srcTable) => sqlDataAdapter.Fill(dataSet, srcTable);
+        public int Fill(DataSet dataSet, int startRecord, int maxRecords, string srcTable) => sqlDataAdapter.Fill(dataSet, startRecord, maxRecords, srcTable);
 
         public DataTable[] FillSchema(DataSet dataSet, SchemaType schemaType) => sqlDataAdapter.FillSchema(dataSet, schemaType);
 

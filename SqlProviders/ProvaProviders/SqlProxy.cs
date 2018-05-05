@@ -424,6 +424,7 @@ namespace ProvaProviders
     }
     #endregion
 
+    #region SqlProxyDataAdapter
     public class SqlProxyDataAdapter
     {
         ISqlProviderDataAdapter dbDataAdapter;
@@ -484,11 +485,13 @@ namespace ProvaProviders
         public ITableMappingCollection TableMappings => dbDataAdapter.TableMappings;
 
         public int Fill(DataSet dataSet) => dbDataAdapter.Fill(dataSet);
+        public int Fill(DataSet dataSet, string tableName) => dbDataAdapter.Fill(dataSet, tableName);
 
         public DataTable[] FillSchema(DataSet dataSet, SchemaType schemaType) => dbDataAdapter.FillSchema(dataSet, schemaType);
 
         public IDataParameter[] GetFillParameters() => dbDataAdapter.GetFillParameters();
 
         public int Update(DataSet dataSet) => dbDataAdapter.Update(dataSet);
-    }
+    } 
+    #endregion
 }

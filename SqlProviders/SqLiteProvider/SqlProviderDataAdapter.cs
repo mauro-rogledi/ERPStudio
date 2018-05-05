@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Data.SQLite;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SqlProxyProvider;
 
 namespace SqlProvider
 {
-    class SqlProviderDataAdapter : SqlProxyProvider.ISqlProviderDataAdapter
+    class SqlProviderDataAdapter : ISqlProviderDataAdapter
     {
         SQLiteDataAdapter sqliteDataAdapter;
         public IDbDataAdapter DataAdapter => sqliteDataAdapter;
 
+        public SqlProviderDataAdapter() => sqliteDataAdapter = new SQLiteDataAdapter();
 
         public SqlProviderDataAdapter(ISqlProviderCommand selectCommand) => sqliteDataAdapter = new SQLiteDataAdapter(selectCommand.Command as SQLiteCommand);
 
@@ -30,7 +26,10 @@ namespace SqlProvider
 
         public ITableMappingCollection TableMappings => sqliteDataAdapter.TableMappings;
 
+        public int Fill(DataTable dataTable) => sqliteDataAdapter.Fill(dataTable);
         public int Fill(DataSet dataSet) => sqliteDataAdapter.Fill(dataSet);
+        public int Fill(DataSet dataSet, string tableName) => sqliteDataAdapter.Fill(dataSet, tableName);
+        public int Fill(DataSet dataSet, int startRecord, int maxRecords, string srcTable) => sqliteDataAdapter.Fill(dataSet, startRecord, maxRecords, srcTable);
 
         public DataTable[] FillSchema(DataSet dataSet, SchemaType schemaType) => sqliteDataAdapter.FillSchema(dataSet, schemaType);
 
