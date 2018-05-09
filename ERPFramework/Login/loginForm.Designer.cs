@@ -83,7 +83,6 @@
             this.txtPassword.MaxLength = 32767;
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '●';
-            this.txtPassword.PromptText = "Password";
             this.txtPassword.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.txtPassword.SelectedText = "";
             this.txtPassword.SelectionLength = 0;
@@ -119,7 +118,6 @@
             this.txtUser.MaxLength = 16;
             this.txtUser.Name = "txtUser";
             this.txtUser.PasswordChar = '\0';
-            this.txtUser.PromptText = "Utente";
             this.txtUser.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.txtUser.SelectedText = "";
             this.txtUser.SelectionLength = 0;

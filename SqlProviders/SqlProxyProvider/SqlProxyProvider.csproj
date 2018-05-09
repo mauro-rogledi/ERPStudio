@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SqlProxyProvider</RootNamespace>
     <AssemblyName>SqlProxyProvider</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -49,8 +49,9 @@
     <Compile Include="ISqlProviderParameterCollection.cs" />
     <Compile Include="ISqlProviderTransaction.cs" />
     <Compile Include="ISqlProviderDataReader.cs" />
-    <Compile Include="ISqlProxyDatabaseHelper.cs" />
+    <Compile Include="ISqlProviderDatabaseHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ISqlProviderCommandBuilder.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

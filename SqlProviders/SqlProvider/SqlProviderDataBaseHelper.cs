@@ -68,5 +68,27 @@ namespace SqlProvider
 
         public string QuerySearchTable(string tableName) => $"select table_name from information_schema.tables where table_name = '{tableName}";
 
+        public bool SearchColumn(string srcTable, string  srcColumn, IDbConnection connection)
+        {
+            var found = false;
+            try
+            {
+                var command = $"select table_name from information_schema.columns where table_name = '{srcTable}' and column_name = '{srcColumn}'";
+
+                using (var cmd = new SqlCommand(command, connection as SqlConnection))
+                {
+                    var dr = cmd.ExecuteReader();
+
+                    found = dr.HasRows;
+                    dr.Close();
+                }
+            }
+            catch (Exception )
+            {
+                return false;
+            }
+            return found;
+        }
+
     }
 }

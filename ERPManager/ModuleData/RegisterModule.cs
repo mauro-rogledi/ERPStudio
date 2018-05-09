@@ -3,6 +3,7 @@
 using ERPFramework.Data;
 using ERPFramework.Preferences;
 using System.Collections.Generic;
+using ERPFramework;
 
 #region RegisterTable
 
@@ -81,7 +82,7 @@ namespace ERPManager.ModuleData
         {
             if (dbVersion < 2)
             {
-                if (!SearchColumn(AM_Version.Application))
+                if (!SqlProxyDatabaseHelper.SearchColumn(AM_Version.Application, GlobalInfo.SqlConnection))
                 {
                     SqlCreateTable.AlterTable<AM_Version>();
                     SqlCreateTable.AddColumn(AM_Version.Application);

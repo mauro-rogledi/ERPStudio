@@ -228,9 +228,9 @@ namespace ERPFramework.Data
 
     #endregion
 
-    #region SqlABCommand
+    #region SqlProxyCommand
 
-    public sealed class SqlABCommand : ICloneable, IDisposable
+    public sealed class SqlProxyCommand : ICloneable, IDisposable
     {
         internal ProviderType ProviderType;//
         internal SqlABConnection connection;
@@ -330,25 +330,25 @@ namespace ERPFramework.Data
             }
         }
 
-        public SqlABCommand()
+        public SqlProxyCommand()
             : this(GlobalInfo.LoginInfo.ProviderType)
         {
             Connection = GlobalInfo.SqlConnection;
         }
 
-        public SqlABCommand(SqlABConnection connection)
+        public SqlProxyCommand(SqlABConnection connection)
             : this(GlobalInfo.LoginInfo.ProviderType)
         {
             Connection = connection;
         }
 
-        public SqlABCommand(ProviderType ProviderType, SqlABConnection connection)
+        public SqlProxyCommand(ProviderType ProviderType, SqlABConnection connection)
             : this(ProviderType)
         {
             this.Connection = connection;
         }
 
-        public SqlABCommand(ProviderType ProviderType)
+        public SqlProxyCommand(ProviderType ProviderType)
         {
             this.ProviderType = ProviderType;
 
@@ -375,7 +375,7 @@ namespace ERPFramework.Data
             }
         }
 
-        public SqlABCommand(ProviderType ProviderType, string cmdText)
+        public SqlProxyCommand(ProviderType ProviderType, string cmdText)
         {
             this.ProviderType = ProviderType;
 
@@ -402,7 +402,7 @@ namespace ERPFramework.Data
             }
         }
 
-        public SqlABCommand(string cmdText, SqlABConnection connection)
+        public SqlProxyCommand(string cmdText, SqlABConnection connection)
         {
             this.ProviderType = connection.providerType;
 
@@ -431,7 +431,7 @@ namespace ERPFramework.Data
 
 #if(SQLite)
 
-        public SqlABCommand(SQLiteCommand command)
+        public SqlProxyCommand(SQLiteCommand command)
         {
             this.ProviderType = ProviderType.SQLite;
             this.SQLiteCommand = command;
@@ -441,7 +441,7 @@ namespace ERPFramework.Data
 #endif
 #if(SQLCompact)
 
-        public SqlABCommand(SqlCeCommand command)
+        public SqlProxyCommand(SqlCeCommand command)
         {
             this.ProviderType = ProviderType.SQLCompact;
             this.SqlCeCommand = command;
@@ -451,7 +451,7 @@ namespace ERPFramework.Data
 #endif
 #if(SQLServer)
 
-        public SqlABCommand(SqlCommand command)
+        public SqlProxyCommand(SqlCommand command)
         {
             this.ProviderType = ProviderType.SQLServer;
             this.SqlCommand = command;
@@ -461,7 +461,7 @@ namespace ERPFramework.Data
 #endif
 
         // @@TODO Transazioni
-        //public SqlABCommand(ProviderType ProviderType, string cmdText, SqlABConnection connection, SqlTransaction transaction)
+        //public SqlProxyCommand(ProviderType ProviderType, string cmdText, SqlABConnection connection, SqlTransaction transaction)
         //{
         //    {
         //        this.ProviderType = ProviderType;
@@ -549,9 +549,9 @@ namespace ERPFramework.Data
             return Clone();
         }
 
-        private SqlABCommand Clone()
+        private SqlProxyCommand Clone()
         {
-            var Cloned = new SqlABCommand(this.ProviderType);
+            var Cloned = new SqlProxyCommand(this.ProviderType);
             return Cloned;
         }
 
@@ -1621,7 +1621,7 @@ namespace ERPFramework.Data
 #if(SQLServer)
         internal SqlDataAdapter sqlDataAdapter;
 #endif
-        internal SqlABCommand sqlABCommand;
+        internal SqlProxyCommand SqlProxyCommand;
 
         public event SqlABRowUpdatedEventHandler RowUpdated;
 
@@ -1679,7 +1679,7 @@ namespace ERPFramework.Data
             }
         }
 
-        public SqlABCommand SelectCommand
+        public SqlProxyCommand SelectCommand
         {
             set
             {
@@ -1705,11 +1705,11 @@ namespace ERPFramework.Data
 
             get
             {
-                return sqlABCommand;
+                return SqlProxyCommand;
             }
         }
 
-        public SqlABCommand UpdateCommand
+        public SqlProxyCommand UpdateCommand
         {
             set
             {
@@ -1735,11 +1735,11 @@ namespace ERPFramework.Data
 
             get
             {
-                return sqlABCommand;
+                return SqlProxyCommand;
             }
         }
 
-        public SqlABCommand InsertCommand
+        public SqlProxyCommand InsertCommand
         {
             set
             {
@@ -1765,11 +1765,11 @@ namespace ERPFramework.Data
 
             get
             {
-                return sqlABCommand;
+                return SqlProxyCommand;
             }
         }
 
-        public SqlABCommand DeleteCommand
+        public SqlProxyCommand DeleteCommand
         {
             set
             {
@@ -1795,7 +1795,7 @@ namespace ERPFramework.Data
 
             get
             {
-                return sqlABCommand;
+                return SqlProxyCommand;
             }
         }
 
@@ -1829,29 +1829,29 @@ namespace ERPFramework.Data
             }
         }
 
-        public SqlABDataAdapter(SqlABCommand SqlABCommand)
+        public SqlABDataAdapter(SqlProxyCommand SqlProxyCommand)
         {
-            this.sqlABCommand = SqlABCommand;
+            this.SqlProxyCommand = SqlProxyCommand;
 
-            switch (SqlABCommand.ProviderType)
+            switch (SqlProxyCommand.ProviderType)
             {
 #if(SQLServer)
                 case ProviderType.SQLServer:
-                    this.sqlDataAdapter = new SqlDataAdapter(SqlABCommand.SqlCommand);
+                    this.sqlDataAdapter = new SqlDataAdapter(SqlProxyCommand.SqlCommand);
                     sqlDataAdapter.RowUpdated += new SqlRowUpdatedEventHandler(SqlDataAdapter_RowUpdated);
                     sqlDataAdapter.RowUpdating += new SqlRowUpdatingEventHandler(SqlDataAdapter_RowUpdating);
                     break;
 #endif
 #if(SQLCompact)
                 case ProviderType.SQLCompact:
-                    this.sqlCeDataAdapter = new SqlCeDataAdapter(SqlABCommand.SqlCeCommand);
+                    this.sqlCeDataAdapter = new SqlCeDataAdapter(SqlProxyCommand.SqlCeCommand);
                     sqlCeDataAdapter.RowUpdated += new SqlCeRowUpdatedEventHandler(SqlCeDataAdapter_RowUpdated);
                     sqlCeDataAdapter.RowUpdating += new SqlCeRowUpdatingEventHandler(SqlCeDataAdapter_RowUpdating);
                     break;
 #endif
 #if(SQLite)
                 case ProviderType.SQLite:
-                    this.sQLiteDataAdapter = new SQLiteDataAdapter(SqlABCommand.SQLiteCommand);
+                    this.sQLiteDataAdapter = new SQLiteDataAdapter(SqlProxyCommand.SQLiteCommand);
                     sQLiteDataAdapter.RowUpdated += new EventHandler<RowUpdatedEventArgs>(SQLiteDataAdapter_RowUpdated);
                     sQLiteDataAdapter.RowUpdating += new EventHandler<RowUpdatingEventArgs>(SQLiteDataAdapter_RowUpdating);
                     break;
@@ -2130,9 +2130,9 @@ namespace ERPFramework.Data
 
     #endregion
 
-    #region SqlABCommandBuilder
+    #region SqlProxyCommandBuilder
 
-    public class SqlABCommandBuilder
+    public class SqlProxyCommandBuilder
     {
 #if(SQLite)
         private readonly SQLiteCommandBuilder sqliteCommandBuilder;
@@ -2144,7 +2144,7 @@ namespace ERPFramework.Data
         private readonly SqlCommandBuilder sqlCommandBuilder;
 #endif
 
-        public SqlABCommandBuilder(SqlABDataAdapter dAdapter)
+        public SqlProxyCommandBuilder(SqlABDataAdapter dAdapter)
         {
             switch (GlobalInfo.LoginInfo.ProviderType)
             {
@@ -2166,63 +2166,63 @@ namespace ERPFramework.Data
             }
         }
 
-        public SqlABCommand GetUpdateCommand()
+        public SqlProxyCommand GetUpdateCommand()
         {
             switch (GlobalInfo.LoginInfo.ProviderType)
             {
 #if(SQLite)
                 case ProviderType.SQLite:
-                    return new SqlABCommand(sqliteCommandBuilder.GetUpdateCommand());
+                    return new SqlProxyCommand(sqliteCommandBuilder.GetUpdateCommand());
 #endif
 #if(SQLCompact)
                 case ProviderType.SQLCompact:
-                    return new SqlABCommand(sqlCeCommandBuilder.GetUpdateCommand());
+                    return new SqlProxyCommand(sqlCeCommandBuilder.GetUpdateCommand());
 #endif
 #if(SQLServer)
                 case ProviderType.SQLServer:
-                    return new SqlABCommand(sqlCommandBuilder.GetUpdateCommand());
+                    return new SqlProxyCommand(sqlCommandBuilder.GetUpdateCommand());
 #endif
                 default:
                     return null;
             }
         }
 
-        public SqlABCommand GetInsertCommand()
+        public SqlProxyCommand GetInsertCommand()
         {
             switch (GlobalInfo.LoginInfo.ProviderType)
             {
 #if(SQLite)
                 case ProviderType.SQLite:
-                    return new SqlABCommand(sqliteCommandBuilder.GetInsertCommand());
+                    return new SqlProxyCommand(sqliteCommandBuilder.GetInsertCommand());
 #endif
 #if(SQLCompact)
                 case ProviderType.SQLCompact:
-                    return new SqlABCommand(sqlCeCommandBuilder.GetInsertCommand());
+                    return new SqlProxyCommand(sqlCeCommandBuilder.GetInsertCommand());
 #endif
 #if(SQLServer)
                 case ProviderType.SQLServer:
-                    return new SqlABCommand(sqlCommandBuilder.GetInsertCommand());
+                    return new SqlProxyCommand(sqlCommandBuilder.GetInsertCommand());
 #endif
                 default:
                     return null;
             }
         }
 
-        public SqlABCommand GetDeleteCommand()
+        public SqlProxyCommand GetDeleteCommand()
         {
             switch (GlobalInfo.LoginInfo.ProviderType)
             {
 #if(SQLite)
                 case ProviderType.SQLite:
-                    return new SqlABCommand(sqliteCommandBuilder.GetDeleteCommand());
+                    return new SqlProxyCommand(sqliteCommandBuilder.GetDeleteCommand());
 #endif
 #if(SQLCompact)
                 case ProviderType.SQLCompact:
-                    return new SqlABCommand(sqlCeCommandBuilder.GetDeleteCommand());
+                    return new SqlProxyCommand(sqlCeCommandBuilder.GetDeleteCommand());
 #endif
 #if(SQLServer)
                 case ProviderType.SQLServer:
-                    return new SqlABCommand(sqlCommandBuilder.GetDeleteCommand());
+                    return new SqlProxyCommand(sqlCommandBuilder.GetDeleteCommand());
 #endif
                 default:
                     return null;

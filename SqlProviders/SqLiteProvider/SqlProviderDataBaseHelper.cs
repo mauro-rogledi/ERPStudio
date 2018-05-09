@@ -1,4 +1,7 @@
-﻿using System.Data.SQLite;
+﻿using System;
+using System.Data;
+using System.Data.SQLite;
+using SqlProxyProvider;
 
 namespace SqlProvider
 {
@@ -21,5 +24,36 @@ namespace SqlProvider
         }
 
         public string QuerySearchTable(string tableName) => $"select tbl_name from sqlite_master where type = 'table' and tbl_name = '{tableName}";
+
+        public bool SearchColumn(string srcTable, string srcColumn, System.Data.IDbConnection connection)
+        {
+            var found = false;
+            try
+            {
+                var command = $"PRAGMA table_info('{srcTable}');";
+
+                using (var cmd = new SQLiteCommand(command, connection as SQLiteConnection))
+                {
+
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var name = reader.GetString(reader.GetOrdinal("name"));
+                            if (name == srcColumn)
+                            {
+                                found = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return true;
+            }
+            return found;
+        }
     }
 }

@@ -10,6 +10,7 @@ namespace SqlProvider
         SqlCommand sqlCommand;
 
         public SqlProviderCommand() => sqlCommand = new SqlCommand();
+        public SqlProviderCommand(IDbCommand command) => sqlCommand = command as SqlCommand;
         public SqlProviderCommand(string cmdText) => sqlCommand = new SqlCommand(cmdText);
         public SqlProviderCommand(string cmdText, ISqlProviderConnection connection) => sqlCommand = new SqlCommand(cmdText, connection.Connection as SqlConnection);
         public SqlProviderCommand(string cmdText, ISqlProviderConnection connection, ISqlProviderTransaction transaction) => sqlCommand = new SqlCommand(cmdText, connection.Connection as SqlConnection, transaction.Transaction as SqlTransaction);

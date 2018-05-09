@@ -163,36 +163,12 @@ namespace ERPFramework.Data
         /// </summary>
         private bool CreateNewDatabase()
         {
-            new SqlProxyDatabaseHelper
-            {
-                DataSource = GlobalInfo.LoginInfo.Datasource,
-                UserID = GlobalInfo.LoginInfo.UserID,
-                Password = GlobalInfo.LoginInfo.Password,
-                IntegratedSecurity = GlobalInfo.LoginInfo.AuthenicationMode == AuthenticationMode.Windows
-            }.CreateDatabase();
+            SqlProxyDatabaseHelper.DataSource = GlobalInfo.LoginInfo.Datasource;
+            SqlProxyDatabaseHelper.UserID = GlobalInfo.LoginInfo.UserID;
+            SqlProxyDatabaseHelper.Password = GlobalInfo.LoginInfo.Password;
+            SqlProxyDatabaseHelper.IntegratedSecurity = GlobalInfo.LoginInfo.AuthenicationMode == AuthenticationMode.Windows;
+            SqlProxyDatabaseHelper.CreateDatabase();
 
-            //            sqlCreate.CreateDatabase();
-
-            //                switch (GlobalInfo.LoginInfo.ProviderType)
-            //                {
-            //#if(SQLServer)
-            //                    case ProviderType.SQLServer:
-            //                        Server srv = new Server(GlobalInfo.LoginInfo.Host);
-            //                        Database db = new Database(srv, GlobalInfo.LoginInfo.Datasource);
-            //                        db.Create();
-            //                        break;
-            //#endif
-            //#if(SQLCompact)
-            //                    case ProviderType.SQLCompact:
-            //                        SqlCeEngine sqlceengine = new SqlCeEngine(connectionString);
-            //                        sqlceengine.CreateDatabase();
-            //                        break;
-            //#endif
-            //#if(SQLite)
-            //                    case ProviderType.SQLite:
-            //                        break;
-            //#endif
-            //                }
             try
             {
 
@@ -224,14 +200,14 @@ namespace ERPFramework.Data
         /// NewConnection.
         /// Si connette ad un database esistente
         /// </summary>
-        public SqlABConnection NewConnection()
+        public SqlProxyConnection NewConnection()
         {
-            SqlABConnection newConn = null;
+            SqlProxyConnection newConn = null;
             string connectionString = GetConnectionString();
 
             try
             {
-                newConn = new SqlABConnection(GlobalInfo.LoginInfo.ProviderType, connectionString);
+                newConn = new SqlProxyConnection(connectionString);
                 newConn.Open();
                 connected = (newConn.State == ConnectionState.Open);
                 if (connected)
@@ -320,11 +296,10 @@ namespace ERPFramework.Data
 
         protected bool SearchTable(string tablename)
         {
-            var dbHelper = new SqlProxyDatabaseHelper();
             bool notfound = false;
             try
             {
-                using (var cmd = new SqlProxyCommand(dbHelper.QuerySearchTable(tablename), MyConnection))
+                using (var cmd = new SqlProxyCommand(SqlProxyDatabaseHelper.QuerySearchTable(tablename), MyConnection))
                 {
                     var dr = cmd.ExecuteReader();
 
@@ -375,20 +350,20 @@ namespace ERPFramework.Data
         {
             try
             {
-                SqlABParameter dbApplication = new SqlABParameter("@p1", AM_Version.Application);
-                SqlABParameter dbVersion = new SqlABParameter("@p2", AM_Version.Version);
-                SqlABParameter dbModule = new SqlABParameter("@p3", AM_Version.Module);
+                SqlProxyParameter dbApplication = new SqlProxyParameter("@p1", AM_Version.Application);
+                SqlProxyParameter dbVersion = new SqlProxyParameter("@p2", AM_Version.Version);
+                SqlProxyParameter dbModule = new SqlProxyParameter("@p3", AM_Version.Module);
 
                 QueryBuilder qb = new QueryBuilder().
                     Update<AM_Version>().
-                    Set<SqlABParameter>(AM_Version.Version, dbVersion).
+                    Set<SqlProxyParameter>(AM_Version.Version, dbVersion).
                     Where(AM_Version.Application).IsEqualTo(dbApplication).
                     And(AM_Version.Module).IsEqualTo(dbVersion);
 
                 //qb.AddManualQuery("UPDATE {0} SET {1}=@p1 WHERE {2}=@p2",
                 //                       AM_Version.Name, AM_Version.Version, AM_Version.Module);
 
-                SqlABCommand cmd = new SqlABCommand(qb.Query, MyConnection);
+                SqlProxyCommand cmd = new SqlProxyCommand(qb.Query, MyConnection);
                 cmd.Parameters.Add(dbApplication);
                 cmd.Parameters.Add(dbVersion);
 
@@ -409,12 +384,12 @@ namespace ERPFramework.Data
         {
             try
             {
-                SqlABParameter dbVersion = new SqlABParameter("@p1", AM_Version.Version);
+                SqlProxyParameter dbVersion = new SqlProxyParameter("@p1", AM_Version.Version);
                 string command = "INSERT INTO " + AM_Version.Name + " ( " +
                     AM_Version.Version + " ) " +
                     "VALUES (@p1)";
 
-                SqlABCommand cmd = new SqlABCommand(command, MyConnection);
+                SqlProxyCommand cmd = new SqlProxyCommand(command, MyConnection);
                 cmd.Parameters.Add(dbVersion);
 
                 dbVersion.Value = currentVersion;
@@ -437,14 +412,14 @@ namespace ERPFramework.Data
         {
             try
             {
-                SqlABParameter dbUser = new SqlABParameter("@p1", AM_Users.Username);
-                SqlABParameter dbPass = new SqlABParameter("@p2", AM_Users.Password);
-                SqlABParameter dbSurn = new SqlABParameter("@p3", AM_Users.Surname);
-                SqlABParameter dbPriv = new SqlABParameter("@p4", AM_Users.UserType);
-                SqlABParameter dbExp = new SqlABParameter("@p5", AM_Users.Expired);
-                SqlABParameter dbExpD = new SqlABParameter("@p6", AM_Users.ExpireDate);
-                SqlABParameter dbCPwd = new SqlABParameter("@p7", AM_Users.ChangePassword);
-                SqlABParameter dbLock = new SqlABParameter("@p8", AM_Users.Blocked);
+                SqlProxyParameter dbUser = new SqlProxyParameter("@p1", AM_Users.Username);
+                SqlProxyParameter dbPass = new SqlProxyParameter("@p2", AM_Users.Password);
+                SqlProxyParameter dbSurn = new SqlProxyParameter("@p3", AM_Users.Surname);
+                SqlProxyParameter dbPriv = new SqlProxyParameter("@p4", AM_Users.UserType);
+                SqlProxyParameter dbExp = new SqlProxyParameter("@p5", AM_Users.Expired);
+                SqlProxyParameter dbExpD = new SqlProxyParameter("@p6", AM_Users.ExpireDate);
+                SqlProxyParameter dbCPwd = new SqlProxyParameter("@p7", AM_Users.ChangePassword);
+                SqlProxyParameter dbLock = new SqlProxyParameter("@p8", AM_Users.Blocked);
 
                 string command = "INSERT INTO " + AM_Users.Name + " ( " +
                     AM_Users.Username + ", " +
@@ -457,7 +432,7 @@ namespace ERPFramework.Data
                     AM_Users.Blocked + " ) " +
                     "VALUES (@p1,@p2,@p3,@p4,@p5,@p6,@p7, @p8)";
 
-                SqlABCommand cmd = new SqlABCommand(command, MyConnection);
+                SqlProxyCommand cmd = new SqlProxyCommand(command, MyConnection);
                 cmd.Parameters.Add(dbUser);
                 cmd.Parameters.Add(dbPass);
                 cmd.Parameters.Add(dbSurn);

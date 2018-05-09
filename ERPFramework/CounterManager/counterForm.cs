@@ -5,6 +5,7 @@ using ERPFramework.Libraries;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 
 namespace ERPFramework.CounterManager
 {
@@ -177,7 +178,7 @@ namespace ERPFramework.CounterManager
             : base(name, document)
         { }
 
-        protected override void dAdapter_MasterRowUpdating(object sender, SqlABRowUpdatingEventArgs e)
+        protected override void dAdapter_MasterRowUpdating(object sender, RowUpdatingEventArgs e)
         {
             if (e.StatementType == StatementType.Insert)
             {
@@ -186,7 +187,7 @@ namespace ERPFramework.CounterManager
             base.dAdapter_RowUpdating(sender, e);
         }
 
-        protected override string CreateMasterQuery(ref List<SqlABParameter> dParam)
+        protected override string CreateMasterQuery(ref List<SqlProxyParameter> dParam)
         {
             QueryBuilder qb = new QueryBuilder();
 
@@ -196,15 +197,15 @@ namespace ERPFramework.CounterManager
                 Query;
         }
 
-        protected override List<SqlABParameter> CreateMasterParam()
+        protected override List<SqlProxyParameter> CreateMasterParam()
         {
-            List<SqlABParameter> PList = new List<SqlABParameter>();
+            List<SqlProxyParameter> PList = new List<SqlProxyParameter>();
 
-            SqlABParameter nParam = new SqlABParameter("@p1", AM_Counter.Year);
+            SqlProxyParameter nParam = new SqlProxyParameter("@p1", AM_Counter.Year);
             nParam.Value = AM_Counter.Year.DefaultValue;
             PList.Add(nParam);
 
-            SqlABParameter sParam = new SqlABParameter("@p2", AM_Counter.Type);
+            SqlProxyParameter sParam = new SqlProxyParameter("@p2", AM_Counter.Type);
             sParam.Value = AM_Counter.Type.DefaultValue;
             PList.Add(sParam);
             return PList;
@@ -223,7 +224,7 @@ namespace ERPFramework.CounterManager
             }
         }
 
-        protected override string CreateSlaveQuery(string name, List<SqlABParameter> dParam)
+        protected override string CreateSlaveQuery(string name, List<SqlProxyParameter> dParam)
         {
             if (name == AM_CounterValue.Name)
             {
@@ -238,13 +239,13 @@ namespace ERPFramework.CounterManager
             return "";
         }
 
-        protected override List<SqlABParameter> CreateSlaveParam(string name)
+        protected override List<SqlProxyParameter> CreateSlaveParam(string name)
         {
             if (name == AM_CounterValue.Name)
             {
-                List<SqlABParameter> PList = new List<SqlABParameter>();
+                List<SqlProxyParameter> PList = new List<SqlProxyParameter>();
 
-                SqlABParameter sParam = new SqlABParameter("@p2", AM_CounterValue.Code);
+                SqlProxyParameter sParam = new SqlProxyParameter("@p2", AM_CounterValue.Code);
                 sParam.Value = AM_CounterValue.Code.DefaultValue;
                 PList.Add(sParam);
                 return PList;

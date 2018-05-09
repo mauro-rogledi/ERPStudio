@@ -52,10 +52,10 @@ namespace ERPFramework.Forms
         public DBMode DocumentMode { get { return batchStatus; } }
 
         [Browsable(false)]
-        public SqlABTransaction Transaction { get; set; } = null;
+        public SqlProxyTransaction Transaction { get; set; } = null;
 
         [Browsable(false)]
-        public SqlABConnection Connection { get; } = null;
+        public SqlProxyConnection Connection { get; } = null;
 
         #endregion
 

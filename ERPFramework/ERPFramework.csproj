@@ -32,7 +32,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -781,7 +781,6 @@
     <Compile Include="Login\PasswordManager.cs" />
     <Compile Include="Data\QueryBuilder.cs" />
     <Compile Include="Login\RegisterModule.cs" />
-    <Compile Include="Data\SqlApplicationBuilder.cs" />
     <Compile Include="Data\SqlManager.cs" />
     <None Include="Resources\SortRight32g.png" />
     <None Include="Resources\SortRight32.png" />

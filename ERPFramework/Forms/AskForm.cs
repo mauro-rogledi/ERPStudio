@@ -28,17 +28,17 @@ namespace ERPFramework.Forms
         public event EventHandler Exit;
 
         [Browsable(false)]
-        public SqlABTransaction Transaction { get; set; } = null;
+        public SqlProxyTransaction Transaction { get; set; } = null;
 
-        SqlABConnection connection;
+        SqlProxyConnection connection;
         [Browsable(false)]
-        public SqlABConnection Connection
+        public SqlProxyConnection Connection
         {
             get
             {
                 if (connection == null)
                 {
-                    connection = new SqlABConnection();
+                    connection = new SqlProxyConnection();
                     try
                     {
                         if (connection.State != ConnectionState.Open)
@@ -139,7 +139,7 @@ namespace ERPFramework.Forms
                 ((TrimMaskedTextBoxDataGridViewColumn)gridcol).EnumsType = typeof(T);
         }
 
-        protected SqlABTransaction StartTransaction()
+        protected SqlProxyTransaction StartTransaction()
         {
             Transaction = connection.BeginTransaction();
             return Transaction;

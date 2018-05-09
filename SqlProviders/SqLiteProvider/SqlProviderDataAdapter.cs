@@ -1,4 +1,6 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
+using System.Data.Common;
 using System.Data.SQLite;
 using SqlProxyProvider;
 
@@ -8,6 +10,9 @@ namespace SqlProvider
     {
         SQLiteDataAdapter sqliteDataAdapter;
         public IDbDataAdapter DataAdapter => sqliteDataAdapter;
+
+        public event EventHandler<RowUpdatingEventArgs> RowUpdating;
+        public event EventHandler<RowUpdatedEventArgs> RowUpdated;
 
         public SqlProviderDataAdapter() => sqliteDataAdapter = new SQLiteDataAdapter();
 
@@ -36,5 +41,12 @@ namespace SqlProvider
         public IDataParameter[] GetFillParameters() => sqliteDataAdapter.GetFillParameters();
 
         public int Update(DataSet dataSet) => sqliteDataAdapter.Update(dataSet);
+        public int Update(DataSet dataSet, string srcTable) => sqliteDataAdapter.Update(dataSet, srcTable);
+
+        private void SqlDataAdapter_RowUpdated(object sender, RowUpdatedEventArgs e) =>
+            RowUpdated?.Invoke(sender, e);
+
+        private void SqlDataAdapter_RowUpdating(object sender, RowUpdatingEventArgs e) =>
+            RowUpdating?.Invoke(sender, e);
     }
 }

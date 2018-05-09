@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using ERPFramework.ModulesHelper;
+using System.Data.Common;
 
 namespace ERPFramework.Forms
 {
@@ -134,7 +135,7 @@ namespace ERPFramework.Forms
             return true;
         }
 
-        public virtual List<SqlABParameter> CreateSlaveParam(string name)
+        public virtual List<SqlProxyParameter> CreateSlaveParam(string name)
         {
             return null;
         }
@@ -143,16 +144,16 @@ namespace ERPFramework.Forms
         {
         }
 
-        public virtual string CreateSlaveQuery(string name, List<SqlABParameter> dParam)
+        public virtual string CreateSlaveQuery(string name, List<SqlProxyParameter> dParam)
         {
             return string.Empty;
         }
 
-        public virtual void MasterRowUpdated(Data.DBManager dbManager, SqlABRowUpdatedEventArgs e)
+        public virtual void MasterRowUpdated(Data.DBManager dbManager, RowUpdatedEventArgs e)
         {
         }
 
-        public virtual void RowUpdating(Data.DBManager dbManager, SqlABRowUpdatingEventArgs e)
+        public virtual void RowUpdating(Data.DBManager dbManager, RowUpdatingEventArgs e)
         {
         }
 

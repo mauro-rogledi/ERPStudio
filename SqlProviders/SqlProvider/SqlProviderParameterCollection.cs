@@ -30,11 +30,13 @@ namespace SqlProvider
         public object this[int index] { get => sqlCommand.Parameters[index].Value; set => sqlCommand.Parameters[index].Value = value; }
 
 
-        public void Add(ISqlProviderParameter parameter)
+        public ISqlProviderParameter Add(ISqlProviderParameter parameter)
         {
             var param = parameter.Parameter as ISqlProviderParameter;
 
             sqlCommand.Parameters.Add(param.Parameter);
+
+            return parameter;
         }
 
         public void AddRange(ISqlProviderParameter[] parameters)

@@ -10,6 +10,7 @@ namespace SqlProvider
         SQLiteCommand sqliteCommand;
 
         public SqlProviderCommand() => sqliteCommand = new SQLiteCommand();
+        public SqlProviderCommand(IDbCommand command) => sqliteCommand = command as SQLiteCommand;
         public SqlProviderCommand(string cmdText) => sqliteCommand = new SQLiteCommand(cmdText);
         public SqlProviderCommand(string cmdText, ISqlProviderConnection connection) => sqliteCommand = new SQLiteCommand(cmdText, connection.Connection as SQLiteConnection);
         public SqlProviderCommand(string cmdText, ISqlProviderConnection connection, ISqlProviderTransaction transaction) => sqliteCommand = new SQLiteCommand(cmdText, connection.Connection as SQLiteConnection, transaction.Transaction as SQLiteTransaction);

@@ -10,7 +10,7 @@ namespace ERPFramework.Data
     {
         private int year;
         private int type;
-        private SqlABParameter sqlP1, sqlP2;
+        private SqlProxyParameter sqlP1, sqlP2;
 
         public RRCounter(IDocumentBase iDocumentBase = null)
             : base(iDocumentBase)
@@ -51,7 +51,7 @@ namespace ERPFramework.Data
     #region DUCounterValue
     public class DUCounterValue : DataReaderUpdater<AM_CounterValue>
     {
-        private SqlABParameter sqlP1, sqlP2;
+        private SqlProxyParameter sqlP1, sqlP2;
         private int type;
         private string code;
 
@@ -102,7 +102,7 @@ namespace ERPFramework.Data
     #region DRCodes
     public class DUCodes : DataReaderUpdater<AM_CodeSegment>
     {
-        private SqlABParameter sqlP1;
+        private SqlProxyParameter sqlP1;
         private string codetype;
 
         public DUCodes(IDocumentBase iDocumentBase = null)
@@ -141,7 +141,7 @@ namespace ERPFramework.Data
     #region DRPreference
     public class DUPreference : DataReaderUpdater<AM_Preferences>
     {
-        private SqlABParameter sqlP1, sqlP2, sqlP3, sqlP4;
+        private SqlProxyParameter sqlP1, sqlP2, sqlP3, sqlP4;
         private string preftype;
         private string computer;
         private string username;
@@ -219,7 +219,7 @@ namespace ERPFramework.Data
 
     public class DRFindPreference : DataReaderUpdater<AM_Preferences>
     {
-        private SqlABParameter sqlP1, sqlP2;
+        private SqlProxyParameter sqlP1, sqlP2;
         private string preftype;
         private string application;
 
@@ -262,7 +262,7 @@ namespace ERPFramework.Data
     #region DRReadAllPreference
     public class RRReadAllPreference : DataReaderUpdater<AM_Preferences>
     {
-        private SqlABParameter sqlP1, sqlP2, sqlP3, sqlP4;
+        private SqlProxyParameter sqlP1, sqlP2, sqlP3, sqlP4;
         private string preftype;
         private string computer;
         private string username;

@@ -15,8 +15,8 @@ namespace ERPFramework.Forms
         event EventHandler Exit;
         DBMode DocumentMode { get; }
         string Name { get; set; }
-        SqlABConnection Connection { get; }
-        SqlABTransaction Transaction { get; }
+        SqlProxyConnection Connection { get; }
+        SqlProxyTransaction Transaction { get; }
     }
 
     public interface IDocument : IDocumentBase

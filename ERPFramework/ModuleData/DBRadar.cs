@@ -29,7 +29,7 @@ namespace ERPFramework.Data
     public class RadarCodes : RadarForm
     {
         private QueryBuilder qb = new QueryBuilder();
-        private SqlABParameter p1;
+        private SqlProxyParameter p1;
 
         public RadarCodes()
             : base()
@@ -39,9 +39,9 @@ namespace ERPFramework.Data
             rdrNameSpace = new NameSpace("Plumber.Plumber.ApplicationFramework.CounterManager.codesForm");
         }
 
-        protected override bool DefineFindQuery(SqlABCommand sqlCmd)
+        protected override bool DefineFindQuery(SqlProxyCommand sqlCmd)
         {
-            p1 = new SqlABParameter("@p1", AM_Codes.CodeType);
+            p1 = new SqlProxyParameter("@p1", AM_Codes.CodeType);
 
             qb.Clear();
             qb.SelectAllFrom<AM_Codes>().
@@ -58,12 +58,12 @@ namespace ERPFramework.Data
         {
         }
 
-        protected override void OnFound(SqlABDataReader sqlReader)
+        protected override void OnFound(SqlProxyDataReader sqlReader)
         {
             Description = sqlReader[AM_Codes.Description.Name].ToString();
         }
 
-        protected override string DefineBrowseQuery(SqlABCommand sqlCmd, string findQuery)
+        protected override string DefineBrowseQuery(SqlProxyCommand sqlCmd, string findQuery)
         {
             qb.Clear();
             qb.SelectAllFrom<AM_Codes>().
@@ -99,8 +99,8 @@ namespace ERPFramework.Data
     public class RadarCounter : RadarForm
     {
         private QueryBuilder qb = new QueryBuilder();
-        private SqlABParameter p1;
-        private SqlABParameter p2;
+        private SqlProxyParameter p1;
+        private SqlProxyParameter p2;
 
         public RadarCounter()
             : base()
@@ -110,10 +110,10 @@ namespace ERPFramework.Data
             rdrNameSpace = new NameSpace("Plumber.Plumber.ApplicationFramework.CounterManager.counterForm");
         }
 
-        protected override bool DefineFindQuery(SqlABCommand sqlCmd)
+        protected override bool DefineFindQuery(SqlProxyCommand sqlCmd)
         {
-            p1 = new SqlABParameter("@p1", AM_Counter.Year);
-            p2 = new SqlABParameter("@p2", AM_Counter.Type);
+            p1 = new SqlProxyParameter("@p1", AM_Counter.Year);
+            p2 = new SqlProxyParameter("@p2", AM_Counter.Type);
 
             qb.Clear();
             qb.SelectAllFrom<AM_Counter>().
@@ -134,12 +134,12 @@ namespace ERPFramework.Data
             p2.Value = param[1];
         }
 
-        protected override void OnFound(SqlABDataReader sqlReader)
+        protected override void OnFound(SqlProxyDataReader sqlReader)
         {
             Description = sqlReader[AM_Counter.Description.Name].ToString();
         }
 
-        protected override string DefineBrowseQuery(SqlABCommand sqlCmd, string findQuery)
+        protected override string DefineBrowseQuery(SqlProxyCommand sqlCmd, string findQuery)
         {
             qb.Clear();
             qb.SelectAllFrom<AM_Counter>().

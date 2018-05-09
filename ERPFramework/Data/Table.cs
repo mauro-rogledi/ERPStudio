@@ -116,10 +116,10 @@ namespace ERPFramework.Data
 #endif
 
             const string command = "select object_name(cdefault) from syscolumns where [id] = object_id(@tn) and [name] like @cn ";
-            using (var cmd = new SqlABCommand(command, GlobalInfo.DBaseInfo.dbManager.DB_Connection))
+            using (var cmd = new SqlProxyCommand(command, GlobalInfo.DBaseInfo.dbManager.DB_Connection))
             {
-                var tn = new SqlABParameter("@tn", typeof(string), 64);
-                var cn = new SqlABParameter("@cn", typeof(string), 64);
+                var tn = new SqlProxyParameter("@tn", DbType.String, 64);
+                var cn = new SqlProxyParameter("@cn", DbType.String, 64);
                 cmd.Parameters.Add(tn);
                 cmd.Parameters.Add(cn);
 
@@ -281,7 +281,7 @@ namespace ERPFramework.Data
         {
             try
             {
-                using (SqlABCommand MyCommand = new SqlABCommand(sbuilder.ToString(), GlobalInfo.DBaseInfo.dbManager.DB_Connection))
+                using (SqlProxyCommand MyCommand = new SqlProxyCommand(sbuilder.ToString(), GlobalInfo.DBaseInfo.dbManager.DB_Connection))
                 {
                     MyCommand.ExecuteNonQuery();
                 }

@@ -17,7 +17,7 @@ namespace ERPFramework.Data
         private string _append = string.Empty;
 
         private readonly StringBuilder sb = new StringBuilder();
-        private SqlABCommand scc;
+        private SqlProxyCommand scc;
 
         private Dictionary<string, string> qualifiedMap;
         #endregion
@@ -48,7 +48,7 @@ namespace ERPFramework.Data
             if (hasExecuter)
             {
                 _hasExecuter = hasExecuter;
-                scc = new SqlABCommand(GlobalInfo.LoginInfo.ProviderType, GlobalInfo.SqlConnection);
+                scc = new SqlProxyCommand(GlobalInfo.LoginInfo.ProviderType, GlobalInfo.SqlConnection);
             }
         }
 
@@ -591,12 +591,12 @@ namespace ERPFramework.Data
             var concat = "";
             foreach (object param in values)
             {
-                if (param is SqlABParameter)
+                if (param is SqlProxyParameter)
                 {
                     if (_hasExecuter && scc != null)
-                        scc.Parameters.Add((param as SqlABParameter));
+                        scc.Parameters.Add((param as SqlProxyParameter));
 
-                    concat = concat.SeparConcat((param as SqlABParameter).ParameterName, ",");
+                    concat = concat.SeparConcat((param as SqlProxyParameter).ParameterName, ",");
                 }
                 else if (param is double || param is int)
                 {
@@ -791,11 +791,11 @@ namespace ERPFramework.Data
 
         public QueryBuilder Is(string operators, object val, string qualified="")
         {
-            if (val is SqlABParameter)
+            if (val is SqlProxyParameter)
             {
-                sb.AppendFormat("{0} {1} ", operators, (val as SqlABParameter).ParameterName);
+                sb.AppendFormat("{0} {1} ", operators, (val as SqlProxyParameter).ParameterName);
                 if (_hasExecuter && scc != null)
-                    scc.Parameters.Add((val as SqlABParameter));
+                    scc.Parameters.Add((val as SqlProxyParameter));
 
             }
             else if (val is double ||val is int)
@@ -859,13 +859,13 @@ namespace ERPFramework.Data
 
         public QueryBuilder Between(object val1, object val2)
         {
-            if (val1 is SqlABParameter && val2 is SqlABParameter)
+            if (val1 is SqlProxyParameter && val2 is SqlProxyParameter)
             {
-                sb.AppendFormat("BETWEEN {0} AND {1} ", (val1 as SqlABParameter).ParameterName, (val2 as SqlABParameter).ParameterName);
+                sb.AppendFormat("BETWEEN {0} AND {1} ", (val1 as SqlProxyParameter).ParameterName, (val2 as SqlProxyParameter).ParameterName);
                 if (_hasExecuter && scc != null)
                 {
-                    scc.Parameters.Add((val1 as SqlABParameter));
-                    scc.Parameters.Add((val2 as SqlABParameter));
+                    scc.Parameters.Add((val1 as SqlProxyParameter));
+                    scc.Parameters.Add((val2 as SqlProxyParameter));
                 }
 
             }
@@ -941,12 +941,12 @@ namespace ERPFramework.Data
 
         private string InConcat(string concat, object param)
         {
-            if (param is SqlABParameter)
+            if (param is SqlProxyParameter)
             {
                 if (_hasExecuter && scc != null)
-                    scc.Parameters.Add((param as SqlABParameter));
+                    scc.Parameters.Add((param as SqlProxyParameter));
 
-                concat = concat.SeparConcat((param as SqlABParameter).ParameterName, ",");
+                concat = concat.SeparConcat((param as SqlProxyParameter).ParameterName, ",");
             }
             else if (param is double || param is int)
             {
@@ -1151,7 +1151,7 @@ namespace ERPFramework.Data
         #endregion
 
         #region Execute
-        public SqlABDataReader ExecuteReader()
+        public SqlProxyDataReader ExecuteReader()
         {
             scc.CommandText = Query;
             return scc.ExecuteReader();

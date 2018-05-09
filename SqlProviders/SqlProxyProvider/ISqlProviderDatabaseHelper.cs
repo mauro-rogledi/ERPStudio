@@ -18,5 +18,6 @@ namespace SqlProxyProvider
         void CreateDatabase(string connectionString);
 
         string QuerySearchTable(string tableName);
+        bool SearchColumn(string srcTable, string srcColumn, System.Data.IDbConnection connection);
     }
 }

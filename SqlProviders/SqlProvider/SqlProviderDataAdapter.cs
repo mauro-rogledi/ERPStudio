@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -9,10 +10,13 @@ using SqlProxyProvider;
 
 namespace SqlProvider
 {
-    class SqlProviderDataAdapter : SqlProxyProvider.ISqlProviderDataAdapter
+    class SqlProviderDataAdapter : ISqlProviderDataAdapter
     {
         SqlDataAdapter sqlDataAdapter;
         public IDbDataAdapter DataAdapter => sqlDataAdapter;
+
+        EventHandler<RowUpdatingEventArgs> RowUpdatingEventHandler;
+        EventHandler<RowUpdatedEventArgs> RowUpdatedEventHandler;
 
         public SqlProviderDataAdapter() => sqlDataAdapter = new SqlDataAdapter();
 
@@ -41,5 +45,44 @@ namespace SqlProvider
         public IDataParameter[] GetFillParameters() => sqlDataAdapter.GetFillParameters();
 
         public int Update(DataSet dataSet) => sqlDataAdapter.Update(dataSet);
+        public int Update(DataSet dataSet, string srcTable) => sqlDataAdapter.Update(dataSet, srcTable);
+
+        public event EventHandler<RowUpdatingEventArgs> RowUpdating
+        {
+            add
+            {
+                sqlDataAdapter.RowUpdating += SqlDataAdapter_RowUpdating;
+                RowUpdatingEventHandler += value;
+            }
+
+            remove
+            {
+                sqlDataAdapter.RowUpdating -= SqlDataAdapter_RowUpdating;
+                RowUpdatingEventHandler -= value;
+            }
+        }
+
+        public event EventHandler<RowUpdatedEventArgs> RowUpdated
+        {
+            add
+            {
+                sqlDataAdapter.RowUpdated += SqlDataAdapter_RowUpdated;
+                RowUpdatedEventHandler += value;
+            }
+
+            remove
+            {
+                sqlDataAdapter.RowUpdated -= SqlDataAdapter_RowUpdated;
+                RowUpdatedEventHandler -= value;
+            }
+        }
+
+        private void SqlDataAdapter_RowUpdated(object sender, SqlRowUpdatedEventArgs e) =>
+            RowUpdatedEventHandler?.Invoke(sender, new RowUpdatedEventArgs(e.Row, e.Command, e.StatementType, e.TableMapping));
+
+        private void SqlDataAdapter_RowUpdating(object sender, SqlRowUpdatingEventArgs e) =>
+            RowUpdatingEventHandler?.Invoke(sender, new RowUpdatingEventArgs(e.Row, e.Command, e.StatementType, e.TableMapping));
     }
+
 }
+

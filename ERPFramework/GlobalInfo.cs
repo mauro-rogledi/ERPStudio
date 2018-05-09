@@ -26,7 +26,7 @@ namespace ERPFramework
 
         public static Dictionary<string,TableDefinition> Tables = new Dictionary<string, TableDefinition>();
 
-        public static SqlABConnection SqlConnection
+        public static SqlProxyConnection SqlConnection
         {
             get
             {

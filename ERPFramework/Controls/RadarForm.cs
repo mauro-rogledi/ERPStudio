@@ -27,12 +27,12 @@ namespace ERPFramework.Controls
     public abstract partial class RadarForm : AskForm, IRadarForm
     {
         private DataSet rdrDataSet;
-        private SqlABConnection rdrConnection;
-        private SqlABDataAdapter rdrDataAdapter;
+        private SqlProxyConnection rdrConnection;
+        private SqlProxyDataAdapter rdrDataAdapter;
         private string code = string.Empty;
 
-        protected SqlABCommand rdrFindSqlCommand;
-        protected SqlABCommand rdrBrowseSqlCommand;
+        protected SqlProxyCommand rdrFindSqlCommand;
+        protected SqlProxyCommand rdrBrowseSqlCommand;
 
         protected string strBrowseQuery = string.Empty;
         protected string strFindQuery = string.Empty;
@@ -41,9 +41,9 @@ namespace ERPFramework.Controls
         protected NameSpace rdrNameSpace;
         protected IRadarParameters rdrParameters;
 
-        abstract protected string DefineBrowseQuery(SqlABCommand sqlCmd, string findQuery);
+        abstract protected string DefineBrowseQuery(SqlProxyCommand sqlCmd, string findQuery);
 
-        abstract protected bool DefineFindQuery(SqlABCommand sqlCmd);
+        abstract protected bool DefineFindQuery(SqlProxyCommand sqlCmd);
 
         abstract protected void PrepareFindQuery(IRadarParameters param);
 
@@ -55,7 +55,7 @@ namespace ERPFramework.Controls
 
         virtual protected void PrepareBrowseQuery() { }
 
-        virtual protected void OnFound(SqlABDataReader sqlReader)
+        virtual protected void OnFound(SqlProxyDataReader sqlReader)
         {
             if (RadarFormFoundRecord != null)
                 RadarFormFoundRecord(this, sqlReader);
@@ -83,7 +83,7 @@ namespace ERPFramework.Controls
 
         public event RadarFormRowSelectedEventHandler RadarFormRowSelected;
 
-        public delegate void RadarFormFoundRecordEventHandler(object sender, SqlABDataReader sqlReader);
+        public delegate void RadarFormFoundRecordEventHandler(object sender, SqlProxyDataReader sqlReader);
 
         public event RadarFormFoundRecordEventHandler RadarFormFoundRecord;
 
@@ -222,16 +222,16 @@ namespace ERPFramework.Controls
         private void CreateConnection()
         {
             rdrDataSet = new DataSet("GridDataSet");
-            rdrFindSqlCommand = new SqlABCommand(rdrConnection.providerType)
+            rdrFindSqlCommand = new SqlProxyCommand()
             {
                 Connection = rdrConnection
             };
 
-            rdrBrowseSqlCommand = new SqlABCommand(rdrConnection.providerType);
+            rdrBrowseSqlCommand = new SqlProxyCommand();
             rdrBrowseSqlCommand.Connection = rdrConnection;
 
             rdrBrowseSqlCommand.CommandText = DefineBrowseQuery(rdrBrowseSqlCommand, string.Empty);
-            rdrDataAdapter = new SqlABDataAdapter(rdrBrowseSqlCommand);
+            rdrDataAdapter = new SqlProxyDataAdapter(rdrBrowseSqlCommand);
         }
 
         protected override void OnShown(EventArgs e)
@@ -340,7 +340,7 @@ namespace ERPFramework.Controls
 
         private void Requery()
         {
-            var requery = new SqlABCommand(GlobalInfo.LoginInfo.ProviderType)
+            var requery = new SqlProxyCommand()
             {
                 Connection = rdrConnection
             };
