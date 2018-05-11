@@ -32,6 +32,8 @@ namespace ProvaProviders
             //};
             //creadb.CreateDatabase();
 
+            SqlProxyDatabaseHelper.Password = "aa";
+
             var sqlconnectiostring = new SqlProxyConnectionStringbuilder
             {
                 DataSource = @"USR-ROGLEDIMAU1",

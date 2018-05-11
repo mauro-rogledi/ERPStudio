@@ -3,7 +3,10 @@ using System;
 using System.Collections;
 using System.Data;
 using System.Data.Common;
+using System.IO;
 using System.Reflection;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace ERPFramework.Data
 {
@@ -18,13 +21,14 @@ namespace ERPFramework.Data
 
         public static void LoadProvider()
         {
+            var path = Application.StartupPath;
             switch (UseProvider)
             {
                 case ProviderType.SQLServer:
-                    assembly = Assembly.LoadFrom(@"SqlProvider\SQLServerProvider.dll");
+                    assembly = Assembly.LoadFrom(Path.Combine(Application.StartupPath, @"SqlProviders\SQLServerProvider.dll"));
                     break;
                 case ProviderType.SQLite:
-                    assembly = Assembly.LoadFrom(@"SqlProvider\SqLiteProvider.dll");
+                    assembly = Assembly.LoadFrom(Path.Combine(Application.StartupPath, @"SqlProviders\SqLiteProvider.dll"));
                     break;
             }
         }
@@ -430,15 +434,27 @@ namespace ERPFramework.Data
     #region SqlProxyDatabaseHelper
     public static class SqlProxyDatabaseHelper
     {
+        static bool lockWasTaken = false;
         static ISqlProxyDataBaseHelper _databaseHelper;
         static ISqlProxyDataBaseHelper databaseHelper
         {
             get
             {
-                lock (_databaseHelper)
+                try
                 {
                     if (_databaseHelper == null)
+                    {
+                        Monitor.Enter(lockWasTaken);
                         _databaseHelper = ProxyProviderLoader.CreateInstance<ISqlProxyDataBaseHelper>("SqlProvider.SqlProviderDatabaseHelper");
+                    }
+                }
+                // body
+                finally
+                {
+                    if (lockWasTaken)
+                    {
+                        Monitor.Exit(lockWasTaken);
+                    }
                 }
                 return _databaseHelper;
             }
@@ -643,8 +659,6 @@ namespace ERPFramework.Data
         public object SyncRoot => Parameters.SyncRoot;
 
         public bool IsSynchronized => Parameters.IsSynchronized;
-
-        public ISqlProviderParameter Add(ISqlProviderParameter param) => Parameters.Add(param);
 
         public int Add(object value) => Parameters.Add(value);
 

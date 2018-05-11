@@ -42,7 +42,7 @@
     <Compile Include="SqlProviderConnection.cs" />
     <Compile Include="SqlProviderConnectionStringBuilder.cs" />
     <Compile Include="SqlProviderDataAdapter.cs" />
-    <Compile Include="SqlProviderDataBaseHelper.cs" />
+    <Compile Include="SqlProviderDatabaseHelper.cs" />
     <Compile Include="SqlProviderDataReader.cs" />
     <Compile Include="SqlProviderParameter.cs" />
     <Compile Include="SqlProviderParameterCollection.cs" />

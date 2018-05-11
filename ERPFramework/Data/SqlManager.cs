@@ -472,6 +472,7 @@ namespace ERPFramework.Data
                     XmlSerializer xmlSer = new XmlSerializer(typeof(LoginInfo));
 
                     GlobalInfo.LoginInfo = (LoginInfo)xmlSer.Deserialize(stream);
+                    ProxyProviderLoader.UseProvider = GlobalInfo.LoginInfo.ProviderType;
                     if (GlobalInfo.LoginInfo.RememberLastLogin)
                         GlobalInfo.LoginInfo.LastPassword = Cryption.Decrypt(GlobalInfo.LoginInfo.LastPassword);
                 }

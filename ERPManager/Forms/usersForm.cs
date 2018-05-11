@@ -54,7 +54,7 @@ namespace ERPManager.Forms
         {
         }
 
-        protected override string CreateMasterQuery(ref List<SqlABParameter> dParam)
+        protected override string CreateMasterQuery(ref List<SqlProxyParameter> dParam)
         {
             var qb = new QueryBuilder();
 
@@ -64,11 +64,11 @@ namespace ERPManager.Forms
                 Query;
         }
 
-        protected override List<SqlABParameter> CreateMasterParam()
+        protected override List<SqlProxyParameter> CreateMasterParam()
         {
-            var PList = new List<SqlABParameter>();
+            var PList = new List<SqlProxyParameter>();
 
-            var sParam = new SqlABParameter("@p1", AM_Users.Username) { Value = "" };
+            var sParam = new SqlProxyParameter("@p1", AM_Users.Username) { Value = "" };
             PList.Add(sParam);
             return PList;
         }

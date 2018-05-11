@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Reflection;
+using System.Threading;
 using SqlProxyProvider;
 
 namespace ProvaProviders
@@ -416,26 +417,47 @@ namespace ProvaProviders
     }
     #endregion
 
-    #region SqlProxyDataBaseHelper
-    public class SqlProxyDataBaseHelper
+    #region SqlProxyDatabaseHelper
+    public static class SqlProxyDatabaseHelper
     {
-        ISqlProxyDataBaseHelper createDatabase;
-        public SqlProxyDataBaseHelper()
+        static bool lockWasTaken = false;
+        static ISqlProxyDataBaseHelper _databaseHelper;
+        static ISqlProxyDataBaseHelper databaseHelper
         {
-            createDatabase = ProxyProviderLoader.CreateInstance<ISqlProxyDataBaseHelper>("SqlProvider.SqlProviderDataBaseHelper");
+            get
+            {
+                try
+                {
+                    Monitor.Enter(lockWasTaken);
+                    if (_databaseHelper == null)
+                        _databaseHelper = ProxyProviderLoader.CreateInstance<ISqlProxyDataBaseHelper>("SqlProvider.SqlProviderDatabaseHelper");
+                }
+                // body
+                finally
+                {
+                    if (lockWasTaken)
+                    {
+                        Monitor.Exit(lockWasTaken);
+                    }
+                }
+                return _databaseHelper;
+            }
         }
 
-        public string DataSource { get => createDatabase.DataSource; set => createDatabase.DataSource = value; }
-        public string UserID { get => createDatabase.UserID; set => createDatabase.UserID = value; }
-        public string InitialCatalog { get => createDatabase.InitialCatalog; set => createDatabase.InitialCatalog = value; }
-        public string Password { get => createDatabase.Password; set => createDatabase.Password = value; }
-        public bool IntegratedSecurity { get => createDatabase.IntegratedSecurity; set => createDatabase.IntegratedSecurity = value; }
+        public static string DataSource { get => databaseHelper.DataSource; set => databaseHelper.DataSource = value; }
+        public static string UserID { get => databaseHelper.UserID; set => databaseHelper.UserID = value; }
+        public static string InitialCatalog { get => databaseHelper.InitialCatalog; set => databaseHelper.InitialCatalog = value; }
+        public static string Password { get => databaseHelper.Password; set => databaseHelper.Password = value; }
+        public static bool IntegratedSecurity { get => databaseHelper.IntegratedSecurity; set => databaseHelper.IntegratedSecurity = value; }
 
-        public void CreateDatabase() => createDatabase.CreateDatabase();
+        public static void CreateDatabase() => databaseHelper.CreateDatabase();
 
-        public void CreateDatabase(string connectionString) => createDatabase.CreateDatabase(connectionString);
+        public static void CreateDatabase(string connectionString) => databaseHelper.CreateDatabase(connectionString);
 
-        public string QuerySearchTable(string tableName) => createDatabase.QuerySearchTable(tableName);
+        public static string QuerySearchTable(string tableName) => databaseHelper.QuerySearchTable(tableName);
+
+        //public static bool SearchColumn(IColumn column, SqlProxyConnection connection) => databaseHelper.SearchColumn(column.Tablename, column.Name, connection.Connection.Connection);
+
     }
     #endregion
 

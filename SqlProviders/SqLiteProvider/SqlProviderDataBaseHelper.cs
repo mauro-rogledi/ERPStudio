@@ -5,7 +5,7 @@ using SqlProxyProvider;
 
 namespace SqlProvider
 {
-    class SqlProviderDataBaseHelper : SqlProxyProvider.ISqlProxyDataBaseHelper
+    class SqlProviderDatabaseHelper : SqlProxyProvider.ISqlProxyDataBaseHelper
     {
         public string DataSource { get; set; } = "";
         public string UserID { get; set; } = "";
