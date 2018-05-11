@@ -302,8 +302,6 @@ namespace ERPFramework.Data
 
         protected virtual void CreateUpdateCommand()
         {
-            firstUpdate = false;
-
             var cBuilder = new SqlProxyCommandBuilder(sqlDA)
             {
                 QuotePrefix = "[",

@@ -11,10 +11,14 @@
     <RootNamespace>ERPManager</RootNamespace>
     <AssemblyName>ERPManager</AssemblyName>
     <StartupObject>ERPManager.MainClass</StartupObject>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <ApplicationIcon>App.ico</ApplicationIcon>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

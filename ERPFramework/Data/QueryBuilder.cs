@@ -48,7 +48,7 @@ namespace ERPFramework.Data
             if (hasExecuter)
             {
                 _hasExecuter = hasExecuter;
-                scc = new SqlProxyCommand(GlobalInfo.LoginInfo.ProviderType, GlobalInfo.SqlConnection);
+                scc = new SqlProxyCommand(GlobalInfo.SqlConnection);
             }
         }
 

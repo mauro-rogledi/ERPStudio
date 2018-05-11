@@ -1,5 +1,6 @@
 ﻿using SqlProxyProvider;
 using System;
+using System.Collections;
 using System.Data;
 using System.Data.Common;
 using System.Reflection;
@@ -126,36 +127,33 @@ namespace ERPFramework.Data
         public SqlProxyCommand()
         {
             dbCommand = ProxyProviderLoader.CreateInstance<ISqlProviderCommand>("SqlProvider.SqlProviderCommand");
-            Parameters = ProxyProviderLoader.CreateInstance<ISqlProviderParameterCollection>("SqlProvider.SqlProviderParameterCollection", dbCommand.Command);
+            Parameters = new SqlProxyParameterCollection(dbCommand);
         }
+
+        public SqlProxyCommand(IDbConnection connection) : base() => Connection = connection;
 
         public SqlProxyCommand(IDbCommand command)
         {
             dbCommand = ProxyProviderLoader.CreateInstance<ISqlProviderCommand>("SqlProvider.SqlProviderCommand", command);
-            Parameters = ProxyProviderLoader.CreateInstance<ISqlProviderParameterCollection>("SqlProvider.SqlProviderParameterCollection", dbCommand.Command);
+            Parameters = new SqlProxyParameterCollection(dbCommand);
         }
 
         public SqlProxyCommand(string cmdText)
         {
             dbCommand = ProxyProviderLoader.CreateInstance<ISqlProviderCommand>("SqlProvider.SqlProviderCommand", cmdText);
-            Parameters = ProxyProviderLoader.CreateInstance<ISqlProviderParameterCollection>("SqlProvider.SqlProviderParameterCollection", dbCommand.Command);
+            Parameters = new SqlProxyParameterCollection(dbCommand.Command);
         }
 
         public SqlProxyCommand(string cmdText, SqlProxyConnection connection)
         {
             dbCommand = ProxyProviderLoader.CreateInstance<ISqlProviderCommand>("SqlProvider.SqlProviderCommand", cmdText, connection.Connection);
-            Parameters = ProxyProviderLoader.CreateInstance<ISqlProviderParameterCollection>("SqlProvider.SqlProviderParameterCollection", dbCommand.Command);
+            Parameters = new SqlProxyParameterCollection(dbCommand.Command);
         }
         public SqlProxyCommand(string cmdText, SqlProxyConnection connection, SqlProxyTransaction transaction)
         {
             dbCommand = ProxyProviderLoader.CreateInstance<ISqlProviderCommand>("SqlProvider.SqlProviderCommand", cmdText, connection.Connection, transaction.Transaction);
-            Parameters = ProxyProviderLoader.CreateInstance<ISqlProviderParameterCollection>("SqlProvider.SqlProviderParameterCollection", dbCommand);
+            Parameters = new SqlProxyParameterCollection(dbCommand.Command);
         }
-        //public SqlProxyCommand(string cmdText, SqlProxyConnection connection, SqlTransaction transaction, SqlCommandColumnEncryptionSetting columnEncryptionSetting)
-        //{
-
-        //}
-
 
         public IDbConnection Connection { get => dbCommand.Connection; set => dbCommand.Connection = value; }
         public IDbTransaction Transaction { get => dbCommand.Transaction; set => dbCommand.Transaction = (value as ISqlProviderTransaction).Transaction; }
@@ -163,7 +161,7 @@ namespace ERPFramework.Data
         public int CommandTimeout { get => dbCommand.CommandTimeout; set => dbCommand.CommandTimeout = value; }
         public CommandType CommandType { get => dbCommand.CommandType; set => dbCommand.CommandType = value; }
 
-        public ISqlProviderParameterCollection Parameters { get; }
+        public SqlProxyParameterCollection Parameters { get; }
         public UpdateRowSource UpdatedRowSource { get => dbCommand.UpdatedRowSource; set => dbCommand.UpdatedRowSource = value; }
 
         IDataParameterCollection IDbCommand.Parameters => throw new NotImplementedException();
@@ -619,6 +617,67 @@ namespace ERPFramework.Data
 
         public SqlProxyCommand GetUpdateCommand() => new SqlProxyCommand(CommandBuilder.GetUpdateCommand());
         public SqlProxyCommand GetUpdateCommand(bool useColumnsForParameterNames) => new SqlProxyCommand(CommandBuilder.GetUpdateCommand(useColumnsForParameterNames));
+    }
+    #endregion
+
+    #region SqlProxyParameterCollection
+    public class SqlProxyParameterCollection
+    {
+        ISqlProviderParameterCollection Parameters { get; }
+        public SqlProxyParameterCollection(IDbCommand command)
+        {
+            Parameters = ProxyProviderLoader.CreateInstance<ISqlProviderParameterCollection>("SqlProvider.SqlProviderParameterCollection", command);
+        }
+
+        public object this[string parameterName] { get => Parameters[parameterName]; set => Parameters[parameterName] = value; }
+        public object this[int index] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public IDbCommand Command => Parameters.Command;
+
+        public bool IsReadOnly => Parameters.IsReadOnly;
+
+        public bool IsFixedSize => Parameters.IsFixedSize;
+
+        public int Count => Parameters.Count;
+
+        public object SyncRoot => Parameters.SyncRoot;
+
+        public bool IsSynchronized => Parameters.IsSynchronized;
+
+        public ISqlProviderParameter Add(ISqlProviderParameter param) => Parameters.Add(param);
+
+        public int Add(object value) => Parameters.Add(value);
+
+        public SqlProxyParameter Add(SqlProxyParameter param) => Parameters.Add(param) as SqlProxyParameter;
+
+        public void AddRange(SqlProxyParameter[] param) => Parameters.AddRange(param);
+
+        public void AddRange(System.Collections.Generic.List<SqlProxyParameter> parameters)
+        {
+            foreach (var param in parameters)
+                Parameters.Add(param as ISqlProviderParameter);
+        }
+
+        public void Clear() => Parameters.Clear();
+
+        public bool Contains(string parameterName) => Parameters.Contains(parameterName);
+
+        public bool Contains(object value) => Parameters.Contains(value);
+
+        public void CopyTo(Array array, int index) => Parameters.CopyTo(array, index);
+        public IEnumerator GetEnumerator() => Parameters.GetEnumerator();
+
+        public int IndexOf(string parameterName) => Parameters.IndexOf(parameterName);
+
+        public int IndexOf(object value) => Parameters.IndexOf(value);
+
+        public void Insert(int index, object value) => Parameters.Insert(index, value);
+
+        public void Remove(object value) => Parameters.Remove(value);
+
+        public void RemoveAt(string parameterName) => Parameters.RemoveAt(parameterName);
+
+        public void RemoveAt(int index) => Parameters.RemoveAt(index);
     }
     #endregion
 }

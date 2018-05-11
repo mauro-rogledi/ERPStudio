@@ -605,95 +605,50 @@ namespace ProvaProviders
             Parameters = ProxyProviderLoader.CreateInstance<ISqlProviderParameterCollection>("SqlProvider.SqlProviderParameterCollection", command);
         }
 
-        public object this[string parameterName] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public object this[string parameterName] { get => Parameters[parameterName]; set => Parameters[parameterName] = value; }
         public object this[int index] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public IDbCommand Command => throw new NotImplementedException();
+        public IDbCommand Command => Parameters.Command;
 
-        public bool IsReadOnly => throw new NotImplementedException();
+        public bool IsReadOnly => Parameters.IsReadOnly;
 
-        public bool IsFixedSize => throw new NotImplementedException();
+        public bool IsFixedSize => Parameters.IsFixedSize;
 
-        public int Count => throw new NotImplementedException();
+        public int Count => Parameters.Count;
 
-        public object SyncRoot => throw new NotImplementedException();
+        public object SyncRoot => Parameters.SyncRoot;
 
-        public bool IsSynchronized => throw new NotImplementedException();
+        public bool IsSynchronized => Parameters.IsSynchronized;
 
-        public ISqlProviderParameter Add(ISqlProviderParameter param)
-        {
-            throw new NotImplementedException();
-        }
+        public ISqlProviderParameter Add(ISqlProviderParameter param) => Parameters.Add(param);
 
-        public int Add(object value)
-        {
-            throw new NotImplementedException();
-        }
+        public int Add(object value) => Parameters.Add(value);
 
-        public void AddRange(ISqlProviderParameter[] param)
-        {
-            throw new NotImplementedException();
-        }
+        public SqlProxyParameter Add(SqlProxyParameter param) => Parameters.Add(param) as SqlProxyParameter;
 
-        public void AddRange(List<ISqlProviderParameter> param)
-        {
-            throw new NotImplementedException();
-        }
+        public void AddRange(ISqlProviderParameter[] param) => Parameters.AddRange(param);
 
-        public void Clear()
-        {
-            throw new NotImplementedException();
-        }
+        public void AddRange(List<ISqlProviderParameter> param) => Parameters.AddRange(param);
 
-        public bool Contains(string parameterName)
-        {
-            throw new NotImplementedException();
-        }
+        public void Clear() => Parameters.Clear();
 
-        public bool Contains(object value)
-        {
-            throw new NotImplementedException();
-        }
+        public bool Contains(string parameterName) => Parameters.Contains(parameterName);
 
-        public void CopyTo(Array array, int index)
-        {
-            throw new NotImplementedException();
-        }
+        public bool Contains(object value) => Parameters.Contains(value);
 
-        public IEnumerator GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
+        public void CopyTo(Array array, int index) => Parameters.CopyTo(array, index);
+        public IEnumerator GetEnumerator() => Parameters.GetEnumerator();
 
-        public int IndexOf(string parameterName)
-        {
-            throw new NotImplementedException();
-        }
+        public int IndexOf(string parameterName) => Parameters.IndexOf(parameterName);
 
-        public int IndexOf(object value)
-        {
-            throw new NotImplementedException();
-        }
+        public int IndexOf(object value) => Parameters.IndexOf(value);
 
-        public void Insert(int index, object value)
-        {
-            throw new NotImplementedException();
-        }
+        public void Insert(int index, object value) => Parameters.Insert(index, value);
 
-        public void Remove(object value)
-        {
-            throw new NotImplementedException();
-        }
+        public void Remove(object value) => Parameters.Remove(value);
 
-        public void RemoveAt(string parameterName)
-        {
-            throw new NotImplementedException();
-        }
+        public void RemoveAt(string parameterName) => Parameters.RemoveAt(parameterName);
 
-        public void RemoveAt(int index)
-        {
-            throw new NotImplementedException();
-        }
+        public void RemoveAt(int index) => Parameters.RemoveAt(index);
     }
-
 }

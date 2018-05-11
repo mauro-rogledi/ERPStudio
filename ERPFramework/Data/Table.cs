@@ -110,9 +110,10 @@ namespace ERPFramework.Data
 
         private static string GetConstraint(IColumn columnName)
         {
+            // @@TODO GetConstraint
 #if(SQLCompact)
-            if (GlobalInfo.SqlConnection.ProviderType == ProviderType.SQLCompact)
-                return "";
+            //if (GlobalInfo.SqlConnection.ProviderType == ProviderType.SQLCompact)
+            //    return "";
 #endif
 
             const string command = "select object_name(cdefault) from syscolumns where [id] = object_id(@tn) and [name] like @cn ";

@@ -56,9 +56,14 @@ namespace ProvaProviders
                     //    Value = "ARDUINO"
                     //};
 
-                    var p1 = new SqlProxyParameter("@p1", DbType.Int16)
+                    //var p1 = new SqlProxyParameter("@p1", DbType.Int16)
+                    //{
+                    //    Value = 1
+                    //};
+
+                    var p1 = new SqlProxyParameter("@p1", DbType.String, 5)
                     {
-                        Value = 1
+                        Value = "ALFKI"
                     };
 
                     var dataSet = new DataSet();
@@ -66,7 +71,8 @@ namespace ProvaProviders
                     //using (var sqlCmd = new SqlProxyCommand("SELECT * FROM CL_MASTER where ID = @p1", connection))
                     //using (var sqlCmd = new SqlProxyCommand("SELECT * FROM PL_MASTERS where Code = @p1", connection))
                     {
-                        sqlCmd.Parameters.Add(p1);
+                        var p2 = sqlCmd.Parameters.Add(p1);
+                        sqlCmd.Parameters["@p1"] = "CIAO";
                         var dAdapter = new SqlProxyDataAdapter
                         {
                             SelectCommand = sqlCmd
