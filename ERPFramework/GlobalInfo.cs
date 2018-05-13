@@ -136,9 +136,9 @@ namespace ERPFramework
         [XmlElement()]
         public ProviderType ProviderType { get; set; }
         [XmlElement()]
-        public string Host { get; set; }
+        public string DataSource { get; set; }
         [XmlElement()]
-        public string Datasource { get; set; }
+        public string InitialCatalog { get; set; }
         [XmlElement()]
         public AuthenticationMode AuthenicationMode { get; set; }
         [XmlElement()]

@@ -99,22 +99,23 @@ namespace ERPFramework.Data
         {
             var dictConver = new Dictionary<Type, DbType>
             {
-                {typeof(string), DbType.String},
                 {typeof(String), DbType.String},
                 {typeof(Int32), DbType.Int32},
-                {typeof(int), DbType.Int32},
                 {typeof(Byte), DbType.Byte},
                 {typeof(Enum), DbType.UInt16},
-                {typeof(bool), DbType.Boolean},
                 {typeof(Boolean), DbType.Boolean},
                 {typeof(Decimal), DbType.Decimal},
-                {typeof(float), DbType.Single},
+                {typeof(Single), DbType.Single},
                 {typeof(Double), DbType.Double},
                 {typeof(DateTime), DbType.DateTime},
-                {typeof(TimeSpan), DbType.DateTime},
+                {typeof(TimeSpan), DbType.DateTime}
             };
 
-            if (dictConver.ContainsKey(typein))
+            var typeCheck = typein.BaseType == typeof(Enum)
+                ? typein.BaseType
+                : typein;
+
+            if (dictConver.ContainsKey(typeCheck))
                 return dictConver[typein];
 
             throw new Exception("Unknown Type");

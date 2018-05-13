@@ -319,4 +319,42 @@ namespace ERPFramework.Data
     }
     #endregion
 
+    #region DRUsers
+    public class DRUsers : DataReaderUpdater<AM_Users>
+    {
+        private SqlProxyParameter sqlP1;
+        private string username;
+
+        public DRUsers(IDocumentBase iDocumentBase = null)
+            : base(iDocumentBase)
+        {
+        }
+
+        public bool Find(string userName)
+        {
+            username = userName;
+            return base.Find();
+        }
+
+        protected override void AddParameters()
+        {
+            sqlP1 = AddParameters("@p50", AM_Preferences.Username);
+        }
+
+        protected override string CreateQuery()
+        {
+            return new QueryBuilder().
+                SelectAllFrom<AM_Users>().
+                Where(AM_Users.Username).IsEqualTo(sqlP1).
+                Query;
+        }
+
+        protected override void SetParameters()
+        {
+            sqlP1.Value = username;
+        }
+    }
+
+    #endregion
+
 }

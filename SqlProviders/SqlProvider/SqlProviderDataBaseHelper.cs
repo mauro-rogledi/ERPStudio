@@ -66,7 +66,7 @@ namespace SqlProvider
             }
         }
 
-        public string QuerySearchTable(string tableName) => $"select table_name from information_schema.tables where table_name = '{tableName}";
+        public string QuerySearchTable(string tableName) => $"select table_name from information_schema.tables where table_name = '{tableName}'";
 
         public bool SearchColumn(string srcTable, string  srcColumn, IDbConnection connection)
         {

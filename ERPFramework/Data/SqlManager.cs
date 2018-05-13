@@ -96,11 +96,11 @@ namespace ERPFramework.Data
                 MyConnection.Open();
                 connected = (MyConnection.State == ConnectionState.Open);
                 if (connected)
-                    MyConnection.ChangeDatabase(lI.Datasource);
+                    MyConnection.ChangeDatabase(lI.InitialCatalog);
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString(), lI.Datasource, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(ex.ToString(), lI.InitialCatalog, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return false;
             }
 
@@ -163,9 +163,10 @@ namespace ERPFramework.Data
         /// </summary>
         private bool CreateNewDatabase()
         {
-            SqlProxyDatabaseHelper.DataSource = GlobalInfo.LoginInfo.Datasource;
+            SqlProxyDatabaseHelper.DataSource = GlobalInfo.LoginInfo.DataSource;
             SqlProxyDatabaseHelper.UserID = GlobalInfo.LoginInfo.UserID;
             SqlProxyDatabaseHelper.Password = GlobalInfo.LoginInfo.Password;
+            SqlProxyDatabaseHelper.InitialCatalog = GlobalInfo.LoginInfo.InitialCatalog;
             SqlProxyDatabaseHelper.IntegratedSecurity = GlobalInfo.LoginInfo.AuthenicationMode == AuthenticationMode.Windows;
             SqlProxyDatabaseHelper.CreateDatabase();
 
@@ -177,16 +178,16 @@ namespace ERPFramework.Data
                 MyConnection.Open();
                 if (MyConnection.State == ConnectionState.Open)
                     MessageBox.Show(Properties.Resources.Database_Create,
-                                    GlobalInfo.LoginInfo.Datasource,
+                                    GlobalInfo.LoginInfo.InitialCatalog,
                                     MessageBoxButtons.OK, MessageBoxIcon.Information);
-                MyConnection.ChangeDatabase(GlobalInfo.LoginInfo.Datasource);
+                MyConnection.ChangeDatabase(GlobalInfo.LoginInfo.InitialCatalog);
                 RegisterModule RsT = new ERPFramework.ModuleData.RegisterModule();
                 RsT.CreateTable(MyConnection, GlobalInfo.UserInfo.userType);
                 AddAdminUser();
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString(), GlobalInfo.LoginInfo.Datasource, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(ex.ToString(), GlobalInfo.LoginInfo.InitialCatalog, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
             if (MyConnection.State == ConnectionState.Open)
@@ -211,11 +212,11 @@ namespace ERPFramework.Data
                 newConn.Open();
                 connected = (newConn.State == ConnectionState.Open);
                 if (connected)
-                    newConn.ChangeDatabase(GlobalInfo.LoginInfo.Datasource);
+                    newConn.ChangeDatabase(GlobalInfo.LoginInfo.InitialCatalog);
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString(), GlobalInfo.LoginInfo.Datasource, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(ex.ToString(), GlobalInfo.LoginInfo.InitialCatalog, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return null;
             }
 
@@ -237,8 +238,8 @@ namespace ERPFramework.Data
         {
             var li = GlobalInfo.LoginInfo;
             li.ProviderType = myConnectionForm.DataBase_Provider;
-            li.Host = myConnectionForm.DataBase_Host;
-            li.Datasource = myConnectionForm.DataBase_Name;
+            li.DataSource = myConnectionForm.DataBase_Host;
+            li.InitialCatalog = myConnectionForm.DataBase_Name;
             li.AuthenicationMode = myConnectionForm.DataBase_Authentication;
             li.UserID = myConnectionForm.DataBase_Username;
             li.Password = myConnectionForm.DataBase_Password;
@@ -410,55 +411,20 @@ namespace ERPFramework.Data
 
         public bool AddUser(string username, string password, string surname, UserType usertype)
         {
-            try
-            {
-                SqlProxyParameter dbUser = new SqlProxyParameter("@p1", AM_Users.Username);
-                SqlProxyParameter dbPass = new SqlProxyParameter("@p2", AM_Users.Password);
-                SqlProxyParameter dbSurn = new SqlProxyParameter("@p3", AM_Users.Surname);
-                SqlProxyParameter dbPriv = new SqlProxyParameter("@p4", AM_Users.UserType);
-                SqlProxyParameter dbExp = new SqlProxyParameter("@p5", AM_Users.Expired);
-                SqlProxyParameter dbExpD = new SqlProxyParameter("@p6", AM_Users.ExpireDate);
-                SqlProxyParameter dbCPwd = new SqlProxyParameter("@p7", AM_Users.ChangePassword);
-                SqlProxyParameter dbLock = new SqlProxyParameter("@p8", AM_Users.Blocked);
+            var duUsers = new DRUsers();
+            duUsers.Find(username);
 
-                string command = "INSERT INTO " + AM_Users.Name + " ( " +
-                    AM_Users.Username + ", " +
-                    AM_Users.Password + ", " +
-                    AM_Users.Surname + ", " +
-                    AM_Users.UserType + ", " +
-                    AM_Users.Expired + ", " +
-                    AM_Users.ExpireDate + ", " +
-                    AM_Users.ChangePassword + ", " +
-                    AM_Users.Blocked + " ) " +
-                    "VALUES (@p1,@p2,@p3,@p4,@p5,@p6,@p7, @p8)";
+            var row = duUsers.AddRecord();
+            row.SetValue<string>(AM_Users.Username, username);
+            row.SetValue<string>(AM_Users.Password, Cryption.Encrypt(password));
+            row.SetValue<string>(AM_Users.Surname, surname);
+            row.SetValue<UserType>(AM_Users.UserType, usertype);
+            row.SetValue<bool>(AM_Users.Expired, false);
+            row.SetValue<DateTime>(AM_Users.ExpireDate, DateTime.Today);
+            row.SetValue<bool>(AM_Users.ChangePassword, true);
+            row.SetValue<bool>(AM_Users.Blocked, false);
 
-                SqlProxyCommand cmd = new SqlProxyCommand(command, MyConnection);
-                cmd.Parameters.Add(dbUser);
-                cmd.Parameters.Add(dbPass);
-                cmd.Parameters.Add(dbSurn);
-                cmd.Parameters.Add(dbPriv);
-                cmd.Parameters.Add(dbExp);
-                cmd.Parameters.Add(dbExpD);
-                cmd.Parameters.Add(dbCPwd);
-                cmd.Parameters.Add(dbLock);
-
-                dbUser.Value = username;
-                dbPass.Value = Cryption.Encrypt(password);
-                dbSurn.Value = surname;
-                dbPriv.Value = usertype;
-                dbExp.Value = 0;
-                dbExpD.Value = DateTime.Today;
-                dbCPwd.Value = 1;
-                dbLock.Value = 0;
-
-                cmd.ExecuteScalar();
-            }
-            catch (SqlException exc)
-            {
-                MessageBox.Show(exc.Message);
-                return false;
-            }
-            return true;
+            return duUsers.Update();
         }
 
         private bool ReadConfigFile()
@@ -561,9 +527,10 @@ namespace ERPFramework.Data
             LoginInfo li = GlobalInfo.LoginInfo;
             var sqlconnectionstring = new SqlProxyConnectionStringbuilder
             {
-                DataSource = li.Datasource,
+                DataSource = li.DataSource,
                 UserID = li.UserID,
                 Password = li.Password,
+                InitialCatalog = li.InitialCatalog,
                 IntegratedSecurity = li.AuthenicationMode == AuthenticationMode.Windows
             };
 

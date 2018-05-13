@@ -1,4 +1,6 @@
-﻿using System.Data;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 
@@ -6,8 +8,33 @@ namespace ProvaProviders
 {
     class Program
     {
+        public static DbType GetDBType(Type typein)
+        {
+            var dictConver = new Dictionary<Type, DbType>
+            {
+                {typeof(String), DbType.String},
+                {typeof(Int32), DbType.Int32},
+                {typeof(Byte), DbType.Byte},
+                {typeof(Enum), DbType.UInt16},
+                {typeof(Boolean), DbType.Boolean},
+                {typeof(Decimal), DbType.Decimal},
+                {typeof(Single), DbType.Single},
+                {typeof(Double), DbType.Double},
+                {typeof(DateTime), DbType.DateTime},
+                {typeof(TimeSpan), DbType.DateTime}
+            };
+            var labase = typein.BaseType;
+
+            if (dictConver.ContainsKey(typein))
+                return dictConver[typein];
+
+            throw new Exception("Unknown Type");
+        }
+
         static void Main(string[] args)
         {
+
+            var result = GetDBType(typeof(String));
             ProxyProviderLoader.UseProvider = ProviderType.SQL;
             //var sqlconnectiostring = new SqlProxyConnectionStringbuilder
             //{
