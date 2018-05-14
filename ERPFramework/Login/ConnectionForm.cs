@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.Sql;
@@ -16,19 +17,19 @@ namespace ERPFramework.Login
     {
         #region Properties
 
-        public ProviderType DataBase_Provider { get; private set; }
+        public ProviderType Provider { get; private set; }
 
-        public string DataBase_Name { get; private set; }
+        public string InitialCatalog { get; private set; }
 
-        public string DataBase_Host { get; private set; }
+        public string DataSource { get; private set; }
 
-        public string DataBase_Username { get; private set; }
+        public string Username { get; private set; }
 
-        public string DataBase_Password { get; private set; }
+        public string Password { get; private set; }
 
         public AuthenticationMode DataBase_Authentication { get; private set; }
 
-        public bool DataBase_NewDatabase { get; private set; }
+        public bool NewDatabase { get; private set; }
 
         #endregion
 
@@ -141,23 +142,39 @@ namespace ERPFramework.Login
             this.cbbServer.Text = "Search SqlServer";
             Application.DoEvents();
 
-            //var instance = SqlDataSourceEnumerator.Instance;
-            //System.Data.DataTable table = instance.GetDataSources();
+            wizard1.NextEnabled = false;
 
-            DataTable dt = await GetServers();
+            var dt = await GetServers();
+            var rows = dt.Rows.OfType<DataRow>();
+
             var localInstance = RegistryManager.ListLocalSqlInstances().ToList();
 
-            for (int i = 0; i < dt.Rows.Count; i++)
+            var serverList = rows.Aggregate<DataRow, List<string>>(new List<string>(), (acc, x) => 
             {
-                var srv = dt.Rows[i]["Name"].ToString();
-                if (i == 0 && localInstance != null)
-                    srv += localInstance.ElementAt<string>(0);
-                cbbServer.Items.Add(srv);
-            }
+                var srv = x["name"].ToString();
+                if (acc.Count == 0 && localInstance != null)
+                {
+                   acc.AddRange(
+                         localInstance.Select((string instance) =>
+                         {
+                             return instance == "."
+                             ? srv
+                             : $"{srv}{instance}";
+                         }));
+                }
+                else
+                    acc.Add(srv);
+
+                return acc;
+            });
+
+            cbbServer.Items.AddRange(serverList.ToArray());
+
             if (this.cbbServer.Items.Count > 0)
             {
                 this.cbbServer.SelectedIndex = 0;
                 this.cbbServer.DropDownStyle = ComboBoxStyle.DropDown;
+                wizard1.NextEnabled = true;
             }
             else
                 this.cbbServer.Text = "<No available SQL Servers>";
@@ -185,46 +202,46 @@ namespace ERPFramework.Login
 
         private void wizard1_Finish(object sender, CancelEventArgs e)
         {
-            DataBase_Provider = (ProviderType)cbbManager.GetValue();
-            switch (DataBase_Provider)
+            Provider = (ProviderType)cbbManager.GetValue();
+            switch (Provider)
             {
 #if(SQLCompact)
                 case ProviderType.SQLCompact:
                     if (rdbExistCMP.Checked)
-                        DataBase_Name = txtexistCMP.Text;
+                        InitialCatalog = txtexistCMP.Text;
                     else
-                        DataBase_Name = txtnewCMP.Text;
+                        InitialCatalog = txtnewCMP.Text;
 
-                    DataBase_Password = txtpassCMP.Text;
+                    Password = txtpassCMP.Text;
 
-                    DataBase_NewDatabase = rdbNewCMP.Checked;
+                    NewDatabase = rdbNewCMP.Checked;
                     break;
 #endif
 #if(SQLServer)
                 case ProviderType.SQLServer:
                     if (rdbExistSQL.Checked)
-                        DataBase_Name = cbbExistSQL.Text;
+                        InitialCatalog = cbbExistSQL.Text;
                     else
-                        DataBase_Name = txtNewSQL.Text;
+                        InitialCatalog = txtNewSQL.Text;
 
                     DataBase_Authentication = (AuthenticationMode)cbbAuthentication.SelectedIndex;
 
-                    DataBase_Host = cbbServer.Text;
-                    DataBase_Username = txtUser.Text;
-                    DataBase_Password = txtPass.Text;
+                    DataSource = cbbServer.Text;
+                    Username = txtUser.Text;
+                    Password = txtPass.Text;
 
-                    DataBase_NewDatabase = rdbNewSQL.Checked;
+                    NewDatabase = rdbNewSQL.Checked;
                     break;
 #endif
 #if(SQLite)
                 case ProviderType.SQLite:
                     if (rdbexistLIT.Checked)
-                        DataBase_Name = txtexistLIT.Text;
+                        InitialCatalog = txtexistLIT.Text;
                     else
-                        DataBase_Name = txtnewLIT.Text;
+                        InitialCatalog = txtnewLIT.Text;
 
-                    DataBase_Password = txtPassLIT.Text;
-                    DataBase_NewDatabase = rdbnewLIT.Checked;
+                    Password = txtPassLIT.Text;
+                    NewDatabase = rdbnewLIT.Checked;
                     break;
 #endif
             }

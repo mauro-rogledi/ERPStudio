@@ -144,7 +144,7 @@ namespace ERPFramework.Data
             {
                 SetDataBaseParameter();
 
-                if (myConnectionForm.DataBase_NewDatabase)
+                if (myConnectionForm.NewDatabase)
                 {
                     if (CreateNewDatabase())
                         connected = ConnectToDatabase();
@@ -237,12 +237,12 @@ namespace ERPFramework.Data
         private void SetDataBaseParameter()
         {
             var li = GlobalInfo.LoginInfo;
-            li.ProviderType = myConnectionForm.DataBase_Provider;
-            li.DataSource = myConnectionForm.DataBase_Host;
-            li.InitialCatalog = myConnectionForm.DataBase_Name;
+            li.ProviderType = myConnectionForm.Provider;
+            li.DataSource = myConnectionForm.DataSource;
+            li.InitialCatalog = myConnectionForm.InitialCatalog;
             li.AuthenicationMode = myConnectionForm.DataBase_Authentication;
-            li.UserID = myConnectionForm.DataBase_Username;
-            li.Password = myConnectionForm.DataBase_Password;
+            li.UserID = myConnectionForm.Username;
+            li.Password = myConnectionForm.Password;
         }
 
         private void Dispose(bool disposing)
