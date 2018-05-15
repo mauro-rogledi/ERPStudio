@@ -41,6 +41,24 @@ namespace ERPFramework.Data
             Type classType = assembly.GetType(nameSpace);
             return (T)Activator.CreateInstance(classType, parameters);
         }
+
+        public static bool HasProvider(ProviderType provider)
+        {
+            var fileName = string.Empty;
+            switch (provider)
+            {
+                case ProviderType.SQLServer:
+                    fileName = Path.Combine(Application.StartupPath, @"SqlProviders\SQLServerProvider.dll");
+                    break;
+                case ProviderType.SQLite:
+                    fileName = Path.Combine(Application.StartupPath, @"SqlProviders\SqLiteProvider.dll");
+                    break;
+                default:
+                    break;
+            }
+
+            return File.Exists(fileName);
+        }
     }
     #endregion
 

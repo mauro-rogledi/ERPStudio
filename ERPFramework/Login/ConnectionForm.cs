@@ -38,7 +38,7 @@ namespace ERPFramework.Login
         public ConnectionForm()
         {
             InitializeComponent();
-            cbbManager = new EnumsManager<ProviderType>(cbbProvider, "");
+            cbbManager = new EnumsManager<ProviderType>(cbbProvider, "", false, DisplayProvider);
 
             cbbAuthentication.SelectedIndex = 0;
 
@@ -46,6 +46,11 @@ namespace ERPFramework.Login
             txtnewCMP.ReadOnly = rdbExistCMP.Checked;
             cbbExistSQL.Enabled = rdbExistSQL.Checked;
             txtNewSQL.ReadOnly = rdbExistSQL.Checked;
+        }
+
+        private static bool DisplayProvider(ProviderType provider)
+        {
+            return ProxyProviderLoader.HasProvider(provider);
         }
 
         private void wizard1_BeforeSwitchPages(object sender, ERPFramework.Controls.Wizard.BeforeSwitchPagesEventArgs e)
