@@ -115,7 +115,9 @@ namespace ERPFramework.Login
         private void wizard1_AfterSwitchPages(object sender, ERPFramework.Controls.Wizard.AfterSwitchPagesEventArgs e)
         {
             if (e.NewIndex == 1 && e.OldIndex < e.NewIndex)
+            {
                 SearchSqlServer();
+            }
             if (e.NewIndex == 2)
                 ListDataBase();
         }
@@ -149,29 +151,7 @@ namespace ERPFramework.Login
 
             wizard1.NextEnabled = false;
 
-            var dt = await GetServers();
-            var rows = dt.Rows.OfType<DataRow>();
-
-            var localInstance = RegistryManager.ListLocalSqlInstances().ToList();
-
-            var serverList = rows.Aggregate<DataRow, List<string>>(new List<string>(), (acc, x) => 
-            {
-                var srv = x["name"].ToString();
-                if (acc.Count == 0 && localInstance != null)
-                {
-                   acc.AddRange(
-                         localInstance.Select((string instance) =>
-                         {
-                             return instance == "."
-                             ? srv
-                             : $"{srv}{instance}";
-                         }));
-                }
-                else
-                    acc.Add(srv);
-
-                return acc;
-            });
+            var serverList = await SqlProxyDatabaseHelper.GetServers();
 
             cbbServer.Items.AddRange(serverList.ToArray());
 
@@ -185,22 +165,13 @@ namespace ERPFramework.Login
                 this.cbbServer.Text = "<No available SQL Servers>";
         }
 
-        private async Task<DataTable> GetServers()
-        {
-            DataTable dt = await Task.Run(
-                () => SmoApplication.EnumAvailableSqlServers(false)
-            );
-
-            return dt;
-        }
-
-        private void ListDataBase()
+        private async void ListDataBase()
         {
             cbbExistSQL.Items.Clear();
 
-            Server srv = new Server(cbbServer.Text);
-            foreach (Database db in srv.Databases)
-                cbbExistSQL.Items.Add(db.Name);
+            var serverList = await SqlProxyDatabaseHelper.ListDatabase(cbbServer.Text);
+
+            cbbExistSQL.Items.Add(serverList.ToArray());
         }
 
         #endregion

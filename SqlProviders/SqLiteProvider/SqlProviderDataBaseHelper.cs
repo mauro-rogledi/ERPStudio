@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
+using System.Threading.Tasks;
 using SqlProxyProvider;
 
 namespace SqlProvider
@@ -54,6 +56,22 @@ namespace SqlProvider
                 return true;
             }
             return found;
+        }
+
+        public async Task<List<string>> GetServers()
+        {
+            return await Task.Run(
+
+                () => new List<string>()
+                );
+        }
+
+        public async Task<List<string>> ListDatabase(string server)
+        {
+            return await Task.Run(
+
+                () => new List<string>()
+                );
         }
     }
 }

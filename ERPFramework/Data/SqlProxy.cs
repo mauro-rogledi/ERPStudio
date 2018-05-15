@@ -1,11 +1,13 @@
 ﻿using SqlProxyProvider;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.IO;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ERPFramework.Data
@@ -488,9 +490,43 @@ namespace ERPFramework.Data
 
         public static void CreateDatabase(string connectionString) => databaseHelper.CreateDatabase(connectionString);
 
-        public static string QuerySearchTable(string tableName) => databaseHelper.QuerySearchTable(tableName);
 
         public static bool SearchColumn(IColumn column, SqlProxyConnection connection) => databaseHelper.SearchColumn(column.Tablename, column.Name, connection.Connection.Connection);
+
+        public static bool SearchTable<T>(SqlProxyConnection connection)
+        {
+            System.Diagnostics.Debug.Assert(typeof(T).BaseType == typeof(Table));
+            var tableName = typeof(T).GetField("Name").GetValue(null).ToString();
+
+            var notfound = false;
+            try
+            {
+                using (var cmd = new SqlProxyCommand(QuerySearchTable(tableName), connection))
+                {
+                    var dr = cmd.ExecuteReader();
+
+                    notfound = !dr.Read();
+                    dr.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+                return true;
+            }
+            return notfound;
+        }
+
+        public static async Task<List<string>> GetServers()
+        {
+            return await databaseHelper.GetServers();
+        }
+
+        public static async Task<List<string>> ListDatabase(string server)
+        {
+            return await databaseHelper.ListDatabase(server);
+        }
+        private static string QuerySearchTable(string tableName) => databaseHelper.QuerySearchTable(tableName);
 
     }
     #endregion

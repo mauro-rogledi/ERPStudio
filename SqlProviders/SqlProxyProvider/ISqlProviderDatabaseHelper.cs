@@ -19,5 +19,9 @@ namespace SqlProxyProvider
 
         string QuerySearchTable(string tableName);
         bool SearchColumn(string srcTable, string srcColumn, System.Data.IDbConnection connection);
+
+        Task<List<string>> GetServers();
+        Task<List<string>> ListDatabase(string server);
+
     }
 }

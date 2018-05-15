@@ -1,17 +1,14 @@
 #region Using directives
 
+using ERPFramework.Login;
 using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Data.SqlServerCe;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml;
-using Microsoft.SqlServer.Management.Smo;
 using System.Xml.Serialization;
-using ERPFramework.Data;
-using ERPFramework.Login;
 
 #endregion
 
@@ -87,8 +84,8 @@ namespace ERPFramework.Data
         /// </summary>
         private bool ConnectToDatabase()
         {
-            LoginInfo lI = GlobalInfo.LoginInfo;
-            string connectionString = GetConnectionString();
+            var lI = GlobalInfo.LoginInfo;
+            var connectionString = GetConnectionString();
 
             try
             {
@@ -104,7 +101,7 @@ namespace ERPFramework.Data
                 return false;
             }
 
-            if (SearchTable(AM_Version.Name))
+            if (SqlProxyDatabaseHelper.SearchTable<AM_Version>(MyConnection))
             {
                 if (MessageBox.Show(Properties.Resources.Database_WrongType,
                                     Properties.Resources.Attention,
@@ -139,7 +136,7 @@ namespace ERPFramework.Data
 
             myConnectionForm = new ConnectionForm();
 
-            DialogResult Result = myConnectionForm.ShowDialog();
+            var Result = myConnectionForm.ShowDialog();
             if (Result == DialogResult.OK)
             {
                 SetDataBaseParameter();
@@ -295,27 +292,6 @@ namespace ERPFramework.Data
             return current;
         }
 
-        protected bool SearchTable(string tablename)
-        {
-            bool notfound = false;
-            try
-            {
-                using (var cmd = new SqlProxyCommand(SqlProxyDatabaseHelper.QuerySearchTable(tablename), MyConnection))
-                {
-                    var dr = cmd.ExecuteReader();
-
-                    notfound = !dr.Read();
-                    dr.Close();
-                }
-            }
-            catch (Exception exc)
-            {
-                MessageBox.Show(exc.Message);
-                return true;
-            }
-            return notfound;
-        }
-
         private bool InsertDBVersion(string module, string version)
         {
             try
@@ -351,11 +327,11 @@ namespace ERPFramework.Data
         {
             try
             {
-                SqlProxyParameter dbApplication = new SqlProxyParameter("@p1", AM_Version.Application);
-                SqlProxyParameter dbVersion = new SqlProxyParameter("@p2", AM_Version.Version);
-                SqlProxyParameter dbModule = new SqlProxyParameter("@p3", AM_Version.Module);
+                var dbApplication = new SqlProxyParameter("@p1", AM_Version.Application);
+                var dbVersion = new SqlProxyParameter("@p2", AM_Version.Version);
+                var dbModule = new SqlProxyParameter("@p3", AM_Version.Module);
 
-                QueryBuilder qb = new QueryBuilder().
+                var qb = new QueryBuilder().
                     Update<AM_Version>().
                     Set<SqlProxyParameter>(AM_Version.Version, dbVersion).
                     Where(AM_Version.Application).IsEqualTo(dbApplication).
@@ -364,37 +340,16 @@ namespace ERPFramework.Data
                 //qb.AddManualQuery("UPDATE {0} SET {1}=@p1 WHERE {2}=@p2",
                 //                       AM_Version.Name, AM_Version.Version, AM_Version.Module);
 
-                SqlProxyCommand cmd = new SqlProxyCommand(qb.Query, MyConnection);
-                cmd.Parameters.Add(dbApplication);
-                cmd.Parameters.Add(dbVersion);
+                using (var cmd = new SqlProxyCommand(qb.Query, MyConnection))
+                {
+                    cmd.Parameters.Add(dbApplication);
+                    cmd.Parameters.Add(dbVersion);
 
-                dbApplication.Value = application;
-                dbVersion.Value = version;
-                dbModule.Value = module;
-                cmd.ExecuteScalar();
-            }
-            catch (SqlException exc)
-            {
-                MessageBox.Show(exc.Message);
-                return false;
-            }
-            return true;
-        }
-
-        private bool CreateDBVersion()
-        {
-            try
-            {
-                SqlProxyParameter dbVersion = new SqlProxyParameter("@p1", AM_Version.Version);
-                string command = "INSERT INTO " + AM_Version.Name + " ( " +
-                    AM_Version.Version + " ) " +
-                    "VALUES (@p1)";
-
-                SqlProxyCommand cmd = new SqlProxyCommand(command, MyConnection);
-                cmd.Parameters.Add(dbVersion);
-
-                dbVersion.Value = currentVersion;
-                cmd.ExecuteScalar();
+                    dbApplication.Value = application;
+                    dbVersion.Value = version;
+                    dbModule.Value = module;
+                    cmd.ExecuteScalar();
+                }
             }
             catch (SqlException exc)
             {
@@ -435,7 +390,7 @@ namespace ERPFramework.Data
                 try
                 {
                     stream = File.Open(ConfigFilename, FileMode.Open);
-                    XmlSerializer xmlSer = new XmlSerializer(typeof(LoginInfo));
+                    var xmlSer = new XmlSerializer(typeof(LoginInfo));
 
                     GlobalInfo.LoginInfo = (LoginInfo)xmlSer.Deserialize(stream);
                     ProxyProviderLoader.UseProvider = GlobalInfo.LoginInfo.ProviderType;
@@ -461,7 +416,7 @@ namespace ERPFramework.Data
             if (!System.IO.Directory.Exists(ConfigDirectory))
                 System.IO.Directory.CreateDirectory(ConfigDirectory);
             TextWriter stream = new StreamWriter(ConfigFilename);
-            XmlSerializer xmlSer = new XmlSerializer(typeof(LoginInfo));
+            var xmlSer = new XmlSerializer(typeof(LoginInfo));
             GlobalInfo.LoginInfo.LastPassword = GlobalInfo.LoginInfo.RememberLastLogin
                     ? Cryption.Encrypt(GlobalInfo.LoginInfo.LastPassword)
                     : string.Empty;
@@ -484,7 +439,7 @@ namespace ERPFramework.Data
         {
             get
             {
-                string directory = GetApplicationName();
+                var directory = GetApplicationName();
                 if (string.IsNullOrEmpty(directory))
                 {
                     if (Directory.GetParent(Directory.GetCurrentDirectory()).FullName.EndsWith("bin", StringComparison.CurrentCultureIgnoreCase))

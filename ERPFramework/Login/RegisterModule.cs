@@ -46,7 +46,7 @@ namespace ERPFramework.Data
             if (!GlobalInfo.Tables.ContainsKey(table.Table.Name))
                 GlobalInfo.Tables.Add(table.Table.Name, table);
 
-            if (SearchTable<T>())
+            if (SqlProxyDatabaseHelper.SearchTable<T>(GlobalInfo.SqlConnection))
                 SqlCreateTable.CreateTable<T>();
         }
 
@@ -185,31 +185,6 @@ namespace ERPFramework.Data
                 return false;
             }
             return true;
-        }
-
-        protected bool SearchTable<T>()
-        {
-            System.Diagnostics.Debug.Assert(typeof(T).BaseType == typeof(Table));
-            var tablename = typeof(T).GetField("Name").GetValue(null).ToString();
-
-            SqlProxyDataReader dr;
-            var notfound = false;
-            try
-            {
-                using (SqlProxyCommand cmd = new SqlProxyCommand(SqlProxyDatabaseHelper.QuerySearchTable(tablename), SqlProxyConnection))
-                {
-                    dr = cmd.ExecuteReader();
-
-                    notfound = !dr.Read();
-                    dr.Close();
-                }
-            }
-            catch (Exception exc)
-            {
-                MessageBox.Show(exc.Message);
-                return true;
-            }
-            return notfound;
         }
     }
 }
