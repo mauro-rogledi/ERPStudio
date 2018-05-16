@@ -22,13 +22,12 @@ namespace ERPFramework.Data
     {
         public Panel myPanel;
         private ConnectionForm myConnectionForm;
-        private bool connected;
-        protected SqlProxyConnection MyConnection;
+        protected SqlProxyConnection myConnection;
         private int currentVersion = 8;
 
         #region Public Variables
 
-        public bool isconnected { get { return connected; } }
+        //public bool isconnected { get { return connected; } }
 
         public string DB_ConnectionString
         {
@@ -40,7 +39,7 @@ namespace ERPFramework.Data
 
         public SqlProxyConnection DB_Connection
         {
-            get { return MyConnection; }
+            get { return myConnection; }
         }
 
         #endregion
@@ -64,14 +63,12 @@ namespace ERPFramework.Data
 
         public bool CreateConnection()
         {
-            bool configFound = true;
+            var connected = false;
+            var configFound = ReadConfigFile();
 
-            configFound = ReadConfigFile();
-
-            if (configFound)
-                ConnectToDatabase();
-            else
-                CreateNewConnection();
+            connected = configFound
+                ? ConnectToDatabase()
+                : CreateNewConnection();
 
             if (connected && !configFound)
                 WriteConfigFile();
@@ -84,24 +81,25 @@ namespace ERPFramework.Data
         /// </summary>
         private bool ConnectToDatabase()
         {
-            var lI = GlobalInfo.LoginInfo;
+            var connected = false;
             var connectionString = GetConnectionString();
 
             try
             {
-                MyConnection = new SqlProxyConnection(connectionString);
-                MyConnection.Open();
-                connected = (MyConnection.State == ConnectionState.Open);
-                if (connected)
-                    MyConnection.ChangeDatabase(lI.InitialCatalog);
+                myConnection = new SqlProxyConnection(connectionString);
+                myConnection.Open();
+                connected = (myConnection.State == ConnectionState.Open);
+                // @@ try to remove changedatabase
+                //if (connected)
+                //    myConnection.ChangeDatabase(lI.InitialCatalog);
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString(), lI.InitialCatalog, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(ex.ToString(), GlobalInfo.LoginInfo.InitialCatalog, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return false;
             }
 
-            if (SqlProxyDatabaseHelper.SearchTable<AM_Version>(MyConnection))
+            if (SqlProxyDatabaseHelper.SearchTable<AM_Version>(myConnection))
             {
                 if (MessageBox.Show(Properties.Resources.Database_WrongType,
                                     Properties.Resources.Attention,
@@ -113,14 +111,14 @@ namespace ERPFramework.Data
                 else
                 {
                     RegisterModule RsT = new ERPFramework.ModuleData.RegisterModule();
-                    RsT.CreateTable(MyConnection, GlobalInfo.UserInfo.userType);
+                    RsT.CreateTable(myConnection, GlobalInfo.UserInfo.userType);
                     AddAdminUser();
                 }
             }
             else
             {
                 RegisterModule RsT = new ERPFramework.ModuleData.RegisterModule();
-                RsT.CreateTable(MyConnection, GlobalInfo.UserInfo.userType);
+                RsT.CreateTable(myConnection, GlobalInfo.UserInfo.userType);
             }
 
             return connected;
@@ -132,25 +130,25 @@ namespace ERPFramework.Data
         /// </summary>
         private bool CreateNewConnection()
         {
-            connected = false;
+            var connected = false;
 
-            myConnectionForm = new ConnectionForm();
-
-            var Result = myConnectionForm.ShowDialog();
-            if (Result == DialogResult.OK)
+            using (myConnectionForm = new ConnectionForm())
             {
-                SetDataBaseParameter();
 
-                if (myConnectionForm.NewDatabase)
+                var Result = myConnectionForm.ShowDialog();
+                if (Result == DialogResult.OK)
                 {
-                    if (CreateNewDatabase())
+                    SetDataBaseParameter();
+
+                    if (myConnectionForm.NewDatabase)
+                    {
+                        if (CreateNewDatabase())
+                            connected = ConnectToDatabase();
+                    }
+                    else
                         connected = ConnectToDatabase();
                 }
-                else
-                    connected = ConnectToDatabase();
             }
-
-            myConnectionForm.Dispose();
             return connected;
         }
 
@@ -171,15 +169,15 @@ namespace ERPFramework.Data
             {
 
                 var connectionString = GetConnectionString();
-                MyConnection = new SqlProxyConnection(connectionString);
-                MyConnection.Open();
-                if (MyConnection.State == ConnectionState.Open)
+                myConnection = new SqlProxyConnection(connectionString);
+                myConnection.Open();
+                if (myConnection.State == ConnectionState.Open)
                     MessageBox.Show(Properties.Resources.Database_Create,
                                     GlobalInfo.LoginInfo.InitialCatalog,
                                     MessageBoxButtons.OK, MessageBoxIcon.Information);
-                MyConnection.ChangeDatabase(GlobalInfo.LoginInfo.InitialCatalog);
+                //myConnection.ChangeDatabase(GlobalInfo.LoginInfo.InitialCatalog);
                 RegisterModule RsT = new ERPFramework.ModuleData.RegisterModule();
-                RsT.CreateTable(MyConnection, GlobalInfo.UserInfo.userType);
+                RsT.CreateTable(myConnection, GlobalInfo.UserInfo.userType);
                 AddAdminUser();
             }
             catch (System.Exception ex)
@@ -187,8 +185,8 @@ namespace ERPFramework.Data
                 MessageBox.Show(ex.ToString(), GlobalInfo.LoginInfo.InitialCatalog, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
-            if (MyConnection.State == ConnectionState.Open)
-                CloseConnection(MyConnection);
+            if (myConnection.State == ConnectionState.Open)
+                myConnection.Clone();
 
             return true;
         }
@@ -207,8 +205,7 @@ namespace ERPFramework.Data
             {
                 newConn = new SqlProxyConnection(connectionString);
                 newConn.Open();
-                connected = (newConn.State == ConnectionState.Open);
-                if (connected)
+                if (newConn.State == ConnectionState.Open)
                     newConn.ChangeDatabase(GlobalInfo.LoginInfo.InitialCatalog);
             }
             catch (System.Exception ex)
@@ -254,14 +251,14 @@ namespace ERPFramework.Data
         /// </summary>
         private bool UpdateDatabase()
         {
-            int version = ReadDBVersion();
+            var version = ReadDBVersion();
             if (version > currentVersion)
             {
-                string message = string.Format(Properties.Resources.Database_WrongVersion,
+                var message = string.Format(Properties.Resources.Database_WrongVersion,
                                                 version, currentVersion);
 
                 MessageBox.Show(message, Properties.Resources.Attention, MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                connected = false;
+                //connected = false;
                 return false;
             }
             return true;
@@ -276,7 +273,7 @@ namespace ERPFramework.Data
                     Select(AM_Version.Version).
                     From<AM_Version>();
 
-                using (var cmd = new SqlProxyCommand(qb.Query, MyConnection))
+                using (var cmd = new SqlProxyCommand(qb.Query, myConnection))
                 {
                     var dr = cmd.ExecuteReader();
                     dr.Read();
@@ -305,7 +302,7 @@ namespace ERPFramework.Data
                     Where(AM_Version.Application).IsEqualTo(dbApplication).
                     And(AM_Version.Version).IsEqualTo(dbVersion);
 
-                using (var cmd = new SqlProxyCommand(qb.Query, MyConnection))
+                using (var cmd = new SqlProxyCommand(qb.Query, myConnection))
                 {
                     cmd.Parameters.Add(dbModule);
                     cmd.Parameters.Add(dbVersion);
@@ -340,7 +337,7 @@ namespace ERPFramework.Data
                 //qb.AddManualQuery("UPDATE {0} SET {1}=@p1 WHERE {2}=@p2",
                 //                       AM_Version.Name, AM_Version.Version, AM_Version.Module);
 
-                using (var cmd = new SqlProxyCommand(qb.Query, MyConnection))
+                using (var cmd = new SqlProxyCommand(qb.Query, myConnection))
                 {
                     cmd.Parameters.Add(dbApplication);
                     cmd.Parameters.Add(dbVersion);

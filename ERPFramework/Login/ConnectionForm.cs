@@ -171,7 +171,7 @@ namespace ERPFramework.Login
 
             var serverList = await SqlProxyDatabaseHelper.ListDatabase(cbbServer.Text);
 
-            cbbExistSQL.Items.Add(serverList.ToArray());
+            cbbExistSQL.Items.AddRange(serverList.ToArray());
         }
 
         #endregion
