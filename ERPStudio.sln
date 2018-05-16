@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2043
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetroFramework.Extender", "MetroFramework.Extender\MetroFramework.Extender.csproj", "{1ECCFEBF-5410-45AA-AA37-A30EE601A5B6}"
 EndProject
@@ -187,20 +187,8 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 4
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://maurorog.visualstudio.com/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = MetroFramework.Extender\\MetroFramework.Extender.csproj
-		SccProjectName1 = MetroFramework.Extender
-		SccLocalPath1 = MetroFramework.Extender
-		SccProjectUniqueName2 = ERPFramework\\ERPFramework.csproj
-		SccProjectName2 = ERPFramework
-		SccLocalPath2 = ERPFramework
-		SccProjectUniqueName3 = ERPManager\\ERPManager.csproj
-		SccProjectName3 = ERPManager
-		SccLocalPath3 = ERPManager
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F655285C-CB6A-43B3-8643-0A0A7AC1B9C3}
 	EndGlobalSection
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True

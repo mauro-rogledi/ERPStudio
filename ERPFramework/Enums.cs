@@ -54,27 +54,6 @@
         Document, FastDocument, Batch, Report, Preview, Preferences
     }
 
-    public enum ProviderType
-    {
-#if (SQLServer)
-#if (SQLCompact || SQLite)
-        SQLServer,
-#else
-        SQLServer
-#endif
-#endif
-#if(SQLCompact)
-#if(SQLite)
-        SQLCompact,
-#else
-        SQLCompact
-#endif
-#endif
-
-#if (SQLite)
-        SQLite
-#endif
-    }
 
     public enum AuthenticationMode
     {

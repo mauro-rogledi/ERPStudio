@@ -11,10 +11,10 @@ namespace ERPFramework.Login
     /// 
     public class PasswordManager : IDisposable
     {
-        private SqlABConnection sCon;
-        private SqlABCommand sC;
-        private SqlABParameter sP;
-        private SqlABDataReader sR;
+        private SqlProxyConnection sCon;
+        private SqlProxyCommand sC;
+        private SqlProxyParameter sP;
+        private SqlProxyDataReader sR;
         private DateTime ExpireDate = DateTime.Today;
         private UserStatus status = UserStatus.Found;
 
@@ -36,10 +36,9 @@ namespace ERPFramework.Login
         {
             try
             {
-                sCon = new SqlABConnection(GlobalInfo.LoginInfo.ProviderType,
-                                            GlobalInfo.DBaseInfo.dbManager.DB_ConnectionString);
+                sCon = new SqlProxyConnection(GlobalInfo.DBaseInfo.dbManager.DB_ConnectionString);
                 sCon.Open();
-                sP = new SqlABParameter("@p1", AM_Users.Username);
+                sP = new SqlProxyParameter("@p1", AM_Users.Username);
 
                 QueryBuilder qb = new QueryBuilder();
 
@@ -47,7 +46,7 @@ namespace ERPFramework.Login
                     Where(AM_Users.Username).IsEqualTo(sP).
                     Query;
 
-                sC = new SqlABCommand(select, sCon);
+                sC = new SqlProxyCommand(select, sCon);
                 sC.Parameters.Add(sP);
 
                 string getDate = "";
@@ -69,9 +68,9 @@ namespace ERPFramework.Login
                         break;
 #endif
                 }
-                using (SqlABCommand sc1 = new SqlABCommand(getDate, sCon))
+                using (SqlProxyCommand sc1 = new SqlProxyCommand(getDate, sCon))
                 {
-                    SqlABDataReader dr = sc1.ExecuteReader();
+                    SqlProxyDataReader dr = sc1.ExecuteReader();
                     if (dr.Read())
                         ExpireDate = dr.GetDateTime(0);
                     dr.Close();
@@ -194,10 +193,10 @@ namespace ERPFramework.Login
                     AM_Users.Username
                     );
 
-                SqlABCommand sc = new SqlABCommand(update, sCon);
-                SqlABParameter p2 = new SqlABParameter("@p2", AM_Users.Password);
-                SqlABParameter p3 = new SqlABParameter("@p3", AM_Users.ChangePassword);
-                SqlABParameter p4 = new SqlABParameter("@p4", AM_Users.Username);
+                SqlProxyCommand sc = new SqlProxyCommand(update, sCon);
+                SqlProxyParameter p2 = new SqlProxyParameter("@p2", AM_Users.Password);
+                SqlProxyParameter p3 = new SqlProxyParameter("@p3", AM_Users.ChangePassword);
+                SqlProxyParameter p4 = new SqlProxyParameter("@p4", AM_Users.Username);
                 sc.Parameters.Add(p2);
                 sc.Parameters.Add(p3);
                 sc.Parameters.Add(p4);

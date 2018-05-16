@@ -14,6 +14,7 @@ using ERPFramework.CounterManager;
 using ERPFramework.Controls;
 using ERPFramework.Preferences;
 using ERPFramework.Forms;
+using System.Data.Common;
 
 namespace ERPFramework.Data
 {
@@ -23,12 +24,12 @@ namespace ERPFramework.Data
     {
         private string name;
 
-        private SqlABDataAdapter dAdapter;
-        private List<SqlABParameter> dParam;
+        private SqlProxyDataAdapter dAdapter;
+        private List<SqlProxyParameter> dParam;
 
-        public SqlABDataAdapter DataAdapter { get { return dAdapter; } }
+        public SqlProxyDataAdapter DataAdapter { get { return dAdapter; } }
 
-        public SqlABParameter[] Parameter { get { return dParam.ToArray(); } }
+        public SqlProxyParameter[] Parameter { get { return dParam.ToArray(); } }
 
         public string Name { get { return name; } }
 
@@ -40,27 +41,27 @@ namespace ERPFramework.Data
         {
         }
 
-        public DBCollection(string myMaster, SqlABDataAdapter myAdapter, List<SqlABParameter> myParam)
+        public DBCollection(string myMaster, SqlProxyDataAdapter myAdapter, List<SqlProxyParameter> myParam)
         {
             dAdapter = myAdapter;
             dParam = myParam;
             name = myMaster;
         }
 
-        public void AddMaster(string myMaster, SqlABDataAdapter myAdapter, List<SqlABParameter> myParam)
+        public void AddMaster(string myMaster, SqlProxyDataAdapter myAdapter, List<SqlProxyParameter> myParam)
         {
             dAdapter = myAdapter;
             dParam = myParam;
             name = myMaster;
         }
 
-        public void AddSlave(string mySlave, SqlABDataAdapter myAdapter, List<SqlABParameter> myParam)
+        public void AddSlave(string mySlave, SqlProxyDataAdapter myAdapter, List<SqlProxyParameter> myParam)
         {
             var myDbCollection = new DBCollection(mySlave, myAdapter, myParam);
             List.Add(myDbCollection);
         }
 
-        public void AddSlave(string mySlaveSlavable, string mySlave, SqlABDataAdapter myAdapter, List<SqlABParameter> myParam)
+        public void AddSlave(string mySlaveSlavable, string mySlave, SqlProxyDataAdapter myAdapter, List<SqlProxyParameter> myParam)
         {
             var myDbCollection = new DBCollection(mySlave, myAdapter, myParam);
             RecursiveAdd(mySlaveSlavable, myDbCollection, this.List);
@@ -95,7 +96,7 @@ namespace ERPFramework.Data
 
     public abstract class DBManager : IDisposable
     {
-        public event SqlABRowUpdatingEventHandler OnBeforeRowUpdating;
+        public event EventHandler<RowUpdatingEventArgs> OnBeforeRowUpdating;
 
         #region private variables
 
@@ -124,7 +125,7 @@ namespace ERPFramework.Data
 
         public DataSet Dataset { get; set; }
 
-        public SqlABConnection DBConnection { get; private set; }
+        public SqlProxyConnection DBConnection { get; private set; }
 
         public DBPosition Position { get; private set; } = DBPosition.First;
 
@@ -139,7 +140,7 @@ namespace ERPFramework.Data
 
         public IRadarParameters LastKey { set { lastKey = value; } get { return lastKey; } }
 
-        public SqlABTransaction SqlABTransaction { get; private set; }
+        public SqlProxyTransaction SqlProxyTransaction { get; private set; }
 
 
         public bool isChanged
@@ -169,7 +170,7 @@ namespace ERPFramework.Data
             fiscalControlList.Add(fiscalnocontrol);
         }
 
-        public SqlABTransaction Transaction { get { return SqlABTransaction; } }
+        public SqlProxyTransaction Transaction { get { return SqlProxyTransaction; } }
 
         public Type RadarDocument { get; private set; }
 
@@ -183,29 +184,29 @@ namespace ERPFramework.Data
 
         #region Protected virtual method
 
-        protected abstract string CreateMasterQuery(ref List<SqlABParameter> dParam);
+        protected abstract string CreateMasterQuery(ref List<SqlProxyParameter> dParam);
 
-        protected virtual string CreateSlaveQuery(string name, List<SqlABParameter> dParam)
+        protected virtual string CreateSlaveQuery(string name, List<SqlProxyParameter> dParam)
         {
             return string.Empty;
         }
 
-        protected virtual List<SqlABParameter> CreateMasterParam()
+        protected virtual List<SqlProxyParameter> CreateMasterParam()
         {
             return null;
         }
 
-        protected virtual List<SqlABParameter> CreateSlaveParam(string name)
+        protected virtual List<SqlProxyParameter> CreateSlaveParam(string name)
         {
             return null;
         }
 
-        protected virtual List<SqlABParameter> CreateSlaveParam(string name, string slavename)
+        protected virtual List<SqlProxyParameter> CreateSlaveParam(string name, string slavename)
         {
             return null;
         }
 
-        protected virtual void dAdapter_MasterRowUpdating(object sender, SqlABRowUpdatingEventArgs e)
+        protected virtual void dAdapter_MasterRowUpdating(object sender, RowUpdatingEventArgs e)
         {
             if (OnBeforeRowUpdating != null)
                 OnBeforeRowUpdating(sender, e);
@@ -219,7 +220,7 @@ namespace ERPFramework.Data
             }
         }
 
-        protected virtual void dAdapter_MasterRowUpdated(object sender, SqlABRowUpdatedEventArgs e)
+        protected virtual void dAdapter_MasterRowUpdated(object sender, RowUpdatedEventArgs e)
         {
             // AddOn management
             if (myDocument.AddonList != null)
@@ -227,7 +228,7 @@ namespace ERPFramework.Data
                     scr.MasterRowUpdated(this, e);
         }
 
-        protected virtual void dAdapter_RowUpdating(object sender, SqlABRowUpdatingEventArgs e)
+        protected virtual void dAdapter_RowUpdating(object sender, RowUpdatingEventArgs e)
         {
             // AddOn management
             if (myDocument.AddonList != null)
@@ -285,7 +286,7 @@ namespace ERPFramework.Data
             this.myDocument = document;
             globalPref = new PreferencesManager<GlobalPreferences>("", null).ReadPreference();
 
-            DBConnection = new SqlABConnection();
+            DBConnection = new SqlProxyConnection();
             Dataset = new DataSet(name)
             {
                 Locale = System.Globalization.CultureInfo.InvariantCulture
@@ -426,7 +427,7 @@ namespace ERPFramework.Data
         /// </summary>
         /// <param name="createCommand"></param>
         /// <returns></returns>
-        public SqlABDataAdapter AddMaster<T>(bool createCommand = true)
+        public SqlProxyDataAdapter AddMaster<T>(bool createCommand = true)
         {
             if (collectionDB == null || Dataset == null) return null;
 
@@ -435,26 +436,32 @@ namespace ERPFramework.Data
 
             ForeignKey = typeof(T).GetField("ForeignKey").GetValue(null) as IColumn;
 
-            List<SqlABParameter> dParam = null;
+            List<SqlProxyParameter> dParam = null;
             var dCommand = CreateMasterCommand(ref dParam);
 
             var dAdapter = CreateDataAdapter(tableName, dCommand);
             collectionDB.AddMaster(tableName, dAdapter, dParam);
             AddMasterBinding(tableName);
 
-            dAdapter.RowUpdated += new SqlABRowUpdatedEventHandler(dAdapter_MasterRowUpdated);
-            dAdapter.RowUpdating += new SqlABRowUpdatingEventHandler(dAdapter_MasterRowUpdating);
+            dAdapter.RowUpdated += dAdapter_MasterRowUpdated;
+            //dAdapter.RowUpdated += new SqlABRowUpdatedEventHandler(dAdapter_MasterRowUpdated);
+            //dAdapter.RowUpdating += new SqlABRowUpdatingEventHandler(dAdapter_MasterRowUpdating);
 
             collectionDB.HasToCreateCommand = createCommand;
             return dAdapter;
         }
 
-        protected virtual SqlABCommand CreateMasterCommand(ref List<SqlABParameter> dParam)
+        private void DAdapter_RowUpdated(object sender, RowUpdatedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected virtual SqlProxyCommand CreateMasterCommand(ref List<SqlProxyParameter> dParam)
         {
             dParam = CreateMasterParam();
             var sqlQuery = CreateMasterQuery(ref dParam);
 
-            var dCommand = new SqlABCommand(sqlQuery, DBConnection);
+            var dCommand = new SqlProxyCommand(sqlQuery, DBConnection);
             if (dParam != null)
                 dCommand.Parameters.AddRange(dParam);
 
@@ -489,7 +496,7 @@ namespace ERPFramework.Data
         /// </summary>
         /// <param name="createCommand"></param>
         /// <returns></returns>
-        public SqlABDataAdapter AddSlave<T>(bool createCommand = true)
+        public SqlProxyDataAdapter AddSlave<T>(bool createCommand = true)
         {
             System.Diagnostics.Debug.Assert(typeof(T).BaseType == typeof(Table));
             var tableName = typeof(T).GetField("Name").GetValue(null).ToString();
@@ -508,7 +515,7 @@ namespace ERPFramework.Data
                         break;
                 }
 
-            var dCommand = new SqlABCommand(sqlQuery, DBConnection);
+            var dCommand = new SqlProxyCommand(sqlQuery, DBConnection);
 
             if (dParam != null)
                 dCommand.Parameters.AddRange(dParam);
@@ -527,7 +534,7 @@ namespace ERPFramework.Data
             var dAdapter = CreateDataAdapter(tableName, dCommand);
             collectionDB.AddSlave(tableName, dAdapter, dParam);
 
-            dAdapter.RowUpdating += new SqlABRowUpdatingEventHandler(dAdapter_RowUpdating);
+            dAdapter.RowUpdating += dAdapter_RowUpdating;
             collectionDB.HasToCreateCommand = createCommand;
             return dAdapter;
         }
@@ -538,7 +545,7 @@ namespace ERPFramework.Data
         /// <param name="slavename"></param>
         /// <param name="createCommand"></param>
         /// <returns></returns>
-        public SqlABDataAdapter AddSlave<T>(string slavename, bool createCommand = true)
+        public SqlProxyDataAdapter AddSlave<T>(string slavename, bool createCommand = true)
         {
             if (collectionDB == null || Dataset == null) return null;
 
@@ -548,7 +555,7 @@ namespace ERPFramework.Data
             var dParam = CreateSlaveParam(slavename);
 
             var sqlQuery = CreateSlaveQuery(tableName, dParam);
-            var dCommand = new SqlABCommand(sqlQuery, DBConnection);
+            var dCommand = new SqlProxyCommand(sqlQuery, DBConnection);
 
             if (dParam != null)
                 dCommand.Parameters.AddRange(dParam);
@@ -632,10 +639,10 @@ namespace ERPFramework.Data
 
         #region private functions
 
-        private SqlABDataAdapter CreateDataAdapter(string name, SqlABCommand sqlCommand)
+        private SqlProxyDataAdapter CreateDataAdapter(string name, SqlProxyCommand sqlCommand)
         {
-            SqlABDataAdapter dAdapter = null;
-            dAdapter = new SqlABDataAdapter(sqlCommand);
+            SqlProxyDataAdapter dAdapter = null;
+            dAdapter = new SqlProxyDataAdapter(sqlCommand);
 
             try
             {
@@ -674,9 +681,9 @@ namespace ERPFramework.Data
             }
         }
 
-        private static void CreateCommand(SqlABDataAdapter dAdapter)
+        private static void CreateCommand(SqlProxyDataAdapter dAdapter)
         {
-            var cBuilder = new SqlABCommandBuilder(dAdapter)
+            var cBuilder = new SqlProxyCommandBuilder(dAdapter)
             {
                 QuotePrefix = "[",
                 QuoteSuffix = "]",
@@ -1013,31 +1020,31 @@ namespace ERPFramework.Data
         public void StartTransaction()
         {
             if (globalPref.UseTransaction)
-                SqlABTransaction = DBConnection.BeginTransaction();
+                SqlProxyTransaction = DBConnection.BeginTransaction();
 
         }
 
         public void Commit()
         {
-            if (globalPref.UseTransaction && SqlABTransaction != null)
-                SqlABTransaction.Commit();
+            if (globalPref.UseTransaction && SqlProxyTransaction != null)
+                SqlProxyTransaction.Commit();
         }
 
         public void Rollback()
         {
-            if (globalPref.UseTransaction && SqlABTransaction != null)
-                SqlABTransaction.Rollback();
+            if (globalPref.UseTransaction && SqlProxyTransaction != null)
+                SqlProxyTransaction.Rollback();
         }
 
-        private void SetDataAdapterTransaction(SqlABDataAdapter dataAdapter)
+        private void SetDataAdapterTransaction(SqlProxyDataAdapter dataAdapter)
         {
-            if (!globalPref.UseTransaction || SqlABTransaction == null)
+            if (!globalPref.UseTransaction || SqlProxyTransaction == null)
                 return;
 
-            dataAdapter.InsertCommand.Transaction = SqlABTransaction;
-            dataAdapter.DeleteCommand.Transaction = SqlABTransaction;
-            dataAdapter.SelectCommand.Transaction = SqlABTransaction;
-            dataAdapter.UpdateCommand.Transaction = SqlABTransaction;
+            dataAdapter.InsertCommand.Transaction = SqlProxyTransaction;
+            dataAdapter.DeleteCommand.Transaction = SqlProxyTransaction;
+            dataAdapter.SelectCommand.Transaction = SqlProxyTransaction;
+            dataAdapter.UpdateCommand.Transaction = SqlProxyTransaction;
         }
         #endregion
     }

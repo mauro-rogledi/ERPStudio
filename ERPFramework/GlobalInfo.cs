@@ -26,7 +26,7 @@ namespace ERPFramework
 
         public static Dictionary<string,TableDefinition> Tables = new Dictionary<string, TableDefinition>();
 
-        public static SqlABConnection SqlConnection
+        public static SqlProxyConnection SqlConnection
         {
             get
             {
@@ -136,13 +136,13 @@ namespace ERPFramework
         [XmlElement()]
         public ProviderType ProviderType { get; set; }
         [XmlElement()]
-        public string Host { get; set; }
+        public string DataSource { get; set; }
         [XmlElement()]
-        public string Datasource { get; set; }
+        public string InitialCatalog { get; set; }
         [XmlElement()]
         public AuthenticationMode AuthenicationMode { get; set; }
         [XmlElement()]
-        public string UserName { get; set; }
+        public string UserID { get; set; }
         [XmlElement()]
         public string Password { get; set; }
         [XmlElement()]

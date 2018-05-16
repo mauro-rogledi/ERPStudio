@@ -29,7 +29,7 @@ namespace ERPFramework.Data
 
                     dataset.WriteXml(filename, XmlWriteMode.WriteSchema);
 
-                    RowElaborated?.Invoke(null, new Tuple<int, bool>(dataset.Tables[tableName].Rows.Count,true));
+                    RowElaborated?.Invoke(null, new Tuple<int, bool>(dataset.Tables[tableName].Rows.Count, true));
                 }
             }
             return true;
@@ -67,13 +67,12 @@ namespace ERPFramework.Data
             var dataSet = new DataSet();
             var query = $"SELECT * FROM {tableName}";
 
-            var sqlCM = new SqlABCommand(GlobalInfo.DBaseInfo.dbManager.DB_Connection)
+            using (var sqlCM = new SqlProxyCommand(query, GlobalInfo.DBaseInfo.dbManager.DB_Connection))
             {
-                CommandText = query
-            };
 
-            var sqlDA = new SqlABDataAdapter(sqlCM);
-            sqlDA.Fill(dataSet, tableName);
+                var sqlDA = new SqlProxyDataAdapter(sqlCM);
+                sqlDA.Fill(dataSet, tableName);
+            }
 
             return dataSet;
         }
@@ -81,25 +80,25 @@ namespace ERPFramework.Data
         private static bool WriteData(string tableName, DataSet dataSet)
         {
             var query = $"SELECT * FROM {tableName}";
-            var sqlCM = new SqlABCommand(GlobalInfo.DBaseInfo.dbManager.DB_Connection)
+            using (var sqlCM = new SqlProxyCommand(query, GlobalInfo.DBaseInfo.dbManager.DB_Connection))
             {
-                CommandText = query
-            };
-            var  adp = new SqlABDataAdapter(sqlCM);
-            var scb = new SqlABCommandBuilder(adp);
-            try
-            {
-                adp.InsertCommand = scb.GetInsertCommand();
-                var rows = adp.Update(dataSet, dataSet.Tables[0].TableName);
-            }
-            catch(Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine(e.StackTrace, e.Message);
-                MessageBox.Show(e.StackTrace, e.Message);
-            }
-            finally
-            {
-                
+
+                var adp = new SqlProxyDataAdapter(sqlCM);
+                var scb = new SqlProxyCommandBuilder(adp);
+                try
+                {
+                    adp.InsertCommand = scb.GetInsertCommand();
+                    var rows = adp.Update(dataSet, dataSet.Tables[0].TableName);
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e.StackTrace, e.Message);
+                    MessageBox.Show(e.StackTrace, e.Message);
+                }
+                finally
+                {
+
+                }
             }
 
             return true;
@@ -108,10 +107,7 @@ namespace ERPFramework.Data
         private static void DeleteData(string tableName)
         {
             var query = $"DELETE FROM {tableName}";
-            using (var sqlCM = new SqlABCommand(GlobalInfo.DBaseInfo.dbManager.DB_Connection)
-            {
-                CommandText = query
-            })
+            using (var sqlCM = new SqlProxyCommand(query, GlobalInfo.DBaseInfo.dbManager.DB_Connection))
             {
                 try
                 {
@@ -121,6 +117,10 @@ namespace ERPFramework.Data
                 {
                     System.Diagnostics.Debug.WriteLine(e.StackTrace, e.Message);
                     MessageBox.Show(e.StackTrace, e.Message);
+                }
+                finally
+                {
+
                 }
             }
         }

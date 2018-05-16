@@ -62,16 +62,16 @@ namespace ERPFramework.Forms
         public DBMode DocumentMode { get { return (dbManager != null) ? dbManager.Status : DBMode.Browse; } }
 
         [Browsable(false)]
-        public SqlABTransaction Transaction
+        public SqlProxyTransaction Transaction
         {
             get
             {
-                return dbManager == null ? null : dbManager.SqlABTransaction;
+                return dbManager == null ? null : dbManager.SqlProxyTransaction;
             }
         }
 
         [Browsable(false)]
-        public SqlABConnection Connection
+        public SqlProxyConnection Connection
         {
             get
             {

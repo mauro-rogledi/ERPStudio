@@ -45,10 +45,10 @@ namespace ERPFramework.Forms
         public event EventHandler<CrystalDecisions.Windows.Forms.PageMouseEventArgs> DoubleClickPage;
 
         [Browsable(false)]
-        public SqlABTransaction Transaction { get; set; } = null;
+        public SqlProxyTransaction Transaction { get; set; } = null;
 
         [Browsable(false)]
-        public SqlABConnection Connection { get; } = null;
+        public SqlProxyConnection Connection { get; } = null;
 
         protected virtual void OnDoubleClickColumn(string column, string value)
         {

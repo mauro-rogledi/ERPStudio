@@ -6,7 +6,7 @@ namespace ERPFramework.Controls
 {
     public class RadarComboBox : MetroFramework.Controls.MetroComboBox
     {
-        private SqlABConnection sqlCN = null;
+        private SqlProxyConnection sqlCN = null;
         private IColumn dC;
         private string Category = string.Empty;
 
@@ -28,11 +28,11 @@ namespace ERPFramework.Controls
             QueryBuilder qB = new QueryBuilder().
                 SelectAllFrom(dC.TableType);
 
-            SqlABCommand fillCM = new SqlABCommand(qB.Query, sqlCN);
+            SqlProxyCommand fillCM = new SqlProxyCommand(qB.Query, sqlCN);
 
             try
             {
-                SqlABDataReader fillRD = fillCM.ExecuteReader();
+                SqlProxyDataReader fillRD = fillCM.ExecuteReader();
                 while (fillRD.Read())
                     this.Items.Add(fillRD.GetString(dC.Name));
 

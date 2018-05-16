@@ -21,7 +21,7 @@ namespace ERPManager.ModuleData
     internal class RadarUsers : RadarForm
     {
         private QueryBuilder qb = new QueryBuilder();
-        private SqlABParameter p1;
+        private SqlProxyParameter p1;
 
         public RadarUsers()
             : base()
@@ -31,9 +31,9 @@ namespace ERPManager.ModuleData
             rdrNameSpace = new NameSpace("Plumber.Plumber.ApplicationManager.Forms.usersForm");
         }
 
-        protected override bool DefineFindQuery(SqlABCommand sqlCmd)
+        protected override bool DefineFindQuery(SqlProxyCommand sqlCmd)
         {
-            p1 = new SqlABParameter("@p1", AM_Users.Username);
+            p1 = new SqlProxyParameter("@p1", AM_Users.Username);
 
             qb.Clear();
             qb.SelectAllFrom<AM_Users>().
@@ -50,12 +50,12 @@ namespace ERPManager.ModuleData
             p1.Value = param[0];
         }
 
-        protected override void OnFound(SqlABDataReader sqlReader)
+        protected override void OnFound(SqlProxyDataReader sqlReader)
         {
             Description = sqlReader[AM_Users.Surname].ToString();
         }
 
-        protected override string DefineBrowseQuery(SqlABCommand sqlCmd, string findQuery)
+        protected override string DefineBrowseQuery(SqlProxyCommand sqlCmd, string findQuery)
         {
             qb.Clear();
             qb.SelectAllFrom<AM_Users>().

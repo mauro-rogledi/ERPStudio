@@ -31,17 +31,16 @@ namespace ERPFramework.Data
 
     public abstract class DataReaderUpdater<TTable> : IDataReaderUpdater
     {
-        protected SqlABConnection sqlCN;
-        protected SqlABDataAdapter sqlDA;
-        protected SqlABCommand sqlCM;
+        protected SqlProxyConnection sqlCN;
+        protected SqlProxyDataAdapter sqlDA;
+        protected SqlProxyCommand sqlCM;
         protected DataSet dataSet;
         protected string myTable = string.Empty;
         private string myCode = string.Empty;
-        private bool firstUpdate = true;
 
         #region Public Variables
 
-        public SqlABConnection Connection
+        public SqlProxyConnection Connection
         {
             get { return sqlCN; }
             set { sqlCN = value; }
@@ -89,7 +88,7 @@ namespace ERPFramework.Data
         }
 
         [Obsolete("Use version with transaction")]
-        protected DataReaderUpdater(SqlABConnection conn, bool updater)
+        protected DataReaderUpdater(SqlProxyConnection conn, bool updater)
             : this(conn, null)
         {
         }
@@ -99,7 +98,7 @@ namespace ERPFramework.Data
         {
         }
 
-        protected DataReaderUpdater(SqlABConnection conn, IDocumentBase documentBase)
+        protected DataReaderUpdater(SqlProxyConnection conn, IDocumentBase documentBase)
         {
             System.Diagnostics.Debug.Assert(conn != null, "Connection is null");
             myTable = typeof(TTable).GetField("Name").GetValue(null).ToString();
@@ -135,20 +134,21 @@ namespace ERPFramework.Data
 
         private void CreateConnection()
         {
-            sqlCM = new SqlABCommand(sqlCN);
+            sqlCM = new SqlProxyCommand(CreateQuery(), sqlCN);
             AddParameters();
-            sqlCM.CommandText = CreateQuery();
-            sqlDA = new SqlABDataAdapter(sqlCM);
+            sqlDA = new SqlProxyDataAdapter(sqlCM);
         }
 
-        public SqlABParameter AddParameters(string parameterName, IColumn column)
+        public SqlProxyParameter AddParameters(string parameterName, IColumn column)
         {
-            return sqlCM.Parameters.Add(new SqlABParameter(parameterName, column));
+            var param = new SqlProxyParameter(parameterName, column);
+            return sqlCM.Parameters.Add(param);
         }
 
-        public SqlABParameter AddParameters(string parameterName, Type colType, int colLen)
+        public SqlProxyParameter AddParameters(string parameterName, Type colType, int colLen)
         {
-            return sqlCM.Parameters.Add(new SqlABParameter(parameterName, colType, colLen));
+            var dbType = ConvertColumnType.GetDBType(colType);
+            return sqlCM.Parameters.Add(new SqlProxyParameter(parameterName, dbType, colLen));
         }
 
         protected virtual void AddParameters() { }
@@ -302,9 +302,7 @@ namespace ERPFramework.Data
 
         protected virtual void CreateUpdateCommand()
         {
-            firstUpdate = false;
-
-            var cBuilder = new SqlABCommandBuilder(sqlDA)
+            var cBuilder = new SqlProxyCommandBuilder(sqlDA)
             {
                 QuotePrefix = "[",
                 QuoteSuffix = "]",

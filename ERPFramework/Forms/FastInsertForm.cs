@@ -57,9 +57,9 @@ namespace ERPFramework.Forms
         public DBMode DocumentMode { get { return (dbManager != null) ? dbManager.Status : DBMode.Browse; } }
 
         [Browsable(false)]
-        public SqlABTransaction Transaction { get; set; } = null;
+        public SqlProxyTransaction Transaction { get; set; } = null;
         [Browsable(false)]
-        public SqlABConnection Connection { get; } = null;
+        public SqlProxyConnection Connection { get; } = null;
 
         public bool SilentMode
         {

@@ -66,8 +66,7 @@ namespace ERPFramework.Controls
         private MetroDataGridViewComboBoxColumn dgwCbbBox;
         private MetroFramework.Extender.MetroListBox lsbBox;
 
-        public delegate bool DisplayEventHandler(T e);
-        public event DisplayEventHandler DisplayItem;
+        public Predicate<T> Filter { get; set; }
 
         public int Count
         {
@@ -75,79 +74,87 @@ namespace ERPFramework.Controls
         }
 
 
-        public EnumsManager(string resource = "")
+        public EnumsManager(string resource = "", Predicate<T> filter = null)
         {
             myManager = resource.IsEmpty()
                             ? Properties.Resources.ResourceManager
                             : myManager = new System.Resources.ResourceManager(resource, System.Reflection.Assembly.GetAssembly(typeof(T)));
 
+            Filter = filter;
             FillArray(false);
         }
 
-        public EnumsManager(ResourceManager resource = null)
+        public EnumsManager(ResourceManager resource = null, Predicate<T> filter = null)
         {
             myManager = resource == null
                             ? Properties.Resources.ResourceManager
                             : resource;
 
+            Filter = filter;
             FillArray(false);
         }
-        public EnumsManager(ComboBox cbbBox, string resource = "", bool bAlsoNull= false)
+        public EnumsManager(ComboBox cbbBox, string resource = "", bool bAlsoNull= false, Predicate<T> filter = null)
         {
             myManager = resource.IsEmpty()
                             ? Properties.Resources.ResourceManager
                             : myManager = new System.Resources.ResourceManager(resource, System.Reflection.Assembly.GetAssembly(typeof(T)));
 
+            Filter = filter;
             if (cbbBox != null)
                 AttachTo(cbbBox, bAlsoNull);
         }
 
-        public EnumsManager(ComboBox cbbBox, ResourceManager resource = null, bool bAlsoNull = false)
-        {
-            myManager = resource == null
-                            ? Properties.Resources.ResourceManager
-                            : resource;
-            if (cbbBox != null)
-                AttachTo(cbbBox, bAlsoNull);
-        }
-
-        public EnumsManager(MetroDataGridViewComboBoxColumn cbbBox, string resource = "", bool bAlsoNull = false)
-        {
-            myManager = resource.IsEmpty()
-                            ? Properties.Resources.ResourceManager
-                            : myManager = new System.Resources.ResourceManager(resource, System.Reflection.Assembly.GetAssembly(typeof(T)));
-
-
-            if (cbbBox != null)
-                AttachTo(cbbBox, bAlsoNull);
-        }
-
-        public EnumsManager(MetroDataGridViewComboBoxColumn cbbBox, ResourceManager resource = null, bool bAlsoNull = false)
+        public EnumsManager(ComboBox cbbBox, ResourceManager resource = null, bool bAlsoNull = false, Predicate<T> filter = null)
         {
             myManager = resource == null
                             ? Properties.Resources.ResourceManager
                             : resource;
 
+            Filter = filter;
             if (cbbBox != null)
                 AttachTo(cbbBox, bAlsoNull);
         }
 
-        public EnumsManager(MetroListBox lstBox, string resource = "", bool bAlsoNull = false)
+        public EnumsManager(MetroDataGridViewComboBoxColumn cbbBox, string resource = "", bool bAlsoNull = false, Predicate<T> filter = null)
         {
             myManager = resource.IsEmpty()
                             ? Properties.Resources.ResourceManager
                             : myManager = new System.Resources.ResourceManager(resource, System.Reflection.Assembly.GetAssembly(typeof(T)));
 
+            Filter = filter;
+            if (cbbBox != null)
+                AttachTo(cbbBox, bAlsoNull);
+        }
+
+        public EnumsManager(MetroDataGridViewComboBoxColumn cbbBox, ResourceManager resource = null, bool bAlsoNull = false, Predicate<T> filter = null)
+        {
+            myManager = resource == null
+                            ? Properties.Resources.ResourceManager
+                            : resource;
+
+            Filter = filter;
+            if (cbbBox != null)
+                AttachTo(cbbBox, bAlsoNull);
+        }
+
+        public EnumsManager(MetroListBox lstBox, string resource = "", bool bAlsoNull = false, Predicate<T> filter = null)
+        {
+            myManager = resource.IsEmpty()
+                            ? Properties.Resources.ResourceManager
+                            : myManager = new System.Resources.ResourceManager(resource, System.Reflection.Assembly.GetAssembly(typeof(T)));
+
+            Filter = filter;
             if (lstBox != null)
                 AttachTo(lstBox, bAlsoNull);
         }
 
-        public EnumsManager(MetroListBox lstBox, ResourceManager resource = null, bool bAlsoNull = false)
+        public EnumsManager(MetroListBox lstBox, ResourceManager resource = null, bool bAlsoNull = false, Predicate<T> filter = null)
         {
             myManager = resource == null
                             ? Properties.Resources.ResourceManager
                             : resource;
 
+            Filter = filter;
             if (lstBox != null)
                 AttachTo(lstBox, bAlsoNull);
         }
@@ -163,18 +170,10 @@ namespace ERPFramework.Controls
 
             foreach (T i in Enum.GetValues(typeof(T)))
             {
-                object a = (object)Enum.Parse(typeof(T), i.ToString());
+                var a = (object)Enum.Parse(typeof(T), i.ToString());
 
-                if (DisplayItem != null)
-                {
-                    if (DisplayItem(i))
+                if (Filter?.Invoke(i) ?? true)
                         List.Add(EnumsListCreator.CreateItem(a, Tranlate(Enum.GetName(typeof(T), i))));
-                }
-                else
-                {
-                    if (DisplayValue(i))
-                        List.Add(EnumsListCreator.CreateItem(a, Tranlate(Enum.GetName(typeof(T), i))));
-                }
             }
         }
 
