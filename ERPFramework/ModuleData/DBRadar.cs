@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Forms;
 using ERPFramework.Controls;
-using ERPFramework.Data;
 
 namespace ERPFramework.Data
 {

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using MetroFramework.Controls;
 
 namespace ERPFramework.Controls
 {

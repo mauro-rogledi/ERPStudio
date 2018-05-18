@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
-using ERPFramework;
 
 namespace ERPFramework.ModulesHelper
 {

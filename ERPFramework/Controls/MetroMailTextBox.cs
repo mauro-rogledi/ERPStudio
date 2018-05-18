@@ -1,8 +1,6 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Windows.Forms;
 using MetroFramework;
-using MetroFramework.Extender;
 
 namespace ERPFramework.Controls
 {

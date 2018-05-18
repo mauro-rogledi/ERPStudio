@@ -1,5 +1,4 @@
-﻿using ERPFramework.Data;
-using System;
+﻿using System;
 using System.Windows.Forms;
 
 namespace ERPFramework.Preferences

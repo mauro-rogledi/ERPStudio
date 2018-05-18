@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Resources;
-using System.ComponentModel;
 using ERPFramework.DataGridViewControls;
 using MetroFramework.Extender;
 

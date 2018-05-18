@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using MetroFramework.Controls;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Forms.Design;
-using System.Collections.Generic;
 using System.Collections;
 using System.Reflection;
-using System.Media;
 using System.Drawing;
 
 namespace ERPFramework.Controls

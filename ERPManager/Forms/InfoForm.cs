@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using ERPFramework;
+﻿using ERPFramework;
 using ERPFramework.Data;
 using ERPFramework.ModulesHelper;
 using MetroFramework.Forms;

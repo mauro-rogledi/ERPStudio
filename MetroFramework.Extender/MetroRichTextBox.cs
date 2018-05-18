@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using MetroFramework;
 using MetroFramework.Components;
 using MetroFramework.Drawing;
 using MetroFramework.Interfaces;

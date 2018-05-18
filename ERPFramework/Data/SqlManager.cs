@@ -118,7 +118,7 @@ namespace ERPFramework.Data
             else
             {
                 RegisterModule RsT = new ERPFramework.ModuleData.RegisterModule();
-                RsT.CreateTable(myConnection, GlobalInfo.UserInfo.userType);
+                connected = RsT.CreateTable(myConnection, GlobalInfo.UserInfo.userType);
             }
 
             return connected;

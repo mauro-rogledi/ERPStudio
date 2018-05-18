@@ -1,6 +1,4 @@
-﻿using System.Windows.Forms;
-
-namespace ERPFramework.Controls
+﻿namespace ERPFramework.Controls
 {
     public partial class FindableIntelliTextBox : MetroFramework.Extender.MetroIntelliTextBox, IFindable
     {

@@ -1,6 +1,4 @@
-﻿using ERPFramework.Controls;
-
-namespace ERPFramework
+﻿namespace ERPFramework
 {
     public interface IFindable
     {

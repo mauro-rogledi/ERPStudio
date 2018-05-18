@@ -1,6 +1,4 @@
-﻿using ERPFramework.Data;
-using ERPFramework.Forms;
-using System;
+﻿using ERPFramework.Forms;
 using System.Data;
 
 namespace ERPFramework.Data

@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Data.Sql;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using ERPFramework.Controls;
 using ERPFramework.Data;
-using ERPFramework.Libraries;
-using Microsoft.SqlServer.Management.Smo;
 
 namespace ERPFramework.Login
 {

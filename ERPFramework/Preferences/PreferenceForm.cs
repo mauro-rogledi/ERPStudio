@@ -1,8 +1,6 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Drawing;
 using ERPFramework.Data;
-using ERPFramework.Forms;
 using MetroFramework;
 
 namespace ERPFramework.Preferences
