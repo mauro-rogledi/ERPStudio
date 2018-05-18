@@ -54,7 +54,7 @@ namespace ERPFramework.ModulesHelper
 
             var modulemenufile = Path.Combine(modulemenu, menufile);
             if (!File.Exists(modulemenufile))
-                modulemenufile = Path.Combine(modulemenu, "menu.config");
+                modulemenufile = Path.Combine(modulemenu, "menu", "menu.config");
 
             if (!File.Exists(modulemenufile))
             {

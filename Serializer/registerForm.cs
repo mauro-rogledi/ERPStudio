@@ -1,33 +1,23 @@
 ﻿using ERPFramework;
 using ERPFramework.ModulesHelper;
+using MetroFramework.Extender;
 using System;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml;
 
-namespace ERPManager
+namespace Serializer
 {
     public partial class registerForm : MetroFramework.Forms.MetroForm
     {
-        public bool LoadFromBinary = false;
-        public bool LoadData { get; set; } = true;
-
-        public registerForm(string applicationName)
+        public registerForm()
         {
             InitializeComponent();
-            Text = applicationName;
         }
 
         protected override void OnLoad(EventArgs e)
         {
             txtMac.Text = SerialManager.ReadMacAddress();
-            if (LoadData)
-            {
-                if (LoadFromBinary)
-                    LoadDataFromBinary();
-
-                LoadDataFromMenu();
-            }
             base.OnLoad(e);
         }
 
@@ -52,12 +42,12 @@ namespace ERPManager
             }
         }
 
-        private void LoadDataFromMenu()
+        private void LoadDataFromMenu(string appConfname)
         {
-            var applPath = Path.GetDirectoryName(Application.ExecutablePath);
+            var applPath = Path.GetDirectoryName(appConfname);
             if (applPath != null)
             {
-                var appConfname = Path.Combine(applPath, "ApplicationModules.config");
+                //var appConfname = Path.Combine(applPath, "ApplicationModules.config");
 
                 var xDoc = new XmlDocument();
                 xDoc.Load(appConfname);
@@ -76,7 +66,7 @@ namespace ERPManager
                             var nSpace = new NameSpace(xModule.Attributes["namespace"].Value);
 
                             var moduleDir = Path.Combine(applPath, nSpace.Folder);
-                            var menuFile = Path.Combine(moduleDir, "menu","menu.config");
+                            var menuFile = Path.Combine(moduleDir, "Menu","menu.config");
 
                             if (!File.Exists(menuFile))
                             {
@@ -92,10 +82,10 @@ namespace ERPManager
                             if (xMod != null)
                                 foreach (XmlNode xSignleMod in xMod)
                                 {
-                                    if (xSignleMod.Attributes != null && (LoadFromBinary && ModuleExist(moduleCode, xSignleMod.Attributes["code"].Value.ToString())))
+                                    if (xSignleMod.Attributes == null)
                                         continue;
 
-                                    int row = DataGridView1.Rows.Add();
+                                    var row = DataGridView1.Rows.Add();
                                     DataGridView1.Rows[row].Cells["colenable"].Value = xSignleMod.Attributes["enable"].Value == bool.TrueString;
                                     var sType = (SerialType)Enum.Parse(typeof(SerialType), xSignleMod.Attributes["serialtype"].Value);
                                     DataGridView1.Rows[row].Cells[nameof(colLicenseType)].Value = sType;
@@ -120,14 +110,18 @@ namespace ERPManager
             return false;
         }
 
-        private void btnOk_Click(object sender, EventArgs e)
+        private void CreateSerial()
         {
-            if (!CheckData())
-                return;
-
-            SaveSerial();
-            SerialManager.Load();
-            Close();
+            for (int t = 0; t < DataGridView1.Rows.Count; t++)
+            {
+                var expiration = DateTime.Today;
+                var sType = (SerialType)DataGridView1.Rows[t].Cells[nameof(colLicenseType)].Value;
+                var application = (string)DataGridView1.Rows[t].Cells[nameof(colApplication)].Value;
+                var module = (string)DataGridView1.Rows[t].Cells[nameof(colModuleName)].Value;
+                if (sType.HasFlag(SerialType.EXPIRATION_DATE))
+                    expiration = (DateTime)DateTime.Parse(DataGridView1.Rows[t].Cells[nameof(colExpiration)].Value.ToString());
+                DataGridView1.Rows[t].Cells[nameof(colSerial)].Value = SerialManager.CreateSerial(txtLicense.Text, txtMac.Text, application, module, sType, expiration, txtPenDrive.Text);
+            }
         }
 
         private bool CheckData()
@@ -162,26 +156,26 @@ namespace ERPManager
             return true;
         }
 
-        private void SaveSerial()
-        {
-            SerialManager.Clear();
-            SerialManager.SerialData.License = txtLicense.Text;
-            SerialManager.SerialData.PenDrive = txtPenDrive.Text;
+        //private void SaveSerial()
+        //{
+        //    SerialManager.Clear();
+        //    SerialManager.SerialData.License = txtLicense.Text;
+        //    SerialManager.SerialData.PenDrive = txtPenDrive.Text;
 
-            for (int t = 0; t < DataGridView1.Rows.Count; t++)
-            {
-                var expiration = DateTime.Today;
-                var enable = (bool)DataGridView1.Rows[t].Cells[nameof(colEnable)].Value;
-                var sType = (SerialType)DataGridView1.Rows[t].Cells[nameof(colLicenseType)].Value;
-                var application = (string)DataGridView1.Rows[t].Cells[nameof(colApplication)].Value;
-                var module = (string)DataGridView1.Rows[t].Cells[nameof(colModuleName)].Value;
-                if (sType.HasFlag(SerialType.EXPIRATION_DATE))
-                    expiration = DateTime.Parse(DataGridView1.Rows[t].Cells[nameof(colExpiration)].Value.ToString());
-                var serial = DataGridView1.Rows[t].Cells[nameof(colSerial)].Value.ToString();
-                SerialManager.AddModule(application, enable, module, sType, expiration, serial);
-            }
-            SerialManager.Save();
-        }
+        //    for (int t = 0; t < DataGridView1.Rows.Count; t++)
+        //    {
+        //        var expiration = DateTime.Today;
+        //        var enable = (bool)DataGridView1.Rows[t].Cells[nameof(colEnable)].Value;
+        //        var sType = (SerialType)DataGridView1.Rows[t].Cells[nameof(colLicenseType)].Value;
+        //        var application = (string)DataGridView1.Rows[t].Cells[nameof(colApplication)].Value;
+        //        var module = (string)DataGridView1.Rows[t].Cells[nameof(colModuleName)].Value;
+        //        if (sType.HasFlag(SerialType.EXPIRATION_DATE))
+        //            expiration = DateTime.Parse(DataGridView1.Rows[t].Cells[nameof(colExpiration)].Value.ToString());
+        //        var serial = DataGridView1.Rows[t].Cells[nameof(colSerial)].Value.ToString();
+        //        SerialManager.AddModule(application, enable, module, sType, expiration, serial);
+        //    }
+        //    SerialManager.Save();
+        //}
 
         private void btnFindPen_Click(object sender, EventArgs e)
         {
@@ -189,14 +183,29 @@ namespace ERPManager
             {
                 if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    txtPenDrive.Text = USBSerialNumber.GetNameFromDriveLetter(fbd.SelectedPath);
+                    txtPenDrive.Text = "";// USBSerialNumber.GetNameFromDriveLetter(fbd.SelectedPath);
                 }
             }
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void metroToolbar1_ItemClicked(object sender, MetroFramework.Extender.MetroToolbarButtonType e)
         {
-            this.Close();
+            var btn = sender as IMetroToolBarButton;
+
+            switch (btn.ButtonType)
+            {
+                case MetroToolbarButtonType.Exit:
+                    this.Close();
+                    return;
+                case MetroToolbarButtonType.Save:
+                    CreateSerial();
+                    break;
+                case MetroToolbarButtonType.Search:
+                    if (openDialog.ShowDialog() == DialogResult.OK)
+                        LoadDataFromMenu(openDialog.FileName);
+
+                    break;
+            }
         }
     }
 }
