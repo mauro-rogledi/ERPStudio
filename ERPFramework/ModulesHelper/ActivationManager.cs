@@ -31,8 +31,6 @@ namespace ERPFramework.ModulesHelper
     {
         public string Enable { get; set; }
 
-        public string Application { get; set; }
-
         public string Module { get; set; }
 
         [NonSerialized]
@@ -43,6 +41,8 @@ namespace ERPFramework.ModulesHelper
         public string Expiration { get; set; }
 
         public string SerialNo { get; set; }
+
+        public List<string> Functionality { get; set; } = new List<string>();
     }
 
     [Serializable()]
@@ -52,10 +52,10 @@ namespace ERPFramework.ModulesHelper
 
         public string PenDrive { get; set; }
 
-        public List<SerialModule> Modules = new List<SerialModule>(1);
+        public List<SerialModule> Modules = new List<SerialModule>();
     }
 
-    public static class SerialManager
+    public static class ActivationManager
     {
         public static SerialData SerialData = new SerialData();
         public static string macAddres = ReadMacAddress();
@@ -65,26 +65,27 @@ namespace ERPFramework.ModulesHelper
             SerialData.Modules.Clear();
         }
 
-        public static void AddModule(string application, bool enable, string module, SerialType sType, DateTime expiration, string serial)
+        public static void AddModule(bool enable, string module, SerialType sType, DateTime expiration, string serial)
         {
-            SerialModule sd = new SerialModule();
-            sd.Application = application;
-            sd.Module = module;
-            sd.Enable = enable.ToString();
-            sd.SerialType = sType;
-            sd.Expiration = expiration.ToShortDateString();
-            sd.SerialNo = serial;
+            var sd = new SerialModule
+            {
+                Module = module,
+                Enable = enable.ToString(),
+                SerialType = sType,
+                Expiration = expiration.ToShortDateString(),
+                SerialNo = serial
+            };
 
             SerialData.Modules.Add(sd);
         }
 
         public static ActivationState IsActivate(string application, string module)
         {
-            SerialModule sm = SerialData.Modules.Find(p => (p.Application == application && p.Module == module));
+            SerialModule sm = SerialData.Modules.Find(p => (p.Module == module));
             if (sm == null || sm.Enable == bool.FalseString)
                 return ActivationState.NotActivate;
 
-            if (!SerialFormatIsOk(sm.SerialNo, sm.Application, sm.Module))
+            if (!SerialFormatIsOk(sm.SerialNo, sm.Module))
                 return ActivationState.NotActivate;
 
             if (!CheckSerialType(sm))
@@ -132,7 +133,7 @@ namespace ERPFramework.ModulesHelper
             return serial;
         }
 
-        private static bool SerialFormatIsOk(string serial, string application, string module)
+        private static bool SerialFormatIsOk(string serial, string module)
         {
             var serialCheck = string.Empty;
             var parts = serial.Split(new char[] { '-' });
@@ -142,7 +143,7 @@ namespace ERPFramework.ModulesHelper
             if (ConvertString(serialCheck) != parts[parts.Length - 1])
                 return false;
 
-            if (ConvertString(application) + ConvertString(module) != parts[0])
+            if (ConvertString(module) != parts[0])
                 return false;
 
             return true;
@@ -302,7 +303,6 @@ namespace ERPFramework.ModulesHelper
 
             foreach (SerialModule Module in SerialData.Modules)
             {
-                Module.Application = ConvertFrom64(Module.Application);
                 Module.Module = ConvertFrom64(Module.Module);
                 Module.Expiration = ConvertFrom64(Module.Expiration);
                 Module.SerialNo = ConvertFrom64(Module.SerialNo);
@@ -325,7 +325,6 @@ namespace ERPFramework.ModulesHelper
             foreach (SerialModule Module in SerialData.Modules)
             {
                 Module.SerialTypeString = ConvertTo64(Module.SerialType.ToString());
-                Module.Application = ConvertTo64(Module.Application);
                 Module.Module = ConvertTo64(Module.Module);
                 Module.Expiration = ConvertTo64(Module.Expiration);
                 Module.SerialNo = ConvertTo64(Module.SerialNo);

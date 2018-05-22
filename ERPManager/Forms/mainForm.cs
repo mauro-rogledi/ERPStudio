@@ -124,7 +124,7 @@ namespace ERPManager.Forms
         protected override void OnShown(EventArgs e)
         {
             // Controllo che il programma sia correttamente registrato
-            if (!SerialManager.Load())
+            if (!ActivationManager.Load())
             {
                 registerForm rF = new registerForm(ModuleManager.ApplicationName);
                 if (rF.ShowDialog() == DialogResult.Cancel)

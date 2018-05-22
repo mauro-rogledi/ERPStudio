@@ -442,7 +442,7 @@
     <Compile Include="ModulesHelper\DllManager.cs" />
     <Compile Include="ModulesHelper\ModuleManager.cs" />
     <Compile Include="ModulesHelper\OpenDocument.cs" />
-    <Compile Include="ModulesHelper\SerialManager.cs" />
+    <Compile Include="ModulesHelper\ActivationManager.cs" />
     <Compile Include="ModulesHelper\USBSerialNumber.cs" />
     <Compile Include="Preferences\PreferencePanel.cs">
       <SubType>UserControl</SubType>

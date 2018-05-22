@@ -20,7 +20,7 @@ namespace ERPManager
 
         protected override void OnLoad(EventArgs e)
         {
-            txtMac.Text = SerialManager.ReadMacAddress();
+            txtMac.Text = ActivationManager.ReadMacAddress();
             if (LoadData)
             {
                 if (LoadFromBinary)
@@ -33,22 +33,21 @@ namespace ERPManager
 
         private void LoadDataFromBinary()
         {
-            SerialManager.Load();
+            ActivationManager.Load();
             DataGridView1.Rows.Clear();
 
-            foreach (SerialModule sd in SerialManager.SerialData.Modules)
+            foreach (SerialModule sd in ActivationManager.SerialData.Modules)
             {
                 var row = DataGridView1.Rows.Add();
                 DataGridView1.Rows[row].Cells["colenable"].Value = sd.Enable == bool.TrueString;
                 DataGridView1.Rows[row].Cells[nameof(colLicenseType)].Value = sd.SerialTypeString;
-                DataGridView1.Rows[row].Cells[nameof(colApplication)].Value = sd.Application;
                 DataGridView1.Rows[row].Cells[nameof(colModuleName)].Value = sd.Module;
                 DataGridView1.Rows[row].Cells[nameof(colSerial)].Value = sd.SerialNo;
                 if (sd.SerialType.HasFlag(SerialType.EXPIRATION_DATE))
                     DataGridView1.Rows[row].Cells[nameof(colExpiration)].Value = sd.Expiration;
 
-                txtLicense.Text = SerialManager.SerialData.License;
-                txtPenDrive.Text = SerialManager.SerialData.PenDrive;
+                txtLicense.Text = ActivationManager.SerialData.License;
+                txtPenDrive.Text = ActivationManager.SerialData.PenDrive;
             }
         }
 
@@ -126,7 +125,7 @@ namespace ERPManager
                 return;
 
             SaveSerial();
-            SerialManager.Load();
+            ActivationManager.Load();
             Close();
         }
 
@@ -151,7 +150,7 @@ namespace ERPManager
 
                 var serial = (string)DataGridView1.Rows[t].Cells[nameof(colSerial)].Value;
 
-                if (serial != SerialManager.CreateSerial(txtLicense.Text, txtMac.Text, application, module, sType, expiration, txtPenDrive.Text))
+                if (serial != ActivationManager.CreateSerial(txtLicense.Text, txtMac.Text, application, module, sType, expiration, txtPenDrive.Text))
                 {
                     var mess = string.Format(Properties.Resources.Msg_IncorrectSerialNumber, application, module);
                     MessageBox.Show(mess, Properties.Resources.Msg_Attention,
@@ -164,9 +163,9 @@ namespace ERPManager
 
         private void SaveSerial()
         {
-            SerialManager.Clear();
-            SerialManager.SerialData.License = txtLicense.Text;
-            SerialManager.SerialData.PenDrive = txtPenDrive.Text;
+            ActivationManager.Clear();
+            ActivationManager.SerialData.License = txtLicense.Text;
+            ActivationManager.SerialData.PenDrive = txtPenDrive.Text;
 
             for (int t = 0; t < DataGridView1.Rows.Count; t++)
             {
@@ -178,9 +177,9 @@ namespace ERPManager
                 if (sType.HasFlag(SerialType.EXPIRATION_DATE))
                     expiration = DateTime.Parse(DataGridView1.Rows[t].Cells[nameof(colExpiration)].Value.ToString());
                 var serial = DataGridView1.Rows[t].Cells[nameof(colSerial)].Value.ToString();
-                SerialManager.AddModule(application, enable, module, sType, expiration, serial);
+                ActivationManager.AddModule(enable, module, sType, expiration, serial);
             }
-            SerialManager.Save();
+            ActivationManager.Save();
         }
 
         private void btnFindPen_Click(object sender, EventArgs e)

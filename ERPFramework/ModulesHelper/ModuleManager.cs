@@ -18,6 +18,16 @@ namespace ERPFramework.ModulesHelper
         public static bool LoadModules()
         {
             var applPath = Path.GetDirectoryName(Application.ExecutablePath);
+            var dirs = Directory.GetDirectories(applPath);
+
+            foreach(var dir in dirs)
+            {
+                var menuDir = Path.Combine(dir, "Menu");
+                if (Directory.Exists(menuDir))
+                {
+
+                }
+            }
             var appConfname = Path.Combine(applPath, "ApplicationModules.config");
 
             if (!File.Exists(appConfname))
@@ -28,9 +38,8 @@ namespace ERPFramework.ModulesHelper
             var applModule = new XmlDocument();
             applModule.Load(appConfname);
 
-            var modules = applModule.SelectSingleNode("modules");
+            var modules = applModule.SelectSingleNode("application");
             ApplicationName = modules.Attributes["name"].Value;
-            ModuleList = new List<ApplicationMenuModule>(1);
 
             var moduleList = applModule.SelectNodes("modules/module");
             foreach (XmlNode modNode in moduleList)
@@ -139,7 +148,7 @@ namespace ERPFramework.ModulesHelper
             var bOk = true;
             if (registerTable != null)
             {
-                if (SerialManager.IsActivate(registerTable.Application(), registerTable.Module()) != ActivationState.NotActivate)
+                if (ActivationManager.IsActivate(registerTable.Application(), registerTable.Module()) != ActivationState.NotActivate)
                 {
                     bOk = registerTable.CreateTable(GlobalInfo.DBaseInfo.dbManager.DB_Connection, GlobalInfo.UserInfo.userType);
                     if (bOk)
