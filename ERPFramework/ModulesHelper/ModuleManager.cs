@@ -25,18 +25,11 @@ namespace ERPFramework.ModulesHelper
                 var menuDir = Path.Combine(dir, "Menu");
                 if (Directory.Exists(menuDir))
                 {
-
+                    continue;
                 }
             }
-            var appConfname = Path.Combine(applPath, "ApplicationModules.config");
-
-            if (!File.Exists(appConfname))
-            {
-                Debug.Assert(false, "Missing ApplicationModules.config");
-                return false;
-            }
             var applModule = new XmlDocument();
-            applModule.Load(appConfname);
+            //applModule.Load(appConfname);
 
             var modules = applModule.SelectSingleNode("application");
             ApplicationName = modules.Attributes["name"].Value;
@@ -52,6 +45,8 @@ namespace ERPFramework.ModulesHelper
             }
             return true;
         }
+
+
 
         private static bool LoadMenu(NameSpace nameSpace)
         {
@@ -148,7 +143,7 @@ namespace ERPFramework.ModulesHelper
             var bOk = true;
             if (registerTable != null)
             {
-                if (ActivationManager.IsActivate(registerTable.Application(), registerTable.Module()) != ActivationState.NotActivate)
+                if (ActivationManager.IsActivate(registerTable.Module()) != ActivationState.NotActivate)
                 {
                     bOk = registerTable.CreateTable(GlobalInfo.DBaseInfo.dbManager.DB_Connection, GlobalInfo.UserInfo.userType);
                     if (bOk)

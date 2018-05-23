@@ -36,18 +36,18 @@ namespace ERPManager
             ActivationManager.Load();
             DataGridView1.Rows.Clear();
 
-            foreach (SerialModule sd in ActivationManager.SerialData.Modules)
+            foreach (SerialModule sd in ActivationManager.activationData.Modules)
             {
                 var row = DataGridView1.Rows.Add();
-                DataGridView1.Rows[row].Cells["colenable"].Value = sd.Enable == bool.TrueString;
-                DataGridView1.Rows[row].Cells[nameof(colLicenseType)].Value = sd.SerialTypeString;
-                DataGridView1.Rows[row].Cells[nameof(colModuleName)].Value = sd.Module;
+                DataGridView1.Rows[row].Cells["colenable"].Value = sd.Enable;
+                DataGridView1.Rows[row].Cells[nameof(colLicenseType)].Value = sd.SerialType.ToString();
+                DataGridView1.Rows[row].Cells[nameof(colModuleName)].Value = sd.Name;
                 DataGridView1.Rows[row].Cells[nameof(colSerial)].Value = sd.SerialNo;
                 if (sd.SerialType.HasFlag(SerialType.EXPIRATION_DATE))
                     DataGridView1.Rows[row].Cells[nameof(colExpiration)].Value = sd.Expiration;
 
-                txtLicense.Text = ActivationManager.SerialData.License;
-                txtPenDrive.Text = ActivationManager.SerialData.PenDrive;
+                txtLicense.Text = ActivationManager.activationData.License;
+                txtPenDrive.Text = ActivationManager.activationData.PenDrive;
             }
         }
 
@@ -164,8 +164,8 @@ namespace ERPManager
         private void SaveSerial()
         {
             ActivationManager.Clear();
-            ActivationManager.SerialData.License = txtLicense.Text;
-            ActivationManager.SerialData.PenDrive = txtPenDrive.Text;
+            ActivationManager.activationData.License = txtLicense.Text;
+            ActivationManager.activationData.PenDrive = txtPenDrive.Text;
 
             for (int t = 0; t < DataGridView1.Rows.Count; t++)
             {
