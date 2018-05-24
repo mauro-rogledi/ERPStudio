@@ -26,7 +26,7 @@ namespace ERPFramework.Login
 
         #endregion
 
-        private EnumsManager<ProviderType> cbbManager;
+        private readonly EnumsManager<ProviderType> cbbManager;
 
         public ConnectionForm()
         {
@@ -53,18 +53,15 @@ namespace ERPFramework.Login
                 switch (e.OldIndex)
                 {
                     case 0:
-#if (SQLServer)
+
                         if (cbbManager.GetValue() == ProviderType.SQLServer)
                             e.NewIndex = 1;
-#endif
-#if (SQLCompact)
+
                         if (cbbManager.GetValue() == ProviderType.SQLCompact)
                             e.NewIndex = 3;
-#endif
-#if (SQLite)
+
                         if (cbbManager.GetValue() == ProviderType.SQLite)
                             e.NewIndex = 4;
-#endif
                         break;
 
                     case 1:
@@ -83,6 +80,8 @@ namespace ERPFramework.Login
 
                     case 3:
                         break;
+                    default:
+                        break;
                 }
             }
             else
@@ -95,6 +94,8 @@ namespace ERPFramework.Login
 
                     case 4:
                         e.NewIndex = 0;
+                        break;
+                    default:
                         break;
 
                         //case 4:
@@ -174,7 +175,6 @@ namespace ERPFramework.Login
             Provider = (ProviderType)cbbManager.GetValue();
             switch (Provider)
             {
-#if(SQLCompact)
                 case ProviderType.SQLCompact:
                     if (rdbExistCMP.Checked)
                         InitialCatalog = txtexistCMP.Text;
@@ -185,8 +185,7 @@ namespace ERPFramework.Login
 
                     NewDatabase = rdbNewCMP.Checked;
                     break;
-#endif
-#if(SQLServer)
+
                 case ProviderType.SQLServer:
                     if (rdbExistSQL.Checked)
                         InitialCatalog = cbbExistSQL.Text;
@@ -201,8 +200,6 @@ namespace ERPFramework.Login
 
                     NewDatabase = rdbNewSQL.Checked;
                     break;
-#endif
-#if(SQLite)
                 case ProviderType.SQLite:
                     if (rdbexistLIT.Checked)
                         InitialCatalog = txtexistLIT.Text;
@@ -212,7 +209,8 @@ namespace ERPFramework.Login
                     Password = txtPassLIT.Text;
                     NewDatabase = rdbnewLIT.Checked;
                     break;
-#endif
+                default:
+                    break;
             }
         }
 

@@ -336,7 +336,7 @@ namespace ERPFramework.Data
 
         protected override void AddParameters()
         {
-            sqlP1 = AddParameters("@p50", AM_Preferences.Username);
+            sqlP1 = AddParameters("@p50", AM_Users.Username);
         }
 
         protected override string CreateQuery()

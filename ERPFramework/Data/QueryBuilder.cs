@@ -111,26 +111,7 @@ namespace ERPFramework.Data
             else if (column is DateTime)
             {
                 var dVal = (DateTime)Convert.ChangeType(column, typeof(DateTime));
-                switch (GlobalInfo.LoginInfo.ProviderType)
-                {
-#if(SQLite)
-                    case ProviderType.SQLite:
-                        {
-                            return $"'{dVal.Year:0000}-{dVal.Month:00}-{dVal.Day:00} 00:00:00' ";
-                        }
-#endif
-#if (SQLServer || SqlCompact)
-#if (SQLServer)
-                    case ProviderType.SQLServer:
-#endif
-#if (SqlCompact)
-                    case ProviderType.SQLCompact:
-#endif
-                        {
-                            return $"'{dVal.Year}{dVal.Month:00}{dVal.Day:00}' ";
-                        }
-#endif
-                }
+                return SqlProxyDatabaseHelper.ConvertDate(dVal);
             }
 
             System.Diagnostics.Debug.Assert(false, nameof(DecodeColumn));
@@ -396,142 +377,37 @@ namespace ERPFramework.Data
         public string Year(IColumn val)
         {
             System.Diagnostics.Debug.Assert(val.ColType == typeof(DateTime), "Column type must be DateTime type");
-
-            switch(GlobalInfo.LoginInfo.ProviderType)
-            {
-
-#if(SQLServer)
-                case ProviderType.SQLServer:
-                    return $"YEAR({DecodeColumn(val)}) ";
-#endif
-#if(SQLCompact)
-                case ProviderType.SQLCompact:
-                    return $"YEAR({DecodeColumn(val)}) ";
-#endif
-#if (SQLite)
-                case ProviderType.SQLite:
-                    return $"STRFTIME('%Y', {DecodeColumn(val)}) ";
-#endif
-            }
-            return "";
+            return SqlProxyDatabaseHelper.GetYear(DecodeColumn(val));
         }
 
         public string Month(IColumn val)
         {
             System.Diagnostics.Debug.Assert(val.ColType == typeof(DateTime), "Column type must be DateTime type");
-
-            switch (GlobalInfo.LoginInfo.ProviderType)
-            {
-
-#if(SQLServer)
-                case ProviderType.SQLServer:
-                    return $"MONTH({DecodeColumn(val)}) ";
-#endif
-#if(SQLCompact)
-                case ProviderType.SQLCompact:
-                    return $"MONTH({DecodeColumn(val)}) ";
-#endif
-#if (SQLite)
-                case ProviderType.SQLite:
-                    return $"STRFTIME('%m', {DecodeColumn(val)}) ";
-#endif
-            }
-
-            return "";
+            return SqlProxyDatabaseHelper.GetMonth(DecodeColumn(val));
         }
 
         public string Day(IColumn val)
         {
             System.Diagnostics.Debug.Assert(val.ColType == typeof(DateTime), "Column type must be DateTime type");
-
-            switch (GlobalInfo.LoginInfo.ProviderType)
-            {
-
-#if(SQLServer)
-                case ProviderType.SQLServer:
-                    return $"DAY({DecodeColumn(val)}) ";
-#endif
-#if(SQLCompact)
-                case ProviderType.SQLCompact:
-                    return $"DAY({DecodeColumn(val)}) ";
-#endif
-#if (SQLite)
-                case ProviderType.SQLite:
-                    return $"STRFTIME('%d', {DecodeColumn(val)}) ";
-#endif
-            }
-
-            return "";
+            return SqlProxyDatabaseHelper.GetDay(DecodeColumn(val));
         }
 
         public string WeekOfYear(IColumn val)
         {
             System.Diagnostics.Debug.Assert(val.ColType == typeof(DateTime), "Column type must be DateTime type");
-
-            switch (GlobalInfo.LoginInfo.ProviderType)
-            {
-
-#if(SQLServer)
-                case ProviderType.SQLServer:
-                    return $"DATEPART(week, {DecodeColumn(val)}) ";
-#endif
-#if(SQLCompact)
-                case ProviderType.SQLCompact:
-                    return $"DATEPART(week, {DecodeColumn(val)}) ";
-#endif
-#if (SQLite)
-                case ProviderType.SQLite:
-                    return $"STRFTIME('%W', {DecodeColumn(val)}) ";
-#endif
-            }
-
-            return "";
+            return SqlProxyDatabaseHelper.GetWeekOfYear(DecodeColumn(val));
         }
 
         public string DayOfYear(IColumn val)
         {
             System.Diagnostics.Debug.Assert(val.ColType == typeof(DateTime), "Column type must be DateTime type");
-
-            switch (GlobalInfo.LoginInfo.ProviderType)
-            {
-
-#if(SQLServer)
-                case ProviderType.SQLServer:
-                    return $"DATEPART(dayofyear, {DecodeColumn(val)}) ";
-#endif
-#if(SQLCompact)
-                case ProviderType.SQLCompact:
-                    return $"DATEPART(dayofyear, {DecodeColumn(val)}) ";
-#endif
-#if (SQLite)
-                case ProviderType.SQLite:
-                    return $"STRFTIME('%j', {DecodeColumn(val)}) ";
-#endif
-            }
-            return "";
+            return SqlProxyDatabaseHelper.DayOfYear(DecodeColumn(val));
         }
 
         public string DayOfWeek(IColumn val)
         {
             System.Diagnostics.Debug.Assert(val.ColType == typeof(DateTime), "Column type must be DateTime type");
-
-            switch (GlobalInfo.LoginInfo.ProviderType)
-            {
-
-#if(SQLServer)
-                case ProviderType.SQLServer:
-                    return $"DATEPART(weekday, {DecodeColumn(val)}) ";
-#endif
-#if(SQLCompact)
-                case ProviderType.SQLCompact:
-                    return $"DATEPART(weekday, {DecodeColumn(val)}) ";
-#endif
-#if (SQLite)
-                case ProviderType.SQLite:
-                    return $"STRFTIME('%w', {DecodeColumn(val)}) ";
-#endif
-            }
-            return "";
+            return SqlProxyDatabaseHelper.DayOfWeek(DecodeColumn(val));
 
         }
         #endregion
@@ -572,7 +448,7 @@ namespace ERPFramework.Data
         #endregion
 
         #region Insert Into
-        public QueryBuilder InsertInto<T>(params object[] columns )
+        public QueryBuilder InsertInto<T>(params object[] columns)
         {
             System.Diagnostics.Debug.Assert(typeof(T).BaseType == typeof(Table));
 
@@ -610,29 +486,7 @@ namespace ERPFramework.Data
                 else if (param is DateTime)
                 {
                     var dVal = (DateTime)Convert.ChangeType(param, typeof(DateTime));
-
-                    switch (GlobalInfo.LoginInfo.ProviderType)
-                    {
-#if (SQLite)
-                        case ProviderType.SQLite:
-                            {
-                                concat = concat.SeparConcat($"'{dVal.Year:0000}-{dVal.Month:00}-{dVal.Day:00} 00:00:00'", ",");
-                                break;
-                            }
-#endif
-#if (SQLServer || SqlCompact)
-#if (SQLServer)
-                        case ProviderType.SQLServer:
-#endif
-#if (SqlCompact)
-                        case ProviderType.SQLCompact:
-#endif
-                            {
-                                concat = concat.SeparConcat($"{dVal.Year}{dVal.Month:00}{dVal.Day:00}", ",");
-                                break;
-                            }
-#endif
-                    }
+                    concat = concat.SeparConcat(SqlProxyDatabaseHelper.ConvertDate(dVal), ",");
                 }
                 else
                     concat = concat.SeparConcat($"'{param.ToString()}'", ",");
@@ -650,7 +504,7 @@ namespace ERPFramework.Data
             return From(typeof(T), As);
         }
 
-        public QueryBuilder From(Type table, string As= "")
+        public QueryBuilder From(Type table, string As = "")
         {
             System.Diagnostics.Debug.Assert(table.BaseType == typeof(Table));
             var tableName = table.GetField("Name").GetValue(null).ToString();
@@ -789,7 +643,7 @@ namespace ERPFramework.Data
             return this;
         }
 
-        public QueryBuilder Is(string operators, object val, string qualified="")
+        public QueryBuilder Is(string operators, object val, string qualified = "")
         {
             if (val is SqlProxyParameter)
             {
@@ -798,7 +652,7 @@ namespace ERPFramework.Data
                     scc.Parameters.Add((val as SqlProxyParameter));
 
             }
-            else if (val is double ||val is int)
+            else if (val is double || val is int)
             {
                 sb.AppendFormat("{0} {1} ", operators, val);
             }
@@ -816,28 +670,8 @@ namespace ERPFramework.Data
             else if (val is DateTime)
             {
                 var dVal = (DateTime)Convert.ChangeType(val, typeof(DateTime));
-                switch (GlobalInfo.LoginInfo.ProviderType)
-                {
-#if (SQLite)
-                    case ProviderType.SQLite:
-                        {
-                            sb.AppendFormat("{0} '{1}' ", operators, $"{dVal.Year:0000}-{dVal.Month:00}-{dVal.Day:00} 00:00:00");
-                            break;
-                        }
-#endif
-#if (SQLServer || SqlCompact)
-#if (SQLServer)
-                    case ProviderType.SQLServer:
-#endif
-#if (SqlCompact)
-                    case ProviderType.SQLCompact:
-#endif
-                        {
-                            sb.AppendFormat("{0} {1} ", operators, $"{dVal.Year}{dVal.Month:00}{dVal.Day:00}");
-                            break;
-                        }
-#endif
-                }
+                sb.AppendFormat("{0} {1} ", operators, $"{SqlProxyDatabaseHelper.ConvertDate(dVal)}");
+
             }
             else if (val is QueryBuilder)
             {
@@ -883,29 +717,7 @@ namespace ERPFramework.Data
             {
                 var dVal1 = (DateTime)Convert.ChangeType(val1, typeof(DateTime));
                 var dVal2 = (DateTime)Convert.ChangeType(val2, typeof(DateTime));
-
-                switch (GlobalInfo.LoginInfo.ProviderType)
-                {
-#if(SQLite)
-                    case ProviderType.SQLite:
-                        {
-                            sb.AppendFormat("BETWEEN {0} AND {1} ", $"'{dVal1.Year}-{dVal1.Month:00}-{dVal1.Day:00}  00:00:00'", $"'{dVal2.Year}-{dVal2.Month:00}-{dVal2.Day:00}  00:00:00'");
-                            break;
-                        }
-#endif
-#if (SQLServer || SqlCompact)
-#if (SQLServer)
-                    case ProviderType.SQLServer:
-#endif
-#if (SqlCompact)
-                    case ProviderType.SQLCompact:
-#endif
-                        {
-                            sb.AppendFormat("BETWEEN {0} AND {1} ", $"{dVal1.Year}{dVal1.Month:00}{dVal1.Day:00}", $"{dVal2.Year}{dVal2.Month:00}{dVal2.Day:00}");
-                            break;
-                        }
-#endif
-                }
+                sb.AppendFormat("BETWEEN {0} AND {1} ", $"{SqlProxyDatabaseHelper.ConvertDate(dVal1)}", $"{SqlProxyDatabaseHelper.ConvertDate(dVal2)}");
             }
             else
                 sb.AppendFormat("BETWEEN '{0}' AND '{1}' ", val1, val2);
@@ -913,7 +725,7 @@ namespace ERPFramework.Data
             return this;
         }
 
-        public QueryBuilder AddFilter(string filter, string andor="AND")
+        public QueryBuilder AddFilter(string filter, string andor = "AND")
         {
             if (filter.IsEmpty())
                 return this;
@@ -960,29 +772,7 @@ namespace ERPFramework.Data
             else if (param is DateTime)
             {
                 var dVal = (DateTime)Convert.ChangeType(param, typeof(DateTime));
-
-                switch (GlobalInfo.LoginInfo.ProviderType)
-                {
-#if(SQLite)
-                    case ProviderType.SQLite:
-                        {
-                            concat = concat.SeparConcat($"'{dVal.Year:0000}-{dVal.Month:00}-{dVal.Day:00} 00:00:00'", ",");
-                            break;
-                        }
-#endif
-#if (SQLServer || SqlCompact)
-#if (SQLServer)
-                    case ProviderType.SQLServer:
-#endif
-#if (SqlCompact)
-                    case ProviderType.SQLCompact:
-#endif
-                        {
-                            concat = concat.SeparConcat($"{dVal.Year}{dVal.Month:00}{dVal.Day:00}", ",");
-                            break;
-                        }
-#endif
-                }
+                concat = concat.SeparConcat($"{SqlProxyDatabaseHelper.ConvertDate(dVal)}", ",");
             }
             else if (param is bool)
             {

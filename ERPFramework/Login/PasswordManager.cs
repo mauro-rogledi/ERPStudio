@@ -9,12 +9,9 @@ namespace ERPFramework.Login
     /// Summary description for PasswordManager.
     /// </summary>
     /// 
-    public class PasswordManager : IDisposable
+    public class PasswordManager
     {
-        private SqlProxyConnection sCon;
-        private SqlProxyCommand sC;
-        private SqlProxyParameter sP;
-        private SqlProxyDataReader sR;
+        private DRUsers drUsers;
         private DateTime ExpireDate = DateTime.Today;
         private UserStatus status = UserStatus.Found;
 
@@ -24,149 +21,76 @@ namespace ERPFramework.Login
 
         public bool HasToChangePassword { get { return changePwd; } }
 
-        public string Password { get { return (sR != null) ? (string)sR[AM_Users.Password] : string.Empty; } }
+        public string Password
+        {
+            get => drUsers.GetValue<string>(AM_Users.Password);
+        }
 
         public UserType UserType
         {
-            get
-            { return (sR != null) ? (UserType)Enum.Parse(typeof(UserType), sR[AM_Users.UserType].ToString()) : UserType.Guest; }
+            get => drUsers.GetValue<UserType>(AM_Users.UserType);
         }
 
         public PasswordManager()
         {
-            try
-            {
-                sCon = new SqlProxyConnection(GlobalInfo.DBaseInfo.dbManager.DB_ConnectionString);
-                sCon.Open();
-                sP = new SqlProxyParameter("@p1", AM_Users.Username);
-
-                QueryBuilder qb = new QueryBuilder();
-
-                string select =  qb.SelectAllFrom<AM_Users>().
-                    Where(AM_Users.Username).IsEqualTo(sP).
-                    Query;
-
-                sC = new SqlProxyCommand(select, sCon);
-                sC.Parameters.Add(sP);
-
-                string getDate = "";
-                switch (GlobalInfo.LoginInfo.ProviderType)
-                {
-#if(SQLCompact)
-                    case ProviderType.SQLCompact:
-                        getDate = "SELECT GETDATE()";
-                        break;
-#endif
-#if(SQLServer)
-                    case ProviderType.SQLServer:
-                        getDate = "SELECT GETDATE()";
-                        break;
-#endif
-#if (SQLite)
-                    case ProviderType.SQLite:
-                        getDate = "SELECT date('now');";
-                        break;
-#endif
-                }
-                using (SqlProxyCommand sc1 = new SqlProxyCommand(getDate, sCon))
-                {
-                    SqlProxyDataReader dr = sc1.ExecuteReader();
-                    if (dr.Read())
-                        ExpireDate = dr.GetDateTime(0);
-                    dr.Close();
-                }
-            }
-            catch (SqlException exc)
-            {
-                MessageBox.Show(exc.Message);
-            }
-        }
-
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
-            try
-            {
-                if (sR != null && !sR.IsClosed)
-                    sR.Close();
-                if (sCon != null)
-                    sCon.Close();
-            }
-            catch (Exception exc)
-            {
-                MessageBox.Show(exc.Message);
-            }
+            drUsers = new DRUsers();
+            ExpireDate = SqlProxyDatabaseHelper.GetServerDate(GlobalInfo.DBaseInfo.dbManager.DB_ConnectionString);
         }
 
         public UserStatus SelectUser(string username)
         {
-            try
+            var userFound = drUsers.Find(username);
+
+            if (userFound)
+                status = UserStatus.Found;
+            else
             {
-                sP.Value = username;
-                if (sR != null && !sR.IsClosed)
-                    sR.Close();
-
-                sR = sC.ExecuteReader();
-
-                if (sR.Read())
-                    status = UserStatus.Found;
-                else
-                {
-                    status = UserStatus.NotFound;
-                    MessageBox.Show(
-                        "Check username or contact the Administrator",
-                        "User not found",
-                        MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                }
-
-                if (status != UserStatus.Found) return status;
-
-                if (HasExpired())
-                {
-                    status = UserStatus.Expired;
-                    MessageBox.Show(
-                        "Please contact the Administrator",
-                        "The User has expired",
-                        MessageBoxButtons.OK, MessageBoxIcon.Stop);
-
-                    return status;
-                }
-
-                if ((bool)sR[AM_Users.Blocked])
-                {
-                    status = UserStatus.Locked;
-                    MessageBox.Show(
-                        "Please contact the Administrator",
-                        "The User has blocked",
-                        MessageBoxButtons.OK, MessageBoxIcon.Stop);
-
-                    return status;
-                }
-
-                changePwd = (bool)sR[AM_Users.ChangePassword];
+                status = UserStatus.NotFound;
+                MessageBox.Show(
+                    "Check username or contact the Administrator",
+                    "User not found",
+                    MessageBoxButtons.OK, MessageBoxIcon.Stop);
             }
-            catch (Exception exc)
+
+            if (status != UserStatus.Found) return status;
+
+            if (HasExpired())
             {
-                MessageBox.Show(exc.Message);
+                status = UserStatus.Expired;
+                MessageBox.Show(
+                    "Please contact the Administrator",
+                    "The User has expired",
+                    MessageBoxButtons.OK, MessageBoxIcon.Stop);
+
+                return status;
             }
+
+            if (drUsers.GetValue<bool>(AM_Users.Blocked))
+            {
+                status = UserStatus.Locked;
+                MessageBox.Show(
+                    "Please contact the Administrator",
+                    "The User has blocked",
+                    MessageBoxButtons.OK, MessageBoxIcon.Stop);
+
+                return status;
+            }
+
+            changePwd = drUsers.GetValue<bool>(AM_Users.ChangePassword);
             return status;
         }
 
         private bool HasExpired()
         {
-            if (sR == null) return false;
+            if (!drUsers.GetValue<bool>(AM_Users.Expired))
+                return false;
 
-            if (!((bool)sR[AM_Users.Expired])) return false;
-            if (sR[AM_Users.ExpireDate] == null) return false;
-
-            DateTime expireUser = (DateTime)sR[AM_Users.ExpireDate];
-
-            return (expireUser > ExpireDate);
+            return (drUsers.GetValue<DateTime>(AM_Users.ExpireDate) > ExpireDate);
         }
 
         public bool CheckPassword(string pass)
         {
-            if (Cryption.Encrypt(pass) != sR.GetValue<string>(AM_Users.Password))
+            if (Cryption.Encrypt(pass) != drUsers.GetValue<string>(AM_Users.Password))
             {
                 MessageBox.Show(
                     "Please contact the Administrator",
@@ -180,41 +104,9 @@ namespace ERPFramework.Login
 
         public void ChangePassword(string pass)
         {
-            try
-            {
-                //UPDATE USERS SET password='aa' WHERE username='MAURO'
-
-                string update = string.Format
-                    (
-                    "UPDATE {0} SET {1}=@p2, {2}=@p3 WHERE {3} = @p4",
-                    AM_Users.Name,
-                    AM_Users.Password,
-                    AM_Users.ChangePassword,
-                    AM_Users.Username
-                    );
-
-                SqlProxyCommand sc = new SqlProxyCommand(update, sCon);
-                SqlProxyParameter p2 = new SqlProxyParameter("@p2", AM_Users.Password);
-                SqlProxyParameter p3 = new SqlProxyParameter("@p3", AM_Users.ChangePassword);
-                SqlProxyParameter p4 = new SqlProxyParameter("@p4", AM_Users.Username);
-                sc.Parameters.Add(p2);
-                sc.Parameters.Add(p3);
-                sc.Parameters.Add(p4);
-
-                p2.Value = Cryption.Encrypt(pass);
-                p3.Value = (int)0;
-                p4.Value = sR[AM_Users.Username];
-
-                if (sR != null && !sR.IsClosed)
-                    sR.Close();
-
-                sc.ExecuteScalar();
-                SelectUser((string)p4.Value);
-            }
-            catch (Exception exc)
-            {
-                MessageBox.Show(exc.Message);
-            }
+            drUsers.SetValue<string>(AM_Users.Password, pass);
+            drUsers.SetValue<bool>(AM_Users.ChangePassword, false);
+            drUsers.Update();
         }
     }
 }

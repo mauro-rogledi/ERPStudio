@@ -134,8 +134,9 @@ namespace ERPFramework.Data
 
         private void CreateConnection()
         {
-            sqlCM = new SqlProxyCommand(CreateQuery(), sqlCN);
+            sqlCM = new SqlProxyCommand(sqlCN);
             AddParameters();
+            sqlCM.CommandText = CreateQuery();
             sqlDA = new SqlProxyDataAdapter(sqlCM);
         }
 

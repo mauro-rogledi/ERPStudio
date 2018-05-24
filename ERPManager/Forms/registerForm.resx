@@ -186,60 +186,6 @@
   <data name="&gt;&gt;txtLicense.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
-  <data name="btnOk.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
-  </data>
-  <data name="btnOk.Location" type="System.Drawing.Point, System.Drawing">
-    <value>660, 337</value>
-  </data>
-  <data name="btnOk.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
-  <data name="btnOk.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="btnOk.Text" xml:space="preserve">
-    <value>Activate</value>
-  </data>
-  <data name="&gt;&gt;btnOk.Name" xml:space="preserve">
-    <value>btnOk</value>
-  </data>
-  <data name="&gt;&gt;btnOk.Type" xml:space="preserve">
-    <value>MetroFramework.Controls.MetroButton, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
-  </data>
-  <data name="&gt;&gt;btnOk.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;btnOk.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
-  </data>
-  <data name="btnCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>579, 337</value>
-  </data>
-  <data name="btnCancel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
-  <data name="btnCancel.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="btnCancel.Text" xml:space="preserve">
-    <value>Abort</value>
-  </data>
-  <data name="&gt;&gt;btnCancel.Name" xml:space="preserve">
-    <value>btnCancel</value>
-  </data>
-  <data name="&gt;&gt;btnCancel.Type" xml:space="preserve">
-    <value>MetroFramework.Controls.MetroButton, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
-  </data>
-  <data name="&gt;&gt;btnCancel.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;btnCancel.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
   <data name="pictureBox1.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 73</value>
   </data>
@@ -262,7 +208,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;pictureBox1.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>8</value>
   </data>
   <data name="label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -289,7 +235,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="resource.Image1" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
@@ -328,7 +274,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;txtMac.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="DataGridView1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -339,23 +285,17 @@
   <data name="colEnable.HeaderText" xml:space="preserve">
     <value>Enable</value>
   </data>
-  <metadata name="colLicenseType.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <data name="colLicenseType.HeaderText" xml:space="preserve">
-    <value>License</value>
-  </data>
-  <metadata name="colApplication.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <data name="colApplication.HeaderText" xml:space="preserve">
-    <value>Application</value>
-  </data>
   <metadata name="colModuleName.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="colModuleName.HeaderText" xml:space="preserve">
     <value>Module</value>
+  </data>
+  <metadata name="colLicenseType.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="colLicenseType.HeaderText" xml:space="preserve">
+    <value>License</value>
   </data>
   <metadata name="colExpiration.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -363,14 +303,20 @@
   <data name="colExpiration.HeaderText" xml:space="preserve">
     <value>ExpirationDate</value>
   </data>
-  <data name="colExpiration.Width" type="System.Int32, mscorlib">
-    <value>160</value>
-  </data>
   <metadata name="colSerial.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="colSerial.HeaderText" xml:space="preserve">
     <value>Serial</value>
+  </data>
+  <metadata name="colCode.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="colCode.HeaderText" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="colCode.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="DataGridView1.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 11px</value>
@@ -379,7 +325,7 @@
     <value>12, 201</value>
   </data>
   <data name="DataGridView1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>723, 130</value>
+    <value>709, 130</value>
   </data>
   <data name="DataGridView1.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -394,7 +340,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;DataGridView1.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="resource.Image2" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
@@ -433,7 +379,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;txtPenDrive.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -460,7 +406,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="btnFindPen.Location" type="System.Drawing.Point, System.Drawing">
     <value>594, 141</value>
@@ -484,13 +430,16 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnFindPen.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
+  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>it-IT</value>
+  </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>748, 373</value>
+    <value>734, 373</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Verdana, 8.25pt</value>
@@ -507,29 +456,23 @@
   <data name="&gt;&gt;colEnable.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewCheckBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;colLicenseType.Name" xml:space="preserve">
-    <value>colLicenseType</value>
-  </data>
-  <data name="&gt;&gt;colLicenseType.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;colApplication.Name" xml:space="preserve">
-    <value>colApplication</value>
-  </data>
-  <data name="&gt;&gt;colApplication.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;colModuleName.Name" xml:space="preserve">
     <value>colModuleName</value>
   </data>
   <data name="&gt;&gt;colModuleName.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;colLicenseType.Name" xml:space="preserve">
+    <value>colLicenseType</value>
+  </data>
+  <data name="&gt;&gt;colLicenseType.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;colExpiration.Name" xml:space="preserve">
     <value>colExpiration</value>
   </data>
   <data name="&gt;&gt;colExpiration.Type" xml:space="preserve">
-    <value>ERPFramework.DataGridViewControls.CalendarTextBoxDataGridViewColumn, ERPFramework, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>ERPFramework.DataGridViewControls.CalendarTextBoxDataGridViewColumn, ERPFramework, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;colSerial.Name" xml:space="preserve">
     <value>colSerial</value>
@@ -537,10 +480,16 @@
   <data name="&gt;&gt;colSerial.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;colCode.Name" xml:space="preserve">
+    <value>colCode</value>
+  </data>
+  <data name="&gt;&gt;colCode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>registerForm</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>MetroFramework.Forms.MetroForm, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
+    <value>ERPFramework.Forms.AskForm, ERPFramework, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>

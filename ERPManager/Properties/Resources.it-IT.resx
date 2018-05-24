@@ -154,7 +154,7 @@
     <value>Tipo utente</value>
   </data>
   <data name="Msg_IncorrectSerialNumber" xml:space="preserve">
-    <value>Numero di serie errato in {0} - {1}</value>
+    <value>Numero di serie errato in {0}</value>
   </data>
   <data name="Msg_MissingSerialNumber" xml:space="preserve">
     <value>Manca il numero di serie</value>

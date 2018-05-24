@@ -526,6 +526,16 @@ namespace ERPFramework.Data
         {
             return await databaseHelper.ListDatabase(server);
         }
+
+        public static string ConvertDate(DateTime datetime) => databaseHelper.ConvertDate(datetime);
+        public static string GetYear(string date) => databaseHelper.GetYear(date);
+        public static string GetMonth(string date) => databaseHelper.GetMonth(date);
+        public static string GetDay(string date) => databaseHelper.GetDay(date);
+        public static string GetWeekOfYear(string date) => databaseHelper.GetWeekOfYear(date);
+        public static string DayOfYear(string date) => databaseHelper.DayOfYear(date);
+        public static string DayOfWeek(string date) => databaseHelper.DayOfWeek(date);
+        public static DateTime GetServerDate(string connectionString) => databaseHelper.GetServerDate(connectionString);
+
         private static string QuerySearchTable(string tableName) => databaseHelper.QuerySearchTable(tableName);
 
     }

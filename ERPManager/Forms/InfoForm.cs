@@ -11,7 +11,7 @@ namespace ERPManager
         {
             InitializeComponent();
             lblAppname.Text = ModuleManager.ApplicationName;
-            lblLicensed.Text = ActivationManager.activationData.License;
+            lblLicensed.Text = ActivationManager.activationDataSave.License;
 
             Add(GetDllVersion(new NameSpace("", nameof(ERPFramework), "", "")));
             Add(GetDllVersion(new NameSpace("", nameof(ERPManager), "", "")));

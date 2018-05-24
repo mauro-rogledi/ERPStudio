@@ -161,7 +161,7 @@
     <value>User Type</value>
   </data>
   <data name="Msg_IncorrectSerialNumber" xml:space="preserve">
-    <value>Incorrect Serial Number  in {0} - {1}</value>
+    <value>Incorrect Serial Number  in {0}</value>
   </data>
   <data name="Msg_MissingSerialNumber" xml:space="preserve">
     <value>Missing Serial Number</value>

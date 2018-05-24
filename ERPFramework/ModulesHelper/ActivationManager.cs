@@ -28,10 +28,20 @@ namespace ERPFramework.ModulesHelper
         Trial
     }
 
-    [Serializable()]
-    public class SerialModule
+    public class ActivationDataMemory
     {
-        public bool Enable { get; set; }
+        public string License { get; set; }
+
+        public string PenDrive { get; set; }
+
+        public Dictionary<string, ActivationModuleMemory> Modules = new Dictionary<string, ActivationModuleMemory>();
+    }
+
+    public class ActivationModuleMemory
+    {
+        public bool Enabled { get; set; }
+
+        public ActivationState State { get; set; }
 
         public string Name { get; set; }
 
@@ -47,26 +57,97 @@ namespace ERPFramework.ModulesHelper
     }
 
     [Serializable()]
-    public class ActivationData
+    public class ActivationDataSave
     {
         public string License { get; set; }
 
         public string PenDrive { get; set; }
 
-        public List<SerialModule> Modules = new List<SerialModule>();
+        public Dictionary<string, ActivationModuleSave> Modules = new Dictionary<string, ActivationModuleSave>();
+
+        public void AddModule(string name, bool enabled, string serialNo)
+        {
+            if (Modules.ContainsKey(name))
+                throw new Exception("Duplicate module");
+
+            Modules.Add(name, new ActivationModuleSave { Enabled = enabled, SerialNo = serialNo });
+        }
+    }
+
+    public class ActivationModuleSave
+    {
+        public bool Enabled { get; set; }
+        public ActivationState State { get; set; }
+        public string SerialNo { get; set; }
     }
 
     public static class ActivationManager
     {
-        public static ActivationData activationData = new ActivationData();
+        public static ActivationDataSave activationDataSave;
+        public static ActivationDataMemory activationDataMemory = new ActivationDataMemory();
         private static string macAddres = ReadMacAddress();
 
         public static void Clear()
         {
-            activationData.Modules.Clear();
+            activationDataSave.Modules.Clear();
         }
 
-        public static void LoadActivations()
+        public static bool Load()
+        {
+            var activationFound = LoadFromActivationFile();
+            LoadActivationFromModules();
+            return activationFound;
+        }
+
+        private static bool LoadFromActivationFile()
+        {
+            if (!File.Exists(filekey()))
+                return false;
+
+            var memStr = new MemoryStream();
+            using (FileStream myFS = new FileStream(filekey(), FileMode.Open))
+            {
+                using (GZipStream gZip = new GZipStream(myFS, CompressionMode.Decompress))
+                    gZip.CopyTo(memStr);
+            }
+            memStr.Position = 0;
+            var myBF = new BinaryFormatter();
+            activationDataSave = (ActivationDataSave)myBF.Deserialize(memStr);
+
+            activationDataSave.License = ConvertFrom64(activationDataSave.License);
+            activationDataSave.PenDrive = ConvertFrom64(activationDataSave.PenDrive);
+
+            foreach (var module in activationDataSave.Modules)
+                module.Value.SerialNo = ConvertFrom64(module.Value.SerialNo);
+
+            return true;
+        }
+
+        public static void Save()
+        {
+            //var directory = Path.GetDirectoryName(filekey());
+            //if (!Directory.Exists(directory))
+            //    Directory.CreateDirectory(directory);
+
+            //var memStr = new MemoryStream();
+            //var myBF = new BinaryFormatter();
+            //activationDataSave.License = ConvertTo64(activationDataSave.License);
+            //activationDataSave.PenDrive = ConvertTo64(activationDataSave.PenDrive);
+
+            //foreach (ActivationModuleMemory Module in activationDataSave.Modules)
+            //{
+            //    Module.Name = ConvertTo64(Module.Name);
+            //    //Module.Expiration = ConvertTo64(Module.Expiration);
+            //    Module.SerialNo = ConvertTo64(Module.SerialNo);
+            //}
+            //myBF.Serialize(memStr, activationDataSave);
+
+            //using (FileStream myFS = new FileStream(filekey(), FileMode.Create))
+            //using (GZipStream gzip = new GZipStream(myFS, CompressionMode.Compress, false))
+            //    gzip.Write(memStr.ToArray(), 0, (int)memStr.Length);
+        }
+
+        public static void LoadActivationFromModules()
         {
             var applPath = Path.GetDirectoryName(Application.ExecutablePath);
             var dirs = Directory.GetDirectories(applPath);
@@ -76,13 +157,23 @@ namespace ERPFramework.ModulesHelper
                 var menuDir = Path.Combine(dir, "Menu");
                 if (Directory.Exists(menuDir))
                 {
-                    LoadActivatioModule(menuDir);
-                    continue;
+                    var module = LoadActivatioModule(menuDir);
+                    var res = activationDataSave?.Modules.ContainsKey(module.Code);
+                    if (activationDataSave?.Modules.ContainsKey(module.Code) ?? false)
+                    {
+                        module.SerialNo = activationDataSave.Modules[module.Code].SerialNo;
+                        module.Enabled = activationDataSave.Modules[module.Code].Enabled;
+                    }
+
+                    activationDataMemory.Modules.Add(module.Code, module);
                 }
             }
+
+            activationDataMemory.License = activationDataSave?.License;
+            activationDataMemory.PenDrive = activationDataSave?.PenDrive;
         }
 
-        private static void LoadActivatioModule(string menuDir)
+        private static ActivationModuleMemory LoadActivatioModule(string menuDir)
         {
 #if DEBUG
             var activationName = "activation.xml";
@@ -93,12 +184,12 @@ namespace ERPFramework.ModulesHelper
             activationFile.Load(Path.Combine(menuDir, activationName));
             var module = activationFile.SelectSingleNode("module");
 
-            var serial = new SerialModule
+            var serial = new ActivationModuleMemory
             {
                 Name = module.Attributes["name"].Value,
                 Code = module.Attributes["code"].Value,
                 SerialType = (SerialType)Enum.Parse(typeof(SerialType), module.Attributes["serialType"].Value),
-                Enable = false,
+                Enabled = false,
                 SerialNo = ""
             };
             if (serial.SerialType.HasFlag(SerialType.EXPIRATION_DATE))
@@ -109,23 +200,28 @@ namespace ERPFramework.ModulesHelper
             var functionality = activationFile.SelectNodes("module/functionality");
             foreach (XmlNode node in functionality)
                 serial.Functionality.Add(node.InnerText);
+
+            return serial;
         }
 
-        public static void AddModule(bool enable, string module, SerialType sType, DateTime expiration, string serial)
-        {
-            var sd = new SerialModule
-            {
-                SerialType = sType,
-                SerialNo = serial
-            };
+        //public static void AddModule(bool enable, string module, SerialType sType, DateTime expiration, string serial)
+        //{
+        //    var sd = new SerialModule
+        //    {
+        //        SerialType = sType,
+        //        SerialNo = serial
+        //    };
 
-            activationData.Modules.Add(sd);
-        }
+        //    activationData.Modules.Add(sd);
+        //}
 
         public static ActivationState IsActivate(string name)
         {
-            SerialModule sm = activationData.Modules.Find(p => (p.Name == name));
-            if (sm == null || sm.Enable)
+            if (!activationDataMemory.Modules.ContainsKey(name))
+                return ActivationState.NotActivate;
+
+            var sm = activationDataMemory.Modules[name];
+            if (sm == null || sm.Enabled)
                 return ActivationState.NotActivate;
 
             if (!SerialFormatIsOk(sm.SerialNo, sm.Name))
@@ -149,11 +245,11 @@ namespace ERPFramework.ModulesHelper
             return Convert.ToBase64String(textbyte);
         }
 
-        public static string CreateSerial(string license, string macAddress, string application, string module, SerialType sType, DateTime expiration, string pendrive)
+        public static string CreateSerial(string license, string macAddress, string module, SerialType sType, DateTime expiration, string pendrive)
         {
             string serial = string.Empty;
 
-            concat(ref serial, ConvertString(application) + ConvertString(module));
+            concat(ref serial, ConvertString(module));
             if (sType.HasFlag(SerialType.LICENSE_NAME))
                 concat(ref serial, ConvertString(license));
             if (sType.HasFlag(SerialType.MAC_ADDRESS))
@@ -192,13 +288,13 @@ namespace ERPFramework.ModulesHelper
             return true;
         }
 
-        private static bool CheckSerialType(SerialModule sm)
+        private static bool CheckSerialType(ActivationModuleMemory sm)
         {
             var pos = 1;
             var parts = sm.SerialNo.Split(new char[] { '-' });
 
             if (sm.SerialType.HasFlag(SerialType.LICENSE_NAME))
-                if (parts[pos++] != ConvertString(activationData.License))
+                if (parts[pos++] != ConvertString(activationDataSave.License))
                     return false;
 
             if (sm.SerialType.HasFlag(SerialType.MAC_ADDRESS))
@@ -211,7 +307,7 @@ namespace ERPFramework.ModulesHelper
 
             if (sm.SerialType.HasFlag(SerialType.PEN_DRIVE))
             {
-                var letter = USBSerialNumber.GetDriveLetterFromName(activationData.PenDrive);
+                var letter = USBSerialNumber.GetDriveLetterFromName(activationDataSave.PenDrive);
                 if (letter == string.Empty || parts[pos++] != ConvertSerialNumber(USBSerialNumber.getSerialNumberFromDriveLetter(letter)))
                     return false;
             }
@@ -326,59 +422,7 @@ namespace ERPFramework.ModulesHelper
             return Path.Combine(path, "key.bin");
         }
 
-        public static bool Load()
-        {
-            LoadActivations();
 
-            if (File.Exists(filekey()))
-            {
-                var memStr = new MemoryStream();
-                using (FileStream myFS = new FileStream(filekey(), FileMode.Open))
-                using (GZipStream gZip = new GZipStream(myFS, CompressionMode.Decompress))
-                    gZip.CopyTo(memStr);
-                memStr.Position = 0;
-                var myBF = new BinaryFormatter();
-                activationData = (ActivationData)myBF.Deserialize(memStr);
-            }
-            else
-                return false;
-
-            activationData.License = ConvertFrom64(activationData.License);
-            activationData.PenDrive = ConvertFrom64(activationData.PenDrive);
-
-            foreach (SerialModule Module in activationData.Modules)
-            {
-                Module.Name = ConvertFrom64(Module.Name);
-                //Module.Expiration = ConvertFrom64(Module.Expiration);
-                Module.SerialNo = ConvertFrom64(Module.SerialNo);
-                Module.SerialType = (SerialType)Enum.Parse(typeof(SerialType), ConvertFrom64(Module.SerialType.ToString()));
-            }
-            return true;
-        }
-
-        public static void Save()
-        {
-            var directory = Path.GetDirectoryName(filekey());
-            if (!Directory.Exists(directory))
-                Directory.CreateDirectory(directory);
-
-            var memStr = new MemoryStream();
-            var myBF = new BinaryFormatter();
-            activationData.License = ConvertTo64(activationData.License);
-            activationData.PenDrive = ConvertTo64(activationData.PenDrive);
-
-            foreach (SerialModule Module in activationData.Modules)
-            {
-                Module.Name = ConvertTo64(Module.Name);
-                //Module.Expiration = ConvertTo64(Module.Expiration);
-                Module.SerialNo = ConvertTo64(Module.SerialNo);
-            }
-            myBF.Serialize(memStr, activationData);
-
-            using (FileStream myFS = new FileStream(filekey(), FileMode.Create))
-            using (GZipStream gzip = new GZipStream(myFS, CompressionMode.Compress, false))
-                gzip.Write(memStr.ToArray(), 0, (int)memStr.Length);
-        }
 
         private static string ConvertFrom64(string text)
         {

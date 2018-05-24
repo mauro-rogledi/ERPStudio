@@ -145,17 +145,18 @@ namespace ERPFramework.Data
 
         public static void AlterColumn(IColumn column)
         {
+            // @TODO alter column
             var constraint = GetConstraint(column);
-#if(SQLServer)
+//#if(SQLServer)
 
             //CreateString += GlobalInfo.SqlConnection.ProviderType == ProviderType.SQLServer
             //                    ? (constraint != ""
             //                            ? " DROP CONSTRAINT " + constraint
             //                            : "")
             //                    : string.Format(" ALTER COLUMN {0} DROP DEFAULT", column.Name);
-#else
+//#else
             sbuilder.Append($" ALTER COLUMN {column.Name} DROP DEFAULT");
-#endif
+//#endif
 
             firstTime = false;
             altermode = true;

@@ -94,6 +94,15 @@ namespace SqlProvider
             return found;
         }
 
+        public string ConvertDate(DateTime datetime)=> $"'{datetime.Year}{datetime.Month:00}{datetime.Day:00}' ";
+        
+        public string GetYear(string date) => $"YEAR({date}) ";
+        public string GetMonth(string date) => $"MONTH({date}) ";
+        public string GetDay(string date) => $"DAY({date}) ";
+        public string GetWeekOfYear(string date) => $"DATEPART(week, {date}) ";
+        public string DayOfYear(string date) => $"DATEPART(dayofyear, {date}) ";
+        public string DayOfWeek(string date) => $"DATEPART(weekday, {date}) ";
+
         public async Task<List<string>> GetServers()
         {
             var dt = await Task.Run(
@@ -143,6 +152,34 @@ namespace SqlProvider
                     return dbList;
                 });
         }
+
+
+        public DateTime GetServerDate(string connectionString)
+        {
+            var expireDate = DateTime.Today;
+            try
+            {
+                using (var connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    var command = connection.CreateCommand();
+                    command.CommandText = "SELECT GETDATE()";
+                    var dr = command.ExecuteReader();
+                    if (dr.Read())
+                        expireDate = dr.GetDateTime(0);
+                    dr.Close();
+
+                    connection.Close();
+                }
+            }
+            catch (Exception)
+            {
+                throw new Exception($"can't read server date");
+            }
+
+            return expireDate;
+        }
+
 
         private static IEnumerable<string> ListLocalSqlInstances()
         {

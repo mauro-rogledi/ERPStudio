@@ -38,7 +38,6 @@ namespace ERPFramework.Login
             else
                 this.DialogResult = DialogResult.Cancel;
 
-            pManager.Dispose();
             this.Close();
         }
 

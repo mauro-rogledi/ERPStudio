@@ -73,5 +73,40 @@ namespace SqlProvider
                 () => new List<string>()
                 );
         }
+
+        public string ConvertDate(DateTime datetime) => $"'{datetime.Year:0000}-{datetime.Month:00}-{datetime.Day:00} 00:00:00' ";
+
+        public string GetYear(string date) => $"STRFTIME('%Y', {date}) ";
+        public string GetMonth(string date) => $"STRFTIME('%m', {date}) ";
+        public string GetDay(string date) => $"STRFTIME('%d', {date}) ";
+        public string GetWeekOfYear(string date) => $"STRFTIME('%W', {date}) ";
+        public string DayOfYear(string date) => $"STRFTIME('%j', {date}) ";
+        public string DayOfWeek(string date) => $"STRFTIME('%w', {date}) ";
+
+        public DateTime GetServerDate(string connectionString)
+        {
+            var expireDate = DateTime.Today;
+            try
+            {
+                using (var connection = new SQLiteConnection(connectionString))
+                {
+                    connection.Open();
+                    var command = connection.CreateCommand();
+                    command.CommandText = "SELECT date('now');";
+                    var dr = command.ExecuteReader();
+                    if (dr.Read())
+                        expireDate = dr.GetDateTime(0);
+                    dr.Close();
+
+                    connection.Close();
+                }
+            }
+            catch (Exception)
+            {
+                throw new Exception($"can't read server date");
+            }
+
+            return expireDate;
+        }
     }
 }

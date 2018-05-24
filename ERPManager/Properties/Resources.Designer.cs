@@ -366,7 +366,7 @@ namespace ERPManager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Incorrect Serial Number  in {0} - {1}.
+        ///   Looks up a localized string similar to Incorrect Serial Number  in {0}.
         /// </summary>
         internal static string Msg_IncorrectSerialNumber {
             get {

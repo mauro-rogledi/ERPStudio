@@ -19,9 +19,18 @@ namespace SqlProxyProvider
 
         string QuerySearchTable(string tableName);
         bool SearchColumn(string srcTable, string srcColumn, System.Data.IDbConnection connection);
+        DateTime GetServerDate(string connectionString);
 
         Task<List<string>> GetServers();
         Task<List<string>> ListDatabase(string server);
+
+        string ConvertDate(DateTime date);
+        string GetYear(string date);
+        string GetMonth(string date);
+        string GetDay(string date);
+        string GetWeekOfYear(string date);
+        string DayOfYear(string date);
+        string DayOfWeek(string date);
 
     }
 }
