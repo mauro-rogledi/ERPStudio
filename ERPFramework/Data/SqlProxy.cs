@@ -154,7 +154,11 @@ namespace ERPFramework.Data
             Parameters = new SqlProxyParameterCollection(dbCommand);
         }
 
-        public SqlProxyCommand(IDbConnection connection) : base() => Connection = connection;
+        public SqlProxyCommand(ISqlProviderConnection connection)
+            : this()
+        {
+            Connection = connection.Connection;
+        }
 
         public SqlProxyCommand(IDbCommand command)
         {

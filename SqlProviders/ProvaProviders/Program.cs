@@ -96,7 +96,7 @@ namespace ProvaProviders
                     };
 
                     var dataSet = new DataSet();
-                    using (var sqlCmd = new SqlProxyCommand("SELECT * FROM CUSTOMERS where CustomerID = @p1", connection))
+                    using (var sqlCmd = new SqlProxyCommand("SELECT * FROM CUSTOMERS where CustomerID = @p1"))
                     //using (var sqlCmd = new SqlProxyCommand("SELECT * FROM CL_MASTER where ID = @p1", connection))
                     //using (var sqlCmd = new SqlProxyCommand("SELECT * FROM PL_MASTERS where Code = @p1", connection))
                     {
