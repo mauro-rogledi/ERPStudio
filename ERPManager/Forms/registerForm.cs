@@ -29,22 +29,21 @@ namespace ERPManager
 
         private void PrepareGrid()
         {
-            //ActivationManager.Load();
-            DataGridView1.Rows.Clear();
+            dgwModules.Rows.Clear();
 
-            foreach (var module in ActivationManager.activationDataMemory.Modules)
+            foreach (var module in ActivationManager.Modules)
             {
-               var row = DataGridView1.Rows.Add();
-                DataGridView1.Rows[row].Cells[nameof(colEnable)].Value = module.Value.Enabled;
-                DataGridView1.Rows[row].Cells[nameof(colLicenseType)].Value = module.Value.SerialType.ToString();
-                DataGridView1.Rows[row].Cells[nameof(colModuleName)].Value = module.Value.Name;
-                DataGridView1.Rows[row].Cells[nameof(colCode)].Value = module.Value.Code;
-                DataGridView1.Rows[row].Cells[nameof(colSerial)].Value = module.Value.SerialNo;
+               var row = dgwModules.Rows.Add();
+                dgwModules.Rows[row].Cells[nameof(colEnable)].Value = module.Value.Enabled;
+                dgwModules.Rows[row].Cells[nameof(colLicenseType)].Value = module.Value.SerialType.ToString();
+                dgwModules.Rows[row].Cells[nameof(colModuleName)].Value = module.Value.Name;
+                dgwModules.Rows[row].Cells[nameof(colCode)].Value = module.Value.Code;
+                dgwModules.Rows[row].Cells[nameof(colSerial)].Value = module.Value.SerialNo;
                 if (module.Value.SerialType.HasFlag(SerialType.EXPIRATION_DATE))
-                    DataGridView1.Rows[row].Cells[nameof(colExpiration)].Value = module.Value.Expiration;
+                    dgwModules.Rows[row].Cells[nameof(colExpiration)].Value = module.Value.Expiration;
 
 #if DEBUG
-                DataGridView1.Rows[row].Cells[nameof(colSerial)].Value =
+                dgwModules.Rows[row].Cells[nameof(colSerial)].Value =
                 ActivationManager.CreateSerial(txtLicense.Text, txtMac.Text, module.Value.Code, module.Value.SerialType, module.Value.Expiration, txtPenDrive.Text);
 #endif
             }
@@ -63,10 +62,10 @@ namespace ERPManager
 
         private bool CheckData()
         {
-            for (int t = 0; t < DataGridView1.RowCount; t++)
+            for (int t = 0; t < dgwModules.RowCount; t++)
             {
-                Boolean.TryParse(DataGridView1.Rows[t].Cells[nameof(colEnable)].Value.ToString(), out bool enabled);
-                var serial = DataGridView1.Rows[t].Cells[nameof(colSerial)].Value.ToString();
+                Boolean.TryParse(dgwModules.Rows[t].Cells[nameof(colEnable)].Value.ToString(), out bool enabled);
+                var serial = dgwModules.Rows[t].Cells[nameof(colSerial)].Value.ToString();
 
                 if (enabled && serial.IsEmpty())
                 {
@@ -76,11 +75,11 @@ namespace ERPManager
                 }
 
                 var expiration = DateTime.Today;
-                Enum.TryParse<SerialType>(DataGridView1.Rows[t].Cells[nameof(colLicenseType)].Value.ToString(), out SerialType sType);
-                var code = (string)DataGridView1.Rows[t].Cells[nameof(colCode)].Value;
-                var name = (string)DataGridView1.Rows[t].Cells[nameof(colModuleName)].Value;
+                Enum.TryParse<SerialType>(dgwModules.Rows[t].Cells[nameof(colLicenseType)].Value.ToString(), out SerialType sType);
+                var code = (string)dgwModules.Rows[t].Cells[nameof(colCode)].Value;
+                var name = (string)dgwModules.Rows[t].Cells[nameof(colModuleName)].Value;
                 if (sType.HasFlag(SerialType.EXPIRATION_DATE))
-                    expiration = (DateTime)DateTime.Parse(DataGridView1.Rows[t].Cells[nameof(colExpiration)].Value.ToString());
+                    expiration = (DateTime)DateTime.Parse(dgwModules.Rows[t].Cells[nameof(colExpiration)].Value.ToString());
 
                 if (serial != ActivationManager.CreateSerial(txtLicense.Text, txtMac.Text, code, sType, expiration, txtPenDrive.Text))
                 {
@@ -95,23 +94,28 @@ namespace ERPManager
 
         private void SaveSerial()
         {
-            //ActivationManager.Clear();
-            //ActivationManager.activationDataSave.License = txtLicense.Text;
-            //ActivationManager.activationDataSave.PenDrive = txtPenDrive.Text;
+            ActivationManager.Clear();
+            ActivationManager.License = txtLicense.Text;
+            ActivationManager.PenDrive = txtPenDrive.Text;
 
-            //for (int t = 0; t < DataGridView1.Rows.Count; t++)
-            //{
-            //    var expiration = DateTime.Today;
-            //    var enable = (bool)DataGridView1.Rows[t].Cells[nameof(colEnable)].Value;
-            //    var sType = (SerialType)DataGridView1.Rows[t].Cells[nameof(colLicenseType)].Value;
-            //    var application = (string)DataGridView1.Rows[t].Cells[nameof(colApplication)].Value;
-            //    var module = (string)DataGridView1.Rows[t].Cells[nameof(colModuleName)].Value;
-            //    if (sType.HasFlag(SerialType.EXPIRATION_DATE))
-            //        expiration = DateTime.Parse(DataGridView1.Rows[t].Cells[nameof(colExpiration)].Value.ToString());
-            //    var serial = DataGridView1.Rows[t].Cells[nameof(colSerial)].Value.ToString();
-            //    ActivationManager.AddModule(enable, module, sType, expiration, serial);
-            //}
-            //ActivationManager.Save();
+            for (int t = 0; t < dgwModules.Rows.Count; t++)
+            {
+                var expiration = DateTime.Today;
+                //dgwModules.GetValue<string>()
+
+                var name = (string)dgwModules.Rows[t].Cells[nameof(colModuleName)].Value;
+                var enable = (bool)dgwModules.Rows[t].Cells[nameof(colEnable)].Value;
+                var sType = (SerialType)dgwModules.Rows[t].Cells[nameof(colLicenseType)].Value;
+                var module = (string)dgwModules.Rows[t].Cells[nameof(colModuleName)].Value;
+                if (sType.HasFlag(SerialType.EXPIRATION_DATE))
+                    expiration = DateTime.Parse(dgwModules.Rows[t].Cells[nameof(colExpiration)].Value.ToString());
+                var serial = dgwModules.Rows[t].Cells[nameof(colSerial)].Value.ToString();
+
+
+                ActivationManager.Module(name).Expiration = expiration;
+                ActivationManager.Module(name).SerialNo = serial;
+            }
+            ActivationManager.Save();
         }
 
         private void btnFindPen_Click(object sender, EventArgs e)

@@ -167,17 +167,13 @@ namespace ERPFramework
 
     public static class ExtenderDataGridViewRow
     {
-        public static void SetValue<T>(DataGridViewRow row, IColumn col, T value)
-        {
-            row.Cells[col.Name].Value = value;
-        }
+        public static void SetValue<T>(DataGridViewRow row, IColumn col, T value) => row.Cells[col.Name].Value = value;
 
-        public static T GetValue<T>(DataGridViewRow row, IColumn col)
-        {
-            if (row.Cells[col.Name].Value != System.DBNull.Value && row.Cells[col.Name].Value != null && row.Cells[col.Name].Value.ToString() != string.Empty)
-                return (T)Convert.ChangeType(row.Cells[col.Name].Value, typeof(T));
-            else
-                return default(T);
-        }
+        public static T GetValue<T>(DataGridViewRow row, IColumn col) => GetValue<T>(row, col.Name);
+
+        public static T GetValue<T>(DataGridViewRow row, string col) =>
+            (row.Cells[col].Value != System.DBNull.Value && row.Cells[col].Value != null && row.Cells[col].Value.ToString() != string.Empty)
+                ? (T)Convert.ChangeType(row.Cells[col].Value, typeof(T))
+                : default(T);
     }
 }

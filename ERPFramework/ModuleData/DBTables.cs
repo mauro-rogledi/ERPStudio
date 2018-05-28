@@ -193,7 +193,7 @@ namespace ERPFramework.Data
 
         public new static IColumn ForeignKey = Application;
 
-        public AM_Preferences()
+        public AM_Preferences() : base()
         {
         }
     }

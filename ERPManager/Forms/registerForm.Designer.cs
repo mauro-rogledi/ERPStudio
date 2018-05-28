@@ -38,7 +38,7 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label3 = new MetroFramework.Controls.MetroLabel();
             this.txtMac = new MetroFramework.Controls.MetroTextBox();
-            this.DataGridView1 = new MetroFramework.Controls.MetroGrid();
+            this.dgwModules = new ERPFramework.Controls.ExtendedDataGridView();
             this.colEnable = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.colModuleName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colLicenseType = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -49,7 +49,7 @@
             this.label2 = new MetroFramework.Controls.MetroLabel();
             this.btnFindPen = new MetroFramework.Controls.MetroButton();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.DataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgwModules)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -138,17 +138,17 @@
             // 
             // DataGridView1
             // 
-            this.DataGridView1.AllowUserToAddRows = false;
-            this.DataGridView1.AllowUserToDeleteRows = false;
-            this.DataGridView1.AllowUserToResizeRows = false;
+            this.dgwModules.AllowUserToAddRows = false;
+            this.dgwModules.AllowUserToDeleteRows = false;
+            this.dgwModules.AllowUserToResizeRows = false;
             dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(111)))), ((int)(((byte)(226)))), ((int)(((byte)(255)))));
-            this.DataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
-            resources.ApplyResources(this.DataGridView1, "DataGridView1");
-            this.DataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.DataGridView1.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.DataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.DataGridView1.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            this.DataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            this.dgwModules.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
+            resources.ApplyResources(this.dgwModules, "DataGridView1");
+            this.dgwModules.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgwModules.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.dgwModules.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgwModules.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgwModules.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(219)))));
             dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -156,9 +156,9 @@
             dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(198)))), ((int)(((byte)(247)))));
             dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
             dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
-            this.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgwModules.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            this.dgwModules.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgwModules.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colEnable,
             this.colModuleName,
             this.colLicenseType,
@@ -172,12 +172,12 @@
             dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(198)))), ((int)(((byte)(247)))));
             dataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
             dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.DataGridView1.DefaultCellStyle = dataGridViewCellStyle7;
-            this.DataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.DataGridView1.EnableHeadersVisualStyles = false;
-            this.DataGridView1.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.DataGridView1.Name = "DataGridView1";
-            this.DataGridView1.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            this.dgwModules.DefaultCellStyle = dataGridViewCellStyle7;
+            this.dgwModules.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            this.dgwModules.EnableHeadersVisualStyles = false;
+            this.dgwModules.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.dgwModules.Name = "DataGridView1";
+            this.dgwModules.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(219)))));
             dataGridViewCellStyle8.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -185,12 +185,12 @@
             dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(198)))), ((int)(((byte)(247)))));
             dataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
             dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle8;
-            this.DataGridView1.RowHeadersVisible = false;
-            this.DataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            this.DataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.DataGridView1.Theme = MetroFramework.MetroThemeStyle.Light;
-            this.DataGridView1.UseStyleColors = true;
+            this.dgwModules.RowHeadersDefaultCellStyle = dataGridViewCellStyle8;
+            this.dgwModules.RowHeadersVisible = false;
+            this.dgwModules.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.dgwModules.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgwModules.Theme = MetroFramework.MetroThemeStyle.Light;
+            this.dgwModules.UseStyleColors = true;
             // 
             // colEnable
             // 
@@ -284,7 +284,7 @@
             this.Controls.Add(this.btnFindPen);
             this.Controls.Add(this.txtPenDrive);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.DataGridView1);
+            this.Controls.Add(this.dgwModules);
             this.Controls.Add(this.txtMac);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.pictureBox1);
@@ -296,12 +296,12 @@
             this.Controls.SetChildIndex(this.pictureBox1, 0);
             this.Controls.SetChildIndex(this.label3, 0);
             this.Controls.SetChildIndex(this.txtMac, 0);
-            this.Controls.SetChildIndex(this.DataGridView1, 0);
+            this.Controls.SetChildIndex(this.dgwModules, 0);
             this.Controls.SetChildIndex(this.label2, 0);
             this.Controls.SetChildIndex(this.txtPenDrive, 0);
             this.Controls.SetChildIndex(this.btnFindPen, 0);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.DataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgwModules)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -314,7 +314,7 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private MetroFramework.Controls.MetroLabel label3;
         private MetroFramework.Controls.MetroTextBox txtMac;
-        private MetroFramework.Controls.MetroGrid DataGridView1;
+        private ERPFramework.Controls.ExtendedDataGridView dgwModules;
         private MetroFramework.Controls.MetroTextBox txtPenDrive;
         private MetroFramework.Controls.MetroLabel label2;
         private MetroFramework.Controls.MetroButton btnFindPen;
