@@ -12,7 +12,7 @@ namespace SqlProvider
         SqlCommand sqlCommand;
         public IDbCommand Command => sqlCommand;
         public SqlProviderParameterCollection() { }
-        public SqlProviderParameterCollection(ISqlProviderCommand command) => sqlCommand = command.Command as SqlCommand;
+        public SqlProviderParameterCollection(IDbCommand command) => sqlCommand = command as SqlCommand;
 
         public bool IsReadOnly => sqlCommand.Parameters.IsReadOnly;
 

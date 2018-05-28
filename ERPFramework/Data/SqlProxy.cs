@@ -151,7 +151,7 @@ namespace ERPFramework.Data
         public SqlProxyCommand()
         {
             dbCommand = ProxyProviderLoader.CreateInstance<ISqlProviderCommand>("SqlProvider.SqlProviderCommand");
-            Parameters = new SqlProxyParameterCollection(dbCommand);
+            Parameters = new SqlProxyParameterCollection(dbCommand.Command);
         }
 
         public SqlProxyCommand(ISqlProviderConnection connection)
