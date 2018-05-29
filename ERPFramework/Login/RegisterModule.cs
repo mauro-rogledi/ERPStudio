@@ -2,6 +2,8 @@ using ERPFramework.Forms;
 using ERPFramework.Preferences;
 using System;
 using System.Data.SqlClient;
+using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace ERPFramework.Data
@@ -13,8 +15,6 @@ namespace ERPFramework.Data
         abstract public int CurrentVersion();
 
         abstract public string Module();
-
-        abstract public string Application();
 
         abstract protected bool CreateDBTables();
 
@@ -42,12 +42,30 @@ namespace ERPFramework.Data
         public void AddTable<T>(bool toExport = true)
         {
             System.Diagnostics.Debug.Assert(typeof(T).BaseType == typeof(Table));
-            var table = new TableDefinition { Application = Application(), Module = Module(), Table = typeof(T), ToExport = toExport };
-            if (!GlobalInfo.Tables.ContainsKey(table.Table.Name))
-                GlobalInfo.Tables.Add(table.Table.Name, table);
+            var existVirtual = typeof(T).GetField("IsVirtual");
+            var isVirtual = existVirtual == null
+                                ? false
+                                : bool.Parse(existVirtual.GetValue(null).ToString());
 
-            if (SqlProxyDatabaseHelper.SearchTable<T>(GlobalInfo.SqlConnection))
+            var table = new TableDefinition { Module = Module(), Table = typeof(T), ToExport = toExport, IsVirtual = isVirtual };
+            if (!GlobalInfo.Tables.ContainsKey(table.Table.Name))
+            {
+                GlobalInfo.Tables.Add(table.Table.Name, table);
+                AddTableType<T>();
+            }
+
+            if (!isVirtual && SqlProxyDatabaseHelper.SearchTable<T>(GlobalInfo.SqlConnection))
                 SqlCreateTable.CreateTable<T>();
+        }
+
+        private static void AddTableType<T>()
+        {
+            var col = from mi in typeof(T).GetMembers()
+                      where mi.MemberType == MemberTypes.Field && ((FieldInfo)mi).FieldType.GetInterface(nameof(IColumn)) == typeof(IColumn)
+                      select (IColumn)((FieldInfo)mi).GetValue((mi));
+
+            col.ToList().ForEach(c => c.TableType = typeof(T));
+
         }
 
         public bool CreateTable(SqlProxyConnection Connection, UserType user)
@@ -59,7 +77,7 @@ namespace ERPFramework.Data
             dbVersion = ReadDBVersion();
             if (dbVersion == -1)
             {
-                InsertDBVersion(Application(), Module(), CurrentVersion());
+                InsertDBVersion(Module(), CurrentVersion());
                 dbVersion = CurrentVersion();
             }
 
@@ -79,7 +97,7 @@ namespace ERPFramework.Data
                     return false;
                 }
 
-                UpdateDBVersion(Application(), Module(), CurrentVersion());
+                UpdateDBVersion(Module(), CurrentVersion());
             }
 
             return true;
@@ -87,104 +105,37 @@ namespace ERPFramework.Data
 
         private int ReadDBVersion()
         {
-            SqlProxyDataReader dr;
-            int current = -1;
-            var p1 = new SqlProxyParameter("@p1", AM_Version.Application);
-            var p2 = new SqlProxyParameter("@p2", AM_Version.Module);
-            try
-            {
-                QueryBuilder qb = new QueryBuilder().
-                    Select(AM_Version.Version).
-                    From<AM_Version>().
-                    Where(AM_Version.Application).IsEqualTo(p1).
-                    And(AM_Version.Module).IsEqualTo(p2);
+            var drVersion = new DRVersion();
 
-                using (SqlProxyCommand cmd = new SqlProxyCommand(qb.Query, SqlProxyConnection))
-                {
-                    cmd.Parameters.Add(p1);
-                    cmd.Parameters.Add(p2);
-                    p1.Value = Application();
-                    p2.Value = Module();
-                    dr = cmd.ExecuteReader();
-                    if (dr.Read())
-                        current = dr.GetInt32(0);
-                    dr.Close();
-                }
-            }
-            catch (Exception exc)
-            {
-                MessageBox.Show(exc.Message);
-                return current;
-            }
-            return current;
+            return drVersion.Find(Module())
+                ? drVersion.GetValue<int>(AM_Version.Version)
+                : -1;
         }
 
-        private bool InsertDBVersion(string application, string module, int version)
+        private bool InsertDBVersion(string module, int version)
         {
-            try
-            {
-                SqlProxyParameter dbApplication = new SqlProxyParameter("@p1", AM_Version.Application);
-                SqlProxyParameter dbModule = new SqlProxyParameter("@p2", AM_Version.Module);
-                SqlProxyParameter dbVersion = new SqlProxyParameter("@p3", AM_Version.Version);
+            var drVersion = new DRVersion();
 
-                QueryBuilder qb = new QueryBuilder().
-                                InsertInto<AM_Version>(AM_Version.Application, AM_Version.Module, AM_Version.Version).
-                                Values(dbApplication, dbModule, dbVersion);
+            drVersion.Find(module);
+            var record = drVersion.AddRecord();
 
-                using (SqlProxyCommand cmd = new SqlProxyCommand(qb.Query, SqlProxyConnection))
-                {
-                    cmd.Parameters.Add(dbApplication);
-                    cmd.Parameters.Add(dbVersion);
-                    cmd.Parameters.Add(dbModule);
+            record.SetValue<string>(AM_Version.Module, module);
+            record.SetValue<int>(AM_Version.Version, version);
 
-                    dbApplication.Value = application;
-                    dbModule.Value = module;
-                    dbVersion.Value = version;
-                    cmd.ExecuteScalar();
-                }
-            }
-            catch (SqlException exc)
-            {
-                MessageBox.Show(exc.Message);
-                return false;
-            }
-            return true;
+            return drVersion.Update();
         }
 
-        private bool UpdateDBVersion(string application, string module, int version)
+        private bool UpdateDBVersion(string module, int version)
         {
-            try
+            var drVersion = new DRVersion();
+
+            if (drVersion.Find(module))
             {
-                var dbVersion = new SqlProxyParameter("@p1", AM_Version.Version);
-                var dbApplication = new SqlProxyParameter("@p2", AM_Version.Application);
-                var dbModule = new SqlProxyParameter("@p3", AM_Version.Module);
-
-                var qb = new QueryBuilder().
-                    Update<AM_Version>().
-                    Set<SqlProxyParameter>(AM_Version.Version, dbVersion).
-                    Where(AM_Version.Module).IsEqualTo(dbModule);
-
-                //qb.AddManualQuery("UPDATE {0} SET {1}=@p1 WHERE {2}=@p2 AND {3}=@p3",
-                //                       AM_Version.Name, AM_Version.Version, AM_Version.Application, AM_Version.Module);
-
-                using (SqlProxyCommand cmd = new SqlProxyCommand(qb.Query, SqlProxyConnection))
-                {
-                    cmd.Parameters.Add(dbVersion);
-                    cmd.Parameters.Add(dbApplication);
-                    cmd.Parameters.Add(dbModule);
-
-                    dbVersion.Value = version;
-                    dbApplication.Value = application;
-                    dbModule.Value = module;
-                    cmd.ExecuteScalar();
-                }
+                drVersion.SetValue<int>(AM_Version.Version, version);
+                return drVersion.Update();
             }
-            catch (SqlException exc)
-            {
-                MessageBox.Show(exc.Message);
-                return false;
-            }
-            return true;
+
+            return false;
         }
     }
 }

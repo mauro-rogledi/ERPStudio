@@ -355,4 +355,42 @@ namespace ERPFramework.Data
 
     #endregion
 
+    #region DRVersion
+    public class DRVersion : DataReaderUpdater<AM_Version>
+    {
+        private SqlProxyParameter sqlP1;
+        private string module;
+
+        public DRVersion(IDocumentBase iDocumentBase = null)
+            : base(iDocumentBase)
+        {
+        }
+
+        public bool Find(string module)
+        {
+            this.module = module;
+            return base.Find();
+        }
+
+        protected override void AddParameters()
+        {
+            sqlP1 = AddParameters("@p50", AM_Version.Module);
+        }
+
+        protected override string CreateQuery()
+        {
+            return new QueryBuilder().
+                SelectAllFrom<AM_Version>().
+                Where(AM_Version.Module).IsEqualTo(sqlP1).
+                Query;
+        }
+
+        protected override void SetParameters()
+        {
+            sqlP1.Value = module;
+        }
+    }
+
+    #endregion
+
 }

@@ -1,4 +1,5 @@
 ﻿using ERPFramework;
+using ERPFramework.Controls;
 using ERPFramework.ModulesHelper;
 using System;
 using System.IO;
@@ -33,18 +34,18 @@ namespace ERPManager
 
             foreach (var module in ActivationManager.Modules)
             {
-               var row = dgwModules.Rows.Add();
-                dgwModules.Rows[row].Cells[nameof(colEnable)].Value = module.Value.Enabled;
-                dgwModules.Rows[row].Cells[nameof(colLicenseType)].Value = module.Value.SerialType.ToString();
-                dgwModules.Rows[row].Cells[nameof(colModuleName)].Value = module.Value.Name;
-                dgwModules.Rows[row].Cells[nameof(colCode)].Value = module.Value.Code;
-                dgwModules.Rows[row].Cells[nameof(colSerial)].Value = module.Value.SerialNo;
-                if (module.Value.SerialType.HasFlag(SerialType.EXPIRATION_DATE))
-                    dgwModules.Rows[row].Cells[nameof(colExpiration)].Value = module.Value.Expiration;
+               var row = dgwModules.AddNewRow();
+                //dgwModules.Rows[row].Cells[nameof(colEnable)].Value = module.Value.Enabled;
+                //dgwModules.Rows[row].Cells[nameof(colLicenseType)].Value = module.Value.SerialType.ToString();
+                //dgwModules.Rows[row].Cells[nameof(colModuleName)].Value = module.Value.Name;
+                //dgwModules.Rows[row].Cells[nameof(colCode)].Value = module.Value.Code;
+                //dgwModules.Rows[row].Cells[nameof(colSerial)].Value = module.Value.SerialNo;
+                //if (module.Value.SerialType.HasFlag(SerialType.EXPIRATION_DATE))
+                //    dgwModules.Rows[row].Cells[nameof(colExpiration)].Value = module.Value.Expiration;
 
 #if DEBUG
-                dgwModules.Rows[row].Cells[nameof(colSerial)].Value =
-                ActivationManager.CreateSerial(txtLicense.Text, txtMac.Text, module.Value.Code, module.Value.SerialType, module.Value.Expiration, txtPenDrive.Text);
+                //dgwModules.Rows[row].Cells[nameof(colSerial)].Value =
+                //ActivationManager.CreateSerial(txtLicense.Text, txtMac.Text, module.Value.Code, module.Value.SerialType, module.Value.Expiration, txtPenDrive.Text);
 #endif
             }
         }

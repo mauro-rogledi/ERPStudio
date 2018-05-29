@@ -217,11 +217,12 @@ namespace ERPFramework
 
     public class TableDefinition
     {
-        public string Application { get; set; }
         public string Module { get; set; }
         public Type Table { get; set; }
 
         public bool ToExport { get; set; }
+
+        public bool IsVirtual { get; set; }
     }
 
     public class NameSpace

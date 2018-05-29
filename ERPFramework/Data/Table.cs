@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Reflection;
 
 namespace ERPFramework.Data
@@ -26,10 +27,27 @@ namespace ERPFramework.Data
 
         public int VisibleInRadarCount { get { return visibleInRadar.Count; } }
 
-
         public IColumn VisibleInRadarColumn(int index)
         {
-                return visibleInRadar[index];
+            return visibleInRadar[index];
+        }
+
+        public DataTable CreateTable()
+        {
+            var dt = new DataTable(Tablename);
+
+            var res = this.GetType().GetMembers();
+            (from mi in this.GetType().GetMembers()
+             where mi.MemberType == MemberTypes.Field && ((FieldInfo)mi).FieldType.GetInterface(nameof(IColumn)) == typeof(IColumn)
+             select (IColumn)((FieldInfo)mi).GetValue((mi))).ToList().
+                ForEach(cc => { AddColumn(dt, cc); });
+
+            return dt;
+        }
+
+        private void AddColumn(DataTable dt, IColumn col)
+        {
+            dt.Columns.Add(col.Name, col.ColType);
         }
     }
 
@@ -79,21 +97,28 @@ namespace ERPFramework.Data
         {
             var tablename = typeof(T).GetField("Name").GetValue(null).ToString();
             NewTable(tablename);
-            foreach (MemberInfo mi in typeof(T).GetMembers())
-                if (mi.MemberType == MemberTypes.Field)
-                {
-                    if (((FieldInfo)mi).FieldType.GetInterface(nameof(IColumn)) == typeof(IColumn))
-                    {
-                        var ob = ((FieldInfo)mi).GetValue((mi));
-                        System.Diagnostics.Debug.WriteLine(ob is IColumn);
-                        var col = (IColumn)((FieldInfo)mi).GetValue((mi));
-                        if (!col.IsVirtual)
-                        {
-                            AddColumn(col);
-                            columnAdded = true;
-                        }
-                    }
-                }
+
+            (from mi in typeof(T).GetMembers()
+             where mi.MemberType == MemberTypes.Field && ((FieldInfo)mi).FieldType.GetInterface(nameof(IColumn)) == typeof(IColumn)
+             select (IColumn)((FieldInfo)mi).GetValue((mi))).
+                    Where(c => !c.IsVirtual).ToList().
+                    ForEach(cc => { AddColumn(cc); columnAdded = true; });
+
+            //foreach (MemberInfo mi in typeof(T).GetMembers())
+            //    if (mi.MemberType == MemberTypes.Field)
+            //    {
+            //        if (((FieldInfo)mi).FieldType.GetInterface(nameof(IColumn)) == typeof(IColumn))
+            //        {
+            //            var ob = ((FieldInfo)mi).GetValue((mi));
+            //            System.Diagnostics.Debug.WriteLine(ob is IColumn);
+            //            var col = (IColumn)((FieldInfo)mi).GetValue((mi));
+            //            if (!col.IsVirtual)
+            //            {
+            //                AddColumn(col);
+            //                columnAdded = true;
+            //            }
+            //        }
+            //    }
 
             var table = Activator.CreateInstance<T>() as Table;
             AddPrimaryKey(table.PrimaryKey);
@@ -147,16 +172,16 @@ namespace ERPFramework.Data
         {
             // @TODO alter column
             var constraint = GetConstraint(column);
-//#if(SQLServer)
+            //#if(SQLServer)
 
             //CreateString += GlobalInfo.SqlConnection.ProviderType == ProviderType.SQLServer
             //                    ? (constraint != ""
             //                            ? " DROP CONSTRAINT " + constraint
             //                            : "")
             //                    : string.Format(" ALTER COLUMN {0} DROP DEFAULT", column.Name);
-//#else
+            //#else
             sbuilder.Append($" ALTER COLUMN {column.Name} DROP DEFAULT");
-//#endif
+            //#endif
 
             firstTime = false;
             altermode = true;
@@ -304,19 +329,19 @@ namespace ERPFramework.Data
             table.Columns.Add(col.Name, col.ColType);
         }
 
-        public static void AddColumns<T>(DataTable table)
-        {
-            foreach (MemberInfo mi in typeof(T).GetMembers())
-                if (mi.MemberType == MemberTypes.Field)
-                {
-                    if (((FieldInfo)mi).FieldType.GetInterface(nameof(IColumn)) == typeof(IColumn))
-                    {
-                        var ob = ((FieldInfo)mi).GetValue((mi));
-                        var col = (IColumn)((FieldInfo)mi).GetValue((mi));
-                        if (col.IsVirtual)
-                            AddColumn(table, col);
-                    }
-                }
-        }
+        //public static void AddColumns<T>(DataTable table)
+        //{
+        //    foreach (MemberInfo mi in typeof(T).GetMembers())
+        //        if (mi.MemberType == MemberTypes.Field)
+        //        {
+        //            if (((FieldInfo)mi).FieldType.GetInterface(nameof(IColumn)) == typeof(IColumn))
+        //            {
+        //                var ob = ((FieldInfo)mi).GetValue((mi));
+        //                var col = (IColumn)((FieldInfo)mi).GetValue((mi));
+        //                if (col.IsVirtual)
+        //                    AddColumn(table, col);
+        //            }
+        //        }
+        //}
     }
 }

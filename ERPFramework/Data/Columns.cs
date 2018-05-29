@@ -213,7 +213,7 @@ namespace ERPFramework.Data
     {
         Table Table { get; }
         string Tablename { get; }
-        Type TableType { get; }
+        Type TableType { get; set; }
 
         string Description { get; }
 
@@ -242,7 +242,7 @@ namespace ERPFramework.Data
         bool AlignRight { get; }
     }
 
-    public class Column<T, F> : IColumn
+    public class Column<F> : IColumn
     {
         public string Description { get; private set; }
 
@@ -296,8 +296,6 @@ namespace ERPFramework.Data
 
         public Column(string name, int? len = null, string description = "")
         {
-            System.Diagnostics.Debug.Assert(typeof(T).BaseType == typeof(Table));
-            TableType = typeof(T);
             Description = description;
             Name = name;
             EnumType = typeof(F).BaseType == typeof(Enum) ? typeof(F) : typeof(System.DBNull);
@@ -308,7 +306,7 @@ namespace ERPFramework.Data
             DefaultValue = ConvertColumnType.DefaultValue<F>();
         }
 
-        public Type TableType { get; }
+        public Type TableType { get; set; }
 
         private string tablename;
         public string Tablename
@@ -335,7 +333,6 @@ namespace ERPFramework.Data
                 return table;
             }
         }
-
     }
 
     #endregion

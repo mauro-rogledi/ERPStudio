@@ -266,95 +266,31 @@ namespace ERPFramework.Data
 
         private int ReadDBVersion()
         {
+            //DRVersion dvVersion = new DRVersion();
             int current = -1;
-            try
-            {
-                var qb = new QueryBuilder().
-                    Select(AM_Version.Version).
-                    From<AM_Version>();
+            //try
+            //{
+            //    var qb = new QueryBuilder().
+            //        Select(AM_Version.Version).
+            //        From<AM_Version>();
 
-                using (var cmd = new SqlProxyCommand(qb.Query, myConnection))
-                {
-                    var dr = cmd.ExecuteReader();
-                    dr.Read();
-                    current = dr.GetValue<int>(AM_Version.Version);
-                    dr.Close();
-                }
-            }
-            catch (Exception exc)
-            {
-                MessageBox.Show(exc.Message);
-                return current;
-            }
+            //    using (var cmd = new SqlProxyCommand(qb.Query, myConnection))
+            //    {
+            //        var dr = cmd.ExecuteReader();
+            //        dr.Read();
+            //        current = dr.GetValue<int>(AM_Version.Version);
+            //        dr.Close();
+            //    }
+            //}
+            //catch (Exception exc)
+            //{
+            //    MessageBox.Show(exc.Message);
+            //    return current;
+            //}
             return current;
         }
 
-        private bool InsertDBVersion(string module, string version)
-        {
-            try
-            {
-                var dbApplication = new SqlProxyParameter("@p1", AM_Version.Application);
-                var dbModule = new SqlProxyParameter("@p2", AM_Version.Module);
-                var dbVersion = new SqlProxyParameter("@p3", AM_Version.Version);
 
-                var qb = new QueryBuilder().
-                    InsertInto<AM_Version>(AM_Version.Module).Values(dbModule).
-                    Where(AM_Version.Application).IsEqualTo(dbApplication).
-                    And(AM_Version.Version).IsEqualTo(dbVersion);
-
-                using (var cmd = new SqlProxyCommand(qb.Query, myConnection))
-                {
-                    cmd.Parameters.Add(dbModule);
-                    cmd.Parameters.Add(dbVersion);
-
-                    dbModule.Value = module;
-                    dbVersion.Value = version;
-                    cmd.ExecuteScalar();
-                }
-            }
-            catch (SqlException exc)
-            {
-                MessageBox.Show(exc.Message);
-                return false;
-            }
-            return true;
-        }
-
-        private bool UpdateDBVersion(string application, string module, string version)
-        {
-            try
-            {
-                var dbApplication = new SqlProxyParameter("@p1", AM_Version.Application);
-                var dbVersion = new SqlProxyParameter("@p2", AM_Version.Version);
-                var dbModule = new SqlProxyParameter("@p3", AM_Version.Module);
-
-                var qb = new QueryBuilder().
-                    Update<AM_Version>().
-                    Set<SqlProxyParameter>(AM_Version.Version, dbVersion).
-                    Where(AM_Version.Application).IsEqualTo(dbApplication).
-                    And(AM_Version.Module).IsEqualTo(dbVersion);
-
-                //qb.AddManualQuery("UPDATE {0} SET {1}=@p1 WHERE {2}=@p2",
-                //                       AM_Version.Name, AM_Version.Version, AM_Version.Module);
-
-                using (var cmd = new SqlProxyCommand(qb.Query, myConnection))
-                {
-                    cmd.Parameters.Add(dbApplication);
-                    cmd.Parameters.Add(dbVersion);
-
-                    dbApplication.Value = application;
-                    dbVersion.Value = version;
-                    dbModule.Value = module;
-                    cmd.ExecuteScalar();
-                }
-            }
-            catch (SqlException exc)
-            {
-                MessageBox.Show(exc.Message);
-                return false;
-            }
-            return true;
-        }
 
         private bool AddAdminUser()
         {

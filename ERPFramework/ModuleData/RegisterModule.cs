@@ -18,11 +18,6 @@ namespace ERPFramework.ModuleData
             return "APPL";
         }
 
-        override public string Application()
-        {
-            return "APPM";
-        }
-
         public override Version DllVersion
         {
             get
@@ -46,6 +41,13 @@ namespace ERPFramework.ModuleData
             AddTable<AM_Codes>();
             AddTable<AM_CodeSegment>();
             AddTable<AM_Preferences>();
+
+            var table = new AM_Users();
+            var dt = table.CreateTable();
+            var row = dt.NewRow();
+            row.SetValue<string>(AM_Users.Username, "ciao");
+            dt.Rows.Add(row);
+            var res = dt.Rows[0].GetValue<string>(AM_Users.Username);
 
             return true;
         }

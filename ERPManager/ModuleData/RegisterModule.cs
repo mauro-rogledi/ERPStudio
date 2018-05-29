@@ -21,11 +21,6 @@ namespace ERPManager.ModuleData
             return "APPM";
         }
 
-        override public string Application()
-        {
-            return "APPM";
-        }
-
         public override Version DllVersion
         {
             get
@@ -80,15 +75,6 @@ namespace ERPManager.ModuleData
 
         override protected bool UpdateDBTables()
         {
-            if (dbVersion < 2)
-            {
-                if (!SqlProxyDatabaseHelper.SearchColumn(AM_Version.Application, GlobalInfo.SqlConnection))
-                {
-                    SqlCreateTable.AlterTable<AM_Version>();
-                    SqlCreateTable.AddColumn(AM_Version.Application);
-                    SqlCreateTable.Alter();
-                }
-            }
             return true;
         }
 
