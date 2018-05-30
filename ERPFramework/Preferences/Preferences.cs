@@ -75,9 +75,9 @@ namespace ERPFramework.Preferences
             {
                 for (int t = 0; t < DRRead.Count; t++)
                 {
-                    string computer = DRRead.GetValue<string>(AM_Preferences.Computer, t);
-                    string user = DRRead.GetValue<string>(AM_Preferences.Username, t);
-                    string application = DRRead.GetValue<string>(AM_Preferences.Application, t);
+                    string computer = DRRead.GetValue<string>(EF_Preferences.Computer, t);
+                    string user = DRRead.GetValue<string>(EF_Preferences.Username, t);
+                    string application = DRRead.GetValue<string>(EF_Preferences.Application, t);
 
                     MyToolStripItem tsi = new MyToolStripItem(computer, user, application);
                     PrefList.AddDropDownItem(tsi);
@@ -159,7 +159,7 @@ namespace ERPFramework.Preferences
         public bool SavePreference(T pref)
         {
             if (DRPref.Find(PrefType, currentToolStripItem.Computer, currentToolStripItem.User, currentToolStripItem.Application))
-                DRPref.SetValue<string>(AM_Preferences.Preferences, Serialize(pref));
+                DRPref.SetValue<string>(EF_Preferences.Preferences, Serialize(pref));
             else
                 DRPref.AddRecord(Serialize(pref));
             return DRPref.Update();
@@ -175,14 +175,14 @@ namespace ERPFramework.Preferences
         public T ReadPreference()
         {
             if (RRAllPref.Find(PrefType, GlobalInfo.ComputerInfo.ComputerName, GlobalInfo.UserInfo.User, ApplicationName))
-                return Deserialize(RRAllPref.GetValue<string>(AM_Preferences.Preferences));
+                return Deserialize(RRAllPref.GetValue<string>(EF_Preferences.Preferences));
             return new T();
         }
 
         private T ReadPreference(string Computer, string User, string Application)
         {
             if (DRPref.Find(PrefType, Computer, User, Application))
-                return Deserialize(DRPref.GetValue<string>(AM_Preferences.Preferences));
+                return Deserialize(DRPref.GetValue<string>(EF_Preferences.Preferences));
             return new T();
         }
 

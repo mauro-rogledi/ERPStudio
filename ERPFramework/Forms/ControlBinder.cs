@@ -425,7 +425,7 @@ namespace ERPFramework.Forms
                 Properties.Resources.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            counterUpdater = new ERPFramework.CounterManager.CounterManager(key, curDate.Year, rRCounter.GetValue<string>(AM_Counter.Description), documentBase);
+            counterUpdater = new ERPFramework.CounterManager.CounterManager(key, curDate.Year, rRCounter.GetValue<string>(EF_Counter.Description), documentBase);
         }
         public bool IsAutomatic { get; set; }
     }

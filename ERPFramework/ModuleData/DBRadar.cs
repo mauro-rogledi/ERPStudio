@@ -33,18 +33,18 @@ namespace ERPFramework.Data
         public RadarCodes()
             : base()
         {
-            rdrCodeColumn = AM_Codes.CodeType;
-            rdrDescColumn = AM_Codes.Description;
+            rdrCodeColumn = EF_Codes.CodeType;
+            rdrDescColumn = EF_Codes.Description;
             rdrNameSpace = new NameSpace("Plumber.Plumber.ApplicationFramework.CounterManager.codesForm");
         }
 
         protected override bool DefineFindQuery(SqlProxyCommand sqlCmd)
         {
-            p1 = new SqlProxyParameter("@p1", AM_Codes.CodeType);
+            p1 = new SqlProxyParameter("@p1", EF_Codes.CodeType);
 
             qb.Clear();
-            qb.SelectAllFrom<AM_Codes>().
-                Where(AM_Codes.CodeType).IsEqualTo(p1);
+            qb.SelectAllFrom<EF_Codes>().
+                Where(EF_Codes.CodeType).IsEqualTo(p1);
 
 
             sqlCmd.CommandText = qb.Query;
@@ -59,13 +59,13 @@ namespace ERPFramework.Data
 
         protected override void OnFound(SqlProxyDataReader sqlReader)
         {
-            Description = sqlReader[AM_Codes.Description.Name].ToString();
+            Description = sqlReader[EF_Codes.Description.Name].ToString();
         }
 
         protected override string DefineBrowseQuery(SqlProxyCommand sqlCmd, string findQuery)
         {
             qb.Clear();
-            qb.SelectAllFrom<AM_Codes>().
+            qb.SelectAllFrom<EF_Codes>().
                 AddFilter(findQuery);
 
             return qb.Query;
@@ -82,7 +82,7 @@ namespace ERPFramework.Data
 
         protected override IRadarParameters PrepareRadarParameters(DataGridViewRow row)
         {
-            return new RadarCodesParam(row.GetValue<string>(AM_Codes.CodeType));
+            return new RadarCodesParam(row.GetValue<string>(EF_Codes.CodeType));
         }
 
         public override string GetCodeFromParameters(IRadarParameters param)
@@ -104,20 +104,20 @@ namespace ERPFramework.Data
         public RadarCounter()
             : base()
         {
-            rdrCodeColumn = AM_Counter.Year;
-            rdrDescColumn = AM_Counter.Description;
+            rdrCodeColumn = EF_Counter.Year;
+            rdrDescColumn = EF_Counter.Description;
             rdrNameSpace = new NameSpace("Plumber.Plumber.ApplicationFramework.CounterManager.counterForm");
         }
 
         protected override bool DefineFindQuery(SqlProxyCommand sqlCmd)
         {
-            p1 = new SqlProxyParameter("@p1", AM_Counter.Year);
-            p2 = new SqlProxyParameter("@p2", AM_Counter.Type);
+            p1 = new SqlProxyParameter("@p1", EF_Counter.Year);
+            p2 = new SqlProxyParameter("@p2", EF_Counter.Type);
 
             qb.Clear();
-            qb.SelectAllFrom<AM_Counter>().
-                Where(AM_Counter.Year).IsEqualTo(p1).
-                And(AM_Counter.Type).IsEqualTo(p2);
+            qb.SelectAllFrom<EF_Counter>().
+                Where(EF_Counter.Year).IsEqualTo(p1).
+                And(EF_Counter.Type).IsEqualTo(p2);
 
 
             sqlCmd.CommandText = qb.Query;
@@ -135,13 +135,13 @@ namespace ERPFramework.Data
 
         protected override void OnFound(SqlProxyDataReader sqlReader)
         {
-            Description = sqlReader[AM_Counter.Description.Name].ToString();
+            Description = sqlReader[EF_Counter.Description.Name].ToString();
         }
 
         protected override string DefineBrowseQuery(SqlProxyCommand sqlCmd, string findQuery)
         {
             qb.Clear();
-            qb.SelectAllFrom<AM_Counter>().
+            qb.SelectAllFrom<EF_Counter>().
                 AddFilter(findQuery);
 
             return qb.Query;
@@ -153,8 +153,8 @@ namespace ERPFramework.Data
 
         protected override IRadarParameters PrepareRadarParameters(DataGridViewRow row)
         {
-            return new RadarCounterParam(row.GetValue<int>(AM_Counter.Year),
-                                            row.GetValue<int>(AM_Counter.Type));
+            return new RadarCounterParam(row.GetValue<int>(EF_Counter.Year),
+                                            row.GetValue<int>(EF_Counter.Type));
         }
 
         public override IRadarParameters GetRadarParameters(string text)

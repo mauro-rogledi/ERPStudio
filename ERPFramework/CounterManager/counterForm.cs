@@ -31,12 +31,12 @@ namespace ERPFramework.CounterManager
             dbManager = new dbmanagerCounter("counterForm", this);
             dbManager.AttachRadar<RadarCounter>();
 
-            dbManager.AddMaster<AM_Counter>();
-            dbManager.AddSlave<AM_CounterValue>();
-            dbManager.AddRelation(AM_CounterValue.Name, AM_Counter.Type, AM_CounterValue.Type);
+            dbManager.AddMaster<EF_Counter>();
+            dbManager.AddSlave<EF_CounterValue>();
+            dbManager.AddRelation(EF_CounterValue.Name, EF_Counter.Type, EF_CounterValue.Type);
 
             dgwValues.AutoGenerateColumns = false;
-            dgwValues.DataSource = dbManager.SlaveBinding(AM_CounterValue.Name);
+            dgwValues.DataSource = dbManager.SlaveBinding(EF_CounterValue.Name);
 
             PrefixManager =  new EnumsManager<PrefixSuffixType>(cbbPreInit,"");
             FiscalKeyManager = new EnumsManager<FiscalKey>(cbbFiscalKey, "");
@@ -45,29 +45,29 @@ namespace ERPFramework.CounterManager
 
         protected override void OnBindData()
         {
-            BindControl(cbbCode, AM_Counter.Type);
-            BindControl(txtDescription, AM_Counter.Description);
-            BindControl(ckbPreEnable, AM_Counter.HasPrefix);
-            BindControl(ckbPreReadonly, AM_Counter.PrefixRO);
-            BindControl(txtPreValue, AM_Counter.PrefixValue);
-            BindControl(txtPreSep, AM_Counter.PrefixSep);
-            BindControl(cbbPreInit, AM_Counter.PrefixType);
+            BindControl(cbbCode, EF_Counter.Type);
+            BindControl(txtDescription, EF_Counter.Description);
+            BindControl(ckbPreEnable, EF_Counter.HasPrefix);
+            BindControl(ckbPreReadonly, EF_Counter.PrefixRO);
+            BindControl(txtPreValue, EF_Counter.PrefixValue);
+            BindControl(txtPreSep, EF_Counter.PrefixSep);
+            BindControl(cbbPreInit, EF_Counter.PrefixType);
 
-            BindControl(ckbSufEnable, AM_Counter.HasSuffix);
-            BindControl(ckbSufReadonly, AM_Counter.SuffixRO);
-            BindControl(txtSufValue, AM_Counter.SuffixValue);
-            BindControl(txtSufSep, AM_Counter.SuffixSep);
-            BindControl(cbbSufInit, AM_Counter.SuffixType);
+            BindControl(ckbSufEnable, EF_Counter.HasSuffix);
+            BindControl(ckbSufReadonly, EF_Counter.SuffixRO);
+            BindControl(txtSufValue, EF_Counter.SuffixValue);
+            BindControl(txtSufSep, EF_Counter.SuffixSep);
+            BindControl(cbbSufInit, EF_Counter.SuffixType);
 
-            BindControl(ntbLength, AM_Counter.CodeLen);
-            BindControl(cbbFiscalKey, AM_Counter.CodeKey);
+            BindControl(ntbLength, EF_Counter.CodeLen);
+            BindControl(cbbFiscalKey, EF_Counter.CodeKey);
 
             BindControl(dgwValues);
 
-            colCode.DataPropertyName = AM_CounterValue.Code.Name;
-            colValue.DataPropertyName = AM_CounterValue.NumericValue.Name;
+            colCode.DataPropertyName = EF_CounterValue.Code.Name;
+            colValue.DataPropertyName = EF_CounterValue.NumericValue.Name;
 
-            dgwValues.AddReadOnlyColumn(AM_CounterValue.Code, true);
+            dgwValues.AddReadOnlyColumn(EF_CounterValue.Code, true);
         }
 
         protected override void OnDisableControlsForEdit()
@@ -182,7 +182,7 @@ namespace ERPFramework.CounterManager
         {
             if (e.StatementType == StatementType.Insert)
             {
-                e.Row[AM_Counter.Year.Name] = GlobalInfo.CurrentDate.Year;
+                e.Row[EF_Counter.Year.Name] = GlobalInfo.CurrentDate.Year;
             }
             base.dAdapter_RowUpdating(sender, e);
         }
@@ -191,9 +191,9 @@ namespace ERPFramework.CounterManager
         {
             QueryBuilder qb = new QueryBuilder();
 
-            return qb.SelectAllFrom<AM_Counter>().
-                Where(AM_Counter.Year).IsEqualTo(dParam[0]).
-                And(AM_Counter.Type).IsEqualTo(dParam[1]).
+            return qb.SelectAllFrom<EF_Counter>().
+                Where(EF_Counter.Year).IsEqualTo(dParam[0]).
+                And(EF_Counter.Type).IsEqualTo(dParam[1]).
                 Query;
         }
 
@@ -201,19 +201,19 @@ namespace ERPFramework.CounterManager
         {
             List<SqlProxyParameter> PList = new List<SqlProxyParameter>();
 
-            SqlProxyParameter nParam = new SqlProxyParameter("@p1", AM_Counter.Year);
-            nParam.Value = AM_Counter.Year.DefaultValue;
+            SqlProxyParameter nParam = new SqlProxyParameter("@p1", EF_Counter.Year);
+            nParam.Value = EF_Counter.Year.DefaultValue;
             PList.Add(nParam);
 
-            SqlProxyParameter sParam = new SqlProxyParameter("@p2", AM_Counter.Type);
-            sParam.Value = AM_Counter.Type.DefaultValue;
+            SqlProxyParameter sParam = new SqlProxyParameter("@p2", EF_Counter.Type);
+            sParam.Value = EF_Counter.Type.DefaultValue;
             PList.Add(sParam);
             return PList;
         }
 
         protected override void SetParameters(IRadarParameters key, DBCollection collection)
         {
-            if (collection.Name == AM_Counter.Name)
+            if (collection.Name == EF_Counter.Name)
             {
                 collection.Parameter[0].Value = key[0];
                 collection.Parameter[1].Value = key[1];
@@ -226,12 +226,12 @@ namespace ERPFramework.CounterManager
 
         protected override string CreateSlaveQuery(string name, List<SqlProxyParameter> dParam)
         {
-            if (name == AM_CounterValue.Name)
+            if (name == EF_CounterValue.Name)
             {
                 QueryBuilder qb = new QueryBuilder().
-                       SelectAllFrom<AM_CounterValue>().
-                        Where(AM_CounterValue.Type).IsEqualTo(dParam[0]).
-                        OrderBy(AM_CounterValue.Code);
+                       SelectAllFrom<EF_CounterValue>().
+                        Where(EF_CounterValue.Type).IsEqualTo(dParam[0]).
+                        OrderBy(EF_CounterValue.Code);
 
                 return qb.Query;
             }
@@ -241,12 +241,12 @@ namespace ERPFramework.CounterManager
 
         protected override List<SqlProxyParameter> CreateSlaveParam(string name)
         {
-            if (name == AM_CounterValue.Name)
+            if (name == EF_CounterValue.Name)
             {
                 List<SqlProxyParameter> PList = new List<SqlProxyParameter>();
 
-                SqlProxyParameter sParam = new SqlProxyParameter("@p2", AM_CounterValue.Code);
-                sParam.Value = AM_CounterValue.Code.DefaultValue;
+                SqlProxyParameter sParam = new SqlProxyParameter("@p2", EF_CounterValue.Code);
+                sParam.Value = EF_CounterValue.Code.DefaultValue;
                 PList.Add(sParam);
                 return PList;
             }

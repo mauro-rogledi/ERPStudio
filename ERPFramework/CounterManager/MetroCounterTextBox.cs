@@ -248,27 +248,27 @@ namespace ERPFramework.CounterManager
             }
 
             counterProperties = new CounterProperties();
-            counterProperties.PrefixVisible = rRCounter.GetValue<bool>(AM_Counter.HasPrefix);
-            counterProperties.PrefixReadOnly = rRCounter.GetValue<bool>(AM_Counter.PrefixRO);
-            counterProperties.PrefixType = rRCounter.GetValue<PrefixSuffixType>(AM_Counter.PrefixType);
-            counterProperties.PrefixSeparator = rRCounter.GetValue<string>(AM_Counter.PrefixSep);
-            counterProperties.PrefixDefault = GetPrefixSuffixValue(counterProperties.PrefixType, year, rRCounter.GetValue<string>(AM_Counter.PrefixValue));
+            counterProperties.PrefixVisible = rRCounter.GetValue<bool>(EF_Counter.HasPrefix);
+            counterProperties.PrefixReadOnly = rRCounter.GetValue<bool>(EF_Counter.PrefixRO);
+            counterProperties.PrefixType = rRCounter.GetValue<PrefixSuffixType>(EF_Counter.PrefixType);
+            counterProperties.PrefixSeparator = rRCounter.GetValue<string>(EF_Counter.PrefixSep);
+            counterProperties.PrefixDefault = GetPrefixSuffixValue(counterProperties.PrefixType, year, rRCounter.GetValue<string>(EF_Counter.PrefixValue));
             counterProperties.PrefixValue = "";
             counterProperties.PrefixLen = counterProperties.PrefixDefault.Length;
 
-            counterProperties.CounterLen = rRCounter.GetValue<int>(AM_Counter.CodeLen);
+            counterProperties.CounterLen = rRCounter.GetValue<int>(EF_Counter.CodeLen);
 
-            counterProperties.SuffixVisible = rRCounter.GetValue<bool>(AM_Counter.HasSuffix);
-            counterProperties.SuffixReadOnly = rRCounter.GetValue<bool>(AM_Counter.SuffixRO);
-            counterProperties.SuffixType = rRCounter.GetValue<PrefixSuffixType>(AM_Counter.SuffixType);
-            counterProperties.SuffixSeparator = rRCounter.GetValue<string>(AM_Counter.SuffixSep);
-            counterProperties.SuffixDefault = GetPrefixSuffixValue(counterProperties.SuffixType, year, rRCounter.GetValue<string>(AM_Counter.SuffixValue));
+            counterProperties.SuffixVisible = rRCounter.GetValue<bool>(EF_Counter.HasSuffix);
+            counterProperties.SuffixReadOnly = rRCounter.GetValue<bool>(EF_Counter.SuffixRO);
+            counterProperties.SuffixType = rRCounter.GetValue<PrefixSuffixType>(EF_Counter.SuffixType);
+            counterProperties.SuffixSeparator = rRCounter.GetValue<string>(EF_Counter.SuffixSep);
+            counterProperties.SuffixDefault = GetPrefixSuffixValue(counterProperties.SuffixType, year, rRCounter.GetValue<string>(EF_Counter.SuffixValue));
             counterProperties.SuffixValue = "";
             counterProperties.SuffixLen = counterProperties.SuffixDefault.Length;
 
             counterText.SetProperties(counterProperties);
 
-            counterUpdater = new CounterManager(key, curDate.Year, rRCounter.GetValue<string>(AM_Counter.Description), documentBase);
+            counterUpdater = new CounterManager(key, curDate.Year, rRCounter.GetValue<string>(EF_Counter.Description), documentBase);
 
             ShowButton = true;
             ImageOn = Properties.Resources.Automatic16;

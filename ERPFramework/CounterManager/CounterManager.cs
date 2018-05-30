@@ -40,10 +40,10 @@ namespace ERPFramework.CounterManager
             if (!tuCounterValue.Find(counterKey, currentCode))
                 tuCounterValue.AddRecord();
 
-            if (tuCounterValue.GetValue<int>(AM_CounterValue.NumericValue) < val)
+            if (tuCounterValue.GetValue<int>(EF_CounterValue.NumericValue) < val)
             {
-                tuCounterValue.SetValue<int>(AM_CounterValue.NumericValue, val);
-                tuCounterValue.SetValue<string>(AM_Counter.Description, description);
+                tuCounterValue.SetValue<int>(EF_CounterValue.NumericValue, val);
+                tuCounterValue.SetValue<string>(EF_Counter.Description, description);
                 tuCounterValue.Update();
             }
         }
@@ -51,10 +51,10 @@ namespace ERPFramework.CounterManager
         public void DeleteValue(int val)
         {
             tuCounterValue.Find(counterKey, currentCode);
-            if (tuCounterValue.GetValue<int>(AM_CounterValue.NumericValue) == val && val > 0)
+            if (tuCounterValue.GetValue<int>(EF_CounterValue.NumericValue) == val && val > 0)
             {
-                tuCounterValue.SetValue<int>(AM_CounterValue.NumericValue, val - 1);
-                tuCounterValue.SetValue<string>(AM_Counter.Description, description);
+                tuCounterValue.SetValue<int>(EF_CounterValue.NumericValue, val - 1);
+                tuCounterValue.SetValue<string>(EF_Counter.Description, description);
                 tuCounterValue.Update();
             }
         }
@@ -62,13 +62,13 @@ namespace ERPFramework.CounterManager
         private int GetCounterIntValue(int sum)
         {
             tuCounterValue.Find(counterKey, currentCode);
-            return tuCounterValue.GetValue<int>(AM_CounterValue.NumericValue) + sum;
+            return tuCounterValue.GetValue<int>(EF_CounterValue.NumericValue) + sum;
         }
 
         private string GetCounterStringValue(int sum)
         {
-            var numCounter = tuCounterValue.GetValue<int>(AM_CounterValue.NumericValue) + sum;
-            var formatNum = " ".Substring(1, trCounter.GetValue<int>(AM_Counter.CodeLen));
+            var numCounter = tuCounterValue.GetValue<int>(EF_CounterValue.NumericValue) + sum;
+            var formatNum = " ".Substring(1, trCounter.GetValue<int>(EF_Counter.CodeLen));
 
             return numCounter.ToString(formatNum);
         }
@@ -78,26 +78,26 @@ namespace ERPFramework.CounterManager
             var counter = string.Empty;
 
             // Prendo il prefisso
-            if (trCounter.GetValue<bool>(AM_Counter.HasPrefix))
+            if (trCounter.GetValue<bool>(EF_Counter.HasPrefix))
             {
-                counter = GetPrefixText((PrefixSuffixType)trCounter.GetValue<int>(AM_Counter.PrefixType),
-                                                            trCounter.GetValue<string>(AM_Counter.PrefixValue));
-                if (trCounter.GetValue<string>(AM_Counter.PrefixSep).Length > 0)
-                    counter += trCounter.GetValue<string>(AM_Counter.PrefixSep).ToString();
+                counter = GetPrefixText((PrefixSuffixType)trCounter.GetValue<int>(EF_Counter.PrefixType),
+                                                            trCounter.GetValue<string>(EF_Counter.PrefixValue));
+                if (trCounter.GetValue<string>(EF_Counter.PrefixSep).Length > 0)
+                    counter += trCounter.GetValue<string>(EF_Counter.PrefixSep).ToString();
             }
 
-            var codelen = trCounter.GetValue<int>(AM_Counter.CodeLen);
+            var codelen = trCounter.GetValue<int>(EF_Counter.CodeLen);
             var formatNum = "###############".Substring(1, codelen);
-            var numCounter = tuCounterValue.GetValue<int>(AM_CounterValue.NumericValue) + sum;
+            var numCounter = tuCounterValue.GetValue<int>(EF_CounterValue.NumericValue) + sum;
             var formatter = string.Concat("{0,", codelen, "}");
             counter += string.Format(formatter, numCounter.ToString(formatNum));
 
-            if (trCounter.GetValue<bool>(AM_Counter.HasSuffix))
+            if (trCounter.GetValue<bool>(EF_Counter.HasSuffix))
             {
-                counter = GetPrefixText((PrefixSuffixType)trCounter.GetValue<int>(AM_Counter.SuffixType),
-                                                            trCounter.GetValue<string>(AM_Counter.SuffixValue));
-                if (trCounter.GetValue<string>(AM_Counter.SuffixSep).Length > 0)
-                    counter += trCounter.GetValue<string>(AM_Counter.SuffixSep).ToString();
+                counter = GetPrefixText((PrefixSuffixType)trCounter.GetValue<int>(EF_Counter.SuffixType),
+                                                            trCounter.GetValue<string>(EF_Counter.SuffixValue));
+                if (trCounter.GetValue<string>(EF_Counter.SuffixSep).Length > 0)
+                    counter += trCounter.GetValue<string>(EF_Counter.SuffixSep).ToString();
             }
 
             return counter;
@@ -108,14 +108,14 @@ namespace ERPFramework.CounterManager
             string key, suffix, prefix;
             key = suffix = prefix = string.Empty;
 
-            var fiscalKey = (FiscalKey)trCounter.GetValue<int>(AM_Counter.CodeKey);
-            if (trCounter.GetValue<bool>(AM_Counter.HasPrefix))
-                prefix = GetPrefixText((PrefixSuffixType)trCounter.GetValue<int>(AM_Counter.PrefixType),
-                                                            trCounter.GetValue<string>(AM_Counter.PrefixValue));
+            var fiscalKey = (FiscalKey)trCounter.GetValue<int>(EF_Counter.CodeKey);
+            if (trCounter.GetValue<bool>(EF_Counter.HasPrefix))
+                prefix = GetPrefixText((PrefixSuffixType)trCounter.GetValue<int>(EF_Counter.PrefixType),
+                                                            trCounter.GetValue<string>(EF_Counter.PrefixValue));
 
-            if (trCounter.GetValue<bool>(AM_Counter.HasSuffix))
-                suffix = GetPrefixText((PrefixSuffixType)trCounter.GetValue<int>(AM_Counter.SuffixType),
-                                                            trCounter.GetValue<string>(AM_Counter.SuffixValue));
+            if (trCounter.GetValue<bool>(EF_Counter.HasSuffix))
+                suffix = GetPrefixText((PrefixSuffixType)trCounter.GetValue<int>(EF_Counter.SuffixType),
+                                                            trCounter.GetValue<string>(EF_Counter.SuffixValue));
             switch (fiscalKey)
             {
                 case FiscalKey.Prefix:

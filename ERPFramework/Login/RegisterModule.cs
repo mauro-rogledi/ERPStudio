@@ -108,7 +108,7 @@ namespace ERPFramework.Data
             var drVersion = new DRVersion();
 
             return drVersion.Find(Module())
-                ? drVersion.GetValue<int>(AM_Version.Version)
+                ? drVersion.GetValue<int>(EF_Version.Version)
                 : -1;
         }
 
@@ -119,8 +119,8 @@ namespace ERPFramework.Data
             drVersion.Find(module);
             var record = drVersion.AddRecord();
 
-            record.SetValue<string>(AM_Version.Module, module);
-            record.SetValue<int>(AM_Version.Version, version);
+            record.SetValue<string>(EF_Version.Module, module);
+            record.SetValue<int>(EF_Version.Version, version);
 
             return drVersion.Update();
         }
@@ -131,7 +131,7 @@ namespace ERPFramework.Data
 
             if (drVersion.Find(module))
             {
-                drVersion.SetValue<int>(AM_Version.Version, version);
+                drVersion.SetValue<int>(EF_Version.Version, version);
                 return drVersion.Update();
             }
 

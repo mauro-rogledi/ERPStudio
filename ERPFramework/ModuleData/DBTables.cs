@@ -1,12 +1,31 @@
-﻿using System;
+﻿using ERPFramework.ModulesHelper;
+using System;
 
 namespace ERPFramework.Data
 {
-    #region AM_Version
-
-    public class AM_Version : Table
+    #region EF_Serial
+    public class EF_Serial : Table
     {
-        public static string Name = nameof(AM_Version);
+        public static string Name = nameof(EF_Serial);
+        public static bool IsVirtual = true;
+
+        public static Column<bool> Enable = new Column<bool>("Enable");
+        public static Column<bool> Active = new Column<bool>("Active");
+        public static Column<string> ModuleName = new Column<string>("ModuleName", 16);
+        public static Column<string> Code = new Column<string>("Code", 4);
+        public static Column<DateTime> Expiration = new Column<DateTime>("Expiration");
+        public static Column<SerialType> SerialType = new Column<SerialType>("SerialType");
+        public static Column<string> Serial = new Column<string>("Serial", 32);
+
+        public override IColumn[] PrimaryKey { get { return null; } }
+    }
+    #endregion
+
+    #region EF_Version
+
+    public class EF_Version : Table
+    {
+        public static string Name = nameof(EF_Version);
 
         public static Column<string> Module = new Column<string>("Module", 32, "") { EnableNull = false };
         public static Column<int> Version = new Column<int>("Version", description: "");
@@ -15,7 +34,7 @@ namespace ERPFramework.Data
 
         public new static IColumn ForeignKey = Module;
 
-        public AM_Version()
+        public EF_Version()
         {
             VisibleInRadar(new IColumn[] { Module, Version });
         }
@@ -23,12 +42,11 @@ namespace ERPFramework.Data
 
     #endregion
 
-    #region AM_Users
+    #region EF_Users
 
-    public class AM_Users : Table
+    public class EF_Users : Table
     {
-        public static string Name = nameof(AM_Users);
-        public static bool IsVirtual = true;
+        public static string Name = nameof(EF_Users);
 
         public static Column<string> Username = new Column<string>("Username", 32, "") { EnableNull = false };
         public static Column<string> Password = new Column<string>("Password", 64, "");
@@ -43,7 +61,7 @@ namespace ERPFramework.Data
 
         public new static IColumn ForeignKey = Username;
 
-        public AM_Users()
+        public EF_Users()
         {
             VisibleInRadar(new IColumn[] { Username, Surname });
 
@@ -52,11 +70,11 @@ namespace ERPFramework.Data
 
     #endregion
 
-    #region AM_Descriptions
+    #region EF_Descriptions
 
-    public class AM_Descriptions : Table
+    public class EF_Descriptions : Table
     {
-        public static string Name = nameof(AM_Descriptions);
+        public static string Name = nameof(EF_Descriptions);
 
         public static Column<Int32> ID = new Column<Int32>("ID") { EnableNull = false, AutoIncrement = true };
         public static Column<string> Category = new Column<string>("Category", 35, "Category");
@@ -66,7 +84,7 @@ namespace ERPFramework.Data
 
         public new static IColumn ForeignKey = ID;
 
-        public AM_Descriptions()
+        public EF_Descriptions()
         {
             VisibleInRadar(new IColumn[] { ID, Description });
             Tablename = Name;
@@ -75,11 +93,11 @@ namespace ERPFramework.Data
 
     #endregion
 
-    #region AM_Counter
+    #region EF_Counter
 
-    public class AM_Counter : Table
+    public class EF_Counter : Table
     {
-        public static string Name = nameof(AM_Counter);
+        public static string Name = nameof(EF_Counter);
 
         public static Column<int> Year = new Column<int>("Year") { EnableNull = false };
         public static Column<int> Type = new Column<int>("Type") { EnableNull = false };
@@ -104,7 +122,7 @@ namespace ERPFramework.Data
 
         public new static IColumn ForeignKey = Year;
 
-        public AM_Counter()
+        public EF_Counter()
         {
             VisibleInRadar(new IColumn[] { Year, Type, Description });
             Tablename = Name;
@@ -113,11 +131,11 @@ namespace ERPFramework.Data
 
     #endregion
 
-    #region AM_CounterValue
+    #region EF_CounterValue
 
-    public class AM_CounterValue : Table
+    public class EF_CounterValue : Table
     {
-        public static string Name = nameof(AM_CounterValue);
+        public static string Name = nameof(EF_CounterValue);
 
         public static Column<int> Type = new Column<int>("Type") { EnableNull = false };
         public static Column<string> Code = new Column<string>("Code", 15) { EnableNull = false };
@@ -128,7 +146,7 @@ namespace ERPFramework.Data
 
         public new static IColumn ForeignKey = Code;
 
-        public AM_CounterValue()
+        public EF_CounterValue()
         {
             Tablename = Name;
         }
@@ -136,18 +154,17 @@ namespace ERPFramework.Data
 
     #endregion
 
-    #region AM_Codes
-
-    public class AM_Codes : Table
+    #region EF_Codes
+    public class EF_Codes : Table
     {
-        public static string Name = nameof(AM_Codes);
+        public static string Name = nameof(EF_Codes);
         public static Column<string> CodeType = new Column<string>("CodeType", 8, "CodeType") { EnableNull = false };
         public static Column<string> Description = new Column<string>("Description", 35, "Description");
 
         public override IColumn[] PrimaryKey { get { return new IColumn[] { CodeType }; } }
         public new static IColumn ForeignKey = CodeType;
 
-        public AM_Codes()
+        public EF_Codes()
         {
             VisibleInRadar(new IColumn[] { CodeType, Description });
             Tablename = Name;
@@ -156,11 +173,10 @@ namespace ERPFramework.Data
 
     #endregion
 
-    #region AM_CodeSegment
-
-    public class AM_CodeSegment : Table
+    #region EF_CodeSegment
+    public class EF_CodeSegment : Table
     {
-        public static string Name = nameof(AM_CodeSegment);
+        public static string Name = nameof(EF_CodeSegment);
         public static Column<string> CodeType = new Column<string>("Type", 8) { EnableNull = false };
         public static Column<int> Segment = new Column<int>("Segment") { EnableNull = false };
         public static Column<string> Description = new Column<string>("Description", 35);
@@ -171,18 +187,17 @@ namespace ERPFramework.Data
 
         public new static IColumn ForeignKey = CodeType;
 
-        public AM_CodeSegment()
+        public EF_CodeSegment()
         {
         }
     }
 
     #endregion
 
-    #region AM_Preferences
-
-    public class AM_Preferences : Table
+    #region EF_Preferences
+    public class EF_Preferences : Table
     {
-        public static string Name = nameof(AM_Preferences);
+        public static string Name = nameof(EF_Preferences);
         public static Column<string> PrefType = new Column<string>("PrefType", 32, "PrefType") { EnableNull = false };
         public static Column<string> Computer = new Column<string>("Computer", 32, "Computer") { EnableNull = false };
         public static Column<string> Username = new Column<string>("Username", 32, "Username") { EnableNull = false };
@@ -193,7 +208,7 @@ namespace ERPFramework.Data
 
         public new static IColumn ForeignKey = Application;
 
-        public AM_Preferences()
+        public EF_Preferences()
         {
         }
     }

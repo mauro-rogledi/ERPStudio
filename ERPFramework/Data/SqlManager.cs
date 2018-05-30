@@ -99,7 +99,7 @@ namespace ERPFramework.Data
                 return false;
             }
 
-            if (SqlProxyDatabaseHelper.SearchTable<AM_Version>(myConnection))
+            if (SqlProxyDatabaseHelper.SearchTable<EF_Version>(myConnection))
             {
                 if (MessageBox.Show(Properties.Resources.Database_WrongType,
                                     Properties.Resources.Attention,
@@ -303,14 +303,14 @@ namespace ERPFramework.Data
             duUsers.Find(username);
 
             var row = duUsers.AddRecord();
-            row.SetValue<string>(AM_Users.Username, username);
-            row.SetValue<string>(AM_Users.Password, Cryption.Encrypt(password));
-            row.SetValue<string>(AM_Users.Surname, surname);
-            row.SetValue<UserType>(AM_Users.UserType, usertype);
-            row.SetValue<bool>(AM_Users.Expired, false);
-            row.SetValue<DateTime>(AM_Users.ExpireDate, DateTime.Today);
-            row.SetValue<bool>(AM_Users.ChangePassword, true);
-            row.SetValue<bool>(AM_Users.Blocked, false);
+            row.SetValue<string>(EF_Users.Username, username);
+            row.SetValue<string>(EF_Users.Password, Cryption.Encrypt(password));
+            row.SetValue<string>(EF_Users.Surname, surname);
+            row.SetValue<UserType>(EF_Users.UserType, usertype);
+            row.SetValue<bool>(EF_Users.Expired, false);
+            row.SetValue<DateTime>(EF_Users.ExpireDate, DateTime.Today);
+            row.SetValue<bool>(EF_Users.ChangePassword, true);
+            row.SetValue<bool>(EF_Users.Blocked, false);
 
             return duUsers.Update();
         }
@@ -385,6 +385,7 @@ namespace ERPFramework.Data
             }
         }
 
+        [Obsolete()]
         public string GetApplicationName()
         {
             string applPath = Path.GetDirectoryName(Application.ExecutablePath);

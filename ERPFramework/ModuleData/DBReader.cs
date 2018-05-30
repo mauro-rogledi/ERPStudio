@@ -4,7 +4,7 @@ using System.Data;
 namespace ERPFramework.Data
 {
     #region DRCounter
-    public class RRCounter : DataReaderUpdater<AM_Counter>
+    public class RRCounter : DataReaderUpdater<EF_Counter>
     {
         private int year;
         private int type;
@@ -24,17 +24,17 @@ namespace ERPFramework.Data
 
         protected override void AddParameters()
         {
-            sqlP1 = AddParameters("@p50", AM_Counter.Year);
-            sqlP2 = AddParameters("@p51", AM_Counter.Type);
+            sqlP1 = AddParameters("@p50", EF_Counter.Year);
+            sqlP2 = AddParameters("@p51", EF_Counter.Type);
         }
 
         protected override string CreateQuery()
         {
             return new QueryBuilder().
-                SelectAllFrom<AM_Counter>().
-                Where(AM_Counter.Year).IsLessEqualThan(sqlP1).
-                And(AM_Counter.Type).IsEqualTo(sqlP2).
-                OrderBy(AM_Counter.Year, true).
+                SelectAllFrom<EF_Counter>().
+                Where(EF_Counter.Year).IsLessEqualThan(sqlP1).
+                And(EF_Counter.Type).IsEqualTo(sqlP2).
+                OrderBy(EF_Counter.Year, true).
                 Query;
         }
 
@@ -47,7 +47,7 @@ namespace ERPFramework.Data
     #endregion
 
     #region DUCounterValue
-    public class DUCounterValue : DataReaderUpdater<AM_CounterValue>
+    public class DUCounterValue : DataReaderUpdater<EF_CounterValue>
     {
         private SqlProxyParameter sqlP1, sqlP2;
         private int type;
@@ -67,16 +67,16 @@ namespace ERPFramework.Data
 
         protected override void AddParameters()
         {
-            sqlP1 = AddParameters("@p50", AM_CounterValue.Type);
-            sqlP2 = AddParameters("@p51", AM_CounterValue.Code);
+            sqlP1 = AddParameters("@p50", EF_CounterValue.Type);
+            sqlP2 = AddParameters("@p51", EF_CounterValue.Code);
         }
 
         protected override string CreateQuery()
         {
             return new QueryBuilder().
-                SelectAllFrom<AM_CounterValue>().
-                Where(AM_CounterValue.Type).IsEqualTo(sqlP1).
-                And(AM_CounterValue.Code).IsEqualTo(sqlP2).
+                SelectAllFrom<EF_CounterValue>().
+                Where(EF_CounterValue.Type).IsEqualTo(sqlP1).
+                And(EF_CounterValue.Code).IsEqualTo(sqlP2).
                 Query;
         }
 
@@ -89,8 +89,8 @@ namespace ERPFramework.Data
         public override DataRow AddRecord()
         {
             var dr = base.AddRecord();
-            dr[AM_CounterValue.Type.Name] = sqlP1.Value;
-            dr[AM_CounterValue.Code.Name] = sqlP2.Value;
+            dr[EF_CounterValue.Type.Name] = sqlP1.Value;
+            dr[EF_CounterValue.Code.Name] = sqlP2.Value;
 
             return dr;
         }
@@ -98,7 +98,7 @@ namespace ERPFramework.Data
     #endregion
 
     #region DRCodes
-    public class DUCodes : DataReaderUpdater<AM_CodeSegment>
+    public class DUCodes : DataReaderUpdater<EF_CodeSegment>
     {
         private SqlProxyParameter sqlP1;
         private string codetype;
@@ -110,15 +110,15 @@ namespace ERPFramework.Data
 
         protected override void AddParameters()
         {
-            sqlP1 = AddParameters("@p50", AM_CodeSegment.CodeType);
+            sqlP1 = AddParameters("@p50", EF_CodeSegment.CodeType);
         }
 
         protected override string CreateQuery()
         {
             return new QueryBuilder().
-                SelectAllFrom<AM_CodeSegment>().
-                Where(AM_CodeSegment.CodeType).IsEqualTo(sqlP1).
-                OrderBy(AM_CodeSegment.Segment).
+                SelectAllFrom<EF_CodeSegment>().
+                Where(EF_CodeSegment.CodeType).IsEqualTo(sqlP1).
+                OrderBy(EF_CodeSegment.Segment).
                 Query;
         }
 
@@ -137,7 +137,7 @@ namespace ERPFramework.Data
     #endregion
 
     #region DRPreference
-    public class DUPreference : DataReaderUpdater<AM_Preferences>
+    public class DUPreference : DataReaderUpdater<EF_Preferences>
     {
         private SqlProxyParameter sqlP1, sqlP2, sqlP3, sqlP4;
         private string preftype;
@@ -162,20 +162,20 @@ namespace ERPFramework.Data
 
         protected override void AddParameters()
         {
-            sqlP1 = AddParameters("@p50", AM_Preferences.PrefType);
-            sqlP2 = AddParameters("@p51", AM_Preferences.Computer);
-            sqlP3 = AddParameters("@p52", AM_Preferences.Username);
-            sqlP4 = AddParameters("@p53", AM_Preferences.Application);
+            sqlP1 = AddParameters("@p50", EF_Preferences.PrefType);
+            sqlP2 = AddParameters("@p51", EF_Preferences.Computer);
+            sqlP3 = AddParameters("@p52", EF_Preferences.Username);
+            sqlP4 = AddParameters("@p53", EF_Preferences.Application);
         }
 
         protected override string CreateQuery()
         {
             return new QueryBuilder().
-                SelectAllFrom<AM_Preferences>().
-                Where(AM_Preferences.PrefType).IsEqualTo(sqlP1).
-                And(AM_Preferences.Computer).IsEqualTo(sqlP2).
-                And(AM_Preferences.Username).IsEqualTo(sqlP3).
-                And(AM_Preferences.Application).IsEqualTo(sqlP4)
+                SelectAllFrom<EF_Preferences>().
+                Where(EF_Preferences.PrefType).IsEqualTo(sqlP1).
+                And(EF_Preferences.Computer).IsEqualTo(sqlP2).
+                And(EF_Preferences.Username).IsEqualTo(sqlP3).
+                And(EF_Preferences.Application).IsEqualTo(sqlP4)
                 .Query;
         }
 
@@ -190,11 +190,11 @@ namespace ERPFramework.Data
         public DataRow AddRecord(string pref)
         {
             var dr = base.AddRecord();
-            dr[AM_Preferences.PrefType.Name] = preftype;
-            dr[AM_Preferences.Computer.Name] = computer; ;
-            dr[AM_Preferences.Username.Name] = username;
-            dr[AM_Preferences.Application.Name] = application;
-            dr[AM_Preferences.Preferences.Name] = pref;
+            dr[EF_Preferences.PrefType.Name] = preftype;
+            dr[EF_Preferences.Computer.Name] = computer; ;
+            dr[EF_Preferences.Username.Name] = username;
+            dr[EF_Preferences.Application.Name] = application;
+            dr[EF_Preferences.Preferences.Name] = pref;
 
             return dr;
         }
@@ -202,10 +202,10 @@ namespace ERPFramework.Data
         public DataRow AddRecord(string preftype, string computername, string username, string application)
         {
             var dr = base.AddRecord();
-            dr[AM_Preferences.PrefType.Name] = preftype;
-            dr[AM_Preferences.Computer.Name] = computername;
-            dr[AM_Preferences.Username.Name] = username;
-            dr[AM_Preferences.Application.Name] = application;
+            dr[EF_Preferences.PrefType.Name] = preftype;
+            dr[EF_Preferences.Computer.Name] = computername;
+            dr[EF_Preferences.Username.Name] = username;
+            dr[EF_Preferences.Application.Name] = application;
 
             return dr;
         }
@@ -215,7 +215,7 @@ namespace ERPFramework.Data
 
     #region DRFindPreferences
 
-    public class DRFindPreference : DataReaderUpdater<AM_Preferences>
+    public class DRFindPreference : DataReaderUpdater<EF_Preferences>
     {
         private SqlProxyParameter sqlP1, sqlP2;
         private string preftype;
@@ -236,16 +236,16 @@ namespace ERPFramework.Data
 
         protected override void AddParameters()
         {
-            sqlP1 = AddParameters("@p50", AM_Preferences.PrefType);
-            sqlP2 = AddParameters("@p51", AM_Preferences.Application);
+            sqlP1 = AddParameters("@p50", EF_Preferences.PrefType);
+            sqlP2 = AddParameters("@p51", EF_Preferences.Application);
         }
 
         protected override string CreateQuery()
         {
             return new QueryBuilder().
-                SelectAllFrom<AM_Preferences>().
-                Where(AM_Preferences.PrefType).IsEqualTo(sqlP1).
-                And(AM_Preferences.Application).IsEqualTo(sqlP2).
+                SelectAllFrom<EF_Preferences>().
+                Where(EF_Preferences.PrefType).IsEqualTo(sqlP1).
+                And(EF_Preferences.Application).IsEqualTo(sqlP2).
                 Query;
         }
 
@@ -258,7 +258,7 @@ namespace ERPFramework.Data
     #endregion
 
     #region DRReadAllPreference
-    public class RRReadAllPreference : DataReaderUpdater<AM_Preferences>
+    public class RRReadAllPreference : DataReaderUpdater<EF_Preferences>
     {
         private SqlProxyParameter sqlP1, sqlP2, sqlP3, sqlP4;
         private string preftype;
@@ -283,27 +283,27 @@ namespace ERPFramework.Data
 
         protected override void AddParameters()
         {
-            sqlP1 = AddParameters("@p50", AM_Preferences.PrefType);
-            sqlP2 = AddParameters("@p51", AM_Preferences.Computer);
-            sqlP3 = AddParameters("@p52", AM_Preferences.Username);
-            sqlP4 = AddParameters("@p53", AM_Preferences.Application);
+            sqlP1 = AddParameters("@p50", EF_Preferences.PrefType);
+            sqlP2 = AddParameters("@p51", EF_Preferences.Computer);
+            sqlP3 = AddParameters("@p52", EF_Preferences.Username);
+            sqlP4 = AddParameters("@p53", EF_Preferences.Application);
         }
 
         protected override string CreateQuery()
         {
             return new QueryBuilder().
-                SelectAllFrom<AM_Preferences>().
-                Where(AM_Preferences.PrefType).IsEqualTo(sqlP1).
+                SelectAllFrom<EF_Preferences>().
+                Where(EF_Preferences.PrefType).IsEqualTo(sqlP1).
                 AndExpression().
-                    OpenExpression(AM_Preferences.Computer).IsEqualTo(sqlP2).Or(AM_Preferences.Computer).IsEqualTo("").Or(AM_Preferences.Computer).IsNull().
+                    OpenExpression(EF_Preferences.Computer).IsEqualTo(sqlP2).Or(EF_Preferences.Computer).IsEqualTo("").Or(EF_Preferences.Computer).IsNull().
                 CloseExpression().
                 AndExpression().
-                    OpenExpression(AM_Preferences.Username).IsEqualTo(sqlP3).Or(AM_Preferences.Username).IsEqualTo("").Or(AM_Preferences.Username).IsNull().
+                    OpenExpression(EF_Preferences.Username).IsEqualTo(sqlP3).Or(EF_Preferences.Username).IsEqualTo("").Or(EF_Preferences.Username).IsNull().
                 CloseExpression().
                 AndExpression().
-                    OpenExpression(AM_Preferences.Application).IsEqualTo(sqlP4).Or(AM_Preferences.Application).IsEqualTo("").Or(AM_Preferences.Application).IsNull().
+                    OpenExpression(EF_Preferences.Application).IsEqualTo(sqlP4).Or(EF_Preferences.Application).IsEqualTo("").Or(EF_Preferences.Application).IsNull().
                 CloseExpression().
-                OrderBy(AM_Preferences.Computer, true, AM_Preferences.Username, true, AM_Preferences.Application, true).
+                OrderBy(EF_Preferences.Computer, true, EF_Preferences.Username, true, EF_Preferences.Application, true).
                 Query;
         }
 
@@ -318,7 +318,7 @@ namespace ERPFramework.Data
     #endregion
 
     #region DRUsers
-    public class DRUsers : DataReaderUpdater<AM_Users>
+    public class DRUsers : DataReaderUpdater<EF_Users>
     {
         private SqlProxyParameter sqlP1;
         private string username;
@@ -336,14 +336,14 @@ namespace ERPFramework.Data
 
         protected override void AddParameters()
         {
-            sqlP1 = AddParameters("@p50", AM_Users.Username);
+            sqlP1 = AddParameters("@p50", EF_Users.Username);
         }
 
         protected override string CreateQuery()
         {
             return new QueryBuilder().
-                SelectAllFrom<AM_Users>().
-                Where(AM_Users.Username).IsEqualTo(sqlP1).
+                SelectAllFrom<EF_Users>().
+                Where(EF_Users.Username).IsEqualTo(sqlP1).
                 Query;
         }
 
@@ -356,7 +356,7 @@ namespace ERPFramework.Data
     #endregion
 
     #region DRVersion
-    public class DRVersion : DataReaderUpdater<AM_Version>
+    public class DRVersion : DataReaderUpdater<EF_Version>
     {
         private SqlProxyParameter sqlP1;
         private string module;
@@ -374,14 +374,14 @@ namespace ERPFramework.Data
 
         protected override void AddParameters()
         {
-            sqlP1 = AddParameters("@p50", AM_Version.Module);
+            sqlP1 = AddParameters("@p50", EF_Version.Module);
         }
 
         protected override string CreateQuery()
         {
             return new QueryBuilder().
-                SelectAllFrom<AM_Version>().
-                Where(AM_Version.Module).IsEqualTo(sqlP1).
+                SelectAllFrom<EF_Version>().
+                Where(EF_Version.Module).IsEqualTo(sqlP1).
                 Query;
         }
 

@@ -35,7 +35,6 @@ namespace ERPFramework.Data
         public DataTable CreateTable()
         {
             var dt = new DataTable(Tablename);
-
             var res = this.GetType().GetMembers();
             (from mi in this.GetType().GetMembers()
              where mi.MemberType == MemberTypes.Field && ((FieldInfo)mi).FieldType.GetInterface(nameof(IColumn)) == typeof(IColumn)

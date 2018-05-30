@@ -33,21 +33,22 @@ namespace ERPFramework.ModuleData
 
         override protected bool CreateDBTables()
         {
-            AddTable<AM_Users>(false);
-            AddTable<AM_Version>(false);
-            AddTable<AM_Descriptions>();
-            AddTable<AM_Counter>();
-            AddTable<AM_CounterValue>();
-            AddTable<AM_Codes>();
-            AddTable<AM_CodeSegment>();
-            AddTable<AM_Preferences>();
+            AddTable<EF_Users>(false);
+            AddTable<EF_Version>(false);
+            AddTable<EF_Descriptions>();
+            AddTable<EF_Counter>();
+            AddTable<EF_CounterValue>();
+            AddTable<EF_Codes>();
+            AddTable<EF_CodeSegment>();
+            AddTable<EF_Preferences>();
+            AddTable<EF_Serial>();
 
-            var table = new AM_Users();
+            var table = new EF_Serial();
             var dt = table.CreateTable();
-            var row = dt.NewRow();
-            row.SetValue<string>(AM_Users.Username, "ciao");
-            dt.Rows.Add(row);
-            var res = dt.Rows[0].GetValue<string>(AM_Users.Username);
+            //var row = dt.NewRow();
+            //row.SetValue<string>(AM_Users.Username, "ciao");
+            //dt.Rows.Add(row);
+            //var res = dt.Rows[0].GetValue<string>(AM_Users.Username);
 
             return true;
         }

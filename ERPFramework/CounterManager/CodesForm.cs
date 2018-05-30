@@ -38,9 +38,9 @@ namespace ERPFramework.CounterManager
         {
             dbManager = new dbmanagerCodes("codesForm", this);
             dbManager.AttachRadar<RadarCodes>();
-            dbManager.AddMaster<AM_Codes>();
-            dbManager.AddSlave<AM_CodeSegment>();
-            dbManager.AddRelation("CodeSegment", AM_Codes.CodeType, AM_CodeSegment.CodeType);
+            dbManager.AddMaster<EF_Codes>();
+            dbManager.AddSlave<EF_CodeSegment>();
+            dbManager.AddRelation("CodeSegment", EF_Codes.CodeType, EF_CodeSegment.CodeType);
 
             dgwSegments.AutoGenerateColumns = false;
             dgwSegments.DataSource = dbManager.SlaveBinding("CodeSegment");
@@ -56,18 +56,18 @@ namespace ERPFramework.CounterManager
 
         protected override void OnBindData()
         {
-            BindControl(cbbCode, AM_Codes.CodeType, "SelectedValue", NullValue.NotSet);
-            BindControl(txtDescription, AM_Codes.Description);
+            BindControl(cbbCode, EF_Codes.CodeType, "SelectedValue", NullValue.NotSet);
+            BindControl(txtDescription, EF_Codes.Description);
             BindControl(dgwSegments);
 
-            BindColumn(sgmSegmentNo, AM_CodeSegment.Segment);
-            BindColumn(sgmCodeType, AM_CodeSegment.InputType);
-            BindColumn(sgmLength, AM_CodeSegment.InputLen);
-            BindColumn(sgmHeader, AM_CodeSegment.Description);
+            BindColumn(sgmSegmentNo, EF_CodeSegment.Segment);
+            BindColumn(sgmCodeType, EF_CodeSegment.InputType);
+            BindColumn(sgmLength, EF_CodeSegment.InputLen);
+            BindColumn(sgmHeader, EF_CodeSegment.Description);
             sgmCodeType.DataPropertyName = "Archive";
 
 
-            dgwSegments.RowIndex = AM_CodeSegment.Segment;
+            dgwSegments.RowIndex = EF_CodeSegment.Segment;
         }
 
         protected override void OnDisableControlsForEdit()
@@ -99,13 +99,13 @@ namespace ERPFramework.CounterManager
 
         public int AddNewRow(string desc, int inputType, int inputLen)
         {
-            var drw = dgwSegments.AddNewRow(AM_CodeSegment.Segment);
+            var drw = dgwSegments.AddNewRow(EF_CodeSegment.Segment);
 
-            drw.SetValue<string>(AM_CodeSegment.Description, desc);
-            drw.SetValue<int>(AM_CodeSegment.InputType, inputType);
-            drw.SetValue<int>(AM_CodeSegment.InputLen, inputLen);
+            drw.SetValue<string>(EF_CodeSegment.Description, desc);
+            drw.SetValue<int>(EF_CodeSegment.InputType, inputType);
+            drw.SetValue<int>(EF_CodeSegment.InputLen, inputLen);
 
-            return drw.GetValue<int>(AM_CodeSegment.Segment);
+            return drw.GetValue<int>(EF_CodeSegment.Segment);
         }
 
         private void InitializeAuxComponent()
@@ -141,7 +141,7 @@ namespace ERPFramework.CounterManager
         {
             if (e.StatementType == StatementType.Insert)
             {
-                e.Row[AM_CodeSegment.CodeType.Name] = GetColumn<string>(AM_Codes.CodeType, Pos);
+                e.Row[EF_CodeSegment.CodeType.Name] = GetColumn<string>(EF_Codes.CodeType, Pos);
             }
             base.dAdapter_RowUpdating(sender, e);
         }
@@ -149,8 +149,8 @@ namespace ERPFramework.CounterManager
         protected override string CreateMasterQuery(ref List<SqlProxyParameter> dParam)
         {
             QueryBuilder qb = new QueryBuilder();
-            qb.SelectAllFrom<AM_Codes>();
-            qb.Where(AM_Codes.CodeType).IsEqualTo(dParam[0]);
+            qb.SelectAllFrom<EF_Codes>();
+            qb.Where(EF_Codes.CodeType).IsEqualTo(dParam[0]);
 
             return qb.Query;
         }
@@ -159,7 +159,7 @@ namespace ERPFramework.CounterManager
         {
             List<SqlProxyParameter> PList = new List<SqlProxyParameter>();
 
-            SqlProxyParameter nParam = new SqlProxyParameter("@p1", AM_Codes.CodeType);
+            SqlProxyParameter nParam = new SqlProxyParameter("@p1", EF_Codes.CodeType);
             nParam.Value = 0;
             PList.Add(nParam);
 
@@ -173,12 +173,12 @@ namespace ERPFramework.CounterManager
 
         protected override string CreateSlaveQuery(string name, List<SqlProxyParameter> dParam)
         {
-            if (name == AM_CodeSegment.Name)
+            if (name == EF_CodeSegment.Name)
             {
                 QueryBuilder qb = new QueryBuilder().
-                       SelectAllFrom<AM_CodeSegment>().
-                        Where(AM_CodeSegment.CodeType).IsEqualTo(dParam[0]).
-                        OrderBy(AM_CodeSegment.Segment);
+                       SelectAllFrom<EF_CodeSegment>().
+                        Where(EF_CodeSegment.CodeType).IsEqualTo(dParam[0]).
+                        OrderBy(EF_CodeSegment.Segment);
 
                 return qb.Query;
             }
@@ -188,11 +188,11 @@ namespace ERPFramework.CounterManager
 
         protected override List<SqlProxyParameter> CreateSlaveParam(string name)
         {
-            if (name == AM_CodeSegment.Name)
+            if (name == EF_CodeSegment.Name)
             {
                 List<SqlProxyParameter> PList = new List<SqlProxyParameter>();
 
-                SqlProxyParameter sParam = new SqlProxyParameter("@p2", AM_CodeSegment.CodeType);
+                SqlProxyParameter sParam = new SqlProxyParameter("@p2", EF_CodeSegment.CodeType);
                 sParam.Value = 0;
                 PList.Add(sParam);
                 return PList;

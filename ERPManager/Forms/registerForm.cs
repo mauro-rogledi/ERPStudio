@@ -1,7 +1,9 @@
 ﻿using ERPFramework;
 using ERPFramework.Controls;
+using ERPFramework.Data;
 using ERPFramework.ModulesHelper;
 using System;
+using System.Data;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml;
@@ -10,13 +12,19 @@ namespace ERPManager
 {
     public partial class registerForm : ERPFramework.Forms.AskForm
     {
-        public bool LoadFromBinary = false;
-        public bool LoadData { get; set; } = true;
+        private DataTable serialTable;
 
         public registerForm(string applicationName)
         {
             InitializeComponent();
             Text = applicationName;
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            serialTable = new EF_Serial().CreateTable();
+            dgwModules.DataSource = serialTable;
         }
 
         protected override void OnShown(EventArgs e)

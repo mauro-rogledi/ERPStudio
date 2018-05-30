@@ -23,12 +23,12 @@ namespace ERPFramework.Login
 
         public string Password
         {
-            get => drUsers.GetValue<string>(AM_Users.Password);
+            get => drUsers.GetValue<string>(EF_Users.Password);
         }
 
         public UserType UserType
         {
-            get => drUsers.GetValue<UserType>(AM_Users.UserType);
+            get => drUsers.GetValue<UserType>(EF_Users.UserType);
         }
 
         public PasswordManager()
@@ -65,7 +65,7 @@ namespace ERPFramework.Login
                 return status;
             }
 
-            if (drUsers.GetValue<bool>(AM_Users.Blocked))
+            if (drUsers.GetValue<bool>(EF_Users.Blocked))
             {
                 status = UserStatus.Locked;
                 MessageBox.Show(
@@ -76,21 +76,21 @@ namespace ERPFramework.Login
                 return status;
             }
 
-            changePwd = drUsers.GetValue<bool>(AM_Users.ChangePassword);
+            changePwd = drUsers.GetValue<bool>(EF_Users.ChangePassword);
             return status;
         }
 
         private bool HasExpired()
         {
-            if (!drUsers.GetValue<bool>(AM_Users.Expired))
+            if (!drUsers.GetValue<bool>(EF_Users.Expired))
                 return false;
 
-            return (drUsers.GetValue<DateTime>(AM_Users.ExpireDate) > ExpireDate);
+            return (drUsers.GetValue<DateTime>(EF_Users.ExpireDate) > ExpireDate);
         }
 
         public bool CheckPassword(string pass)
         {
-            if (Cryption.Encrypt(pass) != drUsers.GetValue<string>(AM_Users.Password))
+            if (Cryption.Encrypt(pass) != drUsers.GetValue<string>(EF_Users.Password))
             {
                 MessageBox.Show(
                     "Please contact the Administrator",
@@ -104,8 +104,8 @@ namespace ERPFramework.Login
 
         public void ChangePassword(string pass)
         {
-            drUsers.SetValue<string>(AM_Users.Password, pass);
-            drUsers.SetValue<bool>(AM_Users.ChangePassword, false);
+            drUsers.SetValue<string>(EF_Users.Password, Cryption.Encrypt(pass));
+            drUsers.SetValue<bool>(EF_Users.ChangePassword, false);
             drUsers.Update();
         }
     }

@@ -22,7 +22,7 @@ namespace ERPManager.Forms
         {
             dbManager = new dbUserManagement("userForm", this);
             dbManager.AttachRadar<RadarUsers>();
-            dbManager.AddMaster<AM_Users>();
+            dbManager.AddMaster<EF_Users>();
 
             PrivilegeTypes = new EnumsManager<UserType>(Properties.Resources.ResourceManager);
             PrivilegeTypes.AttachTo(cbbPrivilege);
@@ -30,16 +30,16 @@ namespace ERPManager.Forms
 
         protected override void OnBindData()
         {
-            BindControl(txtUserName, AM_Users.Username);
-            BindControl(txtName, AM_Users.Surname);
-            BindControl(cbbPrivilege, AM_Users.UserType);
-            BindControl(mtgForceChange, AM_Users.ChangePassword);
-            BindControl(mtgBlocked, AM_Users.Blocked);
+            BindControl(txtUserName, EF_Users.Username);
+            BindControl(txtName, EF_Users.Surname);
+            BindControl(cbbPrivilege, EF_Users.UserType);
+            BindControl(mtgForceChange, EF_Users.ChangePassword);
+            BindControl(mtgBlocked, EF_Users.Blocked);
 
-            BindObject(password, AM_Users.Password);
+            BindObject(password, EF_Users.Password);
 
-            BindControl(dtbExpire, AM_Users.ExpireDate);
-            BindControl(rdbDate, AM_Users.Expired);
+            BindControl(dtbExpire, EF_Users.ExpireDate);
+            BindControl(rdbDate, EF_Users.Expired);
             BindControl(rdbNever);
         }
     }
@@ -58,9 +58,9 @@ namespace ERPManager.Forms
         {
             var qb = new QueryBuilder();
 
-            return qb.SelectAll<AM_Users>().
-                From<AM_Users>().
-                Where(AM_Users.Username).IsEqualTo(dParam[0]).
+            return qb.SelectAll<EF_Users>().
+                From<EF_Users>().
+                Where(EF_Users.Username).IsEqualTo(dParam[0]).
                 Query;
         }
 
@@ -68,7 +68,7 @@ namespace ERPManager.Forms
         {
             var PList = new List<SqlProxyParameter>();
 
-            var sParam = new SqlProxyParameter("@p1", AM_Users.Username) { Value = "" };
+            var sParam = new SqlProxyParameter("@p1", EF_Users.Username) { Value = "" };
             PList.Add(sParam);
             return PList;
         }

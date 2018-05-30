@@ -53,16 +53,23 @@ namespace ERPManager.Forms
                 userControlHelper.ShowControl(e.Item1 as Control, e.Item2, OpenControlHelper.ControlPosition.Center, this as Control);
         }
 
-        private void OpenDocument_ShowObject1(object sender, object e)
-        {
-            if (e is MetroUserControl)
-                menuControl.Show(e);
-            else
-                userControlHelper.ShowControl(e as Control, true, OpenControlHelper.ControlPosition.Center, this as Control);
-        }
+        //private void OpenDocument_ShowObject1(object sender, object e)
+        //{
+        //    if (e is MetroUserControl)
+        //        menuControl.Show(e);
+        //    else
+        //        userControlHelper.ShowControl(e as Control, true, OpenControlHelper.ControlPosition.Center, this as Control);
+        //}
 
         protected override void OnLoad(EventArgs e)
         {
+            // Carico l'attivazione
+            if (!LoadActivation())
+            {
+                this.Close();
+                return;
+            }
+
             // Mi connetto al Database
             GlobalInfo.DBaseInfo.dbManager = new SqlManager();
             if (!GlobalInfo.DBaseInfo.dbManager.CreateConnection())
@@ -124,12 +131,7 @@ namespace ERPManager.Forms
         protected override void OnShown(EventArgs e)
         {
             // Controllo che il programma sia correttamente registrato
-            if (!ActivationManager.Load())
-            {
-                registerForm rF = new registerForm(ModuleManager.ApplicationName);
-                if (rF.ShowDialog() == DialogResult.Cancel)
-                    Application.Exit();
-            }
+
 
             // Carica i moduli
             if (!ModuleManager.LoadModules())
@@ -151,17 +153,31 @@ namespace ERPManager.Forms
             }
 
             // AutoUpdater
-//#if (DEBUG)
+            //#if (DEBUG)
             Version vrs = Assembly.GetEntryAssembly().GetName().Version;
             _thread = new ThreadHelper();
             _thread.Method = CheckNewVersion.CheckVersion;
             CheckNewVersion.OpenForm += new EventHandler(CheckNewVersion_OpenForm);
             CheckNewVersion.GiveMessage += new EventHandler(CheckNewVersion_GiveMessage);
             _thread.Execute(new CheckNewVersion.parameters() { ApplicationName = ModuleManager.ApplicationName, Version = vrs, Verbose = false });
-//#endif
+            //#endif
             base.OnShown(e);
         }
 
+        private bool LoadActivation()
+        {
+            if (!ActivationManager.Load())
+            {
+                using (var rF = new registerForm(ActivationManager.ApplicationName))
+                {
+                    if (rF.ShowDialog() == DialogResult.Cancel)
+                        return false;
+                }
+            }
+
+            return true;
+        }
+        
         //private void MenuControl_UpdateStyle(object sender, EventArgs e)
         //{
         //    metroStyleManager.Update();
@@ -215,7 +231,8 @@ namespace ERPManager.Forms
             //Application.DoEvents();
 
             pInfoTxt.Invoke(
-                new MethodInvoker(() => {
+                new MethodInvoker(() =>
+                {
                     pInfoTxt.Text = Properties.Resources.Msg_NewVersion;
                     pInfoImg.Image = Properties.Resources.New24;
                     pnlInfo.Visible = true;
@@ -255,10 +272,10 @@ namespace ERPManager.Forms
 
         private void Sf_ButtonClick(object sender, settingForm.SettingButton button)
         {
-            switch(button)
+            switch (button)
             {
                 case settingForm.SettingButton.Register:
-                    registerForm rF = new registerForm(ModuleManager.ApplicationName) { LoadFromBinary = true };
+                    registerForm rF = new registerForm(ModuleManager.ApplicationName);
                     userControlHelper.ShowControl(rF, true, OpenControlHelper.ControlPosition.Owner, sender as Control);
                     break;
                 case settingForm.SettingButton.LastUser:

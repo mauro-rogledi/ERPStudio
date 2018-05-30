@@ -7,6 +7,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
+using System.Linq;
 
 namespace ERPFramework.ModulesHelper
 {
@@ -30,6 +31,7 @@ namespace ERPFramework.ModulesHelper
 
     public class ActivationDataMemory
     {
+        public string Application { get; set; }
         public string License { get; set; }
 
         public string PenDrive { get; set; }
@@ -59,6 +61,7 @@ namespace ERPFramework.ModulesHelper
     [Serializable()]
     public class ActivationDataSave
     {
+        public string Application { get; set; }
         public string License { get; set; }
 
         public string PenDrive { get; set; }
@@ -87,6 +90,8 @@ namespace ERPFramework.ModulesHelper
         public static ActivationDataMemory activationDataMemory = new ActivationDataMemory();
         private static string macAddres = ReadMacAddress();
 
+        public static string ApplicationName { get; private set; }
+
         public static string License
         {
             get => activationDataMemory.License;
@@ -109,9 +114,29 @@ namespace ERPFramework.ModulesHelper
 
         public static bool Load()
         {
+            Loadconfiguration();
             var activationFound = LoadFromActivationFile();
             LoadActivationFromModules();
             return activationFound;
+        }
+
+        private static bool Loadconfiguration()
+        {
+            var path = Path.Combine(Application.StartupPath, "applicationConfig.xml");
+            if (!File.Exists(path))
+                return false;
+
+            var xDoc = new XmlDocument();
+            xDoc.Load(path);
+
+            activationDataMemory.Application = xDoc.SelectSingleNode("application").Attributes["name"].Value;
+            xDoc.SelectNodes("name/module").Cast<XmlNode>().ToList().ForEach(n =>
+            {
+                var moduleName = n.InnerText;
+                activationDataMemory.Modules.Add(moduleName, new ActivationModuleMemory { Name = moduleName });
+            });
+
+            return true;
         }
 
         private static bool LoadFromActivationFile()
@@ -129,6 +154,7 @@ namespace ERPFramework.ModulesHelper
             var myBF = new BinaryFormatter();
             activationDataSave = (ActivationDataSave)myBF.Deserialize(memStr);
 
+            activationDataSave.Application = ConvertFrom64(activationDataSave.Application);
             activationDataSave.License = ConvertFrom64(activationDataSave.License);
             activationDataSave.PenDrive = ConvertFrom64(activationDataSave.PenDrive);
 
@@ -149,6 +175,7 @@ namespace ERPFramework.ModulesHelper
             if (activationDataSave == null)
                 activationDataSave = new ActivationDataSave();
 
+            activationDataSave.Application = ConvertTo64(activationDataMemory.Application);
             activationDataSave.License = ConvertTo64(activationDataMemory.License);
             activationDataSave.PenDrive = ConvertTo64(activationDataSave.PenDrive);
 
@@ -172,15 +199,15 @@ namespace ERPFramework.ModulesHelper
                 var menuDir = Path.Combine(dir, "Menu");
                 if (Directory.Exists(menuDir))
                 {
-                    var module = LoadActivatioModule(menuDir);
-                    var res = activationDataSave?.Modules.ContainsKey(module.Code);
-                    if (activationDataSave?.Modules.ContainsKey(module.Code) ?? false)
-                    {
-                        module.SerialNo = activationDataSave.Modules[module.Code].SerialNo;
-                        module.Enabled = activationDataSave.Modules[module.Code].Enabled;
-                    }
+                    LoadActivatioModule(menuDir);
+                    //var res = activationDataSave?.Modules.ContainsKey(module.Code);
+                    //if (activationDataSave?.Modules.ContainsKey(module.Code) ?? false)
+                    //{
+                    //    module.SerialNo = activationDataSave.Modules[module.Code].SerialNo;
+                    //    module.Enabled = activationDataSave.Modules[module.Code].Enabled;
+                    //}
 
-                    activationDataMemory.Modules.Add(module.Code, module);
+                    //activationDataMemory.Modules.Add(module.Code, module);
                 }
             }
 
@@ -188,7 +215,7 @@ namespace ERPFramework.ModulesHelper
             activationDataMemory.PenDrive = activationDataSave?.PenDrive;
         }
 
-        private static ActivationModuleMemory LoadActivatioModule(string menuDir)
+        private static void LoadActivatioModule(string menuDir)
         {
 #if DEBUG
             var activationName = "activation.xml";
@@ -197,26 +224,54 @@ namespace ERPFramework.ModulesHelper
 #endif
             var activationFile = new XmlDocument();
             activationFile.Load(Path.Combine(menuDir, activationName));
-            var module = activationFile.SelectSingleNode("module");
 
-            var serial = new ActivationModuleMemory
-            {
-                Name = module.Attributes["name"].Value,
-                Code = module.Attributes["code"].Value,
-                SerialType = (SerialType)Enum.Parse(typeof(SerialType), module.Attributes["serialType"].Value),
-                Enabled = false,
-                SerialNo = ""
-            };
-            if (serial.SerialType.HasFlag(SerialType.EXPIRATION_DATE))
-            {
-                if (DateTime.TryParse(module.Attributes["expirationDate"].Value, out DateTime expirationDate))
-                    serial.Expiration = expirationDate;
-            }
-            var functionality = activationFile.SelectNodes("module/functionality");
-            foreach (XmlNode node in functionality)
-                serial.Functionality.Add(node.InnerText);
+            var applicationNode = activationFile.SelectSingleNode("application");
+            var application = applicationNode.Attributes["name"];
+            var moduleNode = applicationNode.SelectNodes("application/module");
 
-            return serial;
+            moduleNode.Cast<XmlNode>().ToList().ForEach(n =>
+            {
+                var module = new ActivationModuleMemory
+                {
+                    Name = n.Attributes["name"].Value,
+                    Code = n.Attributes["code"].Value,
+                    SerialType = (SerialType)Enum.Parse(typeof(SerialType), n.Attributes["serialType"].Value),
+                    Enabled = false,
+                    SerialNo = ""
+                };
+
+                module.Expiration = module.SerialType.HasFlag(SerialType.EXPIRATION_DATE)
+                    ? DateTime.Parse(n.Attributes["expirationDate"].Value)
+                    : DateTime.MaxValue;
+
+                var functionalityNode = n.SelectNodes("functionality");
+                functionalityNode.Cast<XmlNode>().ToList().ForEach(f =>
+                    module.Functionality.Add(f.InnerText)
+                );
+
+                activationDataMemory.Modules.Add(module.Code, module);
+            });
+
+
+            //var serial = new ActivationModuleMemory
+            //var serial = new ActivationModuleMemory
+            //{
+            //    Name = moduleNode.Attributes["name"].Value,
+            //    Code = moduleNode.Attributes["code"].Value,
+            //    SerialType = (SerialType)Enum.Parse(typeof(SerialType), moduleNode.Attributes["serialType"].Value),
+            //    Enabled = false,
+            //    SerialNo = ""
+            //};
+            //if (serial.SerialType.HasFlag(SerialType.EXPIRATION_DATE))
+            //{
+            //    if (DateTime.TryParse(moduleNode.Attributes["expirationDate"].Value, out DateTime expirationDate))
+            //        serial.Expiration = expirationDate;
+            //}
+            //var functionality = activationFile.SelectNodes("module/functionality");
+            //foreach (XmlNode node in functionality)
+            //    serial.Functionality.Add(node.InnerText);
+
+            //return serial;
         }
 
         //public static void AddModule(bool enable, string module, SerialType sType, DateTime expiration, string serial)
@@ -236,7 +291,7 @@ namespace ERPFramework.ModulesHelper
                 return ActivationState.NotActivate;
 
             var sm = activationDataMemory.Modules[name];
-            if (sm == null || sm.Enabled)
+            if (sm == null || !sm.Enabled)
                 return ActivationState.NotActivate;
 
             if (!SerialFormatIsOk(sm.SerialNo, sm.Name))

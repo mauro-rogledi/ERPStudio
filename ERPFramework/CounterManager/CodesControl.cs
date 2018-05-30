@@ -156,9 +156,9 @@ namespace ERPFramework.CounterManager
             for (int t = 0; t < dUCodes.Count; t++)
             {
                 Segment seg = new Segment();
-                seg.InputType = (InputType)dUCodes.GetValue<int>(AM_CodeSegment.InputType, t);
-                seg.Header = dUCodes.GetValue<string>(AM_CodeSegment.Description, t);
-                seg.Length = dUCodes.GetValue<int>(AM_CodeSegment.InputLen, t);
+                seg.InputType = (InputType)dUCodes.GetValue<int>(EF_CodeSegment.InputType, t);
+                seg.Header = dUCodes.GetValue<string>(EF_CodeSegment.Description, t);
+                seg.Length = dUCodes.GetValue<int>(EF_CodeSegment.InputLen, t);
                 hasHeader |= seg.Header.Length > 0;
                 Segments.Add(seg);
             }
@@ -198,9 +198,9 @@ namespace ERPFramework.CounterManager
             for (int t = 0; t < dUCodes.Count; t++)
             {
                 Segment seg = new Segment();
-                seg.InputType = (InputType)dUCodes.GetValue<int>(AM_CodeSegment.InputType, t);
-                seg.Header = dUCodes.GetValue<string>(AM_CodeSegment.Description, t);
-                seg.Length = dUCodes.GetValue<int>(AM_CodeSegment.InputLen, t);
+                seg.InputType = (InputType)dUCodes.GetValue<int>(EF_CodeSegment.InputType, t);
+                seg.Header = dUCodes.GetValue<string>(EF_CodeSegment.Description, t);
+                seg.Length = dUCodes.GetValue<int>(EF_CodeSegment.InputLen, t);
                 hasHeader |= seg.Header.Length > 0;
                 Segments.Add(seg);
             }

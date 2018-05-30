@@ -26,18 +26,18 @@ namespace ERPManager.ModuleData
         public RadarUsers()
             : base()
         {
-            rdrCodeColumn = AM_Users.Username;
-            rdrDescColumn = AM_Users.Surname;
+            rdrCodeColumn = EF_Users.Username;
+            rdrDescColumn = EF_Users.Surname;
             rdrNameSpace = new NameSpace("Plumber.Plumber.ApplicationManager.Forms.usersForm");
         }
 
         protected override bool DefineFindQuery(SqlProxyCommand sqlCmd)
         {
-            p1 = new SqlProxyParameter("@p1", AM_Users.Username);
+            p1 = new SqlProxyParameter("@p1", EF_Users.Username);
 
             qb.Clear();
-            qb.SelectAllFrom<AM_Users>().
-                Where(AM_Users.Username).IsEqualTo(p1);
+            qb.SelectAllFrom<EF_Users>().
+                Where(EF_Users.Username).IsEqualTo(p1);
 
             sqlCmd.CommandText = qb.Query;
             sqlCmd.Parameters.Add(p1);
@@ -52,13 +52,13 @@ namespace ERPManager.ModuleData
 
         protected override void OnFound(SqlProxyDataReader sqlReader)
         {
-            Description = sqlReader[AM_Users.Surname].ToString();
+            Description = sqlReader[EF_Users.Surname].ToString();
         }
 
         protected override string DefineBrowseQuery(SqlProxyCommand sqlCmd, string findQuery)
         {
             qb.Clear();
-            qb.SelectAllFrom<AM_Users>().
+            qb.SelectAllFrom<EF_Users>().
                 AddFilter(findQuery);
 
             return qb.Query;
@@ -70,7 +70,7 @@ namespace ERPManager.ModuleData
 
         protected override IRadarParameters PrepareRadarParameters(DataGridViewRow row)
         {
-            return new RadarUsersParam(row.GetValue<string>(AM_Users.Username));
+            return new RadarUsersParam(row.GetValue<string>(EF_Users.Username));
         }
 
         public override IRadarParameters GetRadarParameters(string text)
