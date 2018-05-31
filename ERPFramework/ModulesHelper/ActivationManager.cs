@@ -61,7 +61,6 @@ namespace ERPFramework.ModulesHelper
     [Serializable()]
     public class ActivationDataSave
     {
-        public string Application { get; set; }
         public string License { get; set; }
 
         public string PenDrive { get; set; }
@@ -90,7 +89,7 @@ namespace ERPFramework.ModulesHelper
         public static ActivationDataMemory activationDataMemory = new ActivationDataMemory();
         private static string macAddres = ReadMacAddress();
 
-        public static string ApplicationName { get; private set; }
+        public static string ApplicationName { get => activationDataMemory.Application; }
 
         public static string License
         {
@@ -114,29 +113,37 @@ namespace ERPFramework.ModulesHelper
 
         public static bool Load()
         {
-            Loadconfiguration();
+            var config = Loadconfiguration();
+            LoadActivationFromModules(config.modules);
             var activationFound = LoadFromActivationFile();
-            LoadActivationFromModules();
             return activationFound;
         }
 
-        private static bool Loadconfiguration()
+        private static (bool ok, List<string> modules) Loadconfiguration()
         {
             var path = Path.Combine(Application.StartupPath, "applicationConfig.xml");
             if (!File.Exists(path))
-                return false;
+                return (false, null);
 
             var xDoc = new XmlDocument();
             xDoc.Load(path);
 
             activationDataMemory.Application = xDoc.SelectSingleNode("application").Attributes["name"].Value;
-            xDoc.SelectNodes("name/module").Cast<XmlNode>().ToList().ForEach(n =>
-            {
-                var moduleName = n.InnerText;
-                activationDataMemory.Modules.Add(moduleName, new ActivationModuleMemory { Name = moduleName });
-            });
+            var list = xDoc.SelectNodes("application/module").Cast<XmlNode>().ToList().ConvertAll<string>((XmlNode x) => x.InnerText);
 
-            return true;
+            return (true, list);
+        }
+
+        public static void LoadActivationFromModules(List<string> modules)
+        {
+            var applPath = Path.GetDirectoryName(Application.ExecutablePath);
+
+            modules.ForEach(m =>
+            {
+                var folder = Path.Combine(applPath, m, "menu");
+                if (Directory.Exists(folder))
+                    LoadActivatioModule(folder);
+            });
         }
 
         private static bool LoadFromActivationFile()
@@ -154,9 +161,11 @@ namespace ERPFramework.ModulesHelper
             var myBF = new BinaryFormatter();
             activationDataSave = (ActivationDataSave)myBF.Deserialize(memStr);
 
-            activationDataSave.Application = ConvertFrom64(activationDataSave.Application);
             activationDataSave.License = ConvertFrom64(activationDataSave.License);
             activationDataSave.PenDrive = ConvertFrom64(activationDataSave.PenDrive);
+
+            activationDataMemory.License = activationDataSave.License;
+            activationDataMemory.PenDrive = activationDataSave.PenDrive;
 
             foreach (var module in activationDataSave.Modules)
                 module.Value.SerialNo = ConvertFrom64(module.Value.SerialNo);
@@ -175,7 +184,6 @@ namespace ERPFramework.ModulesHelper
             if (activationDataSave == null)
                 activationDataSave = new ActivationDataSave();
 
-            activationDataSave.Application = ConvertTo64(activationDataMemory.Application);
             activationDataSave.License = ConvertTo64(activationDataMemory.License);
             activationDataSave.PenDrive = ConvertTo64(activationDataSave.PenDrive);
 
@@ -189,31 +197,7 @@ namespace ERPFramework.ModulesHelper
                 gzip.Write(memStr.ToArray(), 0, (int)memStr.Length);
         }
 
-        public static void LoadActivationFromModules()
-        {
-            var applPath = Path.GetDirectoryName(Application.ExecutablePath);
-            var dirs = Directory.GetDirectories(applPath);
 
-            foreach (var dir in dirs)
-            {
-                var menuDir = Path.Combine(dir, "Menu");
-                if (Directory.Exists(menuDir))
-                {
-                    LoadActivatioModule(menuDir);
-                    //var res = activationDataSave?.Modules.ContainsKey(module.Code);
-                    //if (activationDataSave?.Modules.ContainsKey(module.Code) ?? false)
-                    //{
-                    //    module.SerialNo = activationDataSave.Modules[module.Code].SerialNo;
-                    //    module.Enabled = activationDataSave.Modules[module.Code].Enabled;
-                    //}
-
-                    //activationDataMemory.Modules.Add(module.Code, module);
-                }
-            }
-
-            activationDataMemory.License = activationDataSave?.License;
-            activationDataMemory.PenDrive = activationDataSave?.PenDrive;
-        }
 
         private static void LoadActivatioModule(string menuDir)
         {
@@ -225,9 +209,7 @@ namespace ERPFramework.ModulesHelper
             var activationFile = new XmlDocument();
             activationFile.Load(Path.Combine(menuDir, activationName));
 
-            var applicationNode = activationFile.SelectSingleNode("application");
-            var application = applicationNode.Attributes["name"];
-            var moduleNode = applicationNode.SelectNodes("application/module");
+            var moduleNode = activationFile.SelectNodes("modules/module");
 
             moduleNode.Cast<XmlNode>().ToList().ForEach(n =>
             {
@@ -251,39 +233,7 @@ namespace ERPFramework.ModulesHelper
 
                 activationDataMemory.Modules.Add(module.Code, module);
             });
-
-
-            //var serial = new ActivationModuleMemory
-            //var serial = new ActivationModuleMemory
-            //{
-            //    Name = moduleNode.Attributes["name"].Value,
-            //    Code = moduleNode.Attributes["code"].Value,
-            //    SerialType = (SerialType)Enum.Parse(typeof(SerialType), moduleNode.Attributes["serialType"].Value),
-            //    Enabled = false,
-            //    SerialNo = ""
-            //};
-            //if (serial.SerialType.HasFlag(SerialType.EXPIRATION_DATE))
-            //{
-            //    if (DateTime.TryParse(moduleNode.Attributes["expirationDate"].Value, out DateTime expirationDate))
-            //        serial.Expiration = expirationDate;
-            //}
-            //var functionality = activationFile.SelectNodes("module/functionality");
-            //foreach (XmlNode node in functionality)
-            //    serial.Functionality.Add(node.InnerText);
-
-            //return serial;
         }
-
-        //public static void AddModule(bool enable, string module, SerialType sType, DateTime expiration, string serial)
-        //{
-        //    var sd = new SerialModule
-        //    {
-        //        SerialType = sType,
-        //        SerialNo = serial
-        //    };
-
-        //    activationData.Modules.Add(sd);
-        //}
 
         public static ActivationState IsActivate(string name)
         {
@@ -305,15 +255,7 @@ namespace ERPFramework.ModulesHelper
                 : ActivationState.Activate;
         }
 
-        private static string ConvertTo64(string text)
-        {
-            var textchar = text.ToCharArray();
-            var textbyte = new byte[textchar.Length];
 
-            for (int t = 0; t < textchar.Length; t++)
-                textbyte[t] = (byte)textchar[t];
-            return Convert.ToBase64String(textbyte);
-        }
 
         public static string CreateSerial(string license, string macAddress, string module, SerialType sType, DateTime expiration, string pendrive)
         {
@@ -480,7 +422,7 @@ namespace ERPFramework.ModulesHelper
 
         private static string filekey()
         {
-            var directory = GlobalInfo.DBaseInfo.dbManager.GetApplicationName();
+            var directory = activationDataMemory.Application;
             if (string.IsNullOrEmpty(directory))
             {
                 if (Directory.GetParent(Directory.GetCurrentDirectory()).FullName.EndsWith("bin", StringComparison.CurrentCultureIgnoreCase))
@@ -492,7 +434,15 @@ namespace ERPFramework.ModulesHelper
             return Path.Combine(path, "key.bin");
         }
 
+        private static string ConvertTo64(string text)
+        {
+            var textchar = text.ToCharArray();
+            var textbyte = new byte[textchar.Length];
 
+            for (int t = 0; t < textchar.Length; t++)
+                textbyte[t] = (byte)textchar[t];
+            return Convert.ToBase64String(textbyte);
+        }
 
         private static string ConvertFrom64(string text)
         {

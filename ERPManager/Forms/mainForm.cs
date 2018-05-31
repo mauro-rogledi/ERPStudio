@@ -63,13 +63,6 @@ namespace ERPManager.Forms
 
         protected override void OnLoad(EventArgs e)
         {
-            // Carico l'attivazione
-            if (!LoadActivation())
-            {
-                this.Close();
-                return;
-            }
-
             // Mi connetto al Database
             GlobalInfo.DBaseInfo.dbManager = new SqlManager();
             if (!GlobalInfo.DBaseInfo.dbManager.CreateConnection())
@@ -78,44 +71,43 @@ namespace ERPManager.Forms
                 return;
             }
 
-            GlobalPreferences globalPref = globalPref = new PreferencesManager<GlobalPreferences>("", null).ReadPreference();
+            var globalPref = new PreferencesManager<GlobalPreferences>("", null).ReadPreference();
             if (globalPref.ForceLanguage)
             {
-                string lang = Enum.GetName(typeof(Languages), globalPref.Language).Replace('_', '-');
+                var lang = Enum.GetName(typeof(Languages), globalPref.Language).Replace('_', '-');
                 System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(lang, false);
             }
             ControlBox = globalPref.ShowControlBox;
-
 
             metroStyleManager.Style = globalPref.CustmColor;
             StyleManager.Style = globalPref.CustmColor;
             GlobalInfo.StyleManager.Style = globalPref.CustmColor;
             metroStyleManager.Update();
 
+            this.StyleManager.Clone(menuControl);
+            metroStyleManager.Update();
+
+            // Carico l'attivazione
+            if (!LoadActivation())
+            {
+                this.Close();
+                return;
+            }
+
             // Faccio la login
             // Controllo se devo saltarla
-            loginForm login = new loginForm();
-            this.StyleManager.Clone(login);
-            if (!GlobalInfo.LoginInfo.RememberLastLogin || !login.CheckUser(GlobalInfo.LoginInfo.LastUser, GlobalInfo.LoginInfo.LastPassword))
+            using (var login = new loginForm())
             {
-                if (login.ShowDialog() != DialogResult.OK)
+                this.StyleManager.Clone(login);
+                if (!GlobalInfo.LoginInfo.RememberLastLogin || !login.CheckUser(GlobalInfo.LoginInfo.LastUser, GlobalInfo.LoginInfo.LastPassword))
                 {
-                    this.Close();
-                    return;
+                    if (login.ShowDialog() != DialogResult.OK)
+                    {
+                        this.Close();
+                        return;
+                    }
                 }
             }
-            login.Dispose();
-            login = null;
-
-            GlobalInfo.globalPref = globalPref;
-            if (globalPref.ForceLanguage)
-            {
-                string lang = Enum.GetName(typeof(Languages), globalPref.Language).Replace('_', '-');
-                System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(lang, false);
-            }
-            ControlBox = globalPref.ShowControlBox;
-
-
             base.OnLoad(e);
         }
 
@@ -131,6 +123,11 @@ namespace ERPManager.Forms
         protected override void OnShown(EventArgs e)
         {
             // Controllo che il programma sia correttamente registrato
+            // Aggancio il menu
+            //this.StyleManager.Clone(menuControl);
+            //metroStyleManager.Update();
+            //menuControl.AddModule(ModuleManager.ModuleList);
+            //menuControl.UpdateStyle += MenuControl_UpdateStyle;
 
 
             // Carica i moduli
@@ -141,11 +138,6 @@ namespace ERPManager.Forms
             this.Text = ModuleManager.ApplicationName;
             this.Update();
 
-            // Aggancio il menu
-            this.StyleManager.Clone(menuControl);
-            menuControl.AddModule(ModuleManager.ModuleList);
-            //menuControl.UpdateStyle += MenuControl_UpdateStyle;
-            metroStyleManager.Update();
 
             if (GlobalInfo.UserInfo.userType != UserType.Administrator)
             {

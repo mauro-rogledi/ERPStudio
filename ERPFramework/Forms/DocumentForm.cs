@@ -338,6 +338,9 @@ namespace ERPFramework.Forms
                     if (metroToolbar.GetButtonState(MetroToolbarButtonType.Undo) && DocumentMode == DBMode.Edit)
                         OnUndoEvent();
                     break;
+
+                default:
+                    break;
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }

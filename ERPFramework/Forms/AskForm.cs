@@ -67,6 +67,15 @@ namespace ERPFramework.Forms
             ShowInTaskbar = !Modal;
         }
 
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            OnBindData();
+        }
+
+        protected virtual void OnBindData() { }
+
         protected override void OnClosing(CancelEventArgs e)
         {
             if (connection != null && connection.State == ConnectionState.Open)

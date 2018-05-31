@@ -6,7 +6,7 @@ using System;
 using System.Data;
 using System.IO;
 using System.Windows.Forms;
-using System.Xml;
+using System.Linq;
 
 namespace ERPManager
 {
@@ -23,8 +23,21 @@ namespace ERPManager
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+
+        }
+
+        protected override void OnBindData()
+        {
             serialTable = new EF_Serial().CreateTable();
+            dgwModules.AutoGenerateColumns = false;
             dgwModules.DataSource = serialTable;
+
+
+            BindColumn(colEnable, EF_Serial.Enable);
+            BindColumn(colModuleName, EF_Serial.ModuleName);
+            BindColumn(colSerial, EF_Serial.Serial);
+            BindColumn(colLicenseType, EF_Serial.SerialType);
+            BindColumn(colExpiration, EF_Serial.Expiration);
         }
 
         protected override void OnShown(EventArgs e)
@@ -38,24 +51,20 @@ namespace ERPManager
 
         private void PrepareGrid()
         {
-            dgwModules.Rows.Clear();
-
-            foreach (var module in ActivationManager.Modules)
-            {
-               var row = dgwModules.AddNewRow();
-                //dgwModules.Rows[row].Cells[nameof(colEnable)].Value = module.Value.Enabled;
-                //dgwModules.Rows[row].Cells[nameof(colLicenseType)].Value = module.Value.SerialType.ToString();
-                //dgwModules.Rows[row].Cells[nameof(colModuleName)].Value = module.Value.Name;
-                //dgwModules.Rows[row].Cells[nameof(colCode)].Value = module.Value.Code;
-                //dgwModules.Rows[row].Cells[nameof(colSerial)].Value = module.Value.SerialNo;
-                //if (module.Value.SerialType.HasFlag(SerialType.EXPIRATION_DATE))
-                //    dgwModules.Rows[row].Cells[nameof(colExpiration)].Value = module.Value.Expiration;
-
+            ActivationManager.Modules.ToList().ForEach(module =>
+           {
+               var row = serialTable.NewRow();
+               row.SetValue<bool>(EF_Serial.Enable, module.Value.Enabled);
+               row.SetValue<string>(EF_Serial.ModuleName, module.Value.Name);
+               row.SetValue<SerialType>(EF_Serial.SerialType, module.Value.SerialType);
+               row.SetValue<DateTime>(EF_Serial.Expiration, module.Value.Expiration);
 #if DEBUG
-                //dgwModules.Rows[row].Cells[nameof(colSerial)].Value =
-                //ActivationManager.CreateSerial(txtLicense.Text, txtMac.Text, module.Value.Code, module.Value.SerialType, module.Value.Expiration, txtPenDrive.Text);
+                module.Value.SerialNo = ActivationManager.CreateSerial(txtLicense.Text, txtMac.Text, module.Value.Code, module.Value.SerialType, module.Value.Expiration, txtPenDrive.Text);
 #endif
-            }
+                row.SetValue<string>(EF_Serial.Serial, module.Value.SerialNo);
+
+               serialTable.Rows.Add(row);
+           });
         }
 
 
