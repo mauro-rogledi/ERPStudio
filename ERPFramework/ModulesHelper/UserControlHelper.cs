@@ -71,10 +71,7 @@ namespace ERPFramework.ModulesHelper
             if (modal && !(userCtrl is Form))
                 LockAllControl();
 
-            Point ctrlLocation = CalculateLocation(userCtrl, position, location, owner);
-
-            userCtrl.Location = ctrlLocation;
-
+            userCtrl.Location = CalculateLocation(userCtrl, position, location, owner);
             Show(userCtrl, modal);
 
             return userCtrl;

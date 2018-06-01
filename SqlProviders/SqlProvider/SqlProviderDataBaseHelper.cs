@@ -3,6 +3,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Sql;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
@@ -105,8 +106,9 @@ namespace SqlProvider
 
         public async Task<List<string>> GetServers()
         {
+            var instances =  SqlDataSourceEnumerator.Instance;
             var dt = await Task.Run(
-                () => SmoApplication.EnumAvailableSqlServers(false)
+                () => instances.GetDataSources()
             );
 
             var rows = dt.Rows.OfType<DataRow>();
@@ -115,7 +117,7 @@ namespace SqlProvider
 
             var serverList = rows.Aggregate<DataRow, List<string>>(new List<string>(), (acc, x) =>
             {
-                var srv = x["name"].ToString();
+                var srv = x["ServerName"].ToString();
                 if (acc.Count == 0 && localInstance != null)
                 {
                     acc.AddRange(

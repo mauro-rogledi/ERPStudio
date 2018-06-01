@@ -22,11 +22,12 @@ namespace ERPFramework.ModulesHelper
         TRIAL = 0x0010
     }
 
+    [Flags]
     public enum ActivationState
     {
-        Activate,
-        NotActivate,
-        Trial
+        NotActivate = 0x0000,
+        Activate = 0x0001,
+        Trial = 0x0002
     }
 
     public class ActivationDataMemory

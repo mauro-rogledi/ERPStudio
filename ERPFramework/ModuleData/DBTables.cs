@@ -10,7 +10,7 @@ namespace ERPFramework.Data
         public static bool IsVirtual = true;
 
         public static Column<bool> Enable = new Column<bool>("Enable");
-        public static Column<bool> Active = new Column<bool>("Active");
+        public static Column<ActivationState> Active = new Column<ActivationState>("Active");
         public static Column<string> ModuleName = new Column<string>("ModuleName", 16);
         public static Column<string> Code = new Column<string>("Code", 4);
         public static Column<DateTime> Expiration = new Column<DateTime>("Expiration");

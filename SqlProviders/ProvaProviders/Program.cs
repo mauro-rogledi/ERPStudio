@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Data.Sql;
 using System.Data.SqlClient;
 
 namespace ProvaProviders
@@ -36,6 +37,11 @@ namespace ProvaProviders
 
             var result = GetDBType(typeof(String));
             ProxyProviderLoader.UseProvider = ProviderType.SQL;
+
+            SqlDataSourceEnumerator instances =
+      SqlDataSourceEnumerator.Instance;
+            System.Data.DataTable table = instances.GetDataSources();
+
             //var sqlconnectiostring = new SqlProxyConnectionStringbuilder
             //{
             //    DataSource = @"SALA\SQLEXPRESS",

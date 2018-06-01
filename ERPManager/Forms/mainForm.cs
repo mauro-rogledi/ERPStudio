@@ -267,7 +267,7 @@ namespace ERPManager.Forms
             switch (button)
             {
                 case settingForm.SettingButton.Register:
-                    registerForm rF = new registerForm(ModuleManager.ApplicationName);
+                    var rF = new registerForm(ModuleManager.ApplicationName);
                     userControlHelper.ShowControl(rF, true, OpenControlHelper.ControlPosition.Owner, sender as Control);
                     break;
                 case settingForm.SettingButton.LastUser:
@@ -276,6 +276,8 @@ namespace ERPManager.Forms
                 case settingForm.SettingButton.Info:
                     var iF = new InfoForm();
                     userControlHelper.ShowControl(iF, true, OpenControlHelper.ControlPosition.Owner, sender as Control);
+                    break;
+                default:
                     break;
             }
         }

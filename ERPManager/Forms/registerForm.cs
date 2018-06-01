@@ -55,85 +55,83 @@ namespace ERPManager
            {
                var row = serialTable.NewRow();
                row.SetValue<bool>(EF_Serial.Enable, module.Value.Enabled);
+               row.SetValue<string>(EF_Serial.Code, module.Value.Code);
                row.SetValue<string>(EF_Serial.ModuleName, module.Value.Name);
                row.SetValue<SerialType>(EF_Serial.SerialType, module.Value.SerialType);
                row.SetValue<DateTime>(EF_Serial.Expiration, module.Value.Expiration);
 #if DEBUG
-                module.Value.SerialNo = ActivationManager.CreateSerial(txtLicense.Text, txtMac.Text, module.Value.Code, module.Value.SerialType, module.Value.Expiration, txtPenDrive.Text);
+               module.Value.SerialNo = ActivationManager.CreateSerial(txtLicense.Text, txtMac.Text, module.Value.Code, module.Value.SerialType, module.Value.Expiration, txtPenDrive.Text);
 #endif
-                row.SetValue<string>(EF_Serial.Serial, module.Value.SerialNo);
+               row.SetValue<string>(EF_Serial.Serial, module.Value.SerialNo);
 
                serialTable.Rows.Add(row);
            });
         }
 
-
         public override bool OnOk()
         {
-            if (!CheckData())
-                return false;
-
-            ActivationManager.Save();
-            return true;
+            return CheckData()
+                ? SaveSerial()
+                : false;
         }
-
 
         private bool CheckData()
         {
-            for (int t = 0; t < dgwModules.RowCount; t++)
-            {
-                Boolean.TryParse(dgwModules.Rows[t].Cells[nameof(colEnable)].Value.ToString(), out bool enabled);
-                var serial = dgwModules.Rows[t].Cells[nameof(colSerial)].Value.ToString();
+            var isOK = true;
 
-                if (enabled && serial.IsEmpty())
+            serialTable.Rows.Cast<DataRow>().ToList().ForEach(row =>
+            {
+                if (!isOK)
+                    return;
+
+                if (row.GetValue<bool>(EF_Serial.Enable) && row.GetValue<string>(EF_Serial.Serial).IsEmpty())
                 {
+                    isOK = false;
+                    row.SetValue<ActivationState>(EF_Serial.Active, ActivationState.NotActivate);
                     MessageBox.Show(Properties.Resources.Msg_MissingSerialNumber, Properties.Resources.Msg_Attention,
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return false;
+                    return;
                 }
 
-                var expiration = DateTime.Today;
-                Enum.TryParse<SerialType>(dgwModules.Rows[t].Cells[nameof(colLicenseType)].Value.ToString(), out SerialType sType);
-                var code = (string)dgwModules.Rows[t].Cells[nameof(colCode)].Value;
-                var name = (string)dgwModules.Rows[t].Cells[nameof(colModuleName)].Value;
-                if (sType.HasFlag(SerialType.EXPIRATION_DATE))
-                    expiration = (DateTime)DateTime.Parse(dgwModules.Rows[t].Cells[nameof(colExpiration)].Value.ToString());
+                var code = row.GetValue<string>(EF_Serial.Code);
+                var serialType = row.GetValue<SerialType>(EF_Serial.SerialType);
+                var expirationDate = row.GetValue<DateTime>(EF_Serial.Expiration);
 
-                if (serial != ActivationManager.CreateSerial(txtLicense.Text, txtMac.Text, code, sType, expiration, txtPenDrive.Text))
+                var serial = ActivationManager.CreateSerial(txtLicense.Text, txtMac.Text, code, serialType, expirationDate, txtPenDrive.Text);
+                if (serial != row.GetValue<string>(EF_Serial.Serial))
                 {
-                    var mess = string.Format(Properties.Resources.Msg_IncorrectSerialNumber, name);
+                    isOK = false;
+                    row.SetValue<ActivationState>(EF_Serial.Active, ActivationState.NotActivate);
+                    var mess = string.Format(Properties.Resources.Msg_IncorrectSerialNumber, row.GetValue<string>(EF_Serial.ModuleName));
                     MessageBox.Show(mess, Properties.Resources.Msg_Attention,
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return false;
                 }
-            }
-            return true;
+
+                var activationState = (row.GetValue<SerialType>(EF_Serial.SerialType) & SerialType.TRIAL) == SerialType.TRIAL
+                                        ? ActivationState.Activate | ActivationState.Trial
+                                        : ActivationState.Activate;
+
+                row.SetValue<ActivationState>(EF_Serial.Active, activationState);
+            });
+
+            return isOK;
         }
 
-        private void SaveSerial()
+        private bool SaveSerial()
         {
             ActivationManager.Clear();
             ActivationManager.License = txtLicense.Text;
             ActivationManager.PenDrive = txtPenDrive.Text;
 
-            for (int t = 0; t < dgwModules.Rows.Count; t++)
+            serialTable.Rows.Cast<DataRow>().ToList().ForEach(row =>
             {
-                var expiration = DateTime.Today;
-                //dgwModules.GetValue<string>()
+                var module = ActivationManager.Module(row.GetValue<string>(EF_Serial.Code));
+                module.SerialNo = row.GetValue<string>(EF_Serial.Serial);
+                module.State = row.GetValue<ActivationState>(EF_Serial.Active);
+                module.Enabled = row.GetValue<bool>(EF_Serial.Enable);
+            });
 
-                var name = (string)dgwModules.Rows[t].Cells[nameof(colModuleName)].Value;
-                var enable = (bool)dgwModules.Rows[t].Cells[nameof(colEnable)].Value;
-                var sType = (SerialType)dgwModules.Rows[t].Cells[nameof(colLicenseType)].Value;
-                var module = (string)dgwModules.Rows[t].Cells[nameof(colModuleName)].Value;
-                if (sType.HasFlag(SerialType.EXPIRATION_DATE))
-                    expiration = DateTime.Parse(dgwModules.Rows[t].Cells[nameof(colExpiration)].Value.ToString());
-                var serial = dgwModules.Rows[t].Cells[nameof(colSerial)].Value.ToString();
-
-
-                ActivationManager.Module(name).Expiration = expiration;
-                ActivationManager.Module(name).SerialNo = serial;
-            }
-            ActivationManager.Save();
+            return true;
         }
 
         private void btnFindPen_Click(object sender, EventArgs e)
@@ -145,11 +143,6 @@ namespace ERPManager
                     txtPenDrive.Text = USBSerialNumber.GetNameFromDriveLetter(fbd.SelectedPath);
                 }
             }
-        }
-
-        private void btnCancel_Click(object sender, EventArgs e)
-        {
-            this.Close();
         }
     }
 }
