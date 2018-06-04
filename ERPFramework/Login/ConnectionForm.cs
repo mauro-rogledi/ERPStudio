@@ -163,7 +163,7 @@ namespace ERPFramework.Login
         {
             cbbExistSQL.Items.Clear();
 
-            var serverList = await SqlProxyDatabaseHelper.ListDatabase(cbbServer.Text);
+            var serverList = await SqlProxyDatabaseHelper.ListDatabase(cbbServer.Text, txtUser.Text, txtPass.Text, cbbAuthentication.SelectedIndex == AuthenticationMode.Windows.Int());
 
             cbbExistSQL.Items.AddRange(serverList.ToArray());
         }

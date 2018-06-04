@@ -53,6 +53,8 @@ namespace ERPFramework.ModulesHelper
 
         public string Name { get; set; }
 
+        public NameSpace NameSpace { get; set; }
+
         public string Code { get; set; }
 
         public SerialType SerialType;
@@ -62,6 +64,7 @@ namespace ERPFramework.ModulesHelper
         public string SerialNo { get; set; }
 
         public List<string> Functionality { get; set; } = new List<string>();
+        public string ModulePath { get; set; }
     }
 
     [Serializable()]
@@ -114,10 +117,13 @@ namespace ERPFramework.ModulesHelper
 
         public static bool Load()
         {
-            var config = Loadconfiguration();
-            LoadActivationFromModules(config.modules);
-            var activationFound = LoadFromActivationFile();
-            return activationFound;
+            var (ok, modules) = Loadconfiguration();
+            if (ok)
+            {
+                modules.ForEach(m => LoadActivatioModule(m));
+                return LoadFromActivationFile();
+            }
+            return ok;
         }
 
         private static (bool ok, List<string> modules) Loadconfiguration()
@@ -133,18 +139,6 @@ namespace ERPFramework.ModulesHelper
             var list = xDoc.SelectNodes("application/module").Cast<XmlNode>().ToList().ConvertAll<string>((XmlNode x) => x.InnerText);
 
             return (true, list);
-        }
-
-        public static void LoadActivationFromModules(List<string> modules)
-        {
-            var applPath = Path.GetDirectoryName(Application.ExecutablePath);
-
-            modules.ForEach(m =>
-            {
-                var folder = Path.Combine(applPath, m, "menu");
-                if (Directory.Exists(folder))
-                    LoadActivatioModule(folder);
-            });
         }
 
         private static bool LoadFromActivationFile()
@@ -216,17 +210,23 @@ namespace ERPFramework.ModulesHelper
             return true;
         }
 
-        private static void LoadActivatioModule(string menuDir)
+        private static void LoadActivatioModule(string modulefolder)
         {
-#if DEBUG
-            var activationName = "activation.xml";
-#else
-            var activationName = "activation.cml";
-#endif
-            var activationFile = new XmlDocument();
-            activationFile.Load(Path.Combine(menuDir, activationName));
+            var applPath = Path.GetDirectoryName(Application.ExecutablePath);
+            var modulePath = Path.Combine(applPath, modulefolder);
 
-            var moduleNode = activationFile.SelectNodes("modules/module");
+            var activationName = "activation.xml";
+            var menufolder = Path.Combine(modulefolder, "menu");
+            var activationfile = Path.Combine(menufolder, activationName);
+
+            var activationXMLFile = new XmlDocument();
+
+            if (!Directory.Exists(menufolder)|| !File.Exists(activationfile))
+                return;
+
+            activationXMLFile.Load(activationfile);
+
+            var moduleNode = activationXMLFile.SelectNodes("modules/module");
 
             moduleNode.Cast<XmlNode>().ToList().ForEach(n =>
             {
@@ -236,7 +236,9 @@ namespace ERPFramework.ModulesHelper
                     Code = n.Attributes["code"].Value,
                     SerialType = (SerialType)Enum.Parse(typeof(SerialType), n.Attributes["serialType"].Value),
                     Enabled = false,
-                    SerialNo = ""
+                    SerialNo = "",
+                    ModulePath = modulefolder,
+                    NameSpace = new NameSpace(modulefolder, n.Attributes["namespace"].Value)
                 };
 
                 module.Expiration = module.SerialType.HasFlag(SerialType.EXPIRATION_DATE)
@@ -261,7 +263,7 @@ namespace ERPFramework.ModulesHelper
             if (sm == null || !sm.Enabled)
                 return ActivationState.NotActivate;
 
-            if (!SerialFormatIsOk(sm.SerialNo, sm.Name))
+            if (!SerialFormatIsOk(sm.SerialNo, sm.Code))
                 return ActivationState.NotActivate;
 
             if (!CheckSerialType(sm))

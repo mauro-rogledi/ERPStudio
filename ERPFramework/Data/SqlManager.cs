@@ -365,7 +365,7 @@ namespace ERPFramework.Data
         {
             get
             {
-                return System.IO.Path.Combine(ConfigDirectory, SS.LoginFile);
+                return System.IO.Path.Combine(ConfigDirectory, "loginsetting.config");
             }
         }
 
@@ -400,46 +400,6 @@ namespace ERPFramework.Data
 
             return sqlconnectionstring.ConnectionString;
         }
-    }
-
-    public class NameSolverDatabaseStrings
-    {
-        public const string SQLSqlProvider = "SQLSERVER";
-
-        public const string ProviderConnAttribute = "Provider={0}; ";
-        public const string UnknownDBMS = "Unknown DBMS {0}; ";
-
-        public const string SQLWinNtConnection = "Data Source={0};Initial Catalog='{1}';Integrated Security='SSPI';Connect Timeout=30; Pooling= false ";
-        public const string SQLConnection = "Data Source={0};Initial Catalog='{1}'; MultipleActiveResultSets=True; User ID='{2}';Password='{3}';";
-        public const string SQLCompactConnection = "Data Source={0};Password='{1}';";
-        public const string SQLiteConnectionNew = "Data Source={0};Version=3;New={1};Compress=True;";
-        public const string SQLiteConnection = "Data Source={0};Version=3;Compress=True;";
-
-        // Data Source=mydb.db;Version=3;New=True;
-
-        public const string SQLCreationRemote = "CREATE DATABASE {0}";
-    }
-
-    public struct SS
-    {
-        public const string LoginFile = "loginsetting.config";
-        public const string ProviderType = "ProviderType";
-        public const string AuthenticationType = "AuthenticationType";
-        public const string Login = "Login";
-        public const string Host = "Host";
-        public const string DataSource = "DataSource";
-        public const string Directory = "ApplicationBuilder";
-
-        public const string Users = "Users";
-        public const string User = "User";
-        public const string UserName = "UserName";
-        public const string Password = "Password";
-        public const string UsersList = "UsersList";
-        public const string Remember = "RememberPassword";
-        public const string LastUser = "LastUser";
-        public const string LastPassword = "LastPassword";
-
-        public const string IdApplication = "GuidApplication";
     }
 
     public class DataRowValues

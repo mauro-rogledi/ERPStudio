@@ -73,17 +73,17 @@ namespace ERPManager.Forms
                 return;
             }
 
-            var globalPref = new PreferencesManager<GlobalPreferences>("", null).ReadPreference();
-            if (globalPref.ForceLanguage)
+            GlobalInfo.globalPref = new PreferencesManager<GlobalPreferences>("", null).ReadPreference();
+            if (GlobalInfo.globalPref.ForceLanguage)
             {
-                var lang = Enum.GetName(typeof(Languages), globalPref.Language).Replace('_', '-');
+                var lang = Enum.GetName(typeof(Languages), GlobalInfo.globalPref.Language).Replace('_', '-');
                 System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(lang, false);
             }
-            ControlBox = globalPref.ShowControlBox;
+            ControlBox = GlobalInfo.globalPref.ShowControlBox;
 
-            metroStyleManager.Style = globalPref.CustmColor;
-            StyleManager.Style = globalPref.CustmColor;
-            GlobalInfo.StyleManager.Style = globalPref.CustmColor;
+            metroStyleManager.Style = GlobalInfo.globalPref.CustmColor;
+            StyleManager.Style = GlobalInfo.globalPref.CustmColor;
+            GlobalInfo.StyleManager.Style = GlobalInfo.globalPref.CustmColor;
             metroStyleManager.Update();
 
             this.StyleManager.Clone(menuControl);
@@ -127,18 +127,18 @@ namespace ERPManager.Forms
         {
             // Controllo che il programma sia correttamente registrato
             // Aggancio il menu
-            //this.StyleManager.Clone(menuControl);
-            //metroStyleManager.Update();
-            //menuControl.AddModule(ModuleManager.ModuleList);
-            //menuControl.UpdateStyle += MenuControl_UpdateStyle;
 
 
             // Carica i moduli
             if (!ModuleManager.LoadModules())
                 Application.Exit();
 
+            this.StyleManager.Clone(menuControl);
+            metroStyleManager.Update();
+            menuControl.AddModule(ModuleManager.ModuleList);
+            //menuControl.UpdateStyle += MenuControl_UpdateStyle;
 
-            this.Text = ModuleManager.ApplicationName;
+            this.Text = ActivationManager.ApplicationName;
             this.Update();
 
 
@@ -154,7 +154,7 @@ namespace ERPManager.Forms
             _thread.Method = CheckNewVersion.CheckVersion;
             CheckNewVersion.OpenForm += new EventHandler(CheckNewVersion_OpenForm);
             CheckNewVersion.GiveMessage += new EventHandler(CheckNewVersion_GiveMessage);
-            _thread.Execute(new CheckNewVersion.parameters() { ApplicationName = ModuleManager.ApplicationName, Version = vrs, Verbose = false });
+            _thread.Execute(new CheckNewVersion.parameters() { ApplicationName = ActivationManager.ApplicationName, Version = vrs, Verbose = false });
             //#endif
             base.OnShown(e);
         }
@@ -212,7 +212,7 @@ namespace ERPManager.Forms
             NotifyForm nf = new NotifyForm();
             _thread.Method = CheckNewVersion.CheckVersion;
             CheckNewVersion.GiveMessage += new EventHandler(CheckNewVersion_GiveMessage);
-            _thread.Execute(new CheckNewVersion.parameters { ApplicationName = ModuleManager.ApplicationName, Version = vrs, Verbose = true });
+            _thread.Execute(new CheckNewVersion.parameters { ApplicationName = ActivationManager.ApplicationName, Version = vrs, Verbose = true });
         }
 
         void CheckNewVersion_OpenForm(object sender, EventArgs e)
@@ -267,7 +267,7 @@ namespace ERPManager.Forms
             switch (button)
             {
                 case settingForm.SettingButton.Register:
-                    var rF = new registerForm(ModuleManager.ApplicationName);
+                    var rF = new registerForm(ActivationManager.ApplicationName);
                     userControlHelper.ShowControl(rF, true, OpenControlHelper.ControlPosition.Owner, sender as Control);
                     break;
                 case settingForm.SettingButton.LastUser:

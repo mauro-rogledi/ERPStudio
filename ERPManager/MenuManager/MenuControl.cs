@@ -57,7 +57,7 @@ namespace ERPManager.MenuManager
         private void Mb_ButtonClick1(object sender, ApplicationMenuModule e)
         {
             panelMenu.SelectModule(e);
-            panelMenu.StyleManager.Update();
+            //panelMenu.StyleManager.Update();
         }
 
         private void CreatePanelModule()

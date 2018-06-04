@@ -37,10 +37,7 @@ namespace ProvaProviders
 
             var result = GetDBType(typeof(String));
             ProxyProviderLoader.UseProvider = ProviderType.SQL;
-
-            SqlDataSourceEnumerator instances =
-      SqlDataSourceEnumerator.Instance;
-            System.Data.DataTable table = instances.GetDataSources();
+            var list = SqlProxyDatabaseHelper.ListDatabase("USR-ROGLEDIMAU1", "sa", "", true);
 
             //var sqlconnectiostring = new SqlProxyConnectionStringbuilder
             //{

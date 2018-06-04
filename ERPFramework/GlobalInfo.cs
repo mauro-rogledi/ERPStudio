@@ -237,6 +237,14 @@ namespace ERPFramework
 
         public NameSpace() { }
 
+        public NameSpace(NameSpace nspace)
+        {
+            this.Folder = nspace.Folder;
+            this.Library = nspace.Library;
+            this.Module = nspace.Module;
+            this.Application = nspace.Application;
+        }
+
         public NameSpace(string Folder, string Library)
         {
             this.Folder = Folder;

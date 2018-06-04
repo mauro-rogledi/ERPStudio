@@ -1,11 +1,13 @@
-﻿using System;
+﻿using SqlProxyProvider;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.IO;
 using System.Reflection;
 using System.Threading;
-using SqlProxyProvider;
+using System.Threading.Tasks;
 
 namespace ProvaProviders
 {
@@ -428,9 +430,11 @@ namespace ProvaProviders
             {
                 try
                 {
-                    Monitor.Enter(lockWasTaken);
                     if (_databaseHelper == null)
+                    {
+                        Monitor.Enter(lockWasTaken);
                         _databaseHelper = ProxyProviderLoader.CreateInstance<ISqlProxyDataBaseHelper>("SqlProvider.SqlProviderDatabaseHelper");
+                    }
                 }
                 // body
                 finally
@@ -454,9 +458,53 @@ namespace ProvaProviders
 
         public static void CreateDatabase(string connectionString) => databaseHelper.CreateDatabase(connectionString);
 
-        public static string QuerySearchTable(string tableName) => databaseHelper.QuerySearchTable(tableName);
 
         //public static bool SearchColumn(IColumn column, SqlProxyConnection connection) => databaseHelper.SearchColumn(column.Tablename, column.Name, connection.Connection.Connection);
+
+        //public static bool SearchTable<T>(SqlProxyConnection connection)
+        //{
+        //    System.Diagnostics.Debug.Assert(typeof(T).BaseType == typeof(Table));
+        //    var tableName = typeof(T).GetField("Name").GetValue(null).ToString();
+
+        //    var notfound = false;
+        //    try
+        //    {
+        //        using (var cmd = new SqlProxyCommand(QuerySearchTable(tableName), connection))
+        //        {
+        //            var dr = cmd.ExecuteReader();
+
+        //            notfound = !dr.Read();
+        //            dr.Close();
+        //        }
+        //    }
+        //    catch (Exception exc)
+        //    {
+        //        MessageBox.Show(exc.Message);
+        //        return true;
+        //    }
+        //    return notfound;
+        //}
+
+        public static async Task<List<string>> GetServers()
+        {
+            return await databaseHelper.GetServers();
+        }
+
+        public static async Task<List<string>> ListDatabase(string server, string userID, string password, bool integratedSecurity)
+        {
+            return await databaseHelper.ListDatabase(server, userID, password, integratedSecurity);
+        }
+
+        public static string ConvertDate(DateTime datetime) => databaseHelper.ConvertDate(datetime);
+        public static string GetYear(string date) => databaseHelper.GetYear(date);
+        public static string GetMonth(string date) => databaseHelper.GetMonth(date);
+        public static string GetDay(string date) => databaseHelper.GetDay(date);
+        public static string GetWeekOfYear(string date) => databaseHelper.GetWeekOfYear(date);
+        public static string DayOfYear(string date) => databaseHelper.DayOfYear(date);
+        public static string DayOfWeek(string date) => databaseHelper.DayOfWeek(date);
+        public static DateTime GetServerDate(string connectionString) => databaseHelper.GetServerDate(connectionString);
+
+        private static string QuerySearchTable(string tableName) => databaseHelper.QuerySearchTable(tableName);
 
     }
     #endregion

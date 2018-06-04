@@ -1,5 +1,4 @@
-﻿using Microsoft.SqlServer.Management.Smo;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -137,24 +136,47 @@ namespace SqlProvider
             return serverList;
         }
 
-        public async Task<List<string>> ListDatabase(string server)
+        public async Task<List<string>> ListDatabase(string server, string userID, string password, bool integratedSecurity)
         {
+            var connectionstringBuilder = new SqlProviderConnectionStringBuilder
+            {
+                DataSource = server,
+                UserID = userID,
+                Password = password,
+                IntegratedSecurity = integratedSecurity
+            };
+            var dbList = new List<string>();
+
+
             return await Task.Run(
                 () =>
                 {
-                    var srv = new Server(server);
-                    var databases = srv.Databases.OfType<Database>();
-
-                    var dbList = databases.Aggregate<Database, List<string>>(new List<string>(), (acc, x) =>
+                    try
+                    {
+                        using (SqlConnection con = new SqlConnection(connectionstringBuilder.ConnectionString))
                         {
-                            acc.Add(x.Name);
-                            return acc;
-                        });
+                            con.Open();
+
+                            using (SqlCommand cmd = new SqlCommand("SELECT * from sys.databases where database_id > 6", con))
+                            {
+                                using (IDataReader dr = cmd.ExecuteReader())
+                                {
+                                    while (dr.Read())
+                                    {
+                                        dbList.Add(dr[0].ToString());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                    }
 
                     return dbList;
                 });
         }
-
 
         public DateTime GetServerDate(string connectionString)
         {

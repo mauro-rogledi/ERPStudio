@@ -66,7 +66,7 @@ namespace SqlProvider
                 );
         }
 
-        public async Task<List<string>> ListDatabase(string server)
+        public async Task<List<string>> ListDatabase(string server, string userID, string password, bool integratedSecurity)
         {
             return await Task.Run(
 

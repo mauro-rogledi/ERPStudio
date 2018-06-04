@@ -25,7 +25,7 @@ namespace ERPManager.MenuManager
         {
             Controls.Clear();
 
-            foreach (ApplicationMenuFolder fld in module.MenuFolders)
+            module.MenuFolders.ForEach(fld =>
             {
                 var folderPanel = new PanelFolder
                 {
@@ -36,7 +36,8 @@ namespace ERPManager.MenuManager
                 Controls.SetChildIndex(folderPanel, 0);
                 folderPanel.FavoriteClick += Folderpanel_FavoriteClick;
                 folderPanel.Folder = fld;
-            }
+
+            });
         }
 
         private void Folderpanel_FavoriteClick(object sender, bool e)
@@ -48,8 +49,7 @@ namespace ERPManager.MenuManager
         {
             Cursor = Cursors.WaitCursor;
             Application.DoEvents();
-            if (ItemSelected != null)
-                ItemSelected(sender, ((MenuButton) sender).Item);
+            ItemSelected?.Invoke(sender, ((MenuButton)sender).Item);
             Cursor = Cursors.Default;
             Application.DoEvents();
         }

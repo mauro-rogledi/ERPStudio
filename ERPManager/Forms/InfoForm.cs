@@ -10,7 +10,7 @@ namespace ERPManager
         public InfoForm()
         {
             InitializeComponent();
-            lblAppname.Text = ModuleManager.ApplicationName;
+            lblAppname.Text = ActivationManager.ApplicationName;
             lblLicensed.Text = ActivationManager.activationDataSave.License;
 
             Add(GetDllVersion(new NameSpace("", nameof(ERPFramework), "", "")));

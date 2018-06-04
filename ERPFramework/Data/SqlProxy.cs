@@ -526,9 +526,9 @@ namespace ERPFramework.Data
             return await databaseHelper.GetServers();
         }
 
-        public static async Task<List<string>> ListDatabase(string server)
+        public static async Task<List<string>> ListDatabase(string server, string userID, string password, bool integratedSecurity)
         {
-            return await databaseHelper.ListDatabase(server);
+            return await databaseHelper.ListDatabase(server, userID, password, integratedSecurity);
         }
 
         public static string ConvertDate(DateTime datetime) => databaseHelper.ConvertDate(datetime);

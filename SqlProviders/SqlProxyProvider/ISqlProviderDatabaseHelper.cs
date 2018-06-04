@@ -22,7 +22,7 @@ namespace SqlProxyProvider
         DateTime GetServerDate(string connectionString);
 
         Task<List<string>> GetServers();
-        Task<List<string>> ListDatabase(string server);
+        Task<List<string>> ListDatabase(string server, string userID, string password, bool integratedSecurity);
 
         string ConvertDate(DateTime date);
         string GetYear(string date);
