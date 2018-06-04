@@ -367,13 +367,13 @@
     <value>152, 34</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>156, 37</value>
+    <value>189, 37</value>
   </data>
   <data name="label4.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
-    <value>The Clothes</value>
+    <value>ERP Studio.net</value>
   </data>
   <data name="&gt;&gt;label4.Name" xml:space="preserve">
     <value>label4</value>
@@ -397,7 +397,7 @@
     <value>14</value>
   </data>
   <data name="metroLabel1.Text" xml:space="preserve">
-    <value>© 2006 - 2017 -Mauro Rogledi - All rights reserved</value>
+    <value>© 2006 - 2018 -Mauro Rogledi - All rights reserved</value>
   </data>
   <data name="metroLabel1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
@@ -414,6 +414,9 @@
   <data name="&gt;&gt;metroLabel1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>it-IT</value>
+  </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>

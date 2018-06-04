@@ -23,7 +23,7 @@ namespace ERPFramework.Login
 
         protected override void OnShown(EventArgs e)
         {
-           // metroStyleManager.Update();
+            label4.Text = ModulesHelper.ActivationManager.ApplicationName;
         }
 
         private void btnLogin_Click(object sender, System.EventArgs e)

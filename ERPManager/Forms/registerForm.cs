@@ -131,7 +131,7 @@ namespace ERPManager
                 module.Enabled = row.GetValue<bool>(EF_Serial.Enable);
             });
 
-            return true;
+            return ActivationManager.Save();
         }
 
         private void btnFindPen_Click(object sender, EventArgs e)

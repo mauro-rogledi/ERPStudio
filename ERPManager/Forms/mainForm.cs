@@ -63,6 +63,8 @@ namespace ERPManager.Forms
 
         protected override void OnLoad(EventArgs e)
         {
+            var configFound = ActivationManager.Load();
+
             // Mi connetto al Database
             GlobalInfo.DBaseInfo.dbManager = new SqlManager();
             if (!GlobalInfo.DBaseInfo.dbManager.CreateConnection())
@@ -88,9 +90,10 @@ namespace ERPManager.Forms
             metroStyleManager.Update();
 
             // Carico l'attivazione
-            if (!LoadActivation())
+            if (!configFound)
             {
-                this.Close();
+                if (!ShowRegistrationForm())
+                    this.Close();
                 return;
             }
 
@@ -156,20 +159,17 @@ namespace ERPManager.Forms
             base.OnShown(e);
         }
 
-        private bool LoadActivation()
+        private bool ShowRegistrationForm()
         {
-            if (!ActivationManager.Load())
+            using (var rF = new registerForm(ActivationManager.ApplicationName))
             {
-                using (var rF = new registerForm(ActivationManager.ApplicationName))
-                {
-                    if (rF.ShowDialog() == DialogResult.Cancel)
-                        return false;
-                }
+                if (rF.ShowDialog() == DialogResult.Cancel)
+                    return false;
             }
 
             return true;
         }
-        
+
         //private void MenuControl_UpdateStyle(object sender, EventArgs e)
         //{
         //    metroStyleManager.Update();

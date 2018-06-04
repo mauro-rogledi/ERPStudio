@@ -1,6 +1,7 @@
 #region Using directives
 
 using ERPFramework.Login;
+using ERPFramework.ModulesHelper;
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -372,7 +373,7 @@ namespace ERPFramework.Data
         {
             get
             {
-                var directory = GetApplicationName();
+                var directory = ActivationManager.ApplicationName;
                 if (string.IsNullOrEmpty(directory))
                 {
                     if (Directory.GetParent(Directory.GetCurrentDirectory()).FullName.EndsWith("bin", StringComparison.CurrentCultureIgnoreCase))
@@ -383,32 +384,6 @@ namespace ERPFramework.Data
 
                 return System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), directory);
             }
-        }
-
-        [Obsolete()]
-        public string GetApplicationName()
-        {
-            string applPath = Path.GetDirectoryName(Application.ExecutablePath);
-            string appConfname = Path.Combine(applPath, "ApplicationModules.config");
-            string appName = string.Empty;
-            if (!File.Exists(appConfname))
-            {
-                Debug.Assert(false, "Missing ApplicationModules.config");
-                return "";
-            }
-            XmlDocument applModule = new XmlDocument();
-            applModule.Load(appConfname);
-            XmlNode moduleName = applModule.SelectSingleNode("modules");
-            if (moduleName != null)
-            {
-                appName = moduleName.Attributes["name"].Value;
-#if (DEBUG)
-                Version vrs = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-                appName = string.Concat(appName, "_", vrs.Major.ToString(), vrs.Minor.ToString());
-#endif
-            }
-
-            return appName;
         }
 
         private string GetConnectionString()

@@ -34,10 +34,15 @@ namespace ERPFramework.ModulesHelper
     {
         public string Application { get; set; }
         public string License { get; set; }
-
         public string PenDrive { get; set; }
 
         public Dictionary<string, ActivationModuleMemory> Modules = new Dictionary<string, ActivationModuleMemory>();
+    }
+
+    internal static class Convert64
+    {
+        public static string To64(this string value) => Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes(value));
+        public static string From64(this string value) => ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(value));
     }
 
     public class ActivationModuleMemory
@@ -67,20 +72,13 @@ namespace ERPFramework.ModulesHelper
         public string PenDrive { get; set; }
 
         public Dictionary<string, ActivationModuleSave> Modules = new Dictionary<string, ActivationModuleSave>();
-
-        public void AddModule(string name, bool enabled, string serialNo)
-        {
-            if (Modules.ContainsKey(name))
-                throw new Exception("Duplicate module");
-
-            Modules.Add(name, new ActivationModuleSave { Enabled = enabled, SerialNo = serialNo });
-        }
     }
 
+    [Serializable()]
     public class ActivationModuleSave
     {
-        public bool Enabled { get; set; }
-        public ActivationState State { get; set; }
+        public string Enabled { get; set; }
+        public string State { get; set; }
         public string SerialNo { get; set; }
     }
 
@@ -90,7 +88,7 @@ namespace ERPFramework.ModulesHelper
         public static ActivationDataMemory activationDataMemory = new ActivationDataMemory();
         private static string macAddres = ReadMacAddress();
 
-        public static string ApplicationName { get => activationDataMemory.Application; }
+        public static string ApplicationName { get => activationDataMemory?.Application; }
 
         public static string License
         {
@@ -108,8 +106,10 @@ namespace ERPFramework.ModulesHelper
         public static Dictionary<string, ActivationModuleMemory> Modules { get => activationDataMemory.Modules; }
         public static void Clear()
         {
+            if (activationDataSave == null)
+                activationDataSave = new ActivationDataSave();
+
             activationDataSave.Modules.Clear();
-            activationDataMemory.Modules.Clear();
         }
 
         public static bool Load()
@@ -162,19 +162,27 @@ namespace ERPFramework.ModulesHelper
             var myBF = new BinaryFormatter();
             activationDataSave = (ActivationDataSave)myBF.Deserialize(memStr);
 
-            activationDataSave.License = ConvertFrom64(activationDataSave.License);
-            activationDataSave.PenDrive = ConvertFrom64(activationDataSave.PenDrive);
+            activationDataSave.License = activationDataSave.License.From64();
+            activationDataSave.PenDrive = activationDataSave.PenDrive.From64();
 
             activationDataMemory.License = activationDataSave.License;
             activationDataMemory.PenDrive = activationDataSave.PenDrive;
 
-            foreach (var module in activationDataSave.Modules)
-                module.Value.SerialNo = ConvertFrom64(module.Value.SerialNo);
+            activationDataSave.Modules.ToList().ForEach(m =>
+            {
+                var module = m.Value;
+                if (activationDataMemory.Modules.ContainsKey(m.Key))
+                {
+                    activationDataMemory.Modules[m.Key].Enabled = bool.Parse(module.Enabled.From64());
+                    activationDataMemory.Modules[m.Key].SerialNo = module.SerialNo.From64();
+                    activationDataMemory.Modules[m.Key].State = (ActivationState)Enum.Parse(typeof(ActivationState), module.State.From64());
+                }
+            });
 
             return true;
         }
 
-        public static void Save()
+        public static bool Save()
         {
             var directory = Path.GetDirectoryName(filekey());
             if (!Directory.Exists(directory))
@@ -185,20 +193,28 @@ namespace ERPFramework.ModulesHelper
             if (activationDataSave == null)
                 activationDataSave = new ActivationDataSave();
 
-            activationDataSave.License = ConvertTo64(activationDataMemory.License);
-            activationDataSave.PenDrive = ConvertTo64(activationDataSave.PenDrive);
+            activationDataSave.License = activationDataMemory.License.To64();
+            activationDataSave.PenDrive = activationDataMemory.PenDrive.To64();
 
-            foreach (var Module in activationDataSave.Modules)
-                Module.Value.SerialNo = ConvertTo64(Module.Value.SerialNo);
+            activationDataMemory.Modules.ToList().ForEach(m =>
+            {
+                var module = m.Value;
+                if (!activationDataSave.Modules.ContainsKey(module.Code))
+                    activationDataSave.Modules.Add(module.Code, new ActivationModuleSave());
+
+                activationDataSave.Modules[module.Code].Enabled = module.Enabled.ToString().To64();
+                activationDataSave.Modules[module.Code].SerialNo = module.SerialNo.To64();
+                activationDataSave.Modules[module.Code].State = module.State.ToString().To64();
+            });
 
             myBF.Serialize(memStr, activationDataSave);
 
             using (FileStream myFS = new FileStream(filekey(), FileMode.Create))
             using (GZipStream gzip = new GZipStream(myFS, CompressionMode.Compress, false))
                 gzip.Write(memStr.ToArray(), 0, (int)memStr.Length);
+
+            return true;
         }
-
-
 
         private static void LoadActivatioModule(string menuDir)
         {
@@ -255,8 +271,6 @@ namespace ERPFramework.ModulesHelper
                 ? ActivationState.Trial
                 : ActivationState.Activate;
         }
-
-
 
         public static string CreateSerial(string license, string macAddress, string module, SerialType sType, DateTime expiration, string pendrive)
         {
@@ -433,28 +447,6 @@ namespace ERPFramework.ModulesHelper
             }
             var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), directory);
             return Path.Combine(path, "key.bin");
-        }
-
-        private static string ConvertTo64(string text)
-        {
-            var textchar = text.ToCharArray();
-            var textbyte = new byte[textchar.Length];
-
-            for (int t = 0; t < textchar.Length; t++)
-                textbyte[t] = (byte)textchar[t];
-            return Convert.ToBase64String(textbyte);
-        }
-
-        private static string ConvertFrom64(string text)
-        {
-            if (text.Length == 0)
-                return "";
-
-            var textchar = text.ToCharArray();
-            var serialByte = Convert.FromBase64CharArray(textchar, 0, textchar.Length);
-
-            var ascii = new ASCIIEncoding();
-            return ascii.GetString(serialByte);
         }
     }
 }
