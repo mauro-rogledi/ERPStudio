@@ -444,14 +444,14 @@
     <Compile Include="ModulesHelper\OpenDocument.cs" />
     <Compile Include="ModulesHelper\ActivationManager.cs" />
     <Compile Include="ModulesHelper\USBSerialNumber.cs" />
+    <Compile Include="ModulesHelper\UserControlHelper.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Preferences\PreferencePanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Preferences\PreferencePanel.Designer.cs">
       <DependentUpon>PreferencePanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ModulesHelper\UserControlHelper.cs">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="ModuleData\DBRadar.cs" />
     <Compile Include="ModuleData\DBTables.cs" />
@@ -663,7 +663,7 @@
     </Compile>
     <Compile Include="Login\PasswordManager.cs" />
     <Compile Include="Data\QueryBuilder.cs" />
-    <Compile Include="Login\RegisterModule.cs" />
+    <Compile Include="Data\RegisterModule.cs" />
     <Compile Include="Data\SqlManager.cs" />
     <None Include="Resources\SortRight32g.png" />
     <None Include="Resources\SortRight32.png" />

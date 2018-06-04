@@ -189,7 +189,7 @@ namespace ERPFramework.CounterManager
 
         protected override string CreateMasterQuery(ref List<SqlProxyParameter> dParam)
         {
-            QueryBuilder qb = new QueryBuilder();
+            var qb = new QueryBuilder();
 
             return qb.SelectAllFrom<EF_Counter>().
                 Where(EF_Counter.Year).IsEqualTo(dParam[0]).

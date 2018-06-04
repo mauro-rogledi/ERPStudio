@@ -120,7 +120,7 @@ namespace ERPFramework.ModulesHelper
 
         private void Metroform_FormClosed(object sender, FormClosedEventArgs e)
         {
-            MetroForm metroform = sender as MetroForm;
+            var metroform = sender as MetroForm;
             _listControl.Remove(metroform.Name);
             UnlockAllControl();
 
@@ -130,8 +130,8 @@ namespace ERPFramework.ModulesHelper
 
         private Point CalculateLocation(Control userCtrl, ControlPosition position, Point? location, Control owner)
         {
-            Point pt = Point.Empty;
-            Point ownerPos = Point.Empty;
+            var pt = Point.Empty;
+            var ownerPos = Point.Empty;
             switch (position)
             {
                 case ControlPosition.Owner:
@@ -156,9 +156,9 @@ namespace ERPFramework.ModulesHelper
                 case ControlPosition.Manual:
                     System.Diagnostics.Debug.Assert(location != null, "Location is null");
                     return (Point)location;
+                default:
+                    return (Point)location;
             }
-
-            return Point.Empty;
         }
 
         private void LockAllControl()

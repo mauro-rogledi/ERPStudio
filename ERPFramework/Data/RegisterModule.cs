@@ -74,7 +74,7 @@ namespace ERPFramework.Data
             SqlProxyConnection = Connection;
             CreateDBTables();
 
-            dbVersion = ReadDBVersion();
+            dbVersion = ReadDBVersion;
             if (dbVersion == -1)
             {
                 InsertDBVersion(Module(), CurrentVersion());
@@ -103,16 +103,19 @@ namespace ERPFramework.Data
             return true;
         }
 
-        private int ReadDBVersion()
+        private int ReadDBVersion
         {
-            var drVersion = new DRVersion();
+            get
+            {
+                var drVersion = new DRVersion();
 
-            return drVersion.Find(Module())
-                ? drVersion.GetValue<int>(EF_Version.Version)
-                : -1;
+                return drVersion.Find(Module())
+                    ? drVersion.GetValue<int>(EF_Version.Version)
+                    : -1;
+            }
         }
 
-        private bool InsertDBVersion(string module, int version)
+        private static bool InsertDBVersion(string module, int version)
         {
             var drVersion = new DRVersion();
 
@@ -125,7 +128,7 @@ namespace ERPFramework.Data
             return drVersion.Update();
         }
 
-        private bool UpdateDBVersion(string module, int version)
+        private static bool UpdateDBVersion(string module, int version)
         {
             var drVersion = new DRVersion();
 

@@ -155,13 +155,15 @@ namespace ERPFramework.CounterManager
             return qb.Query;
         }
 
-        protected override List<SqlProxyParameter> CreateMasterParam()
+        protected override Dictionary<string, SqlProxyParameter> CreateMasterParam()
         {
-            List<SqlProxyParameter> PList = new List<SqlProxyParameter>();
+            Dictionary<string, SqlProxyParameter> PList = new Dictionary<string, SqlProxyParameter>();
 
-            SqlProxyParameter nParam = new SqlProxyParameter("@p1", EF_Codes.CodeType);
-            nParam.Value = 0;
-            PList.Add(nParam);
+            SqlProxyParameter nParam = new SqlProxyParameter("@p1", EF_Codes.CodeType)
+            {
+                Value = 0
+            };
+            PList.Add(nParam.ParameterName, nParam);
 
             return PList;
         }

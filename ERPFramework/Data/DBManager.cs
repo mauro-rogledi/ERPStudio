@@ -191,17 +191,17 @@ namespace ERPFramework.Data
             return string.Empty;
         }
 
-        protected virtual List<SqlProxyParameter> CreateMasterParam()
+        protected virtual Dictionary<string, SqlProxyParameter> CreateMasterParam()
         {
             return null;
         }
 
-        protected virtual List<SqlProxyParameter> CreateSlaveParam(string name)
+        protected virtual Dictionary<string, SqlProxyParameter> CreateSlaveParam(string name)
         {
             return null;
         }
 
-        protected virtual List<SqlProxyParameter> CreateSlaveParam(string name, string slavename)
+        protected virtual Dictionary<string, SqlProxyParameter> CreateSlaveParam(string name, string slavename)
         {
             return null;
         }
@@ -436,7 +436,7 @@ namespace ERPFramework.Data
 
             ForeignKey = typeof(T).GetField("ForeignKey").GetValue(null) as IColumn;
 
-            List<SqlProxyParameter> dParam = null;
+            Dictionary<string, SqlProxyParameter> dParam = null;
             var dCommand = CreateMasterCommand(ref dParam);
 
             var dAdapter = CreateDataAdapter(tableName, dCommand);
@@ -456,7 +456,7 @@ namespace ERPFramework.Data
             throw new NotImplementedException();
         }
 
-        protected virtual SqlProxyCommand CreateMasterCommand(ref List<SqlProxyParameter> dParam)
+        protected virtual SqlProxyCommand CreateMasterCommand(ref Dictionary<string, SqlProxyParameter> dParam)
         {
             dParam = CreateMasterParam();
             var sqlQuery = CreateMasterQuery(ref dParam);

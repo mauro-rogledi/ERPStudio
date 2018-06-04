@@ -75,10 +75,9 @@ namespace ERPFramework.ModulesHelper
             folderList.Cast<XmlNode>().ToList().ForEach(folderNode =>
            {
                var folder = folderNode.Attributes["name"].Value;
-               if (folderNode.Attributes["namespace"] != null)
-                   appModule = ModuleList.Find(p => { return p.Namespace.Module == folderNode.Attributes["namespace"].Value; });
-               else
-                   appModule = appModuleOri;
+               appModule = folderNode.Attributes["namespace"] != null
+                                ? ModuleList.Find(p => { return p.Namespace.Module == folderNode.Attributes["namespace"].Value; })
+                                : appModuleOri;
 
                Debug.Assert(appModule != null, "implementare");
 
@@ -90,19 +89,19 @@ namespace ERPFramework.ModulesHelper
                }
 
                folderNode.SelectNodes("item").Cast<XmlNode>().ToList().ForEach(menuNode =>
-              {
+               {
 
-                  var itemName = menuNode.Attributes["name"].Value;
-                  var nSpace = new NameSpace(menuNode.SelectSingleNode("namespace").InnerText);
-                  var formtype = menuNode.SelectSingleNode("formtype").InnerText;
-                  var usergrant = menuNode.SelectSingleNode("usergrant").InnerText;
+                   var itemName = menuNode.Attributes["name"].Value;
+                   var nSpace = new NameSpace(menuNode.SelectSingleNode("namespace").InnerText);
+                   var formtype = menuNode.SelectSingleNode("formtype").InnerText;
+                   var usergrant = menuNode.SelectSingleNode("usergrant").InnerText;
 
-                  var formType = (DocumentType)Enum.Parse(typeof(DocumentType), formtype);
-                  var userType = (UserType)Enum.Parse(typeof(UserType), usergrant);
+                   var formType = (DocumentType)Enum.Parse(typeof(DocumentType), formtype);
+                   var userType = (UserType)Enum.Parse(typeof(UserType), usergrant);
 
-                  if (GlobalInfo.UserInfo.userType >= userType)
-                      appFolder.MenuItems.Add(new ApplicationMenuItem(itemName, nSpace, formType, userType));
-              });
+                   if (GlobalInfo.UserInfo.userType >= userType)
+                       appFolder.MenuItems.Add(new ApplicationMenuItem(itemName, nSpace, formType, userType));
+               });
            });
         }
 

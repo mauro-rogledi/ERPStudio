@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using ERPFramework.Data;
 using ERPFramework.DataGridViewControls;
 using ERPFramework.Forms;
+using System.Linq;
 
 namespace ERPFramework.Controls
 {
@@ -39,7 +40,7 @@ namespace ERPFramework.Controls
         protected IColumn rdrCodeColumn;
         protected IColumn rdrDescColumn;
         protected NameSpace rdrNameSpace;
-        protected IRadarParameters rdrParameters;
+        //protected IRadarParameters rdrParameters;
 
         abstract protected string DefineBrowseQuery(SqlProxyCommand sqlCmd, string findQuery);
 
@@ -332,10 +333,8 @@ namespace ERPFramework.Controls
             if (rdrCodeColumn != null)
                 Seed = dataGridView1.GetValue<string>(rowIndex, rdrCodeColumn);
 
-            if (RadarFormRowSelected != null && rowIndex >= 0)
-            {
-                RadarFormRowSelected(this, new RadarFormRowSelectedArgs(PrepareRadarParameters(dataGridView1[rowIndex])));
-            }
+            if (rowIndex >= 0)
+                RadarFormRowSelected?.Invoke(this, new RadarFormRowSelectedArgs(PrepareRadarParameters(dataGridView1[rowIndex])));
         }
 
         private void Requery()
@@ -421,34 +420,34 @@ namespace ERPFramework.Controls
 
     public interface IRadarParameters
     {
-        object this[int index] { get; }
+        object this[string index] { get; }
 
-        List<object> Params { get; set; }
+        Dictionary<string, object> Params { get; set; }
 
         string GetLockKey();
 
-        T GetValue<T>(int index);
+        T GetValue<T>(string index);
     }
 
     public class RadarParameters : IRadarParameters
     {
-        public object this[int index]
+        public object this[string index]
         {
             get { return Params[index]; }
         }
 
-        public List<object> Params { get; set; }
+        public Dictionary<string, object> Params { get; set; }
 
         public string GetLockKey()
         {
             var builder = new System.Text.StringBuilder();
-            for (int t = 0; t < Params.Count; t++)
-                builder.Append(Params[t].ToString() + "\t");
+
+            Params.Values.ToList().ForEach(v => builder.Append(v.ToString()+"\t"));
 
             return builder.ToString();
         }
 
-        public T GetValue<T>(int index)
+        public T GetValue<T>(string index)
         {
             return (T)Convert.ChangeType(Params[index], typeof(T));
         }

@@ -8,7 +8,7 @@ namespace ERPFramework.Data
     {
         public RadarCodesParam(string code)
         {
-            Params = new List<object>();
+            Params = new Dictionary<string, object>();
             Params.Add(code);
         }
     }

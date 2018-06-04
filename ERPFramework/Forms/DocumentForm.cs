@@ -1295,9 +1295,9 @@ namespace ERPFramework.Forms
     {
         public RadarDocumentParam(Table rdrTable, string code)
         {
-            Params = new List<object>();
+            Params = new Dictionary<string, object>();
             for (int t = 0; t < rdrTable.PrimaryKey.Length; t++)
-                Params.Add(rdrTable.PrimaryKey[t].Name);
+                Params.Add(nameof(code), rdrTable.PrimaryKey[t].Name);
         }
     }
 
