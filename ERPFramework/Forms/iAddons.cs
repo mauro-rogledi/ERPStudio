@@ -140,7 +140,7 @@ namespace ERPFramework.Forms
             return null;
         }
 
-        public virtual void SetParameters(Data.DBManager dbManager, IRadarParameters key, DBCollection collection)
+        public virtual void SetParameters(Data.DBManager dbManager, IRadarParameters key, DataAdapterProperties collection)
         {
         }
 

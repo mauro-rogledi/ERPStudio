@@ -38,7 +38,7 @@ namespace ERPFramework.CounterManager
             dgwValues.AutoGenerateColumns = false;
             dgwValues.DataSource = dbManager.SlaveBinding(EF_CounterValue.Name);
 
-            PrefixManager =  new EnumsManager<PrefixSuffixType>(cbbPreInit,"");
+            PrefixManager = new EnumsManager<PrefixSuffixType>(cbbPreInit, "");
             FiscalKeyManager = new EnumsManager<FiscalKey>(cbbFiscalKey, "");
             SuffixManager = new EnumsManager<PrefixSuffixType>(cbbSufInit, "");
         }
@@ -182,55 +182,39 @@ namespace ERPFramework.CounterManager
         {
             if (e.StatementType == StatementType.Insert)
             {
-                e.Row[EF_Counter.Year.Name] = GlobalInfo.CurrentDate.Year;
+                e.Row.SetValue<int>(EF_Counter.Year, GlobalInfo.CurrentDate.Year);
             }
             base.dAdapter_RowUpdating(sender, e);
         }
 
-        protected override string CreateMasterQuery(ref List<SqlProxyParameter> dParam)
+        protected override string CreateMasterQuery(SqlParametersCollection parameters)
         {
-            var qb = new QueryBuilder();
-
-            return qb.SelectAllFrom<EF_Counter>().
-                Where(EF_Counter.Year).IsEqualTo(dParam[0]).
-                And(EF_Counter.Type).IsEqualTo(dParam[1]).
-                Query;
+            return new QueryBuilder()
+                .SelectAllFrom<EF_Counter>()
+                .Where(EF_Counter.Year).IsEqualTo(parameters[EF_Counter.Year])
+                .And(EF_Counter.Type).IsEqualTo(parameters[EF_Counter.Type])
+                .Query;
         }
 
-        protected override List<SqlProxyParameter> CreateMasterParam()
+        protected override void CreateMasterParam(SqlParametersCollection parameters)
         {
-            List<SqlProxyParameter> PList = new List<SqlProxyParameter>();
+            parameters.Add(
+                EF_Counter.Year,
+                new SqlProxyParameter("@p1", EF_Counter.Year));
 
-            SqlProxyParameter nParam = new SqlProxyParameter("@p1", EF_Counter.Year);
-            nParam.Value = EF_Counter.Year.DefaultValue;
-            PList.Add(nParam);
-
-            SqlProxyParameter sParam = new SqlProxyParameter("@p2", EF_Counter.Type);
-            sParam.Value = EF_Counter.Type.DefaultValue;
-            PList.Add(sParam);
-            return PList;
+            parameters.Add(
+                EF_Counter.Type,
+                new SqlProxyParameter("@p2", EF_Counter.Type) );
         }
 
-        protected override void SetParameters(IRadarParameters key, DBCollection collection)
-        {
-            if (collection.Name == EF_Counter.Name)
-            {
-                collection.Parameter[0].Value = key[0];
-                collection.Parameter[1].Value = key[1];
-            }
-            else
-            {
-                collection.Parameter[0].Value = key[1];
-            }
-        }
 
-        protected override string CreateSlaveQuery(string name, List<SqlProxyParameter> dParam)
+        protected override string CreateSlaveQuery(string name, SqlParametersCollection parameters)
         {
             if (name == EF_CounterValue.Name)
             {
-                QueryBuilder qb = new QueryBuilder().
+                var qb = new QueryBuilder().
                        SelectAllFrom<EF_CounterValue>().
-                        Where(EF_CounterValue.Type).IsEqualTo(dParam[0]).
+                        Where(EF_CounterValue.Type).IsEqualTo(parameters[EF_CounterValue.Type]).
                         OrderBy(EF_CounterValue.Code);
 
                 return qb.Query;
@@ -239,18 +223,34 @@ namespace ERPFramework.CounterManager
             return "";
         }
 
-        protected override List<SqlProxyParameter> CreateSlaveParam(string name)
+        protected override Dictionary<string, SqlProxyParameter> CreateSlaveParam<T>(SqlParametersCollection parameters)
         {
-            if (name == EF_CounterValue.Name)
+            if (typeof(T) ==  typeof(EF_CounterValue))
             {
-                List<SqlProxyParameter> PList = new List<SqlProxyParameter>();
+                var PList = new Dictionary<string, SqlProxyParameter>();
 
-                SqlProxyParameter sParam = new SqlProxyParameter("@p2", EF_CounterValue.Code);
-                sParam.Value = EF_CounterValue.Code.DefaultValue;
-                PList.Add(sParam);
+                var sParam = new SqlProxyParameter("@p2", EF_CounterValue.Code)
+                {
+                    Value = EF_CounterValue.Code.DefaultValue
+                };
+                PList.Add(sParam.ParameterName, sParam);
+
                 return PList;
             }
             return null;
+        }
+
+        protected override void SetParameters(IRadarParameters key, DataAdapterProperties dataadapterproperties)
+        {
+            if (dataadapterproperties.Name == EF_Counter.Name)
+            {
+                dataadapterproperties.Parameters[EF_Counter.Year].Value = key[EF_Counter.Year];
+                dataadapterproperties.Parameters[EF_Counter.Type].Value = key[EF_Counter.Type];
+            }
+            else
+            {
+                dataadapterproperties.Parameters[EF_CounterValue.Code].Value = key[EF_CounterValue.Code];
+            }
         }
     }
 

@@ -73,7 +73,7 @@ namespace ERPManager.Forms
             return PList;
         }
 
-        protected override void SetParameters(IRadarParameters key, DBCollection collection)
+        protected override void SetParameters(IRadarParameters key, DataAdapterProperties collection)
         {
             collection.Parameter[0].Value = key.Params[0];
         }

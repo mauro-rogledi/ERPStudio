@@ -421,6 +421,7 @@ namespace ERPFramework.Controls
     public interface IRadarParameters
     {
         object this[string index] { get; }
+        object this[IColumn col] { get; }
 
         Dictionary<string, object> Params { get; set; }
 
@@ -434,6 +435,11 @@ namespace ERPFramework.Controls
         public object this[string index]
         {
             get { return Params[index]; }
+        }
+
+        public object this[IColumn col]
+        {
+            get { return Params[col.Name]; }
         }
 
         public Dictionary<string, object> Params { get; set; }

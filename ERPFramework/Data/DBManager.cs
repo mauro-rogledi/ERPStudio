@@ -20,64 +20,62 @@ namespace ERPFramework.Data
 {
     #region DBCollection
 
-    public class DBCollection : object
+    public class DataAdapterProperties : object
     {
         private string name;
 
-        private SqlProxyDataAdapter dAdapter;
-        private List<SqlProxyParameter> dParam;
+        public SqlParametersCollection Parameters { get; set; }
 
-        public SqlProxyDataAdapter DataAdapter { get { return dAdapter; } }
-
-        public SqlProxyParameter[] Parameter { get { return dParam.ToArray(); } }
+        public SqlProxyDataAdapter DataAdapter { get; private set; }
 
         public string Name { get { return name; } }
 
-        public List<DBCollection> List = new List<DBCollection>();
+
+        public List<DataAdapterProperties> SlaveDataAdapters = new List<DataAdapterProperties>();
 
         public bool HasToCreateCommand = true;
 
-        public DBCollection()
+        public DataAdapterProperties()
         {
         }
 
-        public DBCollection(string myMaster, SqlProxyDataAdapter myAdapter, List<SqlProxyParameter> myParam)
+        public DataAdapterProperties(string myMaster, SqlProxyDataAdapter myAdapter, SqlParametersCollection myParam)
         {
-            dAdapter = myAdapter;
-            dParam = myParam;
+            DataAdapter = myAdapter;
+            Parameters = myParam;
             name = myMaster;
         }
 
-        public void AddMaster(string myMaster, SqlProxyDataAdapter myAdapter, List<SqlProxyParameter> myParam)
+        public void AddMaster(string myMaster, SqlProxyDataAdapter myAdapter, SqlParametersCollection myParam)
         {
-            dAdapter = myAdapter;
-            dParam = myParam;
+            DataAdapter = myAdapter;
+            Parameters = myParam;
             name = myMaster;
         }
 
-        public void AddSlave(string mySlave, SqlProxyDataAdapter myAdapter, List<SqlProxyParameter> myParam)
+        public void AddSlave(string mySlave, SqlProxyDataAdapter myAdapter, SqlParametersCollection myParam)
         {
-            var myDbCollection = new DBCollection(mySlave, myAdapter, myParam);
-            List.Add(myDbCollection);
+            var dataAdapterProperties = new DataAdapterProperties(mySlave, myAdapter, myParam);
+            SlaveDataAdapters.Add(dataAdapterProperties);
         }
 
-        public void AddSlave(string mySlaveSlavable, string mySlave, SqlProxyDataAdapter myAdapter, List<SqlProxyParameter> myParam)
+        public void AddSlave(string mySlaveSlavable, string mySlave, SqlProxyDataAdapter myAdapter, SqlParametersCollection myParam)
         {
-            var myDbCollection = new DBCollection(mySlave, myAdapter, myParam);
-            RecursiveAdd(mySlaveSlavable, myDbCollection, this.List);
+            var myDbCollection = new DataAdapterProperties(mySlave, myAdapter, myParam);
+            RecursiveAdd(mySlaveSlavable, myDbCollection, this.SlaveDataAdapters);
         }
 
-        private void RecursiveAdd(string mySlaveSlavable, DBCollection myDbCollection, IList myList)
+        private void RecursiveAdd(string mySlaveSlavable, DataAdapterProperties myDbCollection, IList myList)
         {
-            foreach (DBCollection collection in myList)
+            foreach (DataAdapterProperties collection in myList)
             {
                 if (collection.name == mySlaveSlavable)
                 {
-                    collection.List.Add(myDbCollection);
+                    collection.SlaveDataAdapters.Add(myDbCollection);
                     break;
                 }
-                if (collection.List.Count > 0)
-                    RecursiveAdd(mySlaveSlavable, myDbCollection, collection.List);
+                if (collection.SlaveDataAdapters.Count > 0)
+                    RecursiveAdd(mySlaveSlavable, myDbCollection, collection.SlaveDataAdapters);
             }
         }
     }
@@ -100,7 +98,7 @@ namespace ERPFramework.Data
 
         #region private variables
 
-        private DBCollection collectionDB;
+        private DataAdapterProperties collectionDB;
         public ProviderType providerType;
 
         private BindingSource masterBinding;
@@ -184,19 +182,18 @@ namespace ERPFramework.Data
 
         #region Protected virtual method
 
-        protected abstract string CreateMasterQuery(ref List<SqlProxyParameter> dParam);
+        protected abstract string CreateMasterQuery(SqlParametersCollection dParam);
 
-        protected virtual string CreateSlaveQuery(string name, List<SqlProxyParameter> dParam)
+        protected virtual string CreateSlaveQuery(string name, SqlParametersCollection dParam)
         {
             return string.Empty;
         }
 
-        protected virtual Dictionary<string, SqlProxyParameter> CreateMasterParam()
+        protected virtual void CreateMasterParam(SqlParametersCollection parameters)
         {
-            return null;
         }
 
-        protected virtual Dictionary<string, SqlProxyParameter> CreateSlaveParam(string name)
+        protected virtual Dictionary<string, SqlProxyParameter> CreateSlaveParam<T>()
         {
             return null;
         }
@@ -291,7 +288,7 @@ namespace ERPFramework.Data
             {
                 Locale = System.Globalization.CultureInfo.InvariantCulture
             };
-            collectionDB = new DBCollection();
+            collectionDB = new DataAdapterProperties();
             slaveBindingCollection = new BindingCollection();
             try
             {
@@ -422,6 +419,36 @@ namespace ERPFramework.Data
 
         #region Add Master & Slave
 
+        public DBManager MasterTable<T>(bool createCommand = true)
+        {
+            AddMaster<T>(createCommand);
+            return this;
+        }
+
+        public DBManager SlaveTable<T>(bool createCommand = false)
+        {
+            AddSlave<T>(createCommand);
+            return this;
+        }
+
+        public DBManager Relation(string name, IColumn master, IColumn slave, bool createcommand = false)
+        {
+            AddRelation(name, master, slave, createcommand);
+            return this;
+        }
+
+        public DBManager Relation(string name, IColumn[] master, IColumn[] slave, bool createcommand = false)
+        {
+            AddRelation(name, master, slave, createcommand);
+            return this;
+        }
+
+        public DBManager Radar<T>(params object[] list)
+        {
+            AttachRadar<T>(list);
+            return this;
+        }
+
         /// <summary>
         /// Add a master Table
         /// </summary>
@@ -434,13 +461,13 @@ namespace ERPFramework.Data
             System.Diagnostics.Debug.Assert(typeof(T).BaseType == typeof(Table));
             var tableName = typeof(T).GetField("Name").GetValue(null).ToString();
 
-            ForeignKey = typeof(T).GetField("ForeignKey").GetValue(null) as IColumn;
+            ForeignKey = typeof(T).GetField(nameof(ForeignKey)).GetValue(null) as IColumn;
 
-            Dictionary<string, SqlProxyParameter> dParam = null;
-            var dCommand = CreateMasterCommand(ref dParam);
+            SqlParametersCollection sqlParam = null;
+            var dCommand = CreateMasterCommand(sqlParam);
 
             var dAdapter = CreateDataAdapter(tableName, dCommand);
-            collectionDB.AddMaster(tableName, dAdapter, dParam);
+            collectionDB.AddMaster(tableName, dAdapter, sqlParam);
             AddMasterBinding(tableName);
 
             dAdapter.RowUpdated += dAdapter_MasterRowUpdated;
@@ -456,14 +483,14 @@ namespace ERPFramework.Data
             throw new NotImplementedException();
         }
 
-        protected virtual SqlProxyCommand CreateMasterCommand(ref Dictionary<string, SqlProxyParameter> dParam)
+        protected virtual SqlProxyCommand CreateMasterCommand(SqlParametersCollection parameters)
         {
-            dParam = CreateMasterParam();
-            var sqlQuery = CreateMasterQuery(ref dParam);
+            CreateMasterParam(parameters);
+            var sqlQuery = CreateMasterQuery(parameters);
 
             var dCommand = new SqlProxyCommand(sqlQuery, DBConnection);
-            if (dParam != null)
-                dCommand.Parameters.AddRange(dParam);
+            if (parameters != null)
+                dCommand.Parameters.AddRange(parameters);
 
             return dCommand;
         }
@@ -503,7 +530,7 @@ namespace ERPFramework.Data
 
             if (collectionDB == null || Dataset == null) return null;
 
-            var dParam = CreateSlaveParam(tableName);
+            var dParam = CreateSlaveParam<T>();
             var sqlQuery = CreateSlaveQuery(tableName, dParam);
 
             // AddOn management
@@ -815,7 +842,7 @@ namespace ERPFramework.Data
 
             FindRecord(lastKey);
             Dataset.Tables[collectionDB.Name].Rows[masterBinding.Position].Delete();
-            DeleteRecursive(collectionDB.List);
+            DeleteRecursive(collectionDB.SlaveDataAdapters);
 
             var ds2 = Dataset.GetChanges();
             if (ds2 != null)
@@ -829,18 +856,18 @@ namespace ERPFramework.Data
             return OnAfterDelete();
         }
 
-        private void DeleteRecursive(List<DBCollection> list)
+        private void DeleteRecursive(List<DataAdapterProperties> list)
         {
-            foreach (DBCollection collection in list)
+            foreach (DataAdapterProperties collection in list)
             {
                 for (int t = Dataset.Tables[collection.Name].Rows.Count - 1; t >= 0; t--)
                     Dataset.Tables[collection.Name].Rows[t].Delete();
 
-                DeleteRecursive(collection.List);
+                DeleteRecursive(collection.SlaveDataAdapters);
             }
         }
 
-        private void UpdateRecursiveDataAdapter(DataSet dataSet, DBCollection collection)
+        private void UpdateRecursiveDataAdapter(DataSet dataSet, DataAdapterProperties collection)
         {
             try
             {
@@ -859,11 +886,11 @@ namespace ERPFramework.Data
                 return;
             }
 
-            foreach (DBCollection slavecollection in collection.List)
+            foreach (DataAdapterProperties slavecollection in collection.SlaveDataAdapters)
                 UpdateRecursiveDataAdapter(dataSet, slavecollection);
         }
 
-        private bool FindRecursiveDataAdapter(IRadarParameters key, DBCollection collection)
+        private bool FindRecursiveDataAdapter(IRadarParameters key, DataAdapterProperties collection)
         {
             bool found = false;
             try
@@ -889,7 +916,7 @@ namespace ERPFramework.Data
             }
 
             if (found)
-                foreach (DBCollection slavecollection in collection.List)
+                foreach (DataAdapterProperties slavecollection in collection.SlaveDataAdapters)
                     FindRecursiveDataAdapter(key, slavecollection);
 
             return found;
@@ -899,7 +926,7 @@ namespace ERPFramework.Data
         {
         }
 
-        protected abstract void SetParameters(IRadarParameters key, DBCollection collection);
+        protected abstract void SetParameters(IRadarParameters key, DataAdapterProperties collection);
 
         private void UpdateFiscalControl(DBOperation operation)
         {

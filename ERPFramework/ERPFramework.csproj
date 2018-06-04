@@ -439,6 +439,7 @@
     <Compile Include="Login\ChgPwdForm.Designer.cs">
       <DependentUpon>ChgPwdForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Data\SqlParametersCollection.cs" />
     <Compile Include="ModulesHelper\DllManager.cs" />
     <Compile Include="ModulesHelper\ModuleManager.cs" />
     <Compile Include="ModulesHelper\OpenDocument.cs" />

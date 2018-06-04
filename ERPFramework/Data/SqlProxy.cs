@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace ERPFramework.Data
 {
@@ -395,6 +396,14 @@ namespace ERPFramework.Data
         {
             var dbType = ConvertColumnType.GetDBType(column.ColType);
             dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", parameterName, dbType);
+            dbParameter.Value = column.DefaultValue;
+        }
+
+        public SqlProxyParameter(string parameterName, IColumn column, object value)
+        {
+            var dbType = ConvertColumnType.GetDBType(column.ColType);
+            dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", parameterName, dbType);
+            dbParameter.Value = value;
         }
 
         public SqlProxyParameter(string parameterName, DbType dbType)
@@ -713,7 +722,7 @@ namespace ERPFramework.Data
             Parameters = ProxyProviderLoader.CreateInstance<ISqlProviderParameterCollection>("SqlProvider.SqlProviderParameterCollection", command);
         }
 
-        public object this[string parameterName] { get => Parameters[parameterName]; set => Parameters[parameterName] = value; }
+        public ISqlProviderParameter this[string parameterName] { get => Parameters[parameterName] as ISqlProviderParameter; set => Parameters[parameterName] = value; }
         public object this[int index] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public IDbCommand Command => Parameters.Command;
@@ -734,10 +743,14 @@ namespace ERPFramework.Data
 
         public void AddRange(SqlProxyParameter[] param) => Parameters.AddRange(param);
 
+        public void AddRange(SqlParametersCollection parameters)
+        {
+            parameters.Values.ToList().ForEach(p => Parameters.Add(p as ISqlProviderParameter) );
+        }
+
         public void AddRange(System.Collections.Generic.List<SqlProxyParameter> parameters)
         {
-            foreach (var param in parameters)
-                Parameters.Add(param as ISqlProviderParameter);
+            parameters.ForEach(p => Parameters.Add(p as ISqlProviderParameter));
         }
 
         public void Clear() => Parameters.Clear();

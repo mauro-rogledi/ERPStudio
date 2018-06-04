@@ -36,16 +36,17 @@ namespace ERPFramework.CounterManager
 
         protected override void OnInitializeData()
         {
-            dbManager = new dbmanagerCodes("codesForm", this);
-            dbManager.AttachRadar<RadarCodes>();
-            dbManager.AddMaster<EF_Codes>();
-            dbManager.AddSlave<EF_CodeSegment>();
-            dbManager.AddRelation("CodeSegment", EF_Codes.CodeType, EF_CodeSegment.CodeType);
+            dbManager = new dbmanagerCodes(nameof(codesForm), this)
+                .MasterTable<EF_Codes>()
+                .SlaveTable<EF_CodeSegment>()
+                .Relation("CodeSegment", EF_Codes.CodeType, EF_CodeSegment.CodeType)
+                .Radar<RadarCodes>();
+
 
             dgwSegments.AutoGenerateColumns = false;
             dgwSegments.DataSource = dbManager.SlaveBinding("CodeSegment");
 
-            eSegmentType = new EnumsManager<InputType>(sgmCodeType as MetroDataGridViewComboBoxColumn, "");
+            eSegmentType = new EnumsManager<InputType>(sgmCodeType, "");
             //sgmCodeType.Items.AddRange(1, 2, 3);
 
 
@@ -128,7 +129,7 @@ namespace ERPFramework.CounterManager
 
     internal class dbmanagerCodes : ERPFramework.Data.DBManager
     {
-        public dbmanagerCodes(string name,DocumentForm document)
+        public dbmanagerCodes(string name, DocumentForm document)
             : base(name, document)
         { }
 
@@ -146,20 +147,11 @@ namespace ERPFramework.CounterManager
             base.dAdapter_RowUpdating(sender, e);
         }
 
-        protected override string CreateMasterQuery(ref List<SqlProxyParameter> dParam)
-        {
-            QueryBuilder qb = new QueryBuilder();
-            qb.SelectAllFrom<EF_Codes>();
-            qb.Where(EF_Codes.CodeType).IsEqualTo(dParam[0]);
-
-            return qb.Query;
-        }
-
-        protected override Dictionary<string, SqlProxyParameter> CreateMasterParam()
+        protected override SqlParametersCollection CreateMasterParam(SqlParametersCollection parameters)
         {
             Dictionary<string, SqlProxyParameter> PList = new Dictionary<string, SqlProxyParameter>();
 
-            SqlProxyParameter nParam = new SqlProxyParameter("@p1", EF_Codes.CodeType)
+            var nParam = new SqlProxyParameter("@p1", EF_Codes.CodeType)
             {
                 Value = 0
             };
@@ -168,7 +160,18 @@ namespace ERPFramework.CounterManager
             return PList;
         }
 
-        protected override void SetParameters(IRadarParameters key, DBCollection collection)
+        protected override string CreateMasterQuery(SqlParametersCollection dParam)
+        {
+            return new QueryBuilder()
+                .SelectAllFrom<EF_Codes>()
+                .Where(EF_Codes.CodeType).IsEqualTo(dParam[0]);
+
+            return qb.Query;
+        }
+
+
+
+        protected override void SetParameters(IRadarParameters key, DataAdapterProperties collection)
         {
             collection.Parameter[0].Value = key[0];
         }
@@ -177,7 +180,7 @@ namespace ERPFramework.CounterManager
         {
             if (name == EF_CodeSegment.Name)
             {
-                QueryBuilder qb = new QueryBuilder().
+                var qb = new QueryBuilder().
                        SelectAllFrom<EF_CodeSegment>().
                         Where(EF_CodeSegment.CodeType).IsEqualTo(dParam[0]).
                         OrderBy(EF_CodeSegment.Segment);
@@ -188,15 +191,17 @@ namespace ERPFramework.CounterManager
             return "";
         }
 
-        protected override List<SqlProxyParameter> CreateSlaveParam(string name)
+        protected override Dictionary<string, SqlProxyParameter> CreateSlaveParam(string name)
         {
             if (name == EF_CodeSegment.Name)
             {
-                List<SqlProxyParameter> PList = new List<SqlProxyParameter>();
+                var PList = new Dictionary<string, SqlProxyParameter>();
 
-                SqlProxyParameter sParam = new SqlProxyParameter("@p2", EF_CodeSegment.CodeType);
-                sParam.Value = 0;
-                PList.Add(sParam);
+                var sParam = new SqlProxyParameter("@p2", EF_CodeSegment.CodeType)
+                {
+                    Value = 0
+                };
+                PList.Add(sParam.ParameterName, sParam);
                 return PList;
             }
             return null;
