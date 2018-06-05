@@ -20,11 +20,25 @@ namespace ERPFramework.Data
 {
     #region DBCollection
 
+    public static class ExtendType
+    {
+        public static string Tablename(this Type value)
+        {
+            return value.GetField("Name").GetValue(null).ToString();
+        }
+
+        public static T FieldValue<T>(this Type value, string field)
+        {
+            return (T)value.GetType().GetField(field).GetValue(null);
+        }
+
+    }
+
     public class DataAdapterProperties : object
     {
         private string name;
 
-        public SqlParametersCollection Parameters { get; set; }
+        public SqlParametersCollection Parameters { get; set; } = new SqlParametersCollection();
 
         public SqlProxyDataAdapter DataAdapter { get; private set; }
 
@@ -98,8 +112,7 @@ namespace ERPFramework.Data
 
         #region private variables
 
-        private DataAdapterProperties collectionDB;
-        public ProviderType providerType;
+        private DataAdapterProperties masterDataAdapterProperties;
 
         private BindingSource masterBinding;
 
@@ -182,9 +195,9 @@ namespace ERPFramework.Data
 
         #region Protected virtual method
 
-        protected abstract string CreateMasterQuery(SqlParametersCollection dParam);
+        protected abstract string CreateMasterQuery(SqlParametersCollection parameters);
 
-        protected virtual string CreateSlaveQuery(string name, SqlParametersCollection dParam)
+        protected virtual string CreateSlaveQuery<T>(SqlParametersCollection parameters)
         {
             return string.Empty;
         }
@@ -193,14 +206,12 @@ namespace ERPFramework.Data
         {
         }
 
-        protected virtual Dictionary<string, SqlProxyParameter> CreateSlaveParam<T>()
+        protected virtual void CreateSlaveParam<T>(SqlParametersCollection parameters)
         {
-            return null;
         }
 
-        protected virtual Dictionary<string, SqlProxyParameter> CreateSlaveParam(string name, string slavename)
+        protected virtual void CreateSlaveParam<T,S>(SqlParametersCollection parameters)
         {
-            return null;
         }
 
         protected virtual void dAdapter_MasterRowUpdating(object sender, RowUpdatingEventArgs e)
@@ -279,7 +290,6 @@ namespace ERPFramework.Data
         ///
         protected DBManager(string name, IDocument document) // ProviderType providerType, string conString)
         {
-            this.providerType = GlobalInfo.LoginInfo.ProviderType;
             this.myDocument = document;
             globalPref = new PreferencesManager<GlobalPreferences>("", null).ReadPreference();
 
@@ -288,7 +298,7 @@ namespace ERPFramework.Data
             {
                 Locale = System.Globalization.CultureInfo.InvariantCulture
             };
-            collectionDB = new DataAdapterProperties();
+            masterDataAdapterProperties = new DataAdapterProperties();
             slaveBindingCollection = new BindingCollection();
             try
             {
@@ -305,6 +315,7 @@ namespace ERPFramework.Data
         {
             if (DBConnection != null && DBConnection.State == ConnectionState.Open)
                 DBConnection.Close();
+
             GC.SuppressFinalize(this);
         }
 
@@ -456,25 +467,20 @@ namespace ERPFramework.Data
         /// <returns></returns>
         public SqlProxyDataAdapter AddMaster<T>(bool createCommand = true)
         {
-            if (collectionDB == null || Dataset == null) return null;
-
             System.Diagnostics.Debug.Assert(typeof(T).BaseType == typeof(Table));
-            var tableName = typeof(T).GetField("Name").GetValue(null).ToString();
+            var tableName = typeof(T).Tablename();
+            ForeignKey = typeof(T).FieldValue<IColumn>(nameof(ForeignKey));
 
-            ForeignKey = typeof(T).GetField(nameof(ForeignKey)).GetValue(null) as IColumn;
+            masterDataAdapterProperties = new DataAdapterProperties();
 
-            SqlParametersCollection sqlParam = null;
-            var dCommand = CreateMasterCommand(sqlParam);
+            var (dCommand, parameters) = CreateMasterCommand();
 
             var dAdapter = CreateDataAdapter(tableName, dCommand);
-            collectionDB.AddMaster(tableName, dAdapter, sqlParam);
+            masterDataAdapterProperties.AddMaster(tableName, dAdapter, parameters);
             AddMasterBinding(tableName);
 
             dAdapter.RowUpdated += dAdapter_MasterRowUpdated;
-            //dAdapter.RowUpdated += new SqlABRowUpdatedEventHandler(dAdapter_MasterRowUpdated);
-            //dAdapter.RowUpdating += new SqlABRowUpdatingEventHandler(dAdapter_MasterRowUpdating);
-
-            collectionDB.HasToCreateCommand = createCommand;
+            masterDataAdapterProperties.HasToCreateCommand = createCommand;
             return dAdapter;
         }
 
@@ -483,16 +489,17 @@ namespace ERPFramework.Data
             throw new NotImplementedException();
         }
 
-        protected virtual SqlProxyCommand CreateMasterCommand(SqlParametersCollection parameters)
+        protected virtual (SqlProxyCommand, SqlParametersCollection) CreateMasterCommand()
         {
-            CreateMasterParam(parameters);
-            var sqlQuery = CreateMasterQuery(parameters);
+            var parameters = new SqlParametersCollection();
 
-            var dCommand = new SqlProxyCommand(sqlQuery, DBConnection);
+            CreateMasterParam(parameters);
+
+            var dCommand = new SqlProxyCommand(CreateMasterQuery(parameters), DBConnection);
             if (parameters != null)
                 dCommand.Parameters.AddRange(parameters);
 
-            return dCommand;
+            return (dCommand, parameters);
         }
 
         //private void AddCurrencyManager(Form myform, DataTable myMasterTable)
@@ -510,12 +517,6 @@ namespace ERPFramework.Data
             {
                 AllowNew = true
             };
-            masterBinding.BindingComplete += new BindingCompleteEventHandler(masterBinding_BindingComplete);
-        }
-
-        private void masterBinding_BindingComplete(object sender, BindingCompleteEventArgs e)
-        {
-            MessageBox.Show(e.BindingCompleteState.ToString());
         }
 
         /// <summary>
@@ -526,43 +527,44 @@ namespace ERPFramework.Data
         public SqlProxyDataAdapter AddSlave<T>(bool createCommand = true)
         {
             System.Diagnostics.Debug.Assert(typeof(T).BaseType == typeof(Table));
-            var tableName = typeof(T).GetField("Name").GetValue(null).ToString();
+            var tableName = typeof(T).Tablename();
 
-            if (collectionDB == null || Dataset == null) return null;
+            if (masterDataAdapterProperties == null || Dataset == null) return null;
+            var parameters = new SqlParametersCollection();
 
-            var dParam = CreateSlaveParam<T>();
-            var sqlQuery = CreateSlaveQuery(tableName, dParam);
+            CreateSlaveParam<T>(parameters);
+            var sqlQuery = CreateSlaveQuery<T>(parameters);
 
             // AddOn management
             if (sqlQuery == string.Empty && myDocument.AddonList != null)
                 foreach (Addon scr in myDocument.AddonList)
                 {
-                    sqlQuery = scr.CreateSlaveQuery(tableName, dParam);
+                    sqlQuery = scr.CreateSlaveQuery(tableName, parameters);
                     if (sqlQuery != string.Empty)
                         break;
                 }
 
             var dCommand = new SqlProxyCommand(sqlQuery, DBConnection);
 
-            if (dParam != null)
-                dCommand.Parameters.AddRange(dParam);
+            if (parameters.Count > 0)
+                dCommand.Parameters.AddRange(parameters);
 
             // AddOn management
-            if ((dParam == null || dParam.Count == 0) && myDocument.AddonList != null)
+            if ((parameters.Count == 0) && myDocument.AddonList != null)
                 foreach (Addon scr in myDocument.AddonList)
                 {
-                    dParam = scr.CreateSlaveParam(tableName);
-                    if (dParam == null || dParam.Count == 0)
+                    scr.CreateSlaveParam(tableName, parameters);
+                    if (parameters.Count == 0)
                         continue;
-                    dCommand.Parameters.AddRange(dParam);
+                    dCommand.Parameters.AddRange(parameters);
                     break;
                 }
 
             var dAdapter = CreateDataAdapter(tableName, dCommand);
-            collectionDB.AddSlave(tableName, dAdapter, dParam);
+            masterDataAdapterProperties.AddSlave(tableName, dAdapter, parameters);
 
             dAdapter.RowUpdating += dAdapter_RowUpdating;
-            collectionDB.HasToCreateCommand = createCommand;
+            masterDataAdapterProperties.HasToCreateCommand = createCommand;
             return dAdapter;
         }
 
@@ -572,27 +574,27 @@ namespace ERPFramework.Data
         /// <param name="slavename"></param>
         /// <param name="createCommand"></param>
         /// <returns></returns>
-        public SqlProxyDataAdapter AddSlave<T>(string slavename, bool createCommand = true)
-        {
-            if (collectionDB == null || Dataset == null) return null;
+        //public SqlProxyDataAdapter AddSlave<T>(string slavename, bool createCommand = true)
+        //{
+        //    if (masterDataAdapterProperties == null || Dataset == null) return null;
 
-            System.Diagnostics.Debug.Assert(typeof(T).BaseType == typeof(Table));
-            var tableName = typeof(T).GetField("Name").GetValue(null).ToString();
+        //    System.Diagnostics.Debug.Assert(typeof(T).BaseType == typeof(Table));
+        //    var tableName = typeof(T).GetField("Name").GetValue(null).ToString();
 
-            var dParam = CreateSlaveParam(slavename);
+        //    var dParam = CreateSlaveParam(slavename);
 
-            var sqlQuery = CreateSlaveQuery(tableName, dParam);
-            var dCommand = new SqlProxyCommand(sqlQuery, DBConnection);
+        //    var sqlQuery = CreateSlaveQuery(tableName, dParam);
+        //    var dCommand = new SqlProxyCommand(sqlQuery, DBConnection);
 
-            if (dParam != null)
-                dCommand.Parameters.AddRange(dParam);
+        //    if (dParam != null)
+        //        dCommand.Parameters.AddRange(dParam);
 
-            var dAdapter = CreateDataAdapter(tableName, dCommand);
-            collectionDB.AddSlave(slavename, tableName, dAdapter, dParam);
+        //    var dAdapter = CreateDataAdapter(tableName, dCommand);
+        //    masterDataAdapterProperties.AddSlave(slavename, tableName, dAdapter, dParam);
 
-            collectionDB.HasToCreateCommand = createCommand;
-            return dAdapter;
-        }
+        //    masterDataAdapterProperties.HasToCreateCommand = createCommand;
+        //    return dAdapter;
+        //}
 
         public void AddSlaveBinding(string tableName)
         {
@@ -657,7 +659,7 @@ namespace ERPFramework.Data
             {
                 lastKey = key;
                 Dataset.Clear();
-                return FindRecursiveDataAdapter(key, collectionDB);
+                return FindRecursiveDataAdapter(key, masterDataAdapterProperties);
             }
             return false;
         }
@@ -793,7 +795,7 @@ namespace ERPFramework.Data
 
         public bool Save()
         {
-            if (masterBinding == null || Dataset == null || collectionDB == null) return false;
+            if (masterBinding == null || Dataset == null || masterDataAdapterProperties == null) return false;
             if (!OnBeforeSave()) return false;
             try
             {
@@ -804,7 +806,7 @@ namespace ERPFramework.Data
                     if (ds2.HasChanges())
                     {
                         Dataset.AcceptChanges();
-                        UpdateRecursiveDataAdapter(ds2, collectionDB);
+                        UpdateRecursiveDataAdapter(ds2, masterDataAdapterProperties);
                     }
                 }
             }
@@ -834,22 +836,22 @@ namespace ERPFramework.Data
 
         public bool Delete()
         {
-            if (Dataset == null || collectionDB == null) return false;
+            if (Dataset == null || masterDataAdapterProperties == null) return false;
             if (!OnBeforeDelete())
                 return false;
 
             UpdateFiscalControl(DBOperation.Delete);
 
             FindRecord(lastKey);
-            Dataset.Tables[collectionDB.Name].Rows[masterBinding.Position].Delete();
-            DeleteRecursive(collectionDB.SlaveDataAdapters);
+            Dataset.Tables[masterDataAdapterProperties.Name].Rows[masterBinding.Position].Delete();
+            DeleteRecursive(masterDataAdapterProperties.SlaveDataAdapters);
 
             var ds2 = Dataset.GetChanges();
             if (ds2 != null)
             {
                 // Visto che esiste il delete recursivo, devo solo cancellare la testa
-                collectionDB.DataAdapter.Update(Dataset, collectionDB.Name);
-                UpdateRecursiveDataAdapter(Dataset, collectionDB);
+                masterDataAdapterProperties.DataAdapter.Update(Dataset, masterDataAdapterProperties.Name);
+                UpdateRecursiveDataAdapter(Dataset, masterDataAdapterProperties);
                 Dataset.AcceptChanges();
             }
             slaveBindingCollection.AllowNew = false;

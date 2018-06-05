@@ -204,13 +204,13 @@ namespace ERPFramework.CounterManager
 
             parameters.Add(
                 EF_Counter.Type,
-                new SqlProxyParameter("@p2", EF_Counter.Type) );
+                new SqlProxyParameter("@p2", EF_Counter.Type));
         }
 
 
-        protected override string CreateSlaveQuery(string name, SqlParametersCollection parameters)
+        protected override string CreateSlaveQuery<T>(SqlParametersCollection parameters)
         {
-            if (name == EF_CounterValue.Name)
+            if (typeof(T) == typeof(EF_CounterValue))
             {
                 var qb = new QueryBuilder().
                        SelectAllFrom<EF_CounterValue>().
@@ -223,21 +223,14 @@ namespace ERPFramework.CounterManager
             return "";
         }
 
-        protected override Dictionary<string, SqlProxyParameter> CreateSlaveParam<T>(SqlParametersCollection parameters)
+        protected override void CreateSlaveParam<T>(SqlParametersCollection parameters)
         {
-            if (typeof(T) ==  typeof(EF_CounterValue))
+            if (typeof(T) == typeof(EF_CounterValue))
             {
-                var PList = new Dictionary<string, SqlProxyParameter>();
-
-                var sParam = new SqlProxyParameter("@p2", EF_CounterValue.Code)
-                {
-                    Value = EF_CounterValue.Code.DefaultValue
-                };
-                PList.Add(sParam.ParameterName, sParam);
-
-                return PList;
+                parameters.Add(
+                    EF_CounterValue.Code,
+                    new SqlProxyParameter("@p2", EF_CounterValue.Code));
             }
-            return null;
         }
 
         protected override void SetParameters(IRadarParameters key, DataAdapterProperties dataadapterproperties)

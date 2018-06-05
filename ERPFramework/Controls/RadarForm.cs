@@ -40,13 +40,15 @@ namespace ERPFramework.Controls
         protected IColumn rdrCodeColumn;
         protected IColumn rdrDescColumn;
         protected NameSpace rdrNameSpace;
-        //protected IRadarParameters rdrParameters;
+        protected SqlParametersCollection rdrParameters;
 
         abstract protected string DefineBrowseQuery(SqlProxyCommand sqlCmd, string findQuery);
 
         abstract protected bool DefineFindQuery(SqlProxyCommand sqlCmd);
 
-        abstract protected void PrepareFindQuery(IRadarParameters param);
+        abstract protected void PrepareFindQuery(IRadarParameters parameter);
+
+        abstract protected void PrepareFindParameters();
 
         abstract protected IRadarParameters PrepareRadarParameters(DataGridViewRow row);
 
@@ -98,6 +100,7 @@ namespace ERPFramework.Controls
             InitializeComponent();
             dataGridView1.AutoGenerateColumns = false;
             dataGridView1.ColumnHeadersDefaultCellStyle.Font =  new System.Drawing.Font("Segoe UI", 11);
+            rdrParameters = new SqlParametersCollection();
         }
 
         protected override void OnLoad(EventArgs e)
@@ -217,6 +220,7 @@ namespace ERPFramework.Controls
             if (rdrDataSet != null) return;
 
             CreateConnection();
+            PrepareFindParameters();
             DefineFindQuery(rdrFindSqlCommand);
         }
 
@@ -442,7 +446,12 @@ namespace ERPFramework.Controls
             get { return Params[col.Name]; }
         }
 
-        public Dictionary<string, object> Params { get; set; }
+        public void Add(IColumn col, object obj)
+        {
+            Params.Add(col.Name, obj);
+        }
+
+        public Dictionary<string, object> Params { get; set; } = new Dictionary<string, object>();
 
         public string GetLockKey()
         {

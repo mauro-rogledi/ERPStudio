@@ -135,16 +135,15 @@ namespace ERPFramework.Forms
             return true;
         }
 
-        public virtual List<SqlProxyParameter> CreateSlaveParam(string name)
+        public virtual void CreateSlaveParam(string name, SqlParametersCollection parameters)
         {
-            return null;
         }
 
         public virtual void SetParameters(Data.DBManager dbManager, IRadarParameters key, DataAdapterProperties collection)
         {
         }
 
-        public virtual string CreateSlaveQuery(string name, List<SqlProxyParameter> dParam)
+        public virtual string CreateSlaveQuery(string name, SqlParametersCollection parameters)
         {
             return string.Empty;
         }

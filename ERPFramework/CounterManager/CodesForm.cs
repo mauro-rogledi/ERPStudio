@@ -147,42 +147,38 @@ namespace ERPFramework.CounterManager
             base.dAdapter_RowUpdating(sender, e);
         }
 
-        protected override SqlParametersCollection CreateMasterParam(SqlParametersCollection parameters)
+        protected override void CreateMasterParam(SqlParametersCollection parameters)
         {
-            Dictionary<string, SqlProxyParameter> PList = new Dictionary<string, SqlProxyParameter>();
+            parameters.Add(
+                EF_Codes.CodeType,
+                new SqlProxyParameter("@p1", EF_Codes.CodeType)
+                );
 
-            var nParam = new SqlProxyParameter("@p1", EF_Codes.CodeType)
-            {
-                Value = 0
-            };
-            PList.Add(nParam.ParameterName, nParam);
-
-            return PList;
         }
 
-        protected override string CreateMasterQuery(SqlParametersCollection dParam)
+        protected override string CreateMasterQuery(SqlParametersCollection parameters)
         {
             return new QueryBuilder()
                 .SelectAllFrom<EF_Codes>()
-                .Where(EF_Codes.CodeType).IsEqualTo(dParam[0]);
+                .Where(EF_Codes.CodeType).IsEqualTo(parameters[EF_Codes.CodeType])
+                .Query;
 
-            return qb.Query;
         }
 
 
 
-        protected override void SetParameters(IRadarParameters key, DataAdapterProperties collection)
+        protected override void SetParameters(IRadarParameters key, DataAdapterProperties dataadapterproperties)
         {
-            collection.Parameter[0].Value = key[0];
+            dataadapterproperties.Parameters[EF_Codes.CodeType].Value = key[EF_Codes.CodeType];
         }
 
-        protected override string CreateSlaveQuery(string name, List<SqlProxyParameter> dParam)
+        protected override string CreateSlaveQuery<T>(SqlParametersCollection parameters)
         {
-            if (name == EF_CodeSegment.Name)
+            if (typeof(T) == typeof(EF_CodeSegment))
             {
                 var qb = new QueryBuilder().
                        SelectAllFrom<EF_CodeSegment>().
-                        Where(EF_CodeSegment.CodeType).IsEqualTo(dParam[0]).
+                        Where(EF_CodeSegment.CodeType).IsEqualTo(parameters[EF_CodeSegment.CodeType]).
                         OrderBy(EF_CodeSegment.Segment);
 
                 return qb.Query;
@@ -191,22 +187,15 @@ namespace ERPFramework.CounterManager
             return "";
         }
 
-        protected override Dictionary<string, SqlProxyParameter> CreateSlaveParam(string name)
+        protected override void CreateSlaveParam<T>(SqlParametersCollection parameters)
         {
-            if (name == EF_CodeSegment.Name)
+            if (typeof(T) == typeof(EF_CodeSegment))
             {
-                var PList = new Dictionary<string, SqlProxyParameter>();
-
-                var sParam = new SqlProxyParameter("@p2", EF_CodeSegment.CodeType)
-                {
-                    Value = 0
-                };
-                PList.Add(sParam.ParameterName, sParam);
-                return PList;
+                parameters.Add(
+                    EF_CodeSegment.CodeType,
+                    new SqlProxyParameter("@p2", EF_CodeSegment.CodeType));
             }
-            return null;
         }
     }
-
     #endregion
 }

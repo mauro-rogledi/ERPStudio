@@ -8,8 +8,7 @@ namespace ERPFramework.Data
     {
         public RadarCodesParam(string code)
         {
-            Params = new Dictionary<string, object>();
-            Params.Add(code);
+            Add(EF_Codes.CodeType, code);
         }
     }
 
@@ -17,9 +16,8 @@ namespace ERPFramework.Data
     {
         public RadarCounterParam(int year, int type)
         {
-            Params = new List<object>();
-            Params.Add(year);
-            Params.Add(type);
+            Add(EF_Counter.Year, year);
+            Add(EF_Counter.Type, type);
         }
     }
 
@@ -38,28 +36,34 @@ namespace ERPFramework.Data
             rdrNameSpace = new NameSpace("Plumber.Plumber.ApplicationFramework.CounterManager.codesForm");
         }
 
+        protected override void PrepareFindParameters()
+        {
+            rdrParameters.Add(
+                EF_Codes.CodeType,
+                new SqlProxyParameter("@p1", EF_Codes.CodeType)
+                );
+        }
+
         protected override bool DefineFindQuery(SqlProxyCommand sqlCmd)
         {
-            p1 = new SqlProxyParameter("@p1", EF_Codes.CodeType);
-
             qb.Clear();
             qb.SelectAllFrom<EF_Codes>().
-                Where(EF_Codes.CodeType).IsEqualTo(p1);
+                Where(EF_Codes.CodeType).IsEqualTo(rdrParameters[EF_Codes.CodeType]);
 
 
             sqlCmd.CommandText = qb.Query;
-            sqlCmd.Parameters.Add(p1);
+            sqlCmd.Parameters.Add(rdrParameters[EF_Codes.CodeType]);
 
             return true;
         }
 
-        protected override void PrepareFindQuery(IRadarParameters param)
+        protected override void PrepareFindQuery(IRadarParameters parameter)
         {
         }
 
         protected override void OnFound(SqlProxyDataReader sqlReader)
         {
-            Description = sqlReader[EF_Codes.Description.Name].ToString();
+            Description = sqlReader.GetValue<string>(EF_Codes.Description);
         }
 
         protected override string DefineBrowseQuery(SqlProxyCommand sqlCmd, string findQuery)
@@ -98,8 +102,6 @@ namespace ERPFramework.Data
     public class RadarCounter : RadarForm
     {
         private QueryBuilder qb = new QueryBuilder();
-        private SqlProxyParameter p1;
-        private SqlProxyParameter p2;
 
         public RadarCounter()
             : base()
@@ -109,28 +111,35 @@ namespace ERPFramework.Data
             rdrNameSpace = new NameSpace("Plumber.Plumber.ApplicationFramework.CounterManager.counterForm");
         }
 
+        protected override void PrepareFindParameters()
+        {
+            rdrParameters.Add(
+                EF_Counter.Year,
+                new SqlProxyParameter("@p1", EF_Counter.Year));
+
+            rdrParameters.Add(
+                EF_Counter.Type,
+                new SqlProxyParameter("@p2", EF_Counter.Type));
+        }
+
         protected override bool DefineFindQuery(SqlProxyCommand sqlCmd)
         {
-            p1 = new SqlProxyParameter("@p1", EF_Counter.Year);
-            p2 = new SqlProxyParameter("@p2", EF_Counter.Type);
-
             qb.Clear();
             qb.SelectAllFrom<EF_Counter>().
-                Where(EF_Counter.Year).IsEqualTo(p1).
-                And(EF_Counter.Type).IsEqualTo(p2);
+                Where(EF_Counter.Year).IsEqualTo(rdrParameters[EF_Counter.Year]).
+                And(EF_Counter.Type).IsEqualTo(rdrParameters[EF_Counter.Type]);
 
 
             sqlCmd.CommandText = qb.Query;
-            sqlCmd.Parameters.Add(p1);
-            sqlCmd.Parameters.Add(p2);
+            sqlCmd.Parameters.Add(rdrParameters);
 
             return true;
         }
 
         protected override void PrepareFindQuery(IRadarParameters param)
         {
-            p1.Value = param[0];
-            p2.Value = param[1];
+            rdrParameters[EF_Counter.Year].Value = param[EF_Counter.Year];
+            rdrParameters[EF_Counter.Type].Value = param[EF_Counter.Type];
         }
 
         protected override void OnFound(SqlProxyDataReader sqlReader)

@@ -58,24 +58,24 @@ namespace ERPManager.Forms
         {
             var qb = new QueryBuilder();
 
-            return qb.SelectAll<EF_Users>().
-                From<EF_Users>().
-                Where(EF_Users.Username).IsEqualTo(dParam[0]).
-                Query;
+            return new QueryBuilder()
+                .SelectAll<EF_Users>()
+                .From<EF_Users>()
+                .Where(EF_Users.Username).IsEqualTo(dParam[0])
+                .Query;
         }
 
-        protected override List<SqlProxyParameter> CreateMasterParam()
+        protected override void CreateMasterParam(SqlParametersCollection parameters)
         {
-            var PList = new List<SqlProxyParameter>();
+            parameters.Add(
+                EF_Users.Username,
+                new SqlProxyParameter("@p1", EF_Users.Username));
 
-            var sParam = new SqlProxyParameter("@p1", EF_Users.Username) { Value = "" };
-            PList.Add(sParam);
-            return PList;
         }
 
-        protected override void SetParameters(IRadarParameters key, DataAdapterProperties collection)
+        protected override void SetParameters(IRadarParameters key, DataAdapterProperties dataadapterproperties)
         {
-            collection.Parameter[0].Value = key.Params[0];
+            dataadapterproperties.Parameters[EF_Users.Username].Value = key[EF_Users.Username];
         }
     }
 }
