@@ -11,8 +11,7 @@ namespace ERPManager.ModuleData
     {
         public RadarUsersParam(string code)
         {
-            Params = new List<object>();
-            Params.Add(code);
+            Add(EF_Users.Username, code);
         }
     }
 
@@ -21,33 +20,37 @@ namespace ERPManager.ModuleData
     internal class RadarUsers : RadarForm
     {
         private QueryBuilder qb = new QueryBuilder();
-        private SqlProxyParameter p1;
 
         public RadarUsers()
             : base()
         {
             rdrCodeColumn = EF_Users.Username;
             rdrDescColumn = EF_Users.Surname;
-            rdrNameSpace = new NameSpace("Plumber.Plumber.ApplicationManager.Forms.usersForm");
+        }
+
+        protected override void PrepareFindParameters()
+        {
+            rdrParameters.Add(
+                EF_Users.Username,
+                new SqlProxyParameter("@p1", EF_Users.Username)
+                );
         }
 
         protected override bool DefineFindQuery(SqlProxyCommand sqlCmd)
         {
-            p1 = new SqlProxyParameter("@p1", EF_Users.Username);
-
             qb.Clear();
             qb.SelectAllFrom<EF_Users>().
-                Where(EF_Users.Username).IsEqualTo(p1);
+                Where(EF_Users.Username).IsEqualTo(rdrParameters[EF_Users.Username]);
 
             sqlCmd.CommandText = qb.Query;
-            sqlCmd.Parameters.Add(p1);
+            sqlCmd.Parameters.Add(rdrParameters);
 
             return true;
         }
 
         protected override void PrepareFindQuery(IRadarParameters param)
         {
-            p1.Value = param[0];
+            rdrParameters[EF_Users.Username].Value = param[EF_Users.Username];
         }
 
         protected override void OnFound(SqlProxyDataReader sqlReader)

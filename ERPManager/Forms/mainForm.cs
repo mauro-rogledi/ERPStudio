@@ -148,14 +148,14 @@ namespace ERPManager.Forms
             }
 
             // AutoUpdater
-            //#if (DEBUG)
+            #if (!DEBUG)
             Version vrs = Assembly.GetEntryAssembly().GetName().Version;
             _thread = new ThreadHelper();
             _thread.Method = CheckNewVersion.CheckVersion;
             CheckNewVersion.OpenForm += new EventHandler(CheckNewVersion_OpenForm);
             CheckNewVersion.GiveMessage += new EventHandler(CheckNewVersion_GiveMessage);
             _thread.Execute(new CheckNewVersion.parameters() { ApplicationName = ActivationManager.ApplicationName, Version = vrs, Verbose = false });
-            //#endif
+            #endif
             base.OnShown(e);
         }
 

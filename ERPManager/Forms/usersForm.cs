@@ -54,14 +54,14 @@ namespace ERPManager.Forms
         {
         }
 
-        protected override string CreateMasterQuery(ref List<SqlProxyParameter> dParam)
+        protected override string CreateMasterQuery(SqlParametersCollection parameters)
         {
             var qb = new QueryBuilder();
 
             return new QueryBuilder()
                 .SelectAll<EF_Users>()
                 .From<EF_Users>()
-                .Where(EF_Users.Username).IsEqualTo(dParam[0])
+                .Where(EF_Users.Username).IsEqualTo(parameters[EF_Users.Username])
                 .Query;
         }
 

@@ -228,8 +228,8 @@ namespace ERPFramework.CounterManager
             if (typeof(T) == typeof(EF_CounterValue))
             {
                 parameters.Add(
-                    EF_CounterValue.Code,
-                    new SqlProxyParameter("@p2", EF_CounterValue.Code));
+                    EF_CounterValue.Type,
+                    new SqlProxyParameter("@p2", EF_CounterValue.Type));
             }
         }
 

@@ -293,7 +293,7 @@ namespace ERPFramework.Data
             this.myDocument = document;
             globalPref = new PreferencesManager<GlobalPreferences>("", null).ReadPreference();
 
-            DBConnection = new SqlProxyConnection();
+            DBConnection = new SqlProxyConnection(GlobalInfo.DBaseInfo.dbManager.DB_ConnectionString);
             Dataset = new DataSet(name)
             {
                 Locale = System.Globalization.CultureInfo.InvariantCulture
@@ -469,7 +469,7 @@ namespace ERPFramework.Data
         {
             System.Diagnostics.Debug.Assert(typeof(T).BaseType == typeof(Table));
             var tableName = typeof(T).Tablename();
-            ForeignKey = typeof(T).FieldValue<IColumn>(nameof(ForeignKey));
+            ForeignKey = typeof(T).GetField("ForeignKey").GetValue(null) as IColumn;
 
             masterDataAdapterProperties = new DataAdapterProperties();
 

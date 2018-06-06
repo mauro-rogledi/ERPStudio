@@ -8,6 +8,7 @@ namespace SqlProvider
     class SqlProviderCommand : SqlProxyProvider.ISqlProviderCommand
     {
         SqlCommand sqlCommand;
+        ISqlProviderConnection connection = null;
 
         public SqlProviderCommand() => sqlCommand = new SqlCommand();
         public SqlProviderCommand(IDbCommand command) => sqlCommand = command as SqlCommand;
@@ -21,13 +22,13 @@ namespace SqlProvider
         public CommandType CommandType { get => sqlCommand.CommandType; set => sqlCommand.CommandType = value; }
         //public SqlProviderCommand(string cmdText, SqlConnection connection, SqlTransaction transaction, SqlCommandColumnEncryptionSetting columnEncryptionSetting);
 
-        public IDbConnection Connection
+        public ISqlProviderConnection Connection
         {
-            get => sqlCommand.Connection;
+            get => connection;
             set
             {
-                var connection = ((SqlProviderConnection)value).Connection;
-                sqlCommand.Connection = (SqlConnection)connection;
+                var connection = value;
+                sqlCommand.Connection = value.Connection as SqlConnection;
             }
         }
         public IDbTransaction Transaction
@@ -43,6 +44,8 @@ namespace SqlProvider
         public UpdateRowSource UpdatedRowSource { get => sqlCommand.UpdatedRowSource; set => sqlCommand.UpdatedRowSource = value; }
 
         IDataParameterCollection IDbCommand.Parameters => throw new NotImplementedException();
+
+        IDbConnection IDbCommand.Connection { get => sqlCommand.Connection; set => sqlCommand.Connection = value as SqlConnection; }
 
         public void Cancel() => sqlCommand.Cancel();
 

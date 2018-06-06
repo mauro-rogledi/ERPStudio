@@ -431,7 +431,8 @@ namespace ERPFramework.Controls
 
         string GetLockKey();
 
-        T GetValue<T>(string index);
+        T GetValue<T>(string key);
+        T GetValue<T>(IColumn col);
     }
 
     public class RadarParameters : IRadarParameters
@@ -462,9 +463,14 @@ namespace ERPFramework.Controls
             return builder.ToString();
         }
 
-        public T GetValue<T>(string index)
+        public T GetValue<T>(string key)
         {
-            return (T)Convert.ChangeType(Params[index], typeof(T));
+            return (T)Convert.ChangeType(Params[key], typeof(T));
+        }
+
+        public T GetValue<T>(IColumn col)
+        {
+            return (T)Convert.ChangeType(Params[col.Name], typeof(T));
         }
     }
 }

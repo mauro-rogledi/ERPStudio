@@ -26,7 +26,6 @@ namespace ERPFramework.Data
     public class RadarCodes : RadarForm
     {
         private QueryBuilder qb = new QueryBuilder();
-        private SqlProxyParameter p1;
 
         public RadarCodes()
             : base()
@@ -91,7 +90,7 @@ namespace ERPFramework.Data
 
         public override string GetCodeFromParameters(IRadarParameters param)
         {
-            return param.GetValue<string>(0);
+            return param.GetValue<string>(EF_Codes.CodeType);
         }
     }
 
@@ -173,7 +172,7 @@ namespace ERPFramework.Data
 
         public override string GetCodeFromParameters(IRadarParameters param)
         {
-            return param.GetValue<string>(0);
+            return param.GetValue<string>(EF_Counter.Year);
         }
     }
 

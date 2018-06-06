@@ -189,7 +189,7 @@ namespace ERPFramework.CounterManager
 
         private void RadarForm_RadarFormRowSelected(object sender, RadarFormRowSelectedArgs pe)
         {
-            Text = pe.parameters[0].ToString();
+            Text = pe.parameters.GetValue<string>(EF_Counter.Year);
             UpdateDescription();
 
             Description = radarForm.Description;
