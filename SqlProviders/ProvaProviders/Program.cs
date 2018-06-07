@@ -36,14 +36,14 @@ namespace ProvaProviders
 
             var result = GetDBType(typeof(String));
             ProxyProviderLoader.UseProvider = ProviderType.SQL;
-            //var sqlconnectiostring = new SqlProxyConnectionStringbuilder
-            //{
-            //    DataSource = @"SALA\SQLEXPRESS",
-            //    //UserID = "sa",
-            //    InitialCatalog = "PLUMBER",
-            //    //Password = "sa.",
-            //    IntegratedSecurity = true
-            //};
+            var sqlconnectiostring = new SqlProxyConnectionStringbuilder
+            {
+                DataSource = @"SALA\SQLEXPRESS",
+                //UserID = "sa",
+                InitialCatalog = "PLUMBER",
+                //Password = "sa.",
+                IntegratedSecurity = true
+            };
 
             //var creadb = new SqlProxyDataBaseHelper
             //{
@@ -61,12 +61,12 @@ namespace ProvaProviders
 
             SqlProxyDatabaseHelper.Password = "aa";
 
-            var sqlconnectiostring = new SqlProxyConnectionStringbuilder
-            {
-                DataSource = @"USR-ROGLEDIMAU1",
-                UserID = "sa",
-                InitialCatalog = "NORTHWIND"
-            };
+            //var sqlconnectiostring = new SqlProxyConnectionStringbuilder
+            //{
+            //    DataSource = @"USR-ROGLEDIMAU1",
+            //    UserID = "sa",
+            //    InitialCatalog = "NORTHWIND"
+            //};
 
             //ProxyProviderLoader.UseProvider = ProviderType.SQLite;
             //var sqlconnectiostring = new SqlProxyConnectionStringbuilder
@@ -80,28 +80,33 @@ namespace ProvaProviders
 
                 {
                     //var transaction = connection.BeginTransaction();
-                    //var p1 = new SqlProxyParameter("@p1", DbType.String, 16)
-                    //{
-                    //    Value = "ARDUINO"
-                    //};
+                    var p1 = new SqlProxyParameter("@p1", DbType.String, 16)
+                    {
+                        Value = "ARDUINO"
+                    };
 
                     //var p1 = new SqlProxyParameter("@p1", DbType.Int16)
                     //{
                     //    Value = 1
                     //};
 
-                    var p1 = new SqlProxyParameter("@p1", DbType.String, 5)
-                    {
-                        Value = "ALFKI"
-                    };
+                    //var p1 = new SqlProxyParameter("@p1", DbType.String, 5)
+                    //{
+                    //    Value = "ALFKI"
+                    //};
 
                     var dataSet = new DataSet();
-                    using (var sqlCmd = new SqlProxyCommand("SELECT * FROM CUSTOMERS where CustomerID = @p1", connection))
+                    //using (var sqlCmd = new SqlProxyCommand("SELECT * FROM CUSTOMERS where CustomerID = @p1", connection))
                     //using (var sqlCmd = new SqlProxyCommand("SELECT * FROM CL_MASTER where ID = @p1", connection))
                     //using (var sqlCmd = new SqlProxyCommand("SELECT * FROM PL_MASTERS where Code = @p1", connection))
+                    using (var sqlCmd = new SqlProxyCommand()
+                    {
+                        Connection = connection,
+                        CommandText = "SELECT * FROM PL_MASTERS where Code = @p1"
+                    })
                     {
                         var p2 = sqlCmd.Parameters.Add(p1);
-                        sqlCmd.Parameters["@p1"] = "CIAO";
+                        //sqlCmd.Parameters["@p1"] = "CIAO";
                         var dAdapter = new SqlProxyDataAdapter
                         {
                             SelectCommand = sqlCmd

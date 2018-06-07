@@ -32,9 +32,9 @@ namespace SqlProvider
 
         public ISqlProviderParameter Add(ISqlProviderParameter parameter)
         {
-            var param = parameter.Parameter as ISqlProviderParameter;
+            //var param = parameter.Parameter as ISqlProviderParameter;
 
-            sqlCommand.Parameters.Add(param.Parameter);
+            sqlCommand.Parameters.Add(parameter.Parameter);
 
             return parameter;
         }

@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 using SqlProxyProvider;
 
 namespace ProvaProviders
@@ -44,7 +46,7 @@ namespace ProvaProviders
     #endregion
 
     #region SqlProxyConnection
-    public sealed class SqlProxyConnection : ISqlProviderConnection, ICloneable, IDisposable
+    public sealed class SqlProxyConnection : ICloneable, IDisposable
     {
         ISqlProviderConnection dbConnection;
         public ISqlProviderConnection Connection => dbConnection;
@@ -66,8 +68,6 @@ namespace ProvaProviders
         public string Database => dbConnection.Database;
 
         public ConnectionState State => dbConnection.State;
-
-        IDbConnection ISqlProviderConnection.Connection => dbConnection;
 
         public SqlProxyTransaction BeginTransaction()
         {
@@ -113,69 +113,61 @@ namespace ProvaProviders
         {
             dbConnection.Dispose();
         }
-
-        IDbTransaction IDbConnection.BeginTransaction() => dbConnection.BeginTransaction();
-
-        IDbTransaction IDbConnection.BeginTransaction(IsolationLevel il) => dbConnection.BeginTransaction(il);
     }
     #endregion
 
     #region SqlProxyCommand
-    public sealed class SqlProxyCommand : ISqlProviderCommand, ICloneable
+    public sealed class SqlProxyCommand : IDisposable, ICloneable
     {
         ISqlProviderCommand dbCommand;
-
+        SqlProxyConnection connection;
+        SqlProxyTransaction transaction;
+        
         public IDbCommand Command => dbCommand as IDbCommand;
 
         public SqlProxyCommand()
         {
             dbCommand = ProxyProviderLoader.CreateInstance<ISqlProviderCommand>("SqlProvider.SqlProviderCommand");
             Parameters = new SqlProxyParameterCollection(dbCommand);
-            //Parameters = ProxyProviderLoader.CreateInstance<ISqlProviderParameterCollection>("SqlProvider.SqlProviderParameterCollection", dbCommand.Command);
+        }
+
+        public SqlProxyCommand(SqlProxyConnection connection)
+            : this()
+        {
+            Connection = connection;
         }
 
         public SqlProxyCommand(IDbCommand command)
         {
             dbCommand = ProxyProviderLoader.CreateInstance<ISqlProviderCommand>("SqlProvider.SqlProviderCommand", command);
             Parameters = new SqlProxyParameterCollection(dbCommand);
-            //Parameters = ProxyProviderLoader.CreateInstance<ISqlProviderParameterCollection>("SqlProvider.SqlProviderParameterCollection", dbCommand.Command);
         }
 
         public SqlProxyCommand(string cmdText)
         {
             dbCommand = ProxyProviderLoader.CreateInstance<ISqlProviderCommand>("SqlProvider.SqlProviderCommand", cmdText);
             Parameters = new SqlProxyParameterCollection(dbCommand);
-            //Parameters = ProxyProviderLoader.CreateInstance<ISqlProviderParameterCollection>("SqlProvider.SqlProviderParameterCollection", dbCommand.Command);
         }
 
         public SqlProxyCommand(string cmdText, SqlProxyConnection connection)
         {
             dbCommand = ProxyProviderLoader.CreateInstance<ISqlProviderCommand>("SqlProvider.SqlProviderCommand", cmdText, connection.Connection);
-            Parameters = new SqlProxyParameterCollection(dbCommand.Command);
-            //Parameters = ProxyProviderLoader.CreateInstance<ISqlProviderParameterCollection>("SqlProvider.SqlProviderParameterCollection", dbCommand.Command);
+            Parameters = new SqlProxyParameterCollection(dbCommand);
         }
         public SqlProxyCommand(string cmdText, SqlProxyConnection connection, SqlProxyTransaction transaction)
         {
             dbCommand = ProxyProviderLoader.CreateInstance<ISqlProviderCommand>("SqlProvider.SqlProviderCommand", cmdText, connection.Connection, transaction.Transaction);
-            Parameters = new SqlProxyParameterCollection(dbCommand.Command);
-            //ProxyProviderLoader.CreateInstance<ISqlProviderParameterCollection>("SqlProvider.SqlProviderParameterCollection", dbCommand);
+            Parameters = new SqlProxyParameterCollection(dbCommand);
         }
-        //public SqlProxyCommand(string cmdText, SqlProxyConnection connection, SqlTransaction transaction, SqlCommandColumnEncryptionSetting columnEncryptionSetting)
-        //{
 
-        //}
-
-
-        public IDbConnection Connection { get => dbCommand.Connection; set => dbCommand.Connection = value; }
-        public IDbTransaction Transaction { get => dbCommand.Transaction; set => dbCommand.Transaction = (value as ISqlProviderTransaction).Transaction; }
+        public SqlProxyConnection Connection { set { connection = value; dbCommand.Connection = connection.Connection.Connection; } get => connection; }
+        public SqlProxyTransaction Transaction { get => transaction; set { dbCommand.Transaction = value.Transaction; transaction = value; } }
         public string CommandText { get => dbCommand.CommandText; set => dbCommand.CommandText = value; }
         public int CommandTimeout { get => dbCommand.CommandTimeout; set => dbCommand.CommandTimeout = value; }
         public CommandType CommandType { get => dbCommand.CommandType; set => dbCommand.CommandType = value; }
 
         public SqlProxyParameterCollection Parameters { get; }
         public UpdateRowSource UpdatedRowSource { get => dbCommand.UpdatedRowSource; set => dbCommand.UpdatedRowSource = value; }
-
-        IDataParameterCollection IDbCommand.Parameters => throw new NotImplementedException();
 
         public void Cancel()
         {
@@ -227,21 +219,11 @@ namespace ProvaProviders
 
             return Cloned;
         }
-
-        IDataReader IDbCommand.ExecuteReader()
-        {
-            throw new NotImplementedException();
-        }
-
-        IDataReader IDbCommand.ExecuteReader(CommandBehavior behavior)
-        {
-            throw new NotImplementedException();
-        }
     }
     #endregion
 
     #region SqlProxyTransaction
-    public sealed class SqlProxyTransaction : ISqlProviderTransaction
+    public sealed class SqlProxyTransaction 
     {
         IDbTransaction _dbTransaction;
         public IDbTransaction Transaction => _dbTransaction;
@@ -251,7 +233,6 @@ namespace ProvaProviders
         public IDbConnection Connection => _dbTransaction.Connection;
 
         public IsolationLevel IsolationLevel => _dbTransaction.IsolationLevel;
-
 
         public void Commit()
         {
@@ -271,7 +252,7 @@ namespace ProvaProviders
     #endregion
 
     #region SqlProxyDataReader
-    public sealed class SqlProxyDataReader : ISqlProviderDataReader
+    public sealed class SqlProxyDataReader : System.Data.IDataReader
     {
         IDataReader dbDataReader;
         public IDataReader DataReader => dbDataReader;
@@ -282,7 +263,7 @@ namespace ProvaProviders
 
         public object this[string name] => dbDataReader[name];
 
-        //public object this[IColumn column] => _idataReader[column.Name];
+        public object this[IColumn column] => dbDataReader[column.Name];
 
         public int Depth => dbDataReader.Depth;
 
@@ -295,6 +276,19 @@ namespace ProvaProviders
         public void Close() => dbDataReader.Close();
 
         public void Dispose() => dbDataReader.Dispose();
+
+        public T GetValue<T>(IColumn column) => GetValue<T>(column.Name);
+
+        public T GetValue<T>(string column)
+        {
+            return typeof(T).BaseType == typeof(Enum)
+                ? dbDataReader[column] != DBNull.Value
+                    ? (T)Enum.ToObject(typeof(T), dbDataReader[column])
+                    : (T)Enum.ToObject(typeof(T), 0)
+                : dbDataReader[column] != System.DBNull.Value
+                    ? (T)Convert.ChangeType(dbDataReader[column], typeof(T))
+                    : (T)Convert.ChangeType("", typeof(T));
+        }
 
         public bool GetBoolean(int i) => dbDataReader.GetBoolean(i);
 
@@ -336,6 +330,8 @@ namespace ProvaProviders
 
         public string GetString(int i) => dbDataReader.GetString(i);
 
+        public string GetString(string name) => dbDataReader.GetString(GetOrdinal(name));
+
         public object GetValue(int i) => dbDataReader.GetValue(i);
 
         public int GetValues(object[] values) => dbDataReader.GetValues(values);
@@ -349,14 +345,28 @@ namespace ProvaProviders
     #endregion
 
     #region SqlProxyParameter
-    public class SqlProxyParameter : ISqlProviderParameter
+    public class SqlProxyParameter
     {
         ISqlProviderParameter dbParameter;
-        public IDbDataParameter Parameter => dbParameter as IDbDataParameter;
+        public ISqlProviderParameter Parameter => dbParameter;
 
         public SqlProxyParameter()
         {
             dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter");
+        }
+
+        public SqlProxyParameter(string parameterName, IColumn column)
+        {
+            var dbType = ConvertColumnType.GetDBType(column.ColType);
+            dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", parameterName, dbType);
+            dbParameter.Value = column.DefaultValue;
+        }
+
+        public SqlProxyParameter(string parameterName, IColumn column, object value)
+        {
+            var dbType = ConvertColumnType.GetDBType(column.ColType);
+            dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", parameterName, dbType);
+            dbParameter.Value = value;
         }
 
         public SqlProxyParameter(string parameterName, DbType dbType)
@@ -428,9 +438,11 @@ namespace ProvaProviders
             {
                 try
                 {
-                    Monitor.Enter(lockWasTaken);
                     if (_databaseHelper == null)
+                    {
+                        Monitor.Enter(lockWasTaken);
                         _databaseHelper = ProxyProviderLoader.CreateInstance<ISqlProxyDataBaseHelper>("SqlProvider.SqlProviderDatabaseHelper");
+                    }
                 }
                 // body
                 finally
@@ -454,15 +466,59 @@ namespace ProvaProviders
 
         public static void CreateDatabase(string connectionString) => databaseHelper.CreateDatabase(connectionString);
 
-        public static string QuerySearchTable(string tableName) => databaseHelper.QuerySearchTable(tableName);
 
-        //public static bool SearchColumn(IColumn column, SqlProxyConnection connection) => databaseHelper.SearchColumn(column.Tablename, column.Name, connection.Connection.Connection);
+        public static bool SearchColumn(IColumn column, SqlProxyConnection connection) => databaseHelper.SearchColumn(column.Tablename, column.Name, connection.Connection.Connection);
+
+        public static bool SearchTable<T>(SqlProxyConnection connection)
+        {
+            System.Diagnostics.Debug.Assert(typeof(T).BaseType == typeof(Table));
+            var tableName = typeof(T).GetField("Name").GetValue(null).ToString();
+
+            var notfound = false;
+            try
+            {
+                using (var cmd = new SqlProxyCommand(QuerySearchTable(tableName), connection))
+                {
+                    var dr = cmd.ExecuteReader();
+
+                    notfound = !dr.Read();
+                    dr.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                System.Diagnostics.Debug.WriteLine(exc.Message);
+                return true;
+            }
+            return notfound;
+        }
+
+        public static async Task<List<string>> GetServers()
+        {
+            return await databaseHelper.GetServers();
+        }
+
+        //public static async Task<List<string>> ListDatabase(string server, string userID, string password, bool integratedSecurity)
+        //{
+        //    return await databaseHelper.ListDatabase(server, userID, password, integratedSecurity);
+        //}
+
+        //public static string ConvertDate(DateTime datetime) => databaseHelper.ConvertDate(datetime);
+        //public static string GetYear(string date) => databaseHelper.GetYear(date);
+        //public static string GetMonth(string date) => databaseHelper.GetMonth(date);
+        //public static string GetDay(string date) => databaseHelper.GetDay(date);
+        //public static string GetWeekOfYear(string date) => databaseHelper.GetWeekOfYear(date);
+        //public static string DayOfYear(string date) => databaseHelper.DayOfYear(date);
+        //public static string DayOfWeek(string date) => databaseHelper.DayOfWeek(date);
+        //public static DateTime GetServerDate(string connectionString) => databaseHelper.GetServerDate(connectionString);
+
+        private static string QuerySearchTable(string tableName) => databaseHelper.QuerySearchTable(tableName);
 
     }
     #endregion
 
     #region SqlProxyDataAdapter
-    public class SqlProxyDataAdapter
+    public class SqlProxyDataAdapter : System.Data.IDbDataAdapter
     {
         ISqlProviderDataAdapter dbDataAdapter;
         public IDbDataAdapter DataAdapter => dbDataAdapter;
@@ -524,6 +580,11 @@ namespace ProvaProviders
         public MissingSchemaAction MissingSchemaAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public ITableMappingCollection TableMappings => dbDataAdapter.TableMappings;
 
+        IDbCommand IDbDataAdapter.SelectCommand { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        IDbCommand IDbDataAdapter.InsertCommand { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        IDbCommand IDbDataAdapter.UpdateCommand { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        IDbCommand IDbDataAdapter.DeleteCommand { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public int Fill(DataTable dataTable) => dbDataAdapter.Fill(dataTable);
         public int Fill(DataSet dataSet) => dbDataAdapter.Fill(dataSet);
         public int Fill(DataSet dataSet, string srcTable) => dbDataAdapter.Fill(dataSet, srcTable);
@@ -534,6 +595,7 @@ namespace ProvaProviders
         public IDataParameter[] GetFillParameters() => dbDataAdapter.GetFillParameters();
 
         public int Update(DataSet dataSet) => dbDataAdapter.Update(dataSet);
+        public int Update(DataSet dataSet, string srcTable) => dbDataAdapter.Update(dataSet, srcTable);
 
         public event EventHandler<RowUpdatingEventArgs> RowUpdating
         {
@@ -619,16 +681,17 @@ namespace ProvaProviders
     }
     #endregion
 
-    public class SqlProxyParameterCollection
+    #region SqlProxyParameterCollection
+    public class SqlProxyParameterCollection : IDataParameterCollection
     {
-        ISqlProviderParameterCollection Parameters { get;  }
-        public SqlProxyParameterCollection(IDbCommand command)
+        ISqlProviderParameterCollection Parameters { get; }
+        public SqlProxyParameterCollection(ISqlProviderCommand command)
         {
-            Parameters = ProxyProviderLoader.CreateInstance<ISqlProviderParameterCollection>("SqlProvider.SqlProviderParameterCollection", command);
+            Parameters = ProxyProviderLoader.CreateInstance<ISqlProviderParameterCollection>("SqlProvider.SqlProviderParameterCollection", command.Command);
         }
 
-        public object this[string parameterName] { get => Parameters[parameterName]; set => Parameters[parameterName] = value; }
-        public object this[int index] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public ISqlProviderParameter this[string parameterName] { get => Parameters[parameterName] as ISqlProviderParameter; set => Parameters[parameterName] = value; }
+        public object this[int index] { get => Parameters[index]; set => Parameters[index] = value; }
 
         public IDbCommand Command => Parameters.Command;
 
@@ -642,15 +705,31 @@ namespace ProvaProviders
 
         public bool IsSynchronized => Parameters.IsSynchronized;
 
-        public ISqlProviderParameter Add(ISqlProviderParameter param) => Parameters.Add(param);
+        object IDataParameterCollection.this[string parameterName] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public int Add(object value) => Parameters.Add(value);
 
-        public SqlProxyParameter Add(SqlProxyParameter param) => Parameters.Add(param) as SqlProxyParameter;
+        public SqlProxyParameter Add(SqlProxyParameter param)
+        {
+            Parameters.Add(param.Parameter);
+            return param;
+        }
 
-        public void AddRange(ISqlProviderParameter[] param) => Parameters.AddRange(param);
+        public void AddRange(SqlProxyParameter[] parameters)
+        {
 
-        public void AddRange(List<ISqlProviderParameter> param) => Parameters.AddRange(param);
+            parameters.ToList().ForEach(p => Parameters.Add(p.Parameter));
+        }
+
+        public void AddRange(SqlParametersCollection parameters)
+        {
+            parameters.Values.ToList().ForEach(p => Parameters.Add(p as ISqlProviderParameter));
+        }
+
+        public void AddRange(System.Collections.Generic.List<SqlProxyParameter> parameters)
+        {
+            parameters.ForEach(p => Parameters.Add(p as ISqlProviderParameter));
+        }
 
         public void Clear() => Parameters.Clear();
 
@@ -673,4 +752,5 @@ namespace ProvaProviders
 
         public void RemoveAt(int index) => Parameters.RemoveAt(index);
     }
+    #endregion
 }

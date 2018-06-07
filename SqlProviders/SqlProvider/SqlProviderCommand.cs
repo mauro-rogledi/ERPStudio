@@ -26,7 +26,7 @@ namespace SqlProvider
             get => sqlCommand.Connection;
             set
             {
-                var connection = ((SqlProviderConnection)value).Connection;
+                var connection = value;
                 sqlCommand.Connection = (SqlConnection)connection;
             }
         }
