@@ -4,6 +4,8 @@ namespace SqlProxyProvider
 {
     public interface ISqlProviderParameter : IDbDataParameter
     {
-        IDbDataParameter Parameter { get; }
+        IDbDataParameter Parameter { get; set; }
+
+
     }
 }

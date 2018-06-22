@@ -38,7 +38,6 @@ namespace ERPFramework.Data
         protected override void PrepareFindParameters()
         {
             rdrParameters.Add(
-                EF_Codes.CodeType,
                 new SqlProxyParameter("@p1", EF_Codes.CodeType)
                 );
         }
@@ -47,11 +46,11 @@ namespace ERPFramework.Data
         {
             qb.Clear();
             qb.SelectAllFrom<EF_Codes>().
-                Where(EF_Codes.CodeType).IsEqualTo(rdrParameters[EF_Codes.CodeType]);
+                Where(EF_Codes.CodeType).IsEqualTo(rdrParameters["@p1"]);
 
 
             sqlCmd.CommandText = qb.Query;
-            sqlCmd.Parameters.Add(rdrParameters[EF_Codes.CodeType]);
+            sqlCmd.Parameters.Add(rdrParameters["@p1"]);
 
             return true;
         }
@@ -113,11 +112,9 @@ namespace ERPFramework.Data
         protected override void PrepareFindParameters()
         {
             rdrParameters.Add(
-                EF_Counter.Year,
                 new SqlProxyParameter("@p1", EF_Counter.Year));
 
             rdrParameters.Add(
-                EF_Counter.Type,
                 new SqlProxyParameter("@p2", EF_Counter.Type));
         }
 
@@ -125,20 +122,21 @@ namespace ERPFramework.Data
         {
             qb.Clear();
             qb.SelectAllFrom<EF_Counter>().
-                Where(EF_Counter.Year).IsEqualTo(rdrParameters[EF_Counter.Year]).
-                And(EF_Counter.Type).IsEqualTo(rdrParameters[EF_Counter.Type]);
+                Where(EF_Counter.Year).IsEqualTo(rdrParameters["@p1"]).
+                And(EF_Counter.Type).IsEqualTo(rdrParameters["@p2"]);
 
 
             sqlCmd.CommandText = qb.Query;
-            sqlCmd.Parameters.Add(rdrParameters);
+            //for (int t = 0; t < rdrParameters.Count; t++)
+            //    sqlCmd.Parameters.Add(rdrParameters[t]);
 
             return true;
         }
 
         protected override void PrepareFindQuery(IRadarParameters param)
         {
-            rdrParameters[EF_Counter.Year].Value = param[EF_Counter.Year];
-            rdrParameters[EF_Counter.Type].Value = param[EF_Counter.Type];
+            rdrParameters["@p1"].Value = param["@p1"];
+            rdrParameters["@p2"].Value = param["@p2"];
         }
 
         protected override void OnFound(SqlProxyDataReader sqlReader)

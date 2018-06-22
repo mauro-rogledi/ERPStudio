@@ -147,20 +147,19 @@ namespace ERPFramework.CounterManager
             base.dAdapter_RowUpdating(sender, e);
         }
 
-        protected override void CreateMasterParam(SqlParametersCollection parameters)
+        protected override void CreateMasterParam(SqlProxyParameterCollection parameters)
         {
             parameters.Add(
-                EF_Codes.CodeType,
                 new SqlProxyParameter("@p1", EF_Codes.CodeType)
                 );
 
         }
 
-        protected override string CreateMasterQuery(SqlParametersCollection parameters)
+        protected override string CreateMasterQuery(SqlProxyParameterCollection parameters)
         {
             return new QueryBuilder()
                 .SelectAllFrom<EF_Codes>()
-                .Where(EF_Codes.CodeType).IsEqualTo(parameters[EF_Codes.CodeType])
+                .Where(EF_Codes.CodeType).IsEqualTo(parameters["@p1"])
                 .Query;
 
         }
@@ -169,16 +168,16 @@ namespace ERPFramework.CounterManager
 
         protected override void SetParameters(IRadarParameters key, DataAdapterProperties dataadapterproperties)
         {
-            dataadapterproperties.Parameters[EF_Codes.CodeType].Value = key[EF_Codes.CodeType];
+            dataadapterproperties.Parameters["@p1"].Value = key[EF_Codes.CodeType];
         }
 
-        protected override string CreateSlaveQuery<T>(SqlParametersCollection parameters)
+        protected override string CreateSlaveQuery<T>(SqlProxyParameterCollection parameters)
         {
             if (typeof(T) == typeof(EF_CodeSegment))
             {
                 var qb = new QueryBuilder().
                        SelectAllFrom<EF_CodeSegment>().
-                        Where(EF_CodeSegment.CodeType).IsEqualTo(parameters[EF_CodeSegment.CodeType]).
+                        Where(EF_CodeSegment.CodeType).IsEqualTo(parameters["@p1"]).
                         OrderBy(EF_CodeSegment.Segment);
 
                 return qb.Query;
@@ -187,12 +186,11 @@ namespace ERPFramework.CounterManager
             return "";
         }
 
-        protected override void CreateSlaveParam<T>(SqlParametersCollection parameters)
+        protected override void CreateSlaveParam<T>(SqlProxyParameterCollection parameters)
         {
             if (typeof(T) == typeof(EF_CodeSegment))
             {
                 parameters.Add(
-                    EF_CodeSegment.CodeType,
                     new SqlProxyParameter("@p2", EF_CodeSegment.CodeType));
             }
         }

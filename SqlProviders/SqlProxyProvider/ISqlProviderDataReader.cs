@@ -1,6 +1,6 @@
 ﻿namespace SqlProxyProvider
 {
-    public interface ISqlProviderDataReader : System.Data.IDataReader
+    public interface ISqlProviderDataReader
     {
         System.Data.IDataReader DataReader { get; }
     }

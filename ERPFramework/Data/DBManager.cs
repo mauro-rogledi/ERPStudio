@@ -38,9 +38,10 @@ namespace ERPFramework.Data
     {
         private string name;
 
-        public SqlParametersCollection Parameters { get; set; } = new SqlParametersCollection();
+        public SqlProxyParameterCollection Parameters { get => Command.Parameters; }
 
         public SqlProxyDataAdapter DataAdapter { get; private set; }
+        public SqlProxyCommand Command { get; private set; }
 
         public string Name { get { return name; } }
 
@@ -53,29 +54,29 @@ namespace ERPFramework.Data
         {
         }
 
-        public DataAdapterProperties(string myMaster, SqlProxyDataAdapter myAdapter, SqlParametersCollection myParam)
+        public DataAdapterProperties(string myMaster, SqlProxyDataAdapter myAdapter, SqlProxyCommand myCommand)
         {
             DataAdapter = myAdapter;
-            Parameters = myParam;
+            Command = myCommand;
             name = myMaster;
         }
 
-        public void AddMaster(string myMaster, SqlProxyDataAdapter myAdapter, SqlParametersCollection myParam)
+        public void AddMaster(string myMaster, SqlProxyDataAdapter myAdapter, SqlProxyCommand myCommand)
         {
             DataAdapter = myAdapter;
-            Parameters = myParam;
+            Command = myCommand;
             name = myMaster;
         }
 
-        public void AddSlave(string mySlave, SqlProxyDataAdapter myAdapter, SqlParametersCollection myParam)
+        public void AddSlave(string mySlave, SqlProxyDataAdapter myAdapter, SqlProxyCommand myCommand)
         {
-            var dataAdapterProperties = new DataAdapterProperties(mySlave, myAdapter, myParam);
+            var dataAdapterProperties = new DataAdapterProperties(mySlave, myAdapter, myCommand);
             SlaveDataAdapters.Add(dataAdapterProperties);
         }
 
-        public void AddSlave(string mySlaveSlavable, string mySlave, SqlProxyDataAdapter myAdapter, SqlParametersCollection myParam)
+        public void AddSlave(string mySlaveSlavable, string mySlave, SqlProxyDataAdapter myAdapter, SqlProxyCommand myCommand)
         {
-            var myDbCollection = new DataAdapterProperties(mySlave, myAdapter, myParam);
+            var myDbCollection = new DataAdapterProperties(mySlave, myAdapter, myCommand);
             RecursiveAdd(mySlaveSlavable, myDbCollection, this.SlaveDataAdapters);
         }
 
@@ -195,22 +196,22 @@ namespace ERPFramework.Data
 
         #region Protected virtual method
 
-        protected abstract string CreateMasterQuery(SqlParametersCollection parameters);
+        protected abstract string CreateMasterQuery(SqlProxyParameterCollection parameters);
 
-        protected virtual string CreateSlaveQuery<T>(SqlParametersCollection parameters)
+        protected virtual string CreateSlaveQuery<T>(SqlProxyParameterCollection parameters)
         {
             return string.Empty;
         }
 
-        protected virtual void CreateMasterParam(SqlParametersCollection parameters)
+        protected virtual void CreateMasterParam(SqlProxyParameterCollection parameters)
         {
         }
 
-        protected virtual void CreateSlaveParam<T>(SqlParametersCollection parameters)
+        protected virtual void CreateSlaveParam<T>(SqlProxyParameterCollection parameters)
         {
         }
 
-        protected virtual void CreateSlaveParam<T,S>(SqlParametersCollection parameters)
+        protected virtual void CreateSlaveParam<T,S>(SqlProxyParameterCollection parameters)
         {
         }
 
@@ -473,10 +474,10 @@ namespace ERPFramework.Data
 
             masterDataAdapterProperties = new DataAdapterProperties();
 
-            var (dCommand, parameters) = CreateMasterCommand();
+            var dCommand = CreateMasterCommand();
 
             var dAdapter = CreateDataAdapter(tableName, dCommand);
-            masterDataAdapterProperties.AddMaster(tableName, dAdapter, parameters);
+            masterDataAdapterProperties.AddMaster(tableName, dAdapter, dCommand);
             AddMasterBinding(tableName);
 
             dAdapter.RowUpdated += dAdapter_MasterRowUpdated;
@@ -489,17 +490,23 @@ namespace ERPFramework.Data
             throw new NotImplementedException();
         }
 
-        protected virtual (SqlProxyCommand, SqlParametersCollection) CreateMasterCommand()
+        protected virtual SqlProxyCommand CreateMasterCommand()
         {
-            var parameters = new SqlParametersCollection();
+            //var parameters = new SqlProxyParameterCollection();
 
-            CreateMasterParam(parameters);
+            //CreateMasterParam(parameters);
 
-            var dCommand = new SqlProxyCommand(CreateMasterQuery(parameters), DBConnection);
-            if (parameters != null)
-                dCommand.Parameters.AddRange(parameters);
+            //var dCommand = new SqlProxyCommand(CreateMasterQuery(parameters), DBConnection);
+            //if (parameters != null)
+            //    dCommand.Parameters.AddRange(parameters);
 
-            return (dCommand, parameters);
+            //return (dCommand, parameters);
+
+            var dCommand = new SqlProxyCommand(DBConnection);
+            CreateMasterParam(dCommand.Parameters);
+            dCommand.CommandText = CreateMasterQuery(dCommand.Parameters);
+
+            return dCommand;
         }
 
         //private void AddCurrencyManager(Form myform, DataTable myMasterTable)
@@ -530,10 +537,12 @@ namespace ERPFramework.Data
             var tableName = typeof(T).Tablename();
 
             if (masterDataAdapterProperties == null || Dataset == null) return null;
-            var parameters = new SqlParametersCollection();
+            var dCommand = new SqlProxyCommand(DBConnection);
+            var parameters = dCommand.Parameters;
 
             CreateSlaveParam<T>(parameters);
             var sqlQuery = CreateSlaveQuery<T>(parameters);
+            dCommand.CommandText = sqlQuery;
 
             // AddOn management
             if (sqlQuery == string.Empty && myDocument.AddonList != null)
@@ -544,10 +553,9 @@ namespace ERPFramework.Data
                         break;
                 }
 
-            var dCommand = new SqlProxyCommand(sqlQuery, DBConnection);
 
-            if (parameters.Count > 0)
-                dCommand.Parameters.AddRange(parameters);
+            //for (int t = 0; t < parameters.Count; t++)
+            //    dCommand.Parameters.Add(parameters[t]);
 
             // AddOn management
             if ((parameters.Count == 0) && myDocument.AddonList != null)
@@ -556,12 +564,13 @@ namespace ERPFramework.Data
                     scr.CreateSlaveParam(tableName, parameters);
                     if (parameters.Count == 0)
                         continue;
-                    dCommand.Parameters.AddRange(parameters);
+                    //for (int t = 0; t < parameters.Count; t++)
+                    //    dCommand.Parameters.Add(parameters[t]);
                     break;
                 }
 
             var dAdapter = CreateDataAdapter(tableName, dCommand);
-            masterDataAdapterProperties.AddSlave(tableName, dAdapter, parameters);
+            masterDataAdapterProperties.AddSlave(tableName, dAdapter, dCommand);
 
             dAdapter.RowUpdating += dAdapter_RowUpdating;
             masterDataAdapterProperties.HasToCreateCommand = createCommand;

@@ -5,59 +5,81 @@ using System.Data.SqlClient;
 
 namespace SqlProvider
 {
-    class SqlProviderCommand : SqlProxyProvider.ISqlProviderCommand
+    class SqlProviderCommand : ISqlProviderCommand , IDisposable
     {
-        SqlCommand sqlCommand;
-        ISqlProviderConnection connection = null;
-
-        public SqlProviderCommand() => sqlCommand = new SqlCommand();
-        public SqlProviderCommand(IDbCommand command) => sqlCommand = command as SqlCommand;
-        public SqlProviderCommand(string cmdText) => sqlCommand = new SqlCommand(cmdText);
-        public SqlProviderCommand(string cmdText, ISqlProviderConnection connection) => sqlCommand = new SqlCommand(cmdText, connection.Connection as SqlConnection);
-        public SqlProviderCommand(string cmdText, ISqlProviderConnection connection, ISqlProviderTransaction transaction) => sqlCommand = new SqlCommand(cmdText, connection.Connection as SqlConnection, transaction.Transaction as SqlTransaction);
         public IDbCommand Command => sqlCommand;
+
+        SqlCommand sqlCommand;
+        ISqlProviderConnection connection;
+        ISqlProviderTransaction transaction;
+
+        public SqlProviderCommand()
+        {
+            sqlCommand = new SqlCommand();
+            Parameters = new SqlProviderParameterCollection(this);
+        }
+        public SqlProviderCommand(IDbCommand command)
+        {
+            sqlCommand = command as SqlCommand;
+            Parameters = new SqlProviderParameterCollection(this);
+        }
+        public SqlProviderCommand(string cmdText)
+        {
+            sqlCommand = new SqlCommand(cmdText);
+            Parameters = new SqlProviderParameterCollection(this);
+        }
+        public SqlProviderCommand(string cmdText, ISqlProviderConnection connection)
+        {
+            this.connection = connection;
+            sqlCommand = new SqlCommand(cmdText, connection.Connection as SqlConnection);
+            Parameters = new SqlProviderParameterCollection(this);
+        }
+        public SqlProviderCommand(string cmdText, ISqlProviderConnection connection, ISqlProviderTransaction transaction)
+        {
+            this.connection = connection;
+            this.transaction = transaction;
+            sqlCommand = new SqlCommand(cmdText, connection.Connection as SqlConnection, transaction.Transaction as SqlTransaction);
+            Parameters = new SqlProviderParameterCollection(this);
+        }
 
         public string CommandText { get => sqlCommand.CommandText; set => sqlCommand.CommandText = value; }
         public int CommandTimeout { get => sqlCommand.CommandTimeout; set => sqlCommand.CommandTimeout = value; }
         public CommandType CommandType { get => sqlCommand.CommandType; set => sqlCommand.CommandType = value; }
-        //public SqlProviderCommand(string cmdText, SqlConnection connection, SqlTransaction transaction, SqlCommandColumnEncryptionSetting columnEncryptionSetting);
 
         public ISqlProviderConnection Connection
         {
             get => connection;
             set
             {
-                var connection = value;
-                sqlCommand.Connection = value.Connection as SqlConnection;
+                connection = value;
+                sqlCommand.Connection = connection.Connection as SqlConnection;
             }
         }
-        public IDbTransaction Transaction
+        public ISqlProviderTransaction Transaction
         {
-            get => sqlCommand.Transaction;
+            get => transaction;
             set
             {
-                var transaction = ((SqlProviderTransaction)value).Transaction;
-                sqlCommand.Transaction = (SqlTransaction)transaction;
+                transaction = value;
+                sqlCommand.Transaction = transaction.Transaction as SqlTransaction;
             }
         }
 
         public UpdateRowSource UpdatedRowSource { get => sqlCommand.UpdatedRowSource; set => sqlCommand.UpdatedRowSource = value; }
 
-        IDataParameterCollection IDbCommand.Parameters => throw new NotImplementedException();
-
-        IDbConnection IDbCommand.Connection { get => sqlCommand.Connection; set => sqlCommand.Connection = value as SqlConnection; }
+        public ISqlProviderParameterCollection Parameters { get; }
 
         public void Cancel() => sqlCommand.Cancel();
 
-        public IDbDataParameter CreateParameter() => sqlCommand.CreateParameter();
+        public ISqlProviderParameter CreateParameter() => new SqlProviderParameter(sqlCommand.CreateParameter());
 
         public void Dispose() => sqlCommand.Dispose();
 
         public int ExecuteNonQuery() => sqlCommand.ExecuteNonQuery();
 
-        public IDataReader ExecuteReader() => sqlCommand.ExecuteReader();
+        public ISqlProviderDataReader ExecuteReader() => new SqlProviderDataReader(sqlCommand.ExecuteReader());
 
-        public IDataReader ExecuteReader(CommandBehavior behavior) => sqlCommand.ExecuteReader(behavior);
+        public ISqlProviderDataReader ExecuteReader(CommandBehavior behavior) => new SqlProviderDataReader(sqlCommand.ExecuteReader(behavior));
 
         public object ExecuteScalar() => sqlCommand.ExecuteScalar();
 

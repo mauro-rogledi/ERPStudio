@@ -8,8 +8,6 @@ namespace SqlProvider
     {
         SQLiteConnection sqlConnection;
 
-        public IDbConnection Connection => sqlConnection;
-
         public SqlProviderConnection() => sqlConnection = new SQLiteConnection();
 
 
@@ -43,11 +41,6 @@ namespace SqlProvider
             sqlConnection.Close();
         }
 
-        public IDbCommand CreateCommand()
-        {
-            return sqlConnection.CreateCommand();
-        }
-
         public void Dispose()
         {
             sqlConnection.Dispose();
@@ -58,9 +51,9 @@ namespace SqlProvider
             sqlConnection.Open();
         }
 
-        IDbTransaction IDbConnection.BeginTransaction() => new SqlProviderTransaction(sqlConnection.BeginTransaction());
-
-
-        IDbTransaction IDbConnection.BeginTransaction(IsolationLevel il) => new SqlProviderTransaction(sqlConnection.BeginTransaction());
+        ISqlProviderCommand ISqlProviderConnection.CreateCommand()
+        {
+            return new SqlProviderCommand(sqlConnection.CreateCommand());
+        }
     }
 }

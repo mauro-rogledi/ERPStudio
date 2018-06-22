@@ -10,7 +10,7 @@ using SqlProxyProvider;
 
 namespace SqlProvider
 {
-    class SqlProviderDataAdapter : ISqlProviderDataAdapter
+    public class SqlProviderDataAdapter : ISqlProviderDataAdapter
     {
         SqlDataAdapter sqlDataAdapter;
         public IDbDataAdapter DataAdapter => sqlDataAdapter;
@@ -34,6 +34,11 @@ namespace SqlProvider
         public MissingSchemaAction MissingSchemaAction { get => sqlDataAdapter.MissingSchemaAction; set => sqlDataAdapter.MissingSchemaAction = value; }
 
         public ITableMappingCollection TableMappings => sqlDataAdapter.TableMappings;
+
+        ISqlProviderCommand ISqlProviderDataAdapter.SelectCommand { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        ISqlProviderCommand ISqlProviderDataAdapter.InsertCommand { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        ISqlProviderCommand ISqlProviderDataAdapter.UpdateCommand { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        ISqlProviderCommand ISqlProviderDataAdapter.DeleteCommand { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public int Fill(DataTable dataTable) => sqlDataAdapter.Fill(dataTable);
         public int Fill(DataSet dataSet) => sqlDataAdapter.Fill(dataSet);

@@ -9,15 +9,16 @@ namespace SqlProxyProvider
 {
     public interface ISqlProviderCommandBuilder
     {
+        ISqlProviderDataAdapter DataAdapter { get; set; }
+
         string QuoteSuffix { get; set; }
         string QuotePrefix { get; set; }
-        IDbDataAdapter DataAdapter { get; set; }
-        IDbCommand GetDeleteCommand();
-        IDbCommand GetDeleteCommand(bool useColumnsForParameterNames);
-        IDbCommand GetInsertCommand();
-        IDbCommand GetInsertCommand(bool useColumnsForParameterNames);
-        IDbCommand GetUpdateCommand(bool useColumnsForParameterNames);
-        IDbCommand GetUpdateCommand();
+        ISqlProviderCommand GetDeleteCommand();
+        ISqlProviderCommand GetDeleteCommand(bool useColumnsForParameterNames);
+        ISqlProviderCommand GetInsertCommand();
+        ISqlProviderCommand GetInsertCommand(bool useColumnsForParameterNames);
+        ISqlProviderCommand GetUpdateCommand(bool useColumnsForParameterNames);
+        ISqlProviderCommand GetUpdateCommand();
 
        System.Data.ConflictOption ConflictOption { get; set; }
     }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SqlProxyProvider
 {
-    public interface ISqlProviderDataAdapter : System.Data.IDbDataAdapter
+    public interface ISqlProviderDataAdapter
     {
         System.Data.IDbDataAdapter DataAdapter { get; }
 
@@ -20,5 +20,10 @@ namespace SqlProxyProvider
         int Fill(DataTable dataTable);
         int Fill(DataSet dataSet, string tableName);
         int Fill(DataSet dataSet, int startRecord, int maxRecords, string srcTable);
+
+        ISqlProviderCommand SelectCommand { get; set; }
+        ISqlProviderCommand InsertCommand { get; set; }
+        ISqlProviderCommand UpdateCommand { get; set; }
+        ISqlProviderCommand DeleteCommand { get; set; }
     }
 }

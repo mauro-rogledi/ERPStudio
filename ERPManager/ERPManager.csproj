@@ -149,6 +149,9 @@
       <HintPath>..\packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.Fonts.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="SqlProxyProvider">
+      <HintPath>P:\ERPStudio\ERPManager\bin\Release\SqlProviders\SqlProxyProvider.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />

@@ -37,16 +37,16 @@ namespace ProvaProviders
 
             var result = GetDBType(typeof(String));
             ProxyProviderLoader.UseProvider = ProviderType.SQL;
-            var list = SqlProxyDatabaseHelper.ListDatabase("USR-ROGLEDIMAU1", "sa", "", true);
+            //var list = SqlProxyDatabaseHelper.ListDatabase("USR-ROGLEDIMAU1", "sa", "", true);
 
-            //var sqlconnectiostring = new SqlProxyConnectionStringbuilder
-            //{
-            //    DataSource = @"SALA\SQLEXPRESS",
-            //    //UserID = "sa",
-            //    InitialCatalog = "PLUMBER",
-            //    //Password = "sa.",
-            //    IntegratedSecurity = true
-            //};
+            var sqlconnectiostring = new SqlProxyConnectionStringbuilder
+            {
+                DataSource = @"SALA\SQLEXPRESS",
+                //UserID = "sa",
+                InitialCatalog = "PLUMBER",
+                //Password = "sa.",
+                IntegratedSecurity = true
+            };
 
             //var creadb = new SqlProxyDataBaseHelper
             //{
@@ -64,12 +64,12 @@ namespace ProvaProviders
 
             SqlProxyDatabaseHelper.Password = "aa";
 
-            var sqlconnectiostring = new SqlProxyConnectionStringbuilder
-            {
-                DataSource = @"USR-ROGLEDIMAU1",
-                UserID = "sa",
-                InitialCatalog = "NORTHWIND"
-            };
+            //var sqlconnectiostring = new SqlProxyConnectionStringbuilder
+            //{
+            //    DataSource = @"USR-ROGLEDIMAU1",
+            //    UserID = "sa",
+            //    InitialCatalog = "NORTHWIND"
+            //};
 
             //ProxyProviderLoader.UseProvider = ProviderType.SQLite;
             //var sqlconnectiostring = new SqlProxyConnectionStringbuilder
@@ -82,30 +82,30 @@ namespace ProvaProviders
                 connection.Open();
 
                 {
-                    //var transaction = connection.BeginTransaction();
-                    //var p1 = new SqlProxyParameter("@p1", DbType.String, 16)
-                    //{
-                    //    Value = "ARDUINO"
-                    //};
+                   // var transaction = connection.BeginTransaction();
+                    var p1 = new SqlProxyParameter("@p1", DbType.String, 16)
+                    {
+                        Value = "ARDUINO"
+                    };
 
                     //var p1 = new SqlProxyParameter("@p1", DbType.Int16)
                     //{
                     //    Value = 1
                     //};
 
-                    var p1 = new SqlProxyParameter("@p1", DbType.String, 5)
-                    {
-                        Value = "ALFKI"
-                    };
+                    //var p1 = new SqlProxyParameter("@p1", DbType.String, 5)
+                    //{
+                    //    Value = "ALFKI"
+                    //};
 
                     var dataSet = new DataSet();
-                    using (var sqlCmd = new SqlProxyCommand("SELECT * FROM CUSTOMERS where CustomerID = @p1"))
+                    //using (var sqlCmd = new SqlProxyCommand("SELECT * FROM CUSTOMERS where CustomerID = @p1"))
                     //using (var sqlCmd = new SqlProxyCommand("SELECT * FROM CL_MASTER where ID = @p1", connection))
-                    //using (var sqlCmd = new SqlProxyCommand("SELECT * FROM PL_MASTERS where Code = @p1", connection))
+                    using (var sqlCmd = new SqlProxyCommand(connection))
                     {
                         var p2 = sqlCmd.Parameters.Add(p1);
-                        sqlCmd.Parameters["@p1"] = "CIAO";
-                        var dAdapter = new SqlProxyDataAdapter
+                        sqlCmd.CommandText = "SELECT * FROM PL_MASTERS where Code = @p1";
+                        var dAdapter = new SqlProxyDataAdapter()
                         {
                             SelectCommand = sqlCmd
                         };
@@ -121,8 +121,8 @@ namespace ProvaProviders
                         //dAdapter.DeleteCommand = cBuilder.GetDeleteCommand();
 
 
-                        dAdapter.RowUpdating += DAdapter_RowUpdating;
-                        dAdapter.Fill(dataSet);
+                        //dAdapter.RowUpdating += DAdapter_RowUpdating;
+                        dAdapter.Fill(dataSet, "tablename");
                         var e = new RowUpdatedEventArgs(dataSet.Tables[0].Rows[0], new SqlCommand(), StatementType.Batch, new DataTableMapping());
 
                         //sqlCmd.Transaction = transaction;

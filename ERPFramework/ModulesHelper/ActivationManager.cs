@@ -216,12 +216,12 @@ namespace ERPFramework.ModulesHelper
             var modulePath = Path.Combine(applPath, modulefolder);
 
             var activationName = "activation.xml";
-            var menufolder = Path.Combine(modulefolder, "menu");
-            var activationfile = Path.Combine(menufolder, activationName);
+            var menufolder = Path.Combine(applPath,modulefolder, "menu");
+            var activationfile = Path.Combine(applPath,menufolder, activationName);
 
             var activationXMLFile = new XmlDocument();
 
-            if (!Directory.Exists(menufolder)|| !File.Exists(activationfile))
+            if (!Directory.Exists(menufolder) || !File.Exists(activationfile))
                 return;
 
             activationXMLFile.Load(activationfile);

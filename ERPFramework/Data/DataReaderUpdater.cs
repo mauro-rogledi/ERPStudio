@@ -143,13 +143,16 @@ namespace ERPFramework.Data
         public SqlProxyParameter AddParameters(string parameterName, IColumn column)
         {
             var param = new SqlProxyParameter(parameterName, column);
-            return sqlCM.Parameters.Add(param);
+            sqlCM.Parameters.Add(param);
+            return param;
         }
 
         public SqlProxyParameter AddParameters(string parameterName, Type colType, int colLen)
         {
             var dbType = ConvertColumnType.GetDBType(colType);
-            return sqlCM.Parameters.Add(new SqlProxyParameter(parameterName, dbType, colLen));
+            var param = new SqlProxyParameter(parameterName, dbType, colLen);
+            sqlCM.Parameters.Add(param);
+            return param;
         }
 
         protected virtual void AddParameters() { }

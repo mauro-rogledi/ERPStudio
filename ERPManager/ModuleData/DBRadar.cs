@@ -31,7 +31,6 @@ namespace ERPManager.ModuleData
         protected override void PrepareFindParameters()
         {
             rdrParameters.Add(
-                EF_Users.Username,
                 new SqlProxyParameter("@p1", EF_Users.Username)
                 );
         }
@@ -40,17 +39,18 @@ namespace ERPManager.ModuleData
         {
             qb.Clear();
             qb.SelectAllFrom<EF_Users>().
-                Where(EF_Users.Username).IsEqualTo(rdrParameters[EF_Users.Username]);
+                Where(EF_Users.Username).IsEqualTo(rdrParameters["@p1"]);
 
             sqlCmd.CommandText = qb.Query;
-            sqlCmd.Parameters.Add(rdrParameters);
+            for (int t = 0; t > rdrParameters.Count; t++)
+                sqlCmd.Parameters.Add(rdrParameters[t]);
 
             return true;
         }
 
         protected override void PrepareFindQuery(IRadarParameters param)
         {
-            rdrParameters[EF_Users.Username].Value = param[EF_Users.Username];
+            rdrParameters["@p1"].Value = param["@p1"];
         }
 
         protected override void OnFound(SqlProxyDataReader sqlReader)

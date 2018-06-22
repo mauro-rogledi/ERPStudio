@@ -26,8 +26,9 @@ namespace ERPFramework.ModulesHelper
 
         private static bool LoadMenu(ActivationModuleMemory module)
         {
+            var applPath = Path.GetDirectoryName(Application.ExecutablePath);
             var localize = System.Threading.Thread.CurrentThread.CurrentUICulture.Name;
-            var menuFolder = Path.Combine(module.ModulePath, "menu");
+            var menuFolder = Path.Combine(applPath, module.ModulePath, "menu");
             var menufile = string.Concat("menu.", localize, ".config");
 
             var modulemenufile = Path.Combine(menuFolder, menufile);

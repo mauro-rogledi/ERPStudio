@@ -135,7 +135,7 @@ namespace ERPFramework.Forms
             return true;
         }
 
-        public virtual void CreateSlaveParam(string name, SqlParametersCollection parameters)
+        public virtual void CreateSlaveParam(string name, SqlProxyParameterCollection parameters)
         {
         }
 
@@ -143,7 +143,7 @@ namespace ERPFramework.Forms
         {
         }
 
-        public virtual string CreateSlaveQuery(string name, SqlParametersCollection parameters)
+        public virtual string CreateSlaveQuery(string name, SqlProxyParameterCollection parameters)
         {
             return string.Empty;
         }

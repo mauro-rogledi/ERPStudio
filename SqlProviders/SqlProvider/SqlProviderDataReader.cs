@@ -9,7 +9,7 @@ namespace SqlProvider
         SqlDataReader sqlDataReader;
         public IDataReader DataReader => sqlDataReader;
 
-        SqlProviderDataReader(IDataReader idatareader) => sqlDataReader = idatareader as SqlDataReader;
+        public SqlProviderDataReader(IDataReader idatareader) => sqlDataReader = idatareader as SqlDataReader;
 
         public object this[int i] => sqlDataReader[i];
 

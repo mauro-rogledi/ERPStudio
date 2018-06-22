@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.SqlClient;
 using SqlProxyProvider;
@@ -9,10 +10,16 @@ namespace SqlProvider
 {
     class SqlProviderParameterCollection : ISqlProviderParameterCollection
     {
+        List<ISqlProviderParameter> parameterCollection = new List<ISqlProviderParameter>();
         SqlCommand sqlCommand;
-        public IDbCommand Command => sqlCommand;
+        public ISqlProviderCommand Command { get; private set; }
         public SqlProviderParameterCollection() { }
-        public SqlProviderParameterCollection(IDbCommand command) => sqlCommand = command as SqlCommand;
+
+        public SqlProviderParameterCollection(ISqlProviderCommand command)
+        {
+            Command = command;
+            sqlCommand = command.Command as SqlCommand;
+        }
 
         public bool IsReadOnly => sqlCommand.Parameters.IsReadOnly;
 
@@ -24,17 +31,18 @@ namespace SqlProvider
 
         public bool IsSynchronized => sqlCommand.Parameters.IsSynchronized;
 
-        public object this[string parameterName] { get => sqlCommand.Parameters[parameterName].Value; set => sqlCommand.Parameters[parameterName].Value = value; }
+        public ISqlProviderParameter this[string parameterName]
+        {
+            get => parameterCollection.Find(x => x.ParameterName == parameterName);
+        }
 
-
-        public object this[int index] { get => sqlCommand.Parameters[index].Value; set => sqlCommand.Parameters[index].Value = value; }
+        public ISqlProviderParameter this[int index] { get => parameterCollection[index]; }
 
 
         public ISqlProviderParameter Add(ISqlProviderParameter parameter)
         {
-            var param = parameter.Parameter as ISqlProviderParameter;
-
-            sqlCommand.Parameters.Add(param.Parameter);
+            parameterCollection.Add(parameter);
+            sqlCommand.Parameters.Add(parameter.Parameter);
 
             return parameter;
         }
@@ -52,20 +60,33 @@ namespace SqlProvider
         }
 
         public bool Contains(string parameterName) => sqlCommand.Parameters.Contains(parameterName);
+        public bool Contains(object value) => sqlCommand.Parameters.Contains(value);
+        public bool Contains(ISqlProviderParameter param) => sqlCommand.Parameters.Contains(param.Parameter);
 
         public int IndexOf(string parameterName) => sqlCommand.Parameters.IndexOf(parameterName);
-
-        public void RemoveAt(string parameterName) => sqlCommand.Parameters.RemoveAt(parameterName);
-
-        public bool Contains(object value) => sqlCommand.Parameters.Contains(value);
-
-        public void Clear() => sqlCommand.Parameters.Clear();
-
         public int IndexOf(object value) => sqlCommand.Parameters.IndexOf(value);
+        public int IndexOf(ISqlProviderParameter param) => sqlCommand.Parameters.IndexOf(param.ParameterName);
+
+        public void RemoveAt(string parameterName)
+        {
+            var param = parameterCollection.Find(x => x.ParameterName == parameterName);
+            parameterCollection.Remove(param);
+            sqlCommand.Parameters.RemoveAt(parameterName);
+        }
+
+        //@@TODO
+        public void Clear()
+        {
+            sqlCommand.Parameters.Clear();
+            parameterCollection.Clear();
+        }
+
 
         public void Insert(int index, object value) => sqlCommand.Parameters.Insert(index, value);
+        public void Insert(int index, ISqlProviderParameter param) => sqlCommand.Parameters.Insert(index, param.Parameter);
 
         public void Remove(object value) => sqlCommand.Parameters.Remove(value);
+        public void Remove(ISqlProviderParameter param) => sqlCommand.Parameters.Remove(param.Parameter);
 
         public void RemoveAt(int index) => sqlCommand.Parameters.RemoveAt(index);
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SqlProxyProvider;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -645,11 +646,11 @@ namespace ERPFramework.Data
 
         public QueryBuilder Is(string operators, object val, string qualified = "")
         {
-            if (val is SqlProxyParameter)
+            if (val is ISqlProviderParameter)
             {
-                sb.AppendFormat("{0} {1} ", operators, (val as SqlProxyParameter).ParameterName);
+                sb.AppendFormat("{0} {1} ", operators, (val as ISqlProviderParameter).ParameterName);
                 if (_hasExecuter && scc != null)
-                    scc.Parameters.Add((val as SqlProxyParameter));
+                    scc.Parameters.Add((val as ISqlProviderParameter));
 
             }
             else if (val is double || val is int)

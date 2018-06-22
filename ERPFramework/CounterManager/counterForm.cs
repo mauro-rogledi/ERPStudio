@@ -187,34 +187,32 @@ namespace ERPFramework.CounterManager
             base.dAdapter_RowUpdating(sender, e);
         }
 
-        protected override string CreateMasterQuery(SqlParametersCollection parameters)
+        protected override string CreateMasterQuery(SqlProxyParameterCollection parameters)
         {
             return new QueryBuilder()
                 .SelectAllFrom<EF_Counter>()
-                .Where(EF_Counter.Year).IsEqualTo(parameters[EF_Counter.Year])
-                .And(EF_Counter.Type).IsEqualTo(parameters[EF_Counter.Type])
+                .Where(EF_Counter.Year).IsEqualTo(parameters["@p1"])
+                .And(EF_Counter.Type).IsEqualTo(parameters["@p2"])
                 .Query;
         }
 
-        protected override void CreateMasterParam(SqlParametersCollection parameters)
+        protected override void CreateMasterParam(SqlProxyParameterCollection parameters)
         {
             parameters.Add(
-                EF_Counter.Year,
                 new SqlProxyParameter("@p1", EF_Counter.Year));
 
             parameters.Add(
-                EF_Counter.Type,
                 new SqlProxyParameter("@p2", EF_Counter.Type));
         }
 
 
-        protected override string CreateSlaveQuery<T>(SqlParametersCollection parameters)
+        protected override string CreateSlaveQuery<T>(SqlProxyParameterCollection parameters)
         {
             if (typeof(T) == typeof(EF_CounterValue))
             {
                 var qb = new QueryBuilder().
                        SelectAllFrom<EF_CounterValue>().
-                        Where(EF_CounterValue.Type).IsEqualTo(parameters[EF_CounterValue.Type]).
+                        Where(EF_CounterValue.Type).IsEqualTo(parameters["@p2"]).
                         OrderBy(EF_CounterValue.Code);
 
                 return qb.Query;
@@ -223,12 +221,11 @@ namespace ERPFramework.CounterManager
             return "";
         }
 
-        protected override void CreateSlaveParam<T>(SqlParametersCollection parameters)
+        protected override void CreateSlaveParam<T>(SqlProxyParameterCollection parameters)
         {
             if (typeof(T) == typeof(EF_CounterValue))
             {
                 parameters.Add(
-                    EF_CounterValue.Type,
                     new SqlProxyParameter("@p2", EF_CounterValue.Type));
             }
         }
@@ -237,12 +234,12 @@ namespace ERPFramework.CounterManager
         {
             if (dataadapterproperties.Name == EF_Counter.Name)
             {
-                dataadapterproperties.Parameters[EF_Counter.Year].Value = key[EF_Counter.Year];
-                dataadapterproperties.Parameters[EF_Counter.Type].Value = key[EF_Counter.Type];
+                dataadapterproperties.Parameters["@p1"].Value = key[EF_Counter.Year];
+                dataadapterproperties.Parameters["@p2"].Value = key[EF_Counter.Type];
             }
             else
             {
-                dataadapterproperties.Parameters[EF_CounterValue.Code].Value = key[EF_CounterValue.Code];
+                dataadapterproperties.Parameters["@p2"].Value = key[EF_CounterValue.Code];
             }
         }
     }

@@ -40,7 +40,7 @@ namespace ERPFramework.Controls
         protected IColumn rdrCodeColumn;
         protected IColumn rdrDescColumn;
         protected NameSpace rdrNameSpace;
-        protected SqlParametersCollection rdrParameters;
+        protected SqlProxyParameterCollection rdrParameters;
 
         abstract protected string DefineBrowseQuery(SqlProxyCommand sqlCmd, string findQuery);
 
@@ -100,7 +100,6 @@ namespace ERPFramework.Controls
             InitializeComponent();
             dataGridView1.AutoGenerateColumns = false;
             dataGridView1.ColumnHeadersDefaultCellStyle.Font =  new System.Drawing.Font("Segoe UI", 11);
-            rdrParameters = new SqlParametersCollection();
         }
 
         protected override void OnLoad(EventArgs e)
@@ -232,8 +231,11 @@ namespace ERPFramework.Controls
                 Connection = rdrConnection
             };
 
-            rdrBrowseSqlCommand = new SqlProxyCommand();
-            rdrBrowseSqlCommand.Connection = rdrConnection;
+            rdrBrowseSqlCommand = new SqlProxyCommand
+            {
+                Connection = rdrConnection
+            };
+            rdrParameters = new SqlProxyParameterCollection(rdrBrowseSqlCommand);
 
             rdrBrowseSqlCommand.CommandText = DefineBrowseQuery(rdrBrowseSqlCommand, string.Empty);
             rdrDataAdapter = new SqlProxyDataAdapter(rdrBrowseSqlCommand);

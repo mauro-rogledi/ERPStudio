@@ -12,22 +12,27 @@ namespace SqlProvider
     class SqlProviderCommandBuilder : ISqlProviderCommandBuilder
     {
         SqlCommandBuilder sqlCommandBuilder;
+        ISqlProviderDataAdapter dataAdapter;
 
         public SqlProviderCommandBuilder() => sqlCommandBuilder = new SqlCommandBuilder();
-        public SqlProviderCommandBuilder(SqlProviderDataAdapter dataAdapter) => sqlCommandBuilder = new SqlCommandBuilder(dataAdapter.DataAdapter as SqlDataAdapter);
+        public SqlProviderCommandBuilder(ISqlProviderDataAdapter dataAdapter) => sqlCommandBuilder = new SqlCommandBuilder(dataAdapter.DataAdapter as SqlDataAdapter);
 
         public string QuoteSuffix { get => sqlCommandBuilder.QuoteSuffix; set => sqlCommandBuilder.QuoteSuffix = value; }
         public string QuotePrefix { get => sqlCommandBuilder.QuotePrefix; set => sqlCommandBuilder.QuotePrefix = value; }
-        public IDbDataAdapter DataAdapter { get => sqlCommandBuilder.DataAdapter; set => sqlCommandBuilder.DataAdapter = value as SqlDataAdapter; }
+        public ISqlProviderDataAdapter DataAdapter
+        {
+            get => dataAdapter;
+            set { dataAdapter = value; sqlCommandBuilder.DataAdapter = dataAdapter.DataAdapter as SqlDataAdapter; }
+        }
         public ConflictOption ConflictOption { get => sqlCommandBuilder.ConflictOption; set => sqlCommandBuilder.ConflictOption = value; }
 
-        public IDbCommand GetDeleteCommand() => sqlCommandBuilder.GetDeleteCommand();
-        public IDbCommand GetDeleteCommand(bool useColumnsForParameterNames) => sqlCommandBuilder.GetDeleteCommand(useColumnsForParameterNames);
+        public ISqlProviderCommand GetDeleteCommand() => new SqlProviderCommand(sqlCommandBuilder.GetDeleteCommand());
+        public ISqlProviderCommand GetDeleteCommand(bool useColumnsForParameterNames) => new SqlProviderCommand(sqlCommandBuilder.GetDeleteCommand(useColumnsForParameterNames));
 
-        public IDbCommand GetInsertCommand() => sqlCommandBuilder.GetInsertCommand();
-        public IDbCommand GetInsertCommand(bool useColumnsForParameterNames) => sqlCommandBuilder.GetInsertCommand(useColumnsForParameterNames);
+        public ISqlProviderCommand GetInsertCommand() => new SqlProviderCommand(sqlCommandBuilder.GetInsertCommand());
+        public ISqlProviderCommand GetInsertCommand(bool useColumnsForParameterNames) => new SqlProviderCommand(sqlCommandBuilder.GetInsertCommand(useColumnsForParameterNames));
 
-        public IDbCommand GetUpdateCommand() => sqlCommandBuilder.GetUpdateCommand();
-        public IDbCommand GetUpdateCommand(bool useColumnsForParameterNames) => sqlCommandBuilder.GetUpdateCommand(useColumnsForParameterNames);
+        public ISqlProviderCommand GetUpdateCommand() => new SqlProviderCommand(sqlCommandBuilder.GetUpdateCommand());
+        public ISqlProviderCommand GetUpdateCommand(bool useColumnsForParameterNames) => new SqlProviderCommand(sqlCommandBuilder.GetUpdateCommand(useColumnsForParameterNames));
     }
 }

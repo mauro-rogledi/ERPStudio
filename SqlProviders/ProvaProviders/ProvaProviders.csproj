@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FrameworkClass.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlProxy.cs" />
@@ -57,10 +58,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SqLiteProvider\SqLiteProvider.csproj">
-      <Project>{324674f1-a9cf-4725-a273-708b21338520}</Project>
-      <Name>SqLiteProvider</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SqlProvider\SqlServerProvider.csproj">
       <Project>{c2ab969d-0a4a-4aa2-9f29-c3ae7d42b7f6}</Project>
       <Name>SqlProvider</Name>

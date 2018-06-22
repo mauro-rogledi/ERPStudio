@@ -66,66 +66,63 @@ namespace ERPFramework.Data
     #endregion
 
     #region SqlProxyConnection
-    public sealed class SqlProxyConnection : ISqlProviderConnection, ICloneable, IDisposable
+    public sealed class SqlProxyConnection : ICloneable, IDisposable
     {
-        ISqlProviderConnection dbConnection;
-        public ISqlProviderConnection Connection => dbConnection;
+        public ISqlProviderConnection Connection { get; private set; }
 
         public SqlProxyConnection(string connection = "")
         {
             if (!string.IsNullOrEmpty(connection))
-                dbConnection = ProxyProviderLoader.CreateInstance<ISqlProviderConnection>("SqlProvider.SqlProviderConnection", connection);
+                Connection = ProxyProviderLoader.CreateInstance<ISqlProviderConnection>("SqlProvider.SqlProviderConnection", connection);
         }
 
         public string ConnectionString
         {
-            get => dbConnection.ConnectionString;
-            set => dbConnection.ConnectionString = value;
+            get => Connection.ConnectionString;
+            set => Connection.ConnectionString = value;
         }
 
-        public int ConnectionTimeout => dbConnection.ConnectionTimeout;
+        public int ConnectionTimeout => Connection.ConnectionTimeout;
 
-        public string Database => dbConnection.Database;
+        public string Database => Connection.Database;
 
-        public ConnectionState State => dbConnection.State;
-
-        IDbConnection ISqlProviderConnection.Connection => dbConnection;
+        public ConnectionState State => Connection.State;
 
         public SqlProxyTransaction BeginTransaction()
         {
-            return new SqlProxyTransaction(dbConnection.BeginTransaction());
+            return new SqlProxyTransaction(Connection.BeginTransaction());
         }
 
         public SqlProxyTransaction BeginTransaction(IsolationLevel il)
         {
-            return new SqlProxyTransaction(dbConnection.BeginTransaction(il));
+            return new SqlProxyTransaction(Connection.BeginTransaction(il));
         }
 
         public void ChangeDatabase(string databaseName)
         {
-            dbConnection.ChangeDatabase(databaseName);
+            Connection.ChangeDatabase(databaseName);
         }
 
         public void Close()
         {
-            dbConnection.Close();
+            Connection.Close();
         }
 
-        public IDbCommand CreateCommand()
+        public SqlProxyCommand CreateCommand()
         {
-            return dbConnection.CreateCommand();
+            return new SqlProxyCommand(Connection.CreateCommand());
         }
 
         public void Open()
         {
-            dbConnection.Open();
+            Connection.Open();
         }
 
         public object Clone()
         {
             var Cloned = new SqlProxyConnection
             {
-                dbConnection = this.dbConnection
+                Connection = this.Connection
             };
 
             return Cloned;
@@ -133,127 +130,128 @@ namespace ERPFramework.Data
 
         public void Dispose()
         {
-            dbConnection.Dispose();
+            Connection.Dispose();
         }
-
-        IDbTransaction IDbConnection.BeginTransaction() => dbConnection.BeginTransaction();
-
-        IDbTransaction IDbConnection.BeginTransaction(IsolationLevel il) => dbConnection.BeginTransaction(il);
     }
     #endregion
 
     #region SqlProxyCommand
-    public sealed class SqlProxyCommand : ISqlProviderCommand, ICloneable
+    public sealed class SqlProxyCommand : IDisposable, ICloneable
     {
-        ISqlProviderCommand dbCommand;
+        public ISqlProviderCommand Command { get; set; }
+        SqlProxyConnection dbConnection;
+        SqlProxyTransaction dbTransaction;
 
-        public IDbCommand Command => dbCommand as IDbCommand;
+        public SqlProxyParameterCollection Parameters { get; }
 
         public SqlProxyCommand()
         {
-            dbCommand = ProxyProviderLoader.CreateInstance<ISqlProviderCommand>("SqlProvider.SqlProviderCommand");
-            Parameters = new SqlProxyParameterCollection(dbCommand.Command);
+            Command = ProxyProviderLoader.CreateInstance<ISqlProviderCommand>("SqlProvider.SqlProviderCommand");
+            Parameters = new SqlProxyParameterCollection(Command);
         }
 
-        public SqlProxyCommand(ISqlProviderConnection connection)
+        public SqlProxyCommand(ISqlProviderCommand command)
+        {
+            Command = command;
+            Parameters = new SqlProxyParameterCollection(Command);
+        }
+
+        public SqlProxyCommand(SqlProxyConnection connection)
             : this()
         {
-            Connection = connection.Connection;
+            Connection = connection;
         }
 
         public SqlProxyCommand(IDbCommand command)
         {
-            dbCommand = ProxyProviderLoader.CreateInstance<ISqlProviderCommand>("SqlProvider.SqlProviderCommand", command);
-            Parameters = new SqlProxyParameterCollection(dbCommand);
+            Command = ProxyProviderLoader.CreateInstance<ISqlProviderCommand>("SqlProvider.SqlProviderCommand", command);
+            Parameters = new SqlProxyParameterCollection(Command);
         }
 
         public SqlProxyCommand(string cmdText)
         {
-            dbCommand = ProxyProviderLoader.CreateInstance<ISqlProviderCommand>("SqlProvider.SqlProviderCommand", cmdText);
-            Parameters = new SqlProxyParameterCollection(dbCommand.Command);
+            Command = ProxyProviderLoader.CreateInstance<ISqlProviderCommand>("SqlProvider.SqlProviderCommand", cmdText);
+            Parameters = new SqlProxyParameterCollection(Command);
         }
 
         public SqlProxyCommand(string cmdText, SqlProxyConnection connection)
         {
-            dbCommand = ProxyProviderLoader.CreateInstance<ISqlProviderCommand>("SqlProvider.SqlProviderCommand", cmdText, connection.Connection);
-            Parameters = new SqlProxyParameterCollection(dbCommand.Command);
+            dbConnection = connection;
+            Command = ProxyProviderLoader.CreateInstance<ISqlProviderCommand>("SqlProvider.SqlProviderCommand", cmdText, connection.Connection);
+            Parameters = new SqlProxyParameterCollection(Command);
         }
         public SqlProxyCommand(string cmdText, SqlProxyConnection connection, SqlProxyTransaction transaction)
         {
-            dbCommand = ProxyProviderLoader.CreateInstance<ISqlProviderCommand>("SqlProvider.SqlProviderCommand", cmdText, connection.Connection, transaction.Transaction);
-            Parameters = new SqlProxyParameterCollection(dbCommand.Command);
+            Command = ProxyProviderLoader.CreateInstance<ISqlProviderCommand>("SqlProvider.SqlProviderCommand", cmdText, connection.Connection, transaction.Transaction);
+            Parameters = new SqlProxyParameterCollection(Command);
         }
 
-        public IDbConnection Connection { get => dbCommand.Connection; set => dbCommand.Connection = value; }
-        public IDbTransaction Transaction { get => dbCommand.Transaction; set => dbCommand.Transaction = (value as ISqlProviderTransaction).Transaction; }
-        public string CommandText { get => dbCommand.CommandText; set => dbCommand.CommandText = value; }
-        public int CommandTimeout { get => dbCommand.CommandTimeout; set => dbCommand.CommandTimeout = value; }
-        public CommandType CommandType { get => dbCommand.CommandType; set => dbCommand.CommandType = value; }
+        public SqlProxyConnection Connection
+        {
+            get => dbConnection;
+            set { dbConnection = value; Command.Connection = dbConnection.Connection; }
+        }
 
-        public SqlProxyParameterCollection Parameters { get; }
-        public UpdateRowSource UpdatedRowSource { get => dbCommand.UpdatedRowSource; set => dbCommand.UpdatedRowSource = value; }
+        public SqlProxyTransaction Transaction
+        {
+            get => dbTransaction;
+            set { dbTransaction = value; Command.Transaction = dbTransaction; }
+        }
+        public string CommandText { get => Command.CommandText; set => Command.CommandText = value; }
+        public int CommandTimeout { get => Command.CommandTimeout; set => Command.CommandTimeout = value; }
+        public CommandType CommandType { get => Command.CommandType; set => Command.CommandType = value; }
 
-        IDataParameterCollection IDbCommand.Parameters => throw new NotImplementedException();
+        public UpdateRowSource UpdatedRowSource { get => Command.UpdatedRowSource; set => Command.UpdatedRowSource = value; }
 
         public void Cancel()
         {
-            dbCommand.Cancel();
+            Command.Cancel();
         }
 
-        public IDbDataParameter CreateParameter()
+        public SqlProxyParameter CreateParameter()
         {
-            return dbCommand.CreateParameter();
+            return new SqlProxyParameter(Command.CreateParameter());
         }
 
         public void Dispose()
         {
-            dbCommand.Dispose();
+            Command.Dispose();
         }
 
         public int ExecuteNonQuery()
         {
-            return dbCommand.ExecuteNonQuery();
+            return Command.ExecuteNonQuery();
         }
 
         public SqlProxyDataReader ExecuteReader()
         {
-            var exeread = dbCommand.ExecuteReader();
+            var exeread = Command.ExecuteReader();
             return new SqlProxyDataReader(exeread);
         }
 
         public SqlProxyDataReader ExecuteReader(CommandBehavior behavior)
         {
-            return new SqlProxyDataReader(dbCommand.ExecuteReader(behavior) as SqlProxyDataReader);
+            return new SqlProxyDataReader(Command.ExecuteReader(behavior));
         }
 
         public object ExecuteScalar()
         {
-            return dbCommand.ExecuteScalar();
+            return Command.ExecuteScalar();
         }
 
         public void Prepare()
         {
-            dbCommand.Prepare();
+            Command.Prepare();
         }
 
         object ICloneable.Clone()
         {
             var Cloned = new SqlProxyCommand()
             {
-                dbCommand = this.dbCommand
+                Command = this.Command
             };
 
             return Cloned;
-        }
-
-        IDataReader IDbCommand.ExecuteReader()
-        {
-            throw new NotImplementedException();
-        }
-
-        IDataReader IDbCommand.ExecuteReader(CommandBehavior behavior)
-        {
-            throw new NotImplementedException();
         }
     }
     #endregion
@@ -261,40 +259,43 @@ namespace ERPFramework.Data
     #region SqlProxyTransaction
     public sealed class SqlProxyTransaction : ISqlProviderTransaction
     {
-        IDbTransaction _dbTransaction;
-        public IDbTransaction Transaction => _dbTransaction;
+        public IDbTransaction Transaction { get; }
+        ISqlProviderTransaction dbTransaction;
 
-        public SqlProxyTransaction(IDbTransaction dbTransaction) => _dbTransaction = dbTransaction;
+        public SqlProxyTransaction(ISqlProviderTransaction dbTransaction)
+        {
+            Transaction = dbTransaction.Transaction;
+            this.dbTransaction = dbTransaction;
+        }
 
-        public IDbConnection Connection => _dbTransaction.Connection;
+        public ISqlProviderConnection Connection => dbTransaction.Connection;
 
-        public IsolationLevel IsolationLevel => _dbTransaction.IsolationLevel;
-
+        public IsolationLevel IsolationLevel => Transaction.IsolationLevel;
 
         public void Commit()
         {
-            _dbTransaction.Commit();
+            Transaction.Commit();
         }
 
         public void Dispose()
         {
-            _dbTransaction.Dispose();
+            Transaction.Dispose();
         }
 
         public void Rollback()
         {
-            _dbTransaction.Rollback();
+            Transaction.Rollback();
         }
     }
     #endregion
 
     #region SqlProxyDataReader
-    public sealed class SqlProxyDataReader : ISqlProviderDataReader
+    public sealed class SqlProxyDataReader
     {
         IDataReader dbDataReader;
         public IDataReader DataReader => dbDataReader;
 
-        public SqlProxyDataReader(IDataReader idatareader) => dbDataReader = idatareader;
+        public SqlProxyDataReader(ISqlProviderDataReader datareader) => dbDataReader = datareader.DataReader;
 
         public object this[int i] => dbDataReader[i];
 
@@ -384,63 +385,69 @@ namespace ERPFramework.Data
     #region SqlProxyParameter
     public class SqlProxyParameter : ISqlProviderParameter
     {
-        ISqlProviderParameter dbParameter;
-        public IDbDataParameter Parameter => dbParameter as IDbDataParameter;
+        public ISqlProviderParameter Parameter { get; set; }
 
         public SqlProxyParameter()
         {
-            dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter");
+            Parameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter");
         }
 
         public SqlProxyParameter(string parameterName, IColumn column)
         {
             var dbType = ConvertColumnType.GetDBType(column.ColType);
-            dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", parameterName, dbType);
-            dbParameter.Value = column.DefaultValue;
+            Parameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", parameterName, dbType);
+            Parameter.Value = column.DefaultValue;
         }
 
         public SqlProxyParameter(string parameterName, IColumn column, object value)
         {
             var dbType = ConvertColumnType.GetDBType(column.ColType);
-            dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", parameterName, dbType);
-            dbParameter.Value = value;
+            Parameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", parameterName, dbType);
+            Parameter.Value = value;
+        }
+
+        public SqlProxyParameter(IDbDataParameter parameter)
+        {
+            Parameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", parameter);
         }
 
         public SqlProxyParameter(string parameterName, DbType dbType)
         {
-            dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", parameterName, dbType);
+            Parameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", parameterName, dbType);
         }
         public SqlProxyParameter(string parameterName, object value)
         {
-            dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", parameterName, value);
+            Parameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", parameterName, value);
         }
         public SqlProxyParameter(string parameterName, DbType dbType, int size)
         {
-            dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", parameterName, dbType, size);
+            Parameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", parameterName, dbType, size);
         }
         public SqlProxyParameter(string parameterName, DbType dbType, int size, string sourceColumn)
         {
-            dbParameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", parameterName, dbType, size, sourceColumn);
+            Parameter = ProxyProviderLoader.CreateInstance<ISqlProviderParameter>("SqlProvider.SqlProviderParameter", parameterName, dbType, size, sourceColumn);
         }
 
-        public byte Precision { get => dbParameter.Precision; set => dbParameter.Precision = value; }
-        public byte Scale { get => dbParameter.Scale; set => dbParameter.Scale = value; }
-        public int Size { get => dbParameter.Size; set => dbParameter.Size = value; }
-        public DbType DbType { get => dbParameter.DbType; set => dbParameter.DbType = value; }
-        public ParameterDirection Direction { get => dbParameter.Direction; set => dbParameter.Direction = value; }
+        public byte Precision { get => Parameter.Precision; set => Parameter.Precision = value; }
+        public byte Scale { get => Parameter.Scale; set => Parameter.Scale = value; }
+        public int Size { get => Parameter.Size; set => Parameter.Size = value; }
+        public DbType DbType { get => Parameter.DbType; set => Parameter.DbType = value; }
+        public ParameterDirection Direction { get => Parameter.Direction; set => Parameter.Direction = value; }
 
-        public bool IsNullable => dbParameter.IsNullable;
+        public bool IsNullable => Parameter.IsNullable;
 
-        public string ParameterName { get => dbParameter.ParameterName; set => dbParameter.ParameterName = value; }
-        public string SourceColumn { get => dbParameter.SourceColumn; set => dbParameter.SourceColumn = value; }
-        public DataRowVersion SourceVersion { get => dbParameter.SourceVersion; set => dbParameter.SourceVersion = value; }
+        public string ParameterName { get => Parameter.ParameterName; set => Parameter.ParameterName = value; }
+        public string SourceColumn { get => Parameter.SourceColumn; set => Parameter.SourceColumn = value; }
+        public DataRowVersion SourceVersion { get => Parameter.SourceVersion; set => Parameter.SourceVersion = value; }
         public object Value
         {
             // TODO
-            get => dbParameter.Value; set => dbParameter.Value = (value is Enum)
+            get => Parameter.Value; set => Parameter.Value = (value is Enum)
                ? ((Enum)value)//.Int()
                : value;
         }
+
+        IDbDataParameter ISqlProviderParameter.Parameter { get; set; }
     }
     #endregion
 
@@ -557,8 +564,8 @@ namespace ERPFramework.Data
     #region SqlProxyDataAdapter
     public class SqlProxyDataAdapter
     {
-        ISqlProviderDataAdapter dbDataAdapter;
-        public IDbDataAdapter DataAdapter => dbDataAdapter;
+        public IDbDataAdapter DataAdapter => dbDataAdapter.DataAdapter;
+        public ISqlProviderDataAdapter dbDataAdapter;
 
         EventHandler<RowUpdatingEventArgs> RowUpdatingEventHandler;
         EventHandler<RowUpdatedEventArgs> RowUpdatedEventHandler;
@@ -570,7 +577,7 @@ namespace ERPFramework.Data
             dbDataAdapter = ProxyProviderLoader.CreateInstance<ISqlProviderDataAdapter>("SqlProvider.SqlProviderDataAdapter");
         }
 
-        public SqlProxyDataAdapter(ISqlProviderCommand selectCommand) => dbDataAdapter = ProxyProviderLoader.CreateInstance<ISqlProviderDataAdapter>("SqlProvider.SqlProviderDataAdapter", selectCommand.Command);
+        public SqlProxyDataAdapter(SqlProxyCommand selectCommand) => dbDataAdapter = ProxyProviderLoader.CreateInstance<ISqlProviderDataAdapter>("SqlProvider.SqlProviderDataAdapter", selectCommand.Command);
 
         public SqlProxyDataAdapter(string selectCommandText, string selectConnectionString) => dbDataAdapter = ProxyProviderLoader.CreateInstance<ISqlProviderDataAdapter>("SqlProvider.SqlProviderDataAdapter", selectCommandText, selectConnectionString);
 
@@ -582,7 +589,7 @@ namespace ERPFramework.Data
             set
             {
                 selectCommand = value;
-                dbDataAdapter.SelectCommand = (value.Command as ISqlProviderCommand).Command;
+                DataAdapter.SelectCommand = value.Command.Command;
             }
         }
 
@@ -592,7 +599,7 @@ namespace ERPFramework.Data
             set
             {
                 insertCommand = value;
-                dbDataAdapter.InsertCommand = (value.Command as ISqlProviderCommand).Command;
+                DataAdapter.InsertCommand = value.Command.Command;
             }
         }
         public SqlProxyCommand UpdateCommand
@@ -601,7 +608,7 @@ namespace ERPFramework.Data
             set
             {
                 updateCommand = value;
-                dbDataAdapter.UpdateCommand = (value.Command as ISqlProviderCommand).Command;
+                DataAdapter.UpdateCommand = value.Command.Command;
             }
         }
         public SqlProxyCommand DeleteCommand
@@ -610,24 +617,23 @@ namespace ERPFramework.Data
             set
             {
                 deleteCommand = value;
-                dbDataAdapter.DeleteCommand = (value.Command as ISqlProviderCommand).Command;
+                DataAdapter.DeleteCommand = value.Command.Command;
             }
         }
-        public MissingMappingAction MissingMappingAction { get => dbDataAdapter.MissingMappingAction; set => dbDataAdapter.MissingMappingAction = value; }
+        public MissingMappingAction MissingMappingAction { get => DataAdapter.MissingMappingAction; set => DataAdapter.MissingMappingAction = value; }
         public MissingSchemaAction MissingSchemaAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public ITableMappingCollection TableMappings => dbDataAdapter.TableMappings;
+        public ITableMappingCollection TableMappings => DataAdapter.TableMappings;
 
         public int Fill(DataTable dataTable) => dbDataAdapter.Fill(dataTable);
-        public int Fill(DataSet dataSet) => dbDataAdapter.Fill(dataSet);
         public int Fill(DataSet dataSet, string srcTable) => dbDataAdapter.Fill(dataSet, srcTable);
         public int Fill(DataSet dataSet, int startRecord, int maxRecords, string srcTable) => dbDataAdapter.Fill(dataSet, startRecord, maxRecords, srcTable);
 
-        public DataTable[] FillSchema(DataSet dataSet, SchemaType schemaType) => dbDataAdapter.FillSchema(dataSet, schemaType);
+        public DataTable[] FillSchema(DataSet dataSet, SchemaType schemaType) => DataAdapter.FillSchema(dataSet, schemaType);
 
-        public IDataParameter[] GetFillParameters() => dbDataAdapter.GetFillParameters();
+        public IDataParameter[] GetFillParameters() => DataAdapter.GetFillParameters();
 
-        public int Update(DataSet dataSet) => dbDataAdapter.Update(dataSet);
-        public int Update(DataSet dataSet, string srcTable) => dbDataAdapter.Update(dataSet, srcTable);
+        public int Update(DataSet dataSet) => DataAdapter.Update(dataSet);
+        public int Update(DataSet dataSet, string table) => dbDataAdapter.Update(dataSet, table);
 
         public event EventHandler<RowUpdatingEventArgs> RowUpdating
         {
@@ -685,7 +691,7 @@ namespace ERPFramework.Data
 
         public SqlProxyCommandBuilder(SqlProxyDataAdapter dataAdapter)
         {
-            CommandBuilder = ProxyProviderLoader.CreateInstance<ISqlProviderCommandBuilder>("SqlProvider.SqlProviderCommandBuilder", dataAdapter.DataAdapter);
+            CommandBuilder = ProxyProviderLoader.CreateInstance<ISqlProviderCommandBuilder>("SqlProvider.SqlProviderCommandBuilder", dataAdapter.dbDataAdapter);
         }
 
         public string QuoteSuffix { get => CommandBuilder.QuoteSuffix; set => CommandBuilder.QuoteSuffix = value; }
@@ -696,7 +702,7 @@ namespace ERPFramework.Data
             set
             {
                 dataAdapter = value;
-                CommandBuilder.DataAdapter = value.DataAdapter;
+                CommandBuilder.DataAdapter = dataAdapter.dbDataAdapter;
             }
         }
         public ConflictOption ConflictOption { get => CommandBuilder.ConflictOption; set => CommandBuilder.ConflictOption = value; }
@@ -717,15 +723,19 @@ namespace ERPFramework.Data
     public class SqlProxyParameterCollection
     {
         ISqlProviderParameterCollection Parameters { get; }
-        public SqlProxyParameterCollection(IDbCommand command)
+        public SqlProxyParameterCollection(SqlProxyCommand command)
+        {
+            Parameters = ProxyProviderLoader.CreateInstance<ISqlProviderParameterCollection>("SqlProvider.SqlProviderParameterCollection", command.Command);
+        }
+        public SqlProxyParameterCollection(ISqlProviderCommand command)
         {
             Parameters = ProxyProviderLoader.CreateInstance<ISqlProviderParameterCollection>("SqlProvider.SqlProviderParameterCollection", command);
         }
 
-        public ISqlProviderParameter this[string parameterName] { get => Parameters[parameterName] as ISqlProviderParameter; set => Parameters[parameterName] = value; }
-        public object this[int index] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public ISqlProviderParameter this[string parameterName] { get => Parameters[parameterName];  }
+        public ISqlProviderParameter this[int index] { get => Parameters[index]; }
 
-        public IDbCommand Command => Parameters.Command;
+        public ISqlProviderCommand Command => Parameters.Command;
 
         public bool IsReadOnly => Parameters.IsReadOnly;
 
@@ -737,21 +747,30 @@ namespace ERPFramework.Data
 
         public bool IsSynchronized => Parameters.IsSynchronized;
 
-        public int Add(object value) => Parameters.Add(value);
-
-        public SqlProxyParameter Add(SqlProxyParameter param) => Parameters.Add(param) as SqlProxyParameter;
-
-        public void AddRange(SqlProxyParameter[] param) => Parameters.AddRange(param);
-
-        public void AddRange(SqlParametersCollection parameters)
+        public void Add(SqlProxyParameter param)
         {
-            parameters.Values.ToList().ForEach(p => Parameters.Add(p as ISqlProviderParameter) );
+            Parameters.Add(param.Parameter);
         }
 
-        public void AddRange(System.Collections.Generic.List<SqlProxyParameter> parameters)
+        public void Add(ISqlProviderParameter param)
         {
-            parameters.ForEach(p => Parameters.Add(p as ISqlProviderParameter));
+            Parameters.Add(param);
         }
+
+        //public int Add(object value) => Parameters.Add(value);
+
+        //public SqlProxyParameter Add(SqlProxyParameter param)
+        //{
+        //    Parameters.Add(param.Parameter);
+        //    return param as SqlProxyParameter;
+        //}
+
+        public void AddRange(ISqlProviderParameterCollection param) => throw new Exception("missing");
+          
+
+        public void AddRange(ISqlProviderParameter[] param) => Parameters.AddRange(param);
+
+        public void AddRange(List<ISqlProviderParameter> param) => Parameters.AddRange(param);
 
         public void Clear() => Parameters.Clear();
 
@@ -759,8 +778,8 @@ namespace ERPFramework.Data
 
         public bool Contains(object value) => Parameters.Contains(value);
 
-        public void CopyTo(Array array, int index) => Parameters.CopyTo(array, index);
-        public IEnumerator GetEnumerator() => Parameters.GetEnumerator();
+        //public void CopyTo(Array array, int index) => Parameters.CopyTo(array, index);
+        //public IEnumerator GetEnumerator() => Parameters.GetEnumerator();
 
         public int IndexOf(string parameterName) => Parameters.IndexOf(parameterName);
 
