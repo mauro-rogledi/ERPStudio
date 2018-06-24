@@ -4,7 +4,7 @@ using ERPFramework.Controls;
 
 namespace ERPFramework.Data
 {
-    public class RadarCodesParam : RadarParameters
+    internal class RadarCodesParam : RadarParameters
     {
         public RadarCodesParam(string code)
         {
@@ -12,7 +12,7 @@ namespace ERPFramework.Data
         }
     }
 
-    public class RadarCounterParam : RadarParameters
+    internal class RadarCounterParam : RadarParameters
     {
         public RadarCounterParam(int year, int type)
         {
@@ -23,7 +23,7 @@ namespace ERPFramework.Data
 
     #region RadarCodes
 
-    public class RadarCodes : RadarForm
+    internal class RadarCodes : RadarForm
     {
         private QueryBuilder qb = new QueryBuilder();
 
@@ -97,7 +97,7 @@ namespace ERPFramework.Data
 
     #region Radar Counter
 
-    public class RadarCounter : RadarForm
+    internal class RadarCounter : RadarForm
     {
         private QueryBuilder qb = new QueryBuilder();
 

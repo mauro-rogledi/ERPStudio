@@ -283,12 +283,10 @@ namespace ERPFramework.Data
 
         #region Costructor
 
-        /// <summary>
-        /// 9
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="conString"></param>
-        ///
+        protected DBManager(IDocument document)
+            : this(document.Name, document)
+        { }
+
         protected DBManager(string name, IDocument document) // ProviderType providerType, string conString)
         {
             this.myDocument = document;
@@ -433,7 +431,21 @@ namespace ERPFramework.Data
 
         public DBManager MasterTable<T>(bool createCommand = true)
         {
-            AddMaster<T>(createCommand);
+            System.Diagnostics.Debug.Assert(typeof(T).BaseType == typeof(Table));
+            var tableName = typeof(T).Tablename();
+            ForeignKey = typeof(T).GetField("ForeignKey").GetValue(null) as IColumn;
+
+            masterDataAdapterProperties = new DataAdapterProperties();
+
+            var dCommand = CreateMasterCommand();
+
+            var dAdapter = CreateDataAdapter(tableName, dCommand);
+            masterDataAdapterProperties.AddMaster(tableName, dAdapter, dCommand);
+            AddMasterBinding(tableName);
+
+            dAdapter.RowUpdated += dAdapter_MasterRowUpdated;
+            masterDataAdapterProperties.HasToCreateCommand = createCommand;
+
             return this;
         }
 
@@ -459,30 +471,6 @@ namespace ERPFramework.Data
         {
             AttachRadar<T>(list);
             return this;
-        }
-
-        /// <summary>
-        /// Add a master Table
-        /// </summary>
-        /// <param name="createCommand"></param>
-        /// <returns></returns>
-        public SqlProxyDataAdapter AddMaster<T>(bool createCommand = true)
-        {
-            System.Diagnostics.Debug.Assert(typeof(T).BaseType == typeof(Table));
-            var tableName = typeof(T).Tablename();
-            ForeignKey = typeof(T).GetField("ForeignKey").GetValue(null) as IColumn;
-
-            masterDataAdapterProperties = new DataAdapterProperties();
-
-            var dCommand = CreateMasterCommand();
-
-            var dAdapter = CreateDataAdapter(tableName, dCommand);
-            masterDataAdapterProperties.AddMaster(tableName, dAdapter, dCommand);
-            AddMasterBinding(tableName);
-
-            dAdapter.RowUpdated += dAdapter_MasterRowUpdated;
-            masterDataAdapterProperties.HasToCreateCommand = createCommand;
-            return dAdapter;
         }
 
         private void DAdapter_RowUpdated(object sender, RowUpdatedEventArgs e)
@@ -577,12 +565,6 @@ namespace ERPFramework.Data
             return dAdapter;
         }
 
-        /// <summary>
-        /// Add Slave to slave table
-        /// </summary>
-        /// <param name="slavename"></param>
-        /// <param name="createCommand"></param>
-        /// <returns></returns>
         //public SqlProxyDataAdapter AddSlave<T>(string slavename, bool createCommand = true)
         //{
         //    if (masterDataAdapterProperties == null || Dataset == null) return null;

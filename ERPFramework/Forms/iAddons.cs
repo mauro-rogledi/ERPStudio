@@ -139,7 +139,7 @@ namespace ERPFramework.Forms
         {
         }
 
-        public virtual void SetParameters(Data.DBManager dbManager, IRadarParameters key, DataAdapterProperties collection)
+        public virtual void SetParameters(DBManager dbManager, IRadarParameters key, DataAdapterProperties collection)
         {
         }
 
@@ -148,11 +148,11 @@ namespace ERPFramework.Forms
             return string.Empty;
         }
 
-        public virtual void MasterRowUpdated(Data.DBManager dbManager, RowUpdatedEventArgs e)
+        public virtual void MasterRowUpdated(DBManager dbManager, RowUpdatedEventArgs e)
         {
         }
 
-        public virtual void RowUpdating(Data.DBManager dbManager, RowUpdatingEventArgs e)
+        public virtual void RowUpdating(DBManager dbManager, RowUpdatingEventArgs e)
         {
         }
 
@@ -171,15 +171,17 @@ namespace ERPFramework.Forms
 
         protected PrinterForm OnPreviewEvent(PrintType printType, string title = "")
         {
-            PrinterForm pf = new PrinterForm("Preview", PrinterForm.PrintMode.Preview, printType);
-            pf.Title = title;
+            var pf = new PrinterForm("Preview", PrinterForm.PrintMode.Preview, printType)
+            {
+                Title = title
+            };
             OpenDocument.Show(pf);
             return pf;
         }
 
         protected PrinterForm OnPrintEvent(PrintType printType)
         {
-            PrinterForm pf = new PrinterForm("Print", PrinterForm.PrintMode.Print, printType);
+            var pf = new PrinterForm("Print", PrinterForm.PrintMode.Print, printType);
             return pf;
         }
 

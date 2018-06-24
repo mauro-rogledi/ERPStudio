@@ -15,50 +15,79 @@ namespace ERPFramework.Data
     {
         public static string TypeAsString(Type typeIn)
         {
-            var typeOut = string.Empty;
+            var dictConver = new Dictionary<Type, string>
+            {
+                {typeof(String), "nvarchar" },
+                {typeof(Int32), "int" },
+                {typeof(Enum), "int" },
+                {typeof(Decimal), "decimal" },
+                {typeof(Double), "decimal" },
+                {typeof(Boolean), "bit" },
+                {typeof(Byte), "tinyint" },
+                {typeof(DateTime), "datetime" }
+            };
 
-            if (typeIn == typeof(string) || typeIn == typeof(String))
-                typeOut = "nvarchar";
-            else
-                if (typeIn == typeof(Int32) || typeIn == typeof(int) || typeIn.BaseType == typeof(Enum))
-                typeOut = "int";
-            else
-                    if (typeIn == typeof(bool) || typeIn == typeof(Boolean))
-                typeOut = "bit";
-            else
-                        if (typeIn == typeof(Byte))
-                typeOut = "tinyint";
-            else
-                            if (typeIn == typeof(Decimal) || typeIn == typeof(float) || typeIn == typeof(Double))
-                typeOut = "decimal";
-            else
-                                if (typeIn == typeof(DateTime))
-                typeOut = "datetime";
-            else
-                Debug.Assert(false, "CreateTable " + typeIn.ToString(), "Tipo colonna sconosciuto");
+            if (dictConver.ContainsKey(typeIn))
+                return dictConver[typeIn];
 
-            return typeOut;
+            throw new Exception($"CreateTable {typeIn.ToString()} Tipo colonna sconosciuto");
+
+            //var typeOut = string.Empty;
+
+            //if (typeIn == typeof(string) || typeIn == typeof(String))
+            //    typeOut = "nvarchar";
+            //else
+            //    if (typeIn == typeof(Int32) || typeIn == typeof(int) || typeIn.BaseType == typeof(Enum))
+            //    typeOut = "int";
+            //else
+            //        if (typeIn == typeof(bool) || typeIn == typeof(Boolean))
+            //    typeOut = "bit";
+            //else
+            //            if (typeIn == typeof(Byte))
+            //    typeOut = "tinyint";
+            //else
+            //                if (typeIn == typeof(Decimal) || typeIn == typeof(float) || typeIn == typeof(Double))
+            //    typeOut = "decimal";
+            //else
+            //                    if (typeIn == typeof(DateTime))
+            //    typeOut = "datetime";
+            //else
+            //    Debug.Assert(false, "CreateTable " + typeIn.ToString(), "Tipo colonna sconosciuto");
+
+            //return typeOut;
         }
 
         public static int LenOfType<T>()
         {
-            var typeOut = 0;
-            var typeIn = typeof(T);
+            var dictConver = new Dictionary<Type, int>
+            {
+                {typeof(Int32), 4 },
+                {typeof(Enum), 4 },
+                {typeof(Decimal), 9 }
+            };
 
-            if (typeIn == typeof(Int32) || typeIn == typeof(int) || typeIn.BaseType == typeof(Enum))
-                typeOut = 4;
-            else
-                if (typeIn == typeof(Decimal) || typeIn == typeof(float) || typeIn == typeof(double))
-                typeOut = 9;
+            if (dictConver.ContainsKey(typeof(T)))
+                return dictConver[typeof(T)];
 
-            return typeOut;
+            return 0;
+
+            //var typeOut = 0;
+            //var typeIn = typeof(T);
+
+            //if (typeIn == typeof(Int32) || typeIn == typeof(int) || typeIn.BaseType == typeof(Enum))
+            //    typeOut = 4;
+            //else
+            //    if (typeIn == typeof(Decimal) || typeIn == typeof(float) || typeIn == typeof(double))
+            //    typeOut = 9;
+
+            //return typeOut;
         }
 
         public static int DecOf<T>()
         {
             var typeOut = 0;
             var typeIn = typeof(T);
-            if (typeIn == typeof(Decimal) || typeIn == typeof(float) || typeIn == typeof(double))
+            if (typeIn == typeof(Decimal))
                 typeOut = 2;
 
             return typeOut;
@@ -66,32 +95,50 @@ namespace ERPFramework.Data
 
         public static object DefaultValue<T>()
         {
-            object typeOut = null;
-            var typeIn = typeof(T);
-            if (typeIn == typeof(string) || typeIn == typeof(String))
-                typeOut = "";
-            else
-                if (typeIn == typeof(Int32) || typeIn == typeof(int) || typeIn.BaseType == typeof(Enum))
-                typeOut = 0;
-            else
-                    if (typeIn == typeof(bool) || typeIn == typeof(Boolean))
-                typeOut = 0;
-            else
-                        if (typeIn == typeof(Byte))
-                typeOut = 0;
-            else
-                            if (typeIn == typeof(Decimal) || typeIn == typeof(float) || typeIn == typeof(Double))
-                typeOut = 0.0;
-            else
-                if (typeIn == typeof(DateTime))
-                typeOut = new DateTime().EmptyDate().ToString("dd/MM/yyyy");
-            else
-                                    if (typeIn == typeof(TimeSpan))
-                typeOut = 0;
-            else
-                Debug.Assert(false, "CreateTable " + typeIn.ToString(), "Tipo colonna sconosciuto");
+            var dictConver = new Dictionary<Type, Object>
+            {
+                {typeof(String), "" },
+                {typeof(Int32), 0 },
+                {typeof(Enum), 0 },
+                {typeof(Boolean), 0 },
+                {typeof(Decimal), 0 },
+                {typeof(Single), 0},
+                {typeof(Double), 0},
+                {typeof(DateTime), new DateTime().EmptyDate().ToString("dd/MM/yyyy")},
+                {typeof(TimeSpan), 0}
+            };
 
-            return typeOut;
+            if (dictConver.ContainsKey(typeof(T)))
+                return dictConver[typeof(T)];
+
+            throw new Exception("Unknown Type");
+
+            //object typeOut = null;
+            //var typeIn = typeof(T);
+            //if (typeIn == typeof(string) || typeIn == typeof(String))
+            //    typeOut = "";
+            //else
+            //    if (typeIn == typeof(Int32) || typeIn == typeof(int) || typeIn.BaseType == typeof(Enum))
+            //    typeOut = 0;
+            //else
+            //        if (typeIn == typeof(bool) || typeIn == typeof(Boolean))
+            //    typeOut = 0;
+            //else
+            //            if (typeIn == typeof(Byte))
+            //    typeOut = 0;
+            //else
+            //                if (typeIn == typeof(Decimal) || typeIn == typeof(float) || typeIn == typeof(Double))
+            //    typeOut = 0.0;
+            //else
+            //    if (typeIn == typeof(DateTime))
+            //    typeOut = ;
+            //else
+            //                        if (typeIn == typeof(TimeSpan))
+            //    typeOut = 0;
+            //else
+            //    Debug.Assert(false, "CreateTable " + typeIn.ToString(), "Tipo colonna sconosciuto");
+
+            //return typeOut;
         }
 
         public static DbType GetDBType(Type typein)
@@ -316,7 +363,7 @@ namespace ERPFramework.Data
                 if (tablename == null)
                 {
                     System.Diagnostics.Debug.Assert(TableType.BaseType == typeof(Table));
-                    tablename = TableType.GetField("Name").GetValue(null).ToString();
+                    tablename = TableType.GetField(nameof(Name)).GetValue(null).ToString();
                 }
                 return tablename;
             }

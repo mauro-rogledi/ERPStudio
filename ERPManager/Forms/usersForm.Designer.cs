@@ -17,7 +17,8 @@
             {
                 components.Dispose();
             }
-            password.Dispose();
+            if (disposing)
+                password.Dispose();
 
             base.Dispose(disposing);
         }

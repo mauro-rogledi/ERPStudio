@@ -28,12 +28,11 @@ namespace ERPFramework.CounterManager
 
         protected override void OnInitializeData()
         {
-            dbManager = new dbmanagerCounter("counterForm", this);
-            dbManager.AttachRadar<RadarCounter>();
-
-            dbManager.AddMaster<EF_Counter>();
-            dbManager.AddSlave<EF_CounterValue>();
-            dbManager.AddRelation(EF_CounterValue.Name, EF_Counter.Type, EF_CounterValue.Type);
+            dbManager = new dbmanagerCounter(this)
+                .MasterTable<EF_Counter>()
+                .SlaveTable<EF_CounterValue>()
+                .Relation(EF_CounterValue.Name, EF_Counter.Type, EF_CounterValue.Type)
+                .Radar<RadarCounter>();
 
             dgwValues.AutoGenerateColumns = false;
             dgwValues.DataSource = dbManager.SlaveBinding(EF_CounterValue.Name);
@@ -174,8 +173,8 @@ namespace ERPFramework.CounterManager
 
     internal class dbmanagerCounter : ERPFramework.Data.DBManager
     {
-        public dbmanagerCounter(string name, DocumentForm document)
-            : base(name, document)
+        public dbmanagerCounter(DocumentForm document)
+            : base(document)
         { }
 
         protected override void dAdapter_MasterRowUpdating(object sender, RowUpdatingEventArgs e)
@@ -204,7 +203,6 @@ namespace ERPFramework.CounterManager
             parameters.Add(
                 new SqlProxyParameter("@p2", EF_Counter.Type));
         }
-
 
         protected override string CreateSlaveQuery<T>(SqlProxyParameterCollection parameters)
         {

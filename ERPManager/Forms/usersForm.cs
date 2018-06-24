@@ -9,7 +9,9 @@ namespace ERPManager.Forms
 {
     public partial class usersForm : DocumentForm
     {
+#pragma warning disable CC0033 // Dispose Fields Properly
         BindableObject<string> password = new BindableObject<string>();
+#pragma warning restore CC0033 // Dispose Fields Properly
         EnumsManager<UserType> PrivilegeTypes = null;
 
         public usersForm()
@@ -20,9 +22,9 @@ namespace ERPManager.Forms
 
         protected override void OnInitializeData()
         {
-            dbManager = new dbUserManagement("userForm", this);
-            dbManager.AttachRadar<RadarUsers>();
-            dbManager.AddMaster<EF_Users>();
+            dbManager = new dbUserManagement(this)
+                .MasterTable<EF_Users>()
+                .Radar<RadarUsers>();
 
             PrivilegeTypes = new EnumsManager<UserType>(Properties.Resources.ResourceManager);
             PrivilegeTypes.AttachTo(cbbPrivilege);
@@ -49,8 +51,8 @@ namespace ERPManager.Forms
     /// </summary>
     internal class dbUserManagement : DBManager
     {
-        public dbUserManagement(string name, DocumentForm document)
-            : base(name, document)
+        public dbUserManagement(DocumentForm document)
+            : base(document)
         {
         }
 
@@ -69,7 +71,6 @@ namespace ERPManager.Forms
         {
             parameters.Add(
                 new SqlProxyParameter("@p1", EF_Users.Username));
-
         }
 
         protected override void SetParameters(IRadarParameters key, DataAdapterProperties dataadapterproperties)

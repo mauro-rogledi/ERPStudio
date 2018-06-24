@@ -33,7 +33,7 @@ namespace ERPFramework.ModuleData
 
         override protected bool CreateDBTables()
         {
-            AddTable<EF_Users>(false);
+            //AddTable<EF_Users>(false);
             AddTable<EF_Version>(false);
             AddTable<EF_Descriptions>();
             AddTable<EF_Counter>();
