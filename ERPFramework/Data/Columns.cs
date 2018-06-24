@@ -27,34 +27,14 @@ namespace ERPFramework.Data
                 {typeof(DateTime), "datetime" }
             };
 
-            if (dictConver.ContainsKey(typeIn))
-                return dictConver[typeIn];
+            var typeCheck = typeIn.BaseType == typeof(Enum)
+                ? typeIn.BaseType
+                : typeIn;
+
+            if (dictConver.ContainsKey(typeCheck))
+                return dictConver[typeCheck];
 
             throw new Exception($"CreateTable {typeIn.ToString()} Tipo colonna sconosciuto");
-
-            //var typeOut = string.Empty;
-
-            //if (typeIn == typeof(string) || typeIn == typeof(String))
-            //    typeOut = "nvarchar";
-            //else
-            //    if (typeIn == typeof(Int32) || typeIn == typeof(int) || typeIn.BaseType == typeof(Enum))
-            //    typeOut = "int";
-            //else
-            //        if (typeIn == typeof(bool) || typeIn == typeof(Boolean))
-            //    typeOut = "bit";
-            //else
-            //            if (typeIn == typeof(Byte))
-            //    typeOut = "tinyint";
-            //else
-            //                if (typeIn == typeof(Decimal) || typeIn == typeof(float) || typeIn == typeof(Double))
-            //    typeOut = "decimal";
-            //else
-            //                    if (typeIn == typeof(DateTime))
-            //    typeOut = "datetime";
-            //else
-            //    Debug.Assert(false, "CreateTable " + typeIn.ToString(), "Tipo colonna sconosciuto");
-
-            //return typeOut;
         }
 
         public static int LenOfType<T>()
@@ -70,17 +50,6 @@ namespace ERPFramework.Data
                 return dictConver[typeof(T)];
 
             return 0;
-
-            //var typeOut = 0;
-            //var typeIn = typeof(T);
-
-            //if (typeIn == typeof(Int32) || typeIn == typeof(int) || typeIn.BaseType == typeof(Enum))
-            //    typeOut = 4;
-            //else
-            //    if (typeIn == typeof(Decimal) || typeIn == typeof(float) || typeIn == typeof(double))
-            //    typeOut = 9;
-
-            //return typeOut;
         }
 
         public static int DecOf<T>()
@@ -108,37 +77,14 @@ namespace ERPFramework.Data
                 {typeof(TimeSpan), 0}
             };
 
-            if (dictConver.ContainsKey(typeof(T)))
-                return dictConver[typeof(T)];
+            var typeCheck = typeof(T).BaseType == typeof(Enum)
+                ? typeof(T).BaseType
+                : typeof(T);
+
+            if (dictConver.ContainsKey(typeCheck))
+                return dictConver[typeCheck];
 
             throw new Exception("Unknown Type");
-
-            //object typeOut = null;
-            //var typeIn = typeof(T);
-            //if (typeIn == typeof(string) || typeIn == typeof(String))
-            //    typeOut = "";
-            //else
-            //    if (typeIn == typeof(Int32) || typeIn == typeof(int) || typeIn.BaseType == typeof(Enum))
-            //    typeOut = 0;
-            //else
-            //        if (typeIn == typeof(bool) || typeIn == typeof(Boolean))
-            //    typeOut = 0;
-            //else
-            //            if (typeIn == typeof(Byte))
-            //    typeOut = 0;
-            //else
-            //                if (typeIn == typeof(Decimal) || typeIn == typeof(float) || typeIn == typeof(Double))
-            //    typeOut = 0.0;
-            //else
-            //    if (typeIn == typeof(DateTime))
-            //    typeOut = ;
-            //else
-            //                        if (typeIn == typeof(TimeSpan))
-            //    typeOut = 0;
-            //else
-            //    Debug.Assert(false, "CreateTable " + typeIn.ToString(), "Tipo colonna sconosciuto");
-
-            //return typeOut;
         }
 
         public static DbType GetDBType(Type typein)
@@ -165,90 +111,6 @@ namespace ERPFramework.Data
                 return dictConver[typein];
 
             throw new Exception("Unknown Type");
-        }
-
-        public static SqlDbType SqlTypeOf(Type typeIn)
-        {
-            var typeOut = SqlDbType.VarChar;
-
-            if (typeIn == typeof(string) || typeIn == typeof(String))
-                typeOut = SqlDbType.VarChar;
-            else
-                if (typeIn == typeof(Int32) || typeIn == typeof(int) || typeIn.BaseType == typeof(Enum))
-                typeOut = SqlDbType.Int;
-            else
-                    if (typeIn == typeof(bool) || typeIn == typeof(Boolean))
-                typeOut = SqlDbType.Bit;
-            else
-                        if (typeIn == typeof(Byte))
-                typeOut = SqlDbType.SmallInt;
-            else
-                            if (typeIn == typeof(Decimal) || typeIn == typeof(float) || typeIn == typeof(Double))
-                typeOut = SqlDbType.Decimal;
-            else
-                                if (typeIn == typeof(DateTime))
-                typeOut = SqlDbType.DateTime;
-            else
-                                    if (typeIn == typeof(TimeSpan))
-                typeOut = SqlDbType.DateTime;
-            else
-                Debug.Assert(false, "SqlTypeOf " + typeIn.ToString(), "Tipo colonna sconosciuto");
-
-            return typeOut;
-        }
-
-        public static SqlDbType SqlTypeCEOf(Type typeIn)
-        {
-            var typeOut = SqlDbType.NVarChar;
-
-            if (typeIn == typeof(string) || typeIn == typeof(String))
-                typeOut = SqlDbType.NVarChar;
-            else
-                if (typeIn == typeof(Int32) || typeIn == typeof(int) || typeIn.BaseType == typeof(Enum))
-                typeOut = SqlDbType.Int;
-            else
-                    if (typeIn == typeof(bool) || typeIn == typeof(Boolean))
-                typeOut = SqlDbType.Bit;
-            else
-                        if (typeIn == typeof(Byte))
-                typeOut = SqlDbType.SmallInt;
-            else
-                            if (typeIn == typeof(Decimal) || typeIn == typeof(float) || typeIn == typeof(Double))
-                typeOut = SqlDbType.Decimal;
-            else
-                                if (typeIn == typeof(DateTime))
-                typeOut = SqlDbType.DateTime;
-            else
-                Debug.Assert(false, "SqlTypeCEOf " + typeIn.ToString(), "Tipo colonna sconosciuto");
-
-            return typeOut;
-        }
-
-        public static DbType SqlTypeLITOf(Type typeIn)
-        {
-            var typeOut = DbType.String;
-
-            if (typeIn == typeof(string) || typeIn == typeof(String))
-                typeOut = DbType.String;
-            else
-                if (typeIn == typeof(Int32) || typeIn == typeof(int) || typeIn.BaseType == typeof(Enum))
-                typeOut = DbType.Int32;
-            else
-                    if (typeIn == typeof(bool) || typeIn == typeof(Boolean))
-                typeOut = DbType.Boolean;
-            else
-                        if (typeIn == typeof(Byte))
-                typeOut = DbType.Byte;
-            else
-                            if (typeIn == typeof(Decimal) || typeIn == typeof(float) || typeIn == typeof(Double))
-                typeOut = DbType.Decimal;
-            else
-                                if (typeIn == typeof(DateTime))
-                typeOut = DbType.DateTime;
-            else
-                Debug.Assert(false, "SqlTypeLITOf " + typeIn.ToString(), "Tipo colonna sconosciuto");
-
-            return typeOut;
         }
     }
 

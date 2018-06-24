@@ -103,22 +103,6 @@ namespace ERPFramework.Data
                     Where(c => !c.IsVirtual).ToList().
                     ForEach(cc => { AddColumn(cc); columnAdded = true; });
 
-            //foreach (MemberInfo mi in typeof(T).GetMembers())
-            //    if (mi.MemberType == MemberTypes.Field)
-            //    {
-            //        if (((FieldInfo)mi).FieldType.GetInterface(nameof(IColumn)) == typeof(IColumn))
-            //        {
-            //            var ob = ((FieldInfo)mi).GetValue((mi));
-            //            System.Diagnostics.Debug.WriteLine(ob is IColumn);
-            //            var col = (IColumn)((FieldInfo)mi).GetValue((mi));
-            //            if (!col.IsVirtual)
-            //            {
-            //                AddColumn(col);
-            //                columnAdded = true;
-            //            }
-            //        }
-            //    }
-
             var table = Activator.CreateInstance<T>() as Table;
             AddPrimaryKey(table.PrimaryKey);
             return Create();
@@ -134,12 +118,6 @@ namespace ERPFramework.Data
 
         private static string GetConstraint(IColumn columnName)
         {
-            // @@TODO GetConstraint
-#if(SQLCompact)
-            //if (GlobalInfo.SqlConnection.ProviderType == ProviderType.SQLCompact)
-            //    return "";
-#endif
-
             const string command = "select object_name(cdefault) from syscolumns where [id] = object_id(@tn) and [name] like @cn ";
             using (var cmd = new SqlProxyCommand(command, GlobalInfo.DBaseInfo.dbManager.DB_Connection))
             {
@@ -327,20 +305,5 @@ namespace ERPFramework.Data
         {
             table.Columns.Add(col.Name, col.ColType);
         }
-
-        //public static void AddColumns<T>(DataTable table)
-        //{
-        //    foreach (MemberInfo mi in typeof(T).GetMembers())
-        //        if (mi.MemberType == MemberTypes.Field)
-        //        {
-        //            if (((FieldInfo)mi).FieldType.GetInterface(nameof(IColumn)) == typeof(IColumn))
-        //            {
-        //                var ob = ((FieldInfo)mi).GetValue((mi));
-        //                var col = (IColumn)((FieldInfo)mi).GetValue((mi));
-        //                if (col.IsVirtual)
-        //                    AddColumn(table, col);
-        //            }
-        //        }
-        //}
     }
 }

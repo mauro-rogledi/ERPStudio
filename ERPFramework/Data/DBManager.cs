@@ -66,6 +66,14 @@ namespace ERPFramework.Data
             DataAdapter = myAdapter;
             Command = myCommand;
             name = myMaster;
+
+            myAdapter.RowUpdated += dAdapter_MasterRowUpdated;
+            //myAdapter.RowUpdating += new SqlABRowUpdatingEventHandler(dAdapter_MasterRowUpdating);
+        }
+
+        private void dAdapter_MasterRowUpdated(object sender, RowUpdatedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         public void AddSlave(string mySlave, SqlProxyDataAdapter myAdapter, SqlProxyCommand myCommand)
@@ -211,7 +219,7 @@ namespace ERPFramework.Data
         {
         }
 
-        protected virtual void CreateSlaveParam<T,S>(SqlProxyParameterCollection parameters)
+        protected virtual void CreateSlaveParam<T, S>(SqlProxyParameterCollection parameters)
         {
         }
 
@@ -229,7 +237,7 @@ namespace ERPFramework.Data
             }
         }
 
-        protected virtual void dAdapter_MasterRowUpdated(object sender, RowUpdatedEventArgs e)
+        private void dAdapter_MasterRowUpdated(object sender, RowUpdatedEventArgs e)
         {
             // AddOn management
             if (myDocument.AddonList != null)
@@ -284,16 +292,12 @@ namespace ERPFramework.Data
         #region Costructor
 
         protected DBManager(IDocument document)
-            : this(document.Name, document)
-        { }
-
-        protected DBManager(string name, IDocument document) // ProviderType providerType, string conString)
         {
             this.myDocument = document;
             globalPref = new PreferencesManager<GlobalPreferences>("", null).ReadPreference();
 
             DBConnection = new SqlProxyConnection(GlobalInfo.DBaseInfo.dbManager.DB_ConnectionString);
-            Dataset = new DataSet(name)
+            Dataset = new DataSet(document.GetType().Name)
             {
                 Locale = System.Globalization.CultureInfo.InvariantCulture
             };

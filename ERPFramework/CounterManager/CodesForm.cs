@@ -36,7 +36,7 @@ namespace ERPFramework.CounterManager
 
         protected override void OnInitializeData()
         {
-            dbManager = new dbmanagerCodes(nameof(codesForm), this)
+            dbManager = new dbmanagerCodes(this)
                 .MasterTable<EF_Codes>()
                 .SlaveTable<EF_CodeSegment>()
                 .Relation("CodeSegment", EF_Codes.CodeType, EF_CodeSegment.CodeType)
@@ -129,8 +129,8 @@ namespace ERPFramework.CounterManager
 
     internal class dbmanagerCodes : ERPFramework.Data.DBManager
     {
-        public dbmanagerCodes(string name, DocumentForm document)
-            : base(name, document)
+        public dbmanagerCodes(DocumentForm document)
+            : base(document)
         { }
 
         protected override void dAdapter_MasterRowUpdating(object sender, RowUpdatingEventArgs e)
