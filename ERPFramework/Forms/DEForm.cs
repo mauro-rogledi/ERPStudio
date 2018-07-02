@@ -17,5 +17,15 @@ namespace ERPManager.Forms
         {
             InitializeComponent();
         }
+
+        private void DataEntryForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void metroFlowLayoutPanel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

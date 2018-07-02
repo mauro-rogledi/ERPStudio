@@ -28,98 +28,121 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.metroFlowLayoutPanel1 = new MetroFramework.Extender.MetroFlowLayoutPanel();
-            this.mtlOk = new MetroFramework.Controls.MetroLink();
-            this.mtlBack = new MetroFramework.Controls.MetroLink();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DataEntryForm));
             this.metroFlowLayoutPanel2 = new MetroFramework.Extender.MetroFlowLayoutPanel();
-            this.metroLink1 = new MetroFramework.Controls.MetroLink();
-            this.metroFlowLayoutPanel1.SuspendLayout();
+            this.mfpTopPanel = new MetroFramework.Extender.MetroFlowLayoutPanel();
+            this.metroLink2 = new MetroFramework.Controls.MetroLink();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.metroLink9 = new MetroFramework.Controls.MetroLink();
+            this.metroFlowLayoutPanel3 = new MetroFramework.Extender.MetroFlowLayoutPanel();
+            this.metroLink6 = new MetroFramework.Controls.MetroLink();
+            this.metroLink7 = new MetroFramework.Controls.MetroLink();
             this.metroFlowLayoutPanel2.SuspendLayout();
+            this.mfpTopPanel.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.metroFlowLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // metroFlowLayoutPanel1
-            // 
-            this.metroFlowLayoutPanel1.Controls.Add(this.mtlOk);
-            this.metroFlowLayoutPanel1.Controls.Add(this.mtlBack);
-            this.metroFlowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.metroFlowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.metroFlowLayoutPanel1.Location = new System.Drawing.Point(20, 30);
-            this.metroFlowLayoutPanel1.Name = "metroFlowLayoutPanel1";
-            this.metroFlowLayoutPanel1.Size = new System.Drawing.Size(760, 39);
-            this.metroFlowLayoutPanel1.TabIndex = 0;
-            // 
-            // mtlOk
-            // 
-            this.mtlOk.Image = global::ERPFramework.Properties.Resources.Checked32;
-            this.mtlOk.ImageSize = 32;
-            this.mtlOk.Location = new System.Drawing.Point(724, 3);
-            this.mtlOk.Name = "mtlOk";
-            this.mtlOk.NoFocusImage = global::ERPFramework.Properties.Resources.Checked32g;
-            this.mtlOk.Size = new System.Drawing.Size(33, 33);
-            this.mtlOk.TabIndex = 7;
-            this.mtlOk.UseSelectable = true;
-            this.mtlOk.UseStyleColors = true;
-            // 
-            // mtlBack
-            // 
-            this.mtlBack.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.mtlBack.Image = global::ERPFramework.Properties.Resources.CircledLeft32;
-            this.mtlBack.ImageSize = 32;
-            this.mtlBack.Location = new System.Drawing.Point(685, 3);
-            this.mtlBack.Name = "mtlBack";
-            this.mtlBack.NoFocusImage = global::ERPFramework.Properties.Resources.CircledLeft32g;
-            this.mtlBack.Size = new System.Drawing.Size(33, 33);
-            this.mtlBack.TabIndex = 8;
-            this.mtlBack.UseSelectable = true;
-            this.mtlBack.UseStyleColors = true;
             // 
             // metroFlowLayoutPanel2
             // 
-            this.metroFlowLayoutPanel2.Controls.Add(this.metroLink1);
-            this.metroFlowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.metroFlowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.metroFlowLayoutPanel2.Location = new System.Drawing.Point(20, 383);
+            resources.ApplyResources(this.metroFlowLayoutPanel2, "metroFlowLayoutPanel2");
+            this.metroFlowLayoutPanel2.Controls.Add(this.mfpTopPanel);
             this.metroFlowLayoutPanel2.Name = "metroFlowLayoutPanel2";
-            this.metroFlowLayoutPanel2.Size = new System.Drawing.Size(760, 47);
-            this.metroFlowLayoutPanel2.TabIndex = 1;
+            this.metroFlowLayoutPanel2.Paint += new System.Windows.Forms.PaintEventHandler(this.metroFlowLayoutPanel2_Paint);
             // 
-            // metroLink1
+            // mfpTopPanel
             // 
-            this.metroLink1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.metroLink1.Image = global::ERPFramework.Properties.Resources.Print32;
-            this.metroLink1.ImageSize = 32;
-            this.metroLink1.Location = new System.Drawing.Point(724, 3);
-            this.metroLink1.Name = "metroLink1";
-            this.metroLink1.NoFocusImage = global::ERPFramework.Properties.Resources.Print32g;
-            this.metroLink1.Size = new System.Drawing.Size(33, 33);
-            this.metroLink1.TabIndex = 9;
-            this.metroLink1.UseSelectable = true;
-            this.metroLink1.UseStyleColors = true;
+            resources.ApplyResources(this.mfpTopPanel, "mfpTopPanel");
+            this.mfpTopPanel.Controls.Add(this.metroLink2);
+            this.mfpTopPanel.Name = "mfpTopPanel";
+            // 
+            // metroLink2
+            // 
+            this.metroLink2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.metroLink2.Image = global::ERPFramework.Properties.Resources.Edit32;
+            this.metroLink2.ImageSize = 32;
+            resources.ApplyResources(this.metroLink2, "metroLink2");
+            this.metroLink2.Name = "metroLink2";
+            this.metroLink2.NoFocusImage = global::ERPFramework.Properties.Resources.Edit32g;
+            this.metroLink2.UseSelectable = true;
+            this.metroLink2.UseStyleColors = true;
+            // 
+            // tableLayoutPanel1
+            // 
+            resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
+            this.tableLayoutPanel1.Controls.Add(this.metroFlowLayoutPanel3, 2, 0);
+            this.tableLayoutPanel1.Controls.Add(this.metroLink9, 1, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            // 
+            // metroLink9
+            // 
+            resources.ApplyResources(this.metroLink9, "metroLink9");
+            this.metroLink9.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.metroLink9.Image = global::ERPFramework.Properties.Resources.Print32;
+            this.metroLink9.ImageSize = 32;
+            this.metroLink9.Name = "metroLink9";
+            this.metroLink9.NoFocusImage = global::ERPFramework.Properties.Resources.Print32g;
+            this.metroLink9.UseSelectable = true;
+            this.metroLink9.UseStyleColors = true;
+            // 
+            // metroFlowLayoutPanel3
+            // 
+            resources.ApplyResources(this.metroFlowLayoutPanel3, "metroFlowLayoutPanel3");
+            this.metroFlowLayoutPanel3.Controls.Add(this.metroLink6);
+            this.metroFlowLayoutPanel3.Controls.Add(this.metroLink7);
+            this.metroFlowLayoutPanel3.Name = "metroFlowLayoutPanel3";
+            // 
+            // metroLink6
+            // 
+            this.metroLink6.Image = global::ERPFramework.Properties.Resources.Save32;
+            this.metroLink6.ImageSize = 32;
+            resources.ApplyResources(this.metroLink6, "metroLink6");
+            this.metroLink6.Name = "metroLink6";
+            this.metroLink6.NoFocusImage = global::ERPFramework.Properties.Resources.Save32g;
+            this.metroLink6.UseSelectable = true;
+            this.metroLink6.UseStyleColors = true;
+            // 
+            // metroLink7
+            // 
+            this.metroLink7.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.metroLink7.Image = global::ERPFramework.Properties.Resources.Undo32;
+            this.metroLink7.ImageSize = 32;
+            resources.ApplyResources(this.metroLink7, "metroLink7");
+            this.metroLink7.Name = "metroLink7";
+            this.metroLink7.NoFocusImage = global::ERPFramework.Properties.Resources.Undo32g;
+            this.metroLink7.UseSelectable = true;
+            this.metroLink7.UseStyleColors = true;
             // 
             // DataEntryForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AllowDrop = true;
+            resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackLocation = MetroFramework.Forms.BackLocation.TopRight;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.metroFlowLayoutPanel2);
-            this.Controls.Add(this.metroFlowLayoutPanel1);
             this.DisplayHeader = false;
             this.Name = "DataEntryForm";
-            this.Padding = new System.Windows.Forms.Padding(20, 30, 20, 20);
-            this.Text = "DataEntryForm";
-            this.metroFlowLayoutPanel1.ResumeLayout(false);
+            this.Load += new System.EventHandler(this.DataEntryForm_Load);
             this.metroFlowLayoutPanel2.ResumeLayout(false);
+            this.metroFlowLayoutPanel2.PerformLayout();
+            this.mfpTopPanel.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
+            this.metroFlowLayoutPanel3.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
-
-        private MetroFramework.Extender.MetroFlowLayoutPanel metroFlowLayoutPanel1;
-        private MetroFramework.Controls.MetroLink mtlOk;
-        private MetroFramework.Controls.MetroLink mtlBack;
-        private MetroFramework.Extender.MetroFlowLayoutPanel metroFlowLayoutPanel2;
-        private MetroFramework.Controls.MetroLink metroLink1;
+        protected internal MetroFramework.Extender.MetroFlowLayoutPanel metroFlowLayoutPanel2;
+        protected internal MetroFramework.Extender.MetroFlowLayoutPanel mfpTopPanel;
+        private MetroFramework.Controls.MetroLink metroLink2;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        protected internal MetroFramework.Extender.MetroFlowLayoutPanel metroFlowLayoutPanel3;
+        private MetroFramework.Controls.MetroLink metroLink6;
+        private MetroFramework.Controls.MetroLink metroLink7;
+        private MetroFramework.Controls.MetroLink metroLink9;
     }
 }

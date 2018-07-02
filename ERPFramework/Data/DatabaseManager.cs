@@ -19,15 +19,16 @@ namespace ERPFramework.Data
         readonly SqlProxyConnection documentConnection = null;
 
         List<IDisposable> disposableObject = new List<IDisposable>();
+        Dictionary<string, BindingSource> slaveBinding = new Dictionary<string, BindingSource>();
+        Dictionary<string, SqlProxyDataAdapter> slaveDataAdapter = new Dictionary<string, SqlProxyDataAdapter>();
 
         #region public properties
         public BindingSource BindingMaster { get; private set; }
         public Dictionary<string, BindingSource> BindingSlave { get; private set; }
         #endregion
 
-
         #region public methods
-        public DatabaseManager AddMaster<M>()
+        public DatabaseManager MasterTable<M>()
         {
             var tableName = typeof(M).GetType().Name;
 
@@ -43,14 +44,32 @@ namespace ERPFramework.Data
             return this;
         }
 
-        public DatabaseManager AddSlave<M, S>(string relactionname, IColumn master, IColumn slave)
+        public DatabaseManager SlaveTable<M, S>(string relactionname, IColumn master, IColumn slave)
         {
             return this;
         }
 
-        public DatabaseManager AddSlave<M, S>(string relactionname, IColumn[] master, IColumn[] slave)
+        public DatabaseManager SlaveTable<M, S>(string relactionname, IColumn[] master, IColumn[] slave)
         {
             return this;
+        }
+
+        public void Edit()
+        {
+            slaveBinding.Values.ToList().ForEach(bs => bs.AllowNew = true);
+        }
+
+        public void Save()
+        {
+            var dataSet = documentDataSet.GetChanges();
+            if (dataSet?.HasChanges() ?? false)
+            {
+                dataSet.AcceptChanges();
+                slaveDataAdapter.ToList().ForEach(da =>
+               {
+                   da.Value.Update(documentDataSet, da.Key);
+               });
+            }
         }
 
         #endregion
@@ -124,7 +143,8 @@ namespace ERPFramework.Data
         private void SetDefaultValue(string name)
         {
             documentDataSet.Tables[name].Columns.Cast<DataColumn>().ToList().ForEach(
-                col => {
+                col =>
+                {
                     col.DefaultValue = ConvertColumnType.DefaultValue(col.DataType);
                 });
         }
