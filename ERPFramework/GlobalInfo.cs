@@ -30,10 +30,35 @@ namespace ERPFramework
         {
             get
             {
-                System.Diagnostics.Debug.Assert(DBaseInfo.dbManager != null);
-                System.Diagnostics.Debug.Assert(DBaseInfo.dbManager.DB_Connection != null);
+                System.Diagnostics.Debug.Assert(DBaseInfo.SqlManager != null);
+                System.Diagnostics.Debug.Assert(DBaseInfo.SqlManager.DB_Connection != null);
 
-                return DBaseInfo.dbManager.DB_Connection;
+                return DBaseInfo.SqlManager.DB_Connection;
+            }
+        }
+
+        public static bool OpenConnection()
+        {
+            try
+            {
+                DBaseInfo.SqlManager.DB_Connection.Open();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public static void CloseConnection()
+        {
+            try
+            {
+                DBaseInfo.SqlManager.DB_Connection.Close();
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -126,8 +151,9 @@ namespace ERPFramework
 
     public class DBaseInfo
     {
-        public SqlManager dbManager;
-        public UserType userType = UserType.Administrator;
+        public string ConnectionString { get; set; }
+        public SqlManager SqlManager { get; set; }
+        public UserType UserType { get; set; } = UserType.Administrator;
     }
 
     [Serializable()]

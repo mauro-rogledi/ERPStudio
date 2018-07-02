@@ -374,6 +374,7 @@
     <Compile Include="DataGridViewControls\RadarCounterDataGridViewControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Data\DatabaseManager.cs" />
     <Compile Include="Data\ImportExportData.cs" />
     <Compile Include="Data\ImportExportForm.cs">
       <SubType>Form</SubType>
@@ -393,6 +394,12 @@
     <Compile Include="Forms\ControlFinder.cs" />
     <Compile Include="Data\DataReaderUpdater.cs" />
     <Compile Include="Data\Table.cs" />
+    <Compile Include="Forms\DEForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DEForm.Designer.cs">
+      <DependentUpon>DEForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FastInsertForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -707,6 +714,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\AskForm.resx">
       <DependentUpon>AskForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DEForm.resx">
+      <DependentUpon>DEForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FastInsertForm.it-IT.resx">
       <DependentUpon>FastInsertForm.cs</DependentUpon>

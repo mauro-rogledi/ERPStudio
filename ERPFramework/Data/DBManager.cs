@@ -296,7 +296,7 @@ namespace ERPFramework.Data
             this.myDocument = document;
             globalPref = new PreferencesManager<GlobalPreferences>("", null).ReadPreference();
 
-            DBConnection = new SqlProxyConnection(GlobalInfo.DBaseInfo.dbManager.DB_ConnectionString);
+            DBConnection = new SqlProxyConnection(GlobalInfo.DBaseInfo.SqlManager.DB_ConnectionString);
             Dataset = new DataSet(document.GetType().Name)
             {
                 Locale = System.Globalization.CultureInfo.InvariantCulture

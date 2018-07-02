@@ -101,6 +101,7 @@ namespace ERPFramework.Preferences
                 StreamReader sr = new StreamReader(memoryStream);
                 return sr.ReadToEnd();
             }
+#pragma warning disable CC0003 // Your catch should include an Exception
             catch
             {
                 StringBuilder stringBuilder = new StringBuilder();
@@ -114,6 +115,7 @@ namespace ERPFramework.Preferences
                 x.Serialize(xmlWriter, Pref);
                 return stringBuilder.ToString();
             }
+#pragma warning restore CC0003 // Your catch should include an Exception
         }
 
         public T Deserialize(string value)

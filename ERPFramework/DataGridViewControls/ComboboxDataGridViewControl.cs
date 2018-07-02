@@ -21,7 +21,7 @@ namespace ERPFramework.DataGridViewControls
         {
             cbbManager = new ComboBoxManager(this);
             cbbManager.CreateList<string>();
-            if (GlobalInfo.DBaseInfo.dbManager != null)
+            if (GlobalInfo.DBaseInfo.SqlManager != null)
             {
                 if (alsoNULL)
                     cbbManager.AddValue(string.Empty, string.Empty);

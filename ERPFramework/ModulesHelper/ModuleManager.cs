@@ -120,7 +120,7 @@ namespace ERPFramework.ModulesHelper
             {
                 if (ActivationManager.IsActivate(registerTable.Module()) != ActivationState.NotActivate)
                 {
-                    bOk = registerTable.CreateTable(GlobalInfo.DBaseInfo.dbManager.DB_Connection, GlobalInfo.UserInfo.userType);
+                    bOk = registerTable.CreateTable(GlobalInfo.DBaseInfo.SqlManager.DB_Connection, GlobalInfo.UserInfo.userType);
                     if (bOk)
                         registerTable.RegisterCountersAndCodes();
                 }

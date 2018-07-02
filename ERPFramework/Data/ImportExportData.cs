@@ -67,7 +67,7 @@ namespace ERPFramework.Data
             var dataSet = new DataSet();
             var query = $"SELECT * FROM {tableName}";
 
-            using (var sqlCM = new SqlProxyCommand(query, GlobalInfo.DBaseInfo.dbManager.DB_Connection))
+            using (var sqlCM = new SqlProxyCommand(query, GlobalInfo.DBaseInfo.SqlManager.DB_Connection))
             {
 
                 var sqlDA = new SqlProxyDataAdapter(sqlCM);
@@ -80,7 +80,7 @@ namespace ERPFramework.Data
         private static bool WriteData(string tableName, DataSet dataSet)
         {
             var query = $"SELECT * FROM {tableName}";
-            using (var sqlCM = new SqlProxyCommand(query, GlobalInfo.DBaseInfo.dbManager.DB_Connection))
+            using (var sqlCM = new SqlProxyCommand(query, GlobalInfo.DBaseInfo.SqlManager.DB_Connection))
             {
 
                 var adp = new SqlProxyDataAdapter(sqlCM);
@@ -107,7 +107,7 @@ namespace ERPFramework.Data
         private static void DeleteData(string tableName)
         {
             var query = $"DELETE FROM {tableName}";
-            using (var sqlCM = new SqlProxyCommand(query, GlobalInfo.DBaseInfo.dbManager.DB_Connection))
+            using (var sqlCM = new SqlProxyCommand(query, GlobalInfo.DBaseInfo.SqlManager.DB_Connection))
             {
                 try
                 {

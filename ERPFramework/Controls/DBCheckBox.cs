@@ -164,7 +164,7 @@ namespace ERPFramework.Controls
         virtual public void AttachDataReader<T>(IDataReaderUpdater dr, IColumn code, IColumn description, bool alsoNULL)
         {
             cbbManager = new ComboBoxManager(this);
-            if (GlobalInfo.DBaseInfo.dbManager != null)
+            if (GlobalInfo.DBaseInfo.SqlManager != null)
             {
                 if (alsoNULL)
                     cbbManager.AddValue<T>(default(T) == null ? (T)Convert.ChangeType(string.Empty, typeof(T)) : default(T), string.Empty);

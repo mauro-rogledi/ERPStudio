@@ -47,7 +47,7 @@ namespace ERPFramework.CounterManager
         {
             InitializeComponent();
             controlPos = 0;
-            if (GlobalInfo.DBaseInfo.dbManager != null)
+            if (GlobalInfo.DBaseInfo.SqlManager != null)
                 dUCodes = new DUCodes(null);
 
             AddDesignModeControl();

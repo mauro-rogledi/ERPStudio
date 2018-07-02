@@ -36,7 +36,7 @@ namespace ERPFramework
 
         public static DateTime EmptyDate(this DateTime date)
         {
-            return new DateTime(0001, 01, 01);
+            return new DateTime(1753, 1, 1);
         }
 
         public static bool Between(this DateTime date, DateTime dFrom, DateTime dTo)

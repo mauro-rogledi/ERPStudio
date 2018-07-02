@@ -43,7 +43,7 @@ namespace ERPFramework.Preferences
 
         public PreferenceForm(string formname)
         {
-            ConnectionString = GlobalInfo.DBaseInfo.dbManager.DB_ConnectionString;
+            ConnectionString = GlobalInfo.DBaseInfo.SqlManager.DB_ConnectionString;
             this.providerType = GlobalInfo.LoginInfo.ProviderType;
             formName = formname;
             InitializeComponent();

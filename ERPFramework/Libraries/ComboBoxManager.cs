@@ -83,7 +83,7 @@ namespace ERPFramework.Libraries
         virtual public void AttachDataReader<T>(IDataReaderUpdater dr, IColumn code, IColumn description, bool alsoNull)
         {
             CreateList<T>();
-            if (GlobalInfo.DBaseInfo.dbManager != null)
+            if (GlobalInfo.DBaseInfo.SqlManager != null)
             {
                 if (alsoNull)
                     AddValue<T>(default(T), string.Empty);

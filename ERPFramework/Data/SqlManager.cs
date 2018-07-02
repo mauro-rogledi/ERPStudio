@@ -45,19 +45,6 @@ namespace ERPFramework.Data
 
         #endregion
 
-        #region Abstract Method
-
-        //protected abstract bool CreateTable();
-        //protected abstract int currentVersion();
-        //protected abstract bool UpdateTables(int oldversion, int curversion);
-
-        #endregion
-
-        /// <summary>
-        /// SqlManager.
-        /// Costruttore per il caso New
-        /// </summary>
-        ///
         public SqlManager()
         {
         }
@@ -84,15 +71,13 @@ namespace ERPFramework.Data
         {
             var connected = false;
             var connectionString = GetConnectionString();
+            GlobalInfo.DBaseInfo.ConnectionString = connectionString;
 
             try
             {
                 myConnection = new SqlProxyConnection(connectionString);
                 myConnection.Open();
                 connected = (myConnection.State == ConnectionState.Open);
-                // @@ try to remove changedatabase
-                //if (connected)
-                //    myConnection.ChangeDatabase(lI.InitialCatalog);
             }
             catch (System.Exception ex)
             {
@@ -388,7 +373,7 @@ namespace ERPFramework.Data
 
         private string GetConnectionString()
         {
-            LoginInfo li = GlobalInfo.LoginInfo;
+            var li = GlobalInfo.LoginInfo;
             var sqlconnectionstring = new SqlProxyConnectionStringbuilder
             {
                 DataSource = li.DataSource,

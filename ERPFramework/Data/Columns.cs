@@ -64,6 +64,11 @@ namespace ERPFramework.Data
 
         public static object DefaultValue<T>()
         {
+            return DefaultValue(typeof(T));
+        }
+
+        public static object DefaultValue(Type type)
+        {
             var dictConver = new Dictionary<Type, Object>
             {
                 {typeof(String), "" },
@@ -77,9 +82,9 @@ namespace ERPFramework.Data
                 {typeof(TimeSpan), 0}
             };
 
-            var typeCheck = typeof(T).BaseType == typeof(Enum)
-                ? typeof(T).BaseType
-                : typeof(T);
+            var typeCheck = type.BaseType == typeof(Enum)
+                ? type.BaseType
+                : type;
 
             if (dictConver.ContainsKey(typeCheck))
                 return dictConver[typeCheck];

@@ -61,7 +61,7 @@ namespace ERPFramework.Controls
 
         virtual public void AttachDataReader(IDataReaderUpdater dr, IColumn code, IColumn description)
         {
-            if (GlobalInfo.DBaseInfo.dbManager != null)
+            if (GlobalInfo.DBaseInfo.SqlManager != null)
             {
                 dr.Find();
                 for (int t = 0; t < dr.Count; t++)

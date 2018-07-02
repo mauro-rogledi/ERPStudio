@@ -123,7 +123,7 @@ namespace ERPFramework.Forms
             if (DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Designtime)
                 return;
 
-            ConnectionString = GlobalInfo.DBaseInfo.dbManager.DB_ConnectionString;
+            ConnectionString = GlobalInfo.DBaseInfo.SqlManager.DB_ConnectionString;
             this.providerType = GlobalInfo.LoginInfo.ProviderType;
             controlBinder = new ControlBinder();
             messageList = new List<MessageData>();

@@ -34,7 +34,7 @@ namespace ERPFramework.Login
         public PasswordManager()
         {
             drUsers = new DRUsers();
-            ExpireDate = SqlProxyDatabaseHelper.GetServerDate(GlobalInfo.DBaseInfo.dbManager.DB_ConnectionString);
+            ExpireDate = SqlProxyDatabaseHelper.GetServerDate(GlobalInfo.DBaseInfo.SqlManager.DB_ConnectionString);
         }
 
         public UserStatus SelectUser(string username)

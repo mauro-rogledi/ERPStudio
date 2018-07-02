@@ -119,7 +119,7 @@ namespace ERPFramework.Data
         private static string GetConstraint(IColumn columnName)
         {
             const string command = "select object_name(cdefault) from syscolumns where [id] = object_id(@tn) and [name] like @cn ";
-            using (var cmd = new SqlProxyCommand(command, GlobalInfo.DBaseInfo.dbManager.DB_Connection))
+            using (var cmd = new SqlProxyCommand(command, GlobalInfo.DBaseInfo.SqlManager.DB_Connection))
             {
                 var tn = new SqlProxyParameter("@tn", DbType.String, 64);
                 var cn = new SqlProxyParameter("@cn", DbType.String, 64);
@@ -285,7 +285,7 @@ namespace ERPFramework.Data
         {
             try
             {
-                using (SqlProxyCommand MyCommand = new SqlProxyCommand(sbuilder.ToString(), GlobalInfo.DBaseInfo.dbManager.DB_Connection))
+                using (SqlProxyCommand MyCommand = new SqlProxyCommand(sbuilder.ToString(), GlobalInfo.DBaseInfo.SqlManager.DB_Connection))
                 {
                     MyCommand.ExecuteNonQuery();
                 }

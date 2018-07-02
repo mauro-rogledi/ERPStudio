@@ -77,13 +77,13 @@ namespace ERPFramework.Data
         #endregion
 
         protected DataReaderUpdater()
-            : this(GlobalInfo.DBaseInfo.dbManager.DB_Connection, null)
+            : this(GlobalInfo.DBaseInfo.SqlManager.DB_Connection, null)
         {
         }
 
         [Obsolete("Use version with transaction")]
         protected DataReaderUpdater(bool updater)
-            : this(GlobalInfo.DBaseInfo.dbManager.DB_Connection, null)
+            : this(GlobalInfo.DBaseInfo.SqlManager.DB_Connection, null)
         {
         }
 
@@ -94,7 +94,7 @@ namespace ERPFramework.Data
         }
 
         protected DataReaderUpdater(IDocumentBase documentBase)
-            : this(GlobalInfo.DBaseInfo.dbManager.DB_Connection, documentBase)
+            : this(GlobalInfo.DBaseInfo.SqlManager.DB_Connection, documentBase)
         {
         }
 

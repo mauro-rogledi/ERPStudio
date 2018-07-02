@@ -66,8 +66,8 @@ namespace ERPManager.Forms
             var configFound = ActivationManager.Load();
 
             // Mi connetto al Database
-            GlobalInfo.DBaseInfo.dbManager = new SqlManager();
-            if (!GlobalInfo.DBaseInfo.dbManager.CreateConnection())
+            GlobalInfo.DBaseInfo.SqlManager = new SqlManager();
+            if (!GlobalInfo.DBaseInfo.SqlManager.CreateConnection())
             {
                 this.Close();
                 return;
@@ -111,6 +111,8 @@ namespace ERPManager.Forms
                     }
                 }
             }
+
+            GlobalInfo.CloseConnection();
             base.OnLoad(e);
         }
 
@@ -291,7 +293,7 @@ namespace ERPManager.Forms
         private void DontRememberUser()
         {
             GlobalInfo.LoginInfo.RememberLastLogin = false;
-            GlobalInfo.DBaseInfo.dbManager.WriteConfigFile();
+            GlobalInfo.DBaseInfo.SqlManager.WriteConfigFile();
             MetroMessageBox.Show(this, Properties.Resources.Msg_UserNotRemember,
                                 Properties.Resources.Msg_Attention,
                     MessageBoxButtons.OK, MessageBoxIcon.Information);

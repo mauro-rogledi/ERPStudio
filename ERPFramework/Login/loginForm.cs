@@ -68,7 +68,7 @@ namespace ERPFramework.Login
                             ? txtPassword.Text
                             : string.Empty;
 
-            GlobalInfo.DBaseInfo.dbManager.WriteConfigFile();
+            GlobalInfo.DBaseInfo.SqlManager.WriteConfigFile();
         }
 
         private bool ChgPwdForm()

@@ -95,7 +95,7 @@ namespace ERPFramework.Controls
             Left = GlobalInfo.MainForm.Left + 50;
             Top = GlobalInfo.MainForm.Top + 50;
             StartPosition = FormStartPosition.Manual;
-            rdrConnection = GlobalInfo.DBaseInfo.dbManager.DB_Connection;
+            rdrConnection = GlobalInfo.DBaseInfo.SqlManager.DB_Connection;
             MustExistCode = true;
             InitializeComponent();
             dataGridView1.AutoGenerateColumns = false;
