@@ -90,12 +90,12 @@ namespace ERPFramework.Data
 
         public SqlProxyTransaction BeginTransaction()
         {
-            return new SqlProxyTransaction(Connection.BeginTransaction());
+            return new SqlProxyTransaction(this, Connection.BeginTransaction());
         }
 
         public SqlProxyTransaction BeginTransaction(IsolationLevel il)
         {
-            return new SqlProxyTransaction(Connection.BeginTransaction(il));
+            return new SqlProxyTransaction(this, Connection.BeginTransaction(il));
         }
 
         public void ChangeDatabase(string databaseName)
@@ -195,7 +195,7 @@ namespace ERPFramework.Data
         public SqlProxyTransaction Transaction
         {
             get => dbTransaction;
-            set { dbTransaction = value; Command.Transaction = dbTransaction; }
+            set { dbTransaction = value; Command.Transaction = dbTransaction.Transaction; }
         }
         public string CommandText { get => Command.CommandText; set => Command.CommandText = value; }
         public int CommandTimeout { get => Command.CommandTimeout; set => Command.CommandTimeout = value; }
@@ -257,18 +257,17 @@ namespace ERPFramework.Data
     #endregion
 
     #region SqlProxyTransaction
-    public sealed class SqlProxyTransaction : ISqlProviderTransaction
+    public sealed class SqlProxyTransaction
     {
+        public SqlProxyConnection Connection { get; private set; }
         public IDbTransaction Transaction { get; }
-        ISqlProviderTransaction dbTransaction;
 
-        public SqlProxyTransaction(ISqlProviderTransaction dbTransaction)
+        public SqlProxyTransaction(SqlProxyConnection connection, IDbTransaction dbTransaction)
         {
-            Transaction = dbTransaction.Transaction;
-            this.dbTransaction = dbTransaction;
+            Transaction = dbTransaction;
+            Connection = connection;
         }
 
-        public ISqlProviderConnection Connection => dbTransaction.Connection;
 
         public IsolationLevel IsolationLevel => Transaction.IsolationLevel;
 
@@ -296,6 +295,7 @@ namespace ERPFramework.Data
         public IDataReader DataReader => dbDataReader;
 
         public SqlProxyDataReader(ISqlProviderDataReader datareader) => dbDataReader = datareader.DataReader;
+        public SqlProxyDataReader(IDataReader datareader) => dbDataReader = datareader;
 
         public object this[int i] => dbDataReader[i];
 
@@ -383,7 +383,7 @@ namespace ERPFramework.Data
     #endregion
 
     #region SqlProxyParameter
-    public class SqlProxyParameter : ISqlProviderParameter
+    public class SqlProxyParameter 
     {
         public ISqlProviderParameter Parameter { get; set; }
 
@@ -446,8 +446,6 @@ namespace ERPFramework.Data
                ? ((Enum)value)//.Int()
                : value;
         }
-
-        IDbDataParameter ISqlProviderParameter.Parameter { get; set; }
     }
     #endregion
 
@@ -723,19 +721,20 @@ namespace ERPFramework.Data
     public class SqlProxyParameterCollection
     {
         ISqlProviderParameterCollection Parameters { get; }
+        public SqlProxyCommand Command { get; private set; }
         public SqlProxyParameterCollection(SqlProxyCommand command)
         {
             Parameters = ProxyProviderLoader.CreateInstance<ISqlProviderParameterCollection>("SqlProvider.SqlProviderParameterCollection", command.Command);
+            Command = command;
         }
         public SqlProxyParameterCollection(ISqlProviderCommand command)
         {
             Parameters = ProxyProviderLoader.CreateInstance<ISqlProviderParameterCollection>("SqlProvider.SqlProviderParameterCollection", command);
+            //Command = command;
         }
 
-        public ISqlProviderParameter this[string parameterName] { get => Parameters[parameterName];  }
-        public ISqlProviderParameter this[int index] { get => Parameters[index]; }
-
-        public ISqlProviderCommand Command => Parameters.Command;
+        public ISqlProviderParameter this[string parameterName] { get => Parameters[parameterName] as ISqlProviderParameter;  }
+        public ISqlProviderParameter this[int index] { get => Parameters[index] as ISqlProviderParameter; }
 
         public bool IsReadOnly => Parameters.IsReadOnly;
 
