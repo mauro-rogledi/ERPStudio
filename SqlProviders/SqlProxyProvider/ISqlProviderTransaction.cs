@@ -1,6 +1,8 @@
-﻿namespace SqlProxyProvider
+﻿using System;
+
+namespace SqlProxyProvider
 {
-    public interface ISqlProviderTransaction 
+    public interface ISqlProviderTransaction : IDisposable
     {
         System.Data.IDbTransaction Transaction { get; }
 

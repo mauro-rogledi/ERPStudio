@@ -260,9 +260,9 @@ namespace ERPFramework.Data
     public sealed class SqlProxyTransaction
     {
         public SqlProxyConnection Connection { get; private set; }
-        public IDbTransaction Transaction { get; }
+        public ISqlProviderTransaction Transaction { get; }
 
-        public SqlProxyTransaction(SqlProxyConnection connection, IDbTransaction dbTransaction)
+        public SqlProxyTransaction(SqlProxyConnection connection, ISqlProviderTransaction dbTransaction)
         {
             Transaction = dbTransaction;
             Connection = connection;
