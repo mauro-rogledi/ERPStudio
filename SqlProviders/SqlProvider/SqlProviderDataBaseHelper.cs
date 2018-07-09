@@ -157,7 +157,7 @@ namespace SqlProvider
                         {
                             con.Open();
 
-                            using (SqlCommand cmd = new SqlCommand("SELECT * from sys.databases where database_id > 6", con))
+                            using (SqlCommand cmd = new SqlCommand("SELECT * from sys.databases", con))
                             {
                                 using (IDataReader dr = cmd.ExecuteReader())
                                 {
