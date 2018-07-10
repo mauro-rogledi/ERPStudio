@@ -118,32 +118,32 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="metroFlowLayoutPanel2.AutoSize" type="System.Boolean, mscorlib">
+  <data name="mfpTop.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="mfpTopPanel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="metroLink2.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="btnEdit.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 3</value>
   </data>
-  <data name="metroLink2.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="btnEdit.Size" type="System.Drawing.Size, System.Drawing">
     <value>33, 33</value>
   </data>
-  <data name="metroLink2.TabIndex" type="System.Int32, mscorlib">
+  <data name="btnEdit.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
   </data>
-  <data name="&gt;&gt;metroLink2.Name" xml:space="preserve">
-    <value>metroLink2</value>
+  <data name="&gt;&gt;btnEdit.Name" xml:space="preserve">
+    <value>btnEdit</value>
   </data>
-  <data name="&gt;&gt;metroLink2.Type" xml:space="preserve">
+  <data name="&gt;&gt;btnEdit.Type" xml:space="preserve">
     <value>MetroFramework.Controls.MetroLink, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
   </data>
-  <data name="&gt;&gt;metroLink2.Parent" xml:space="preserve">
+  <data name="&gt;&gt;btnEdit.Parent" xml:space="preserve">
     <value>mfpTopPanel</value>
   </data>
-  <data name="&gt;&gt;metroLink2.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;btnEdit.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
@@ -175,172 +175,217 @@
     <value>MetroFramework.Extender.MetroFlowLayoutPanel, MetroFramework.Extender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;mfpTopPanel.Parent" xml:space="preserve">
-    <value>metroFlowLayoutPanel2</value>
+    <value>mfpTop</value>
   </data>
   <data name="&gt;&gt;mfpTopPanel.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="metroFlowLayoutPanel2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="mfpTop.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
   </data>
-  <data name="metroFlowLayoutPanel2.FlowDirection" type="System.Windows.Forms.FlowDirection, System.Windows.Forms">
+  <data name="mfpTop.FlowDirection" type="System.Windows.Forms.FlowDirection, System.Windows.Forms">
     <value>RightToLeft</value>
   </data>
-  <data name="metroFlowLayoutPanel2.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="mfpTop.Location" type="System.Drawing.Point, System.Drawing">
     <value>20, 30</value>
   </data>
-  <data name="metroFlowLayoutPanel2.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="mfpTop.Size" type="System.Drawing.Size, System.Drawing">
     <value>1208, 45</value>
   </data>
-  <data name="metroFlowLayoutPanel2.TabIndex" type="System.Int32, mscorlib">
+  <data name="mfpTop.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="metroFlowLayoutPanel2.WrapContents" type="System.Boolean, mscorlib">
+  <data name="mfpTop.WrapContents" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="&gt;&gt;metroFlowLayoutPanel2.Name" xml:space="preserve">
-    <value>metroFlowLayoutPanel2</value>
+  <data name="&gt;&gt;mfpTop.Name" xml:space="preserve">
+    <value>mfpTop</value>
   </data>
-  <data name="&gt;&gt;metroFlowLayoutPanel2.Type" xml:space="preserve">
+  <data name="&gt;&gt;mfpTop.Type" xml:space="preserve">
     <value>MetroFramework.Extender.MetroFlowLayoutPanel, MetroFramework.Extender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;metroFlowLayoutPanel2.Parent" xml:space="preserve">
+  <data name="&gt;&gt;mfpTop.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;metroFlowLayoutPanel2.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;mfpTop.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="tableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
+  <data name="tlpBottom.ColumnCount" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="metroFlowLayoutPanel3.AutoSize" type="System.Boolean, mscorlib">
+  <data name="mfpBottomRight.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="metroLink6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>522, 3</value>
+  <data name="btnSave.Location" type="System.Drawing.Point, System.Drawing">
+    <value>521, 3</value>
   </data>
-  <data name="metroLink6.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="btnSave.Size" type="System.Drawing.Size, System.Drawing">
     <value>33, 33</value>
   </data>
-  <data name="metroLink6.TabIndex" type="System.Int32, mscorlib">
+  <data name="btnSave.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="&gt;&gt;metroLink6.Name" xml:space="preserve">
-    <value>metroLink6</value>
+  <data name="&gt;&gt;btnSave.Name" xml:space="preserve">
+    <value>btnSave</value>
   </data>
-  <data name="&gt;&gt;metroLink6.Type" xml:space="preserve">
+  <data name="&gt;&gt;btnSave.Type" xml:space="preserve">
     <value>MetroFramework.Controls.MetroLink, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
   </data>
-  <data name="&gt;&gt;metroLink6.Parent" xml:space="preserve">
-    <value>metroFlowLayoutPanel3</value>
+  <data name="&gt;&gt;btnSave.Parent" xml:space="preserve">
+    <value>mfpBottomRight</value>
   </data>
-  <data name="&gt;&gt;metroLink6.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;btnSave.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="metroLink7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>483, 3</value>
+  <data name="btnUndo.Location" type="System.Drawing.Point, System.Drawing">
+    <value>482, 3</value>
   </data>
-  <data name="metroLink7.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="btnUndo.Size" type="System.Drawing.Size, System.Drawing">
     <value>33, 33</value>
   </data>
-  <data name="metroLink7.TabIndex" type="System.Int32, mscorlib">
+  <data name="btnUndo.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
-  <data name="&gt;&gt;metroLink7.Name" xml:space="preserve">
-    <value>metroLink7</value>
+  <data name="&gt;&gt;btnUndo.Name" xml:space="preserve">
+    <value>btnUndo</value>
   </data>
-  <data name="&gt;&gt;metroLink7.Type" xml:space="preserve">
+  <data name="&gt;&gt;btnUndo.Type" xml:space="preserve">
     <value>MetroFramework.Controls.MetroLink, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
   </data>
-  <data name="&gt;&gt;metroLink7.Parent" xml:space="preserve">
-    <value>metroFlowLayoutPanel3</value>
+  <data name="&gt;&gt;btnUndo.Parent" xml:space="preserve">
+    <value>mfpBottomRight</value>
   </data>
-  <data name="&gt;&gt;metroLink7.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;btnUndo.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="metroFlowLayoutPanel3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="mfpBottomRight.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
   </data>
-  <data name="metroFlowLayoutPanel3.FlowDirection" type="System.Windows.Forms.FlowDirection, System.Windows.Forms">
+  <data name="mfpBottomRight.FlowDirection" type="System.Windows.Forms.FlowDirection, System.Windows.Forms">
     <value>RightToLeft</value>
   </data>
-  <data name="metroFlowLayoutPanel3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>647, 3</value>
+  <data name="mfpBottomRight.Location" type="System.Drawing.Point, System.Drawing">
+    <value>648, 3</value>
   </data>
-  <data name="metroFlowLayoutPanel3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>558, 37</value>
+  <data name="mfpBottomRight.Size" type="System.Drawing.Size, System.Drawing">
+    <value>557, 37</value>
   </data>
-  <data name="metroFlowLayoutPanel3.TabIndex" type="System.Int32, mscorlib">
+  <data name="mfpBottomRight.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
   </data>
-  <data name="&gt;&gt;metroFlowLayoutPanel3.Name" xml:space="preserve">
-    <value>metroFlowLayoutPanel3</value>
+  <data name="&gt;&gt;mfpBottomRight.Name" xml:space="preserve">
+    <value>mfpBottomRight</value>
   </data>
-  <data name="&gt;&gt;metroFlowLayoutPanel3.Type" xml:space="preserve">
+  <data name="&gt;&gt;mfpBottomRight.Type" xml:space="preserve">
     <value>MetroFramework.Extender.MetroFlowLayoutPanel, MetroFramework.Extender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;metroFlowLayoutPanel3.Parent" xml:space="preserve">
-    <value>tableLayoutPanel1</value>
+  <data name="&gt;&gt;mfpBottomRight.Parent" xml:space="preserve">
+    <value>tlpBottom</value>
   </data>
-  <data name="&gt;&gt;metroFlowLayoutPanel3.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;mfpBottomRight.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="metroLink9.AutoSize" type="System.Boolean, mscorlib">
+  <data name="btnPrint.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="metroLink9.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="btnPrint.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
   </data>
-  <data name="metroLink9.Location" type="System.Drawing.Point, System.Drawing">
-    <value>566, 3</value>
+  <data name="btnPrint.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
   </data>
-  <data name="metroLink9.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="btnPrint.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 33</value>
   </data>
-  <data name="metroLink9.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;metroLink9.Name" xml:space="preserve">
-    <value>metroLink9</value>
-  </data>
-  <data name="&gt;&gt;metroLink9.Type" xml:space="preserve">
-    <value>MetroFramework.Controls.MetroLink, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
-  </data>
-  <data name="&gt;&gt;metroLink9.Parent" xml:space="preserve">
-    <value>tableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;metroLink9.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="tableLayoutPanel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Bottom</value>
-  </data>
-  <data name="tableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>20, 362</value>
-  </data>
-  <data name="tableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="tableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1208, 43</value>
-  </data>
-  <data name="tableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
+  <data name="btnPrint.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;tableLayoutPanel1.Name" xml:space="preserve">
-    <value>tableLayoutPanel1</value>
+  <data name="&gt;&gt;btnPrint.Name" xml:space="preserve">
+    <value>btnPrint</value>
   </data>
-  <data name="&gt;&gt;tableLayoutPanel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;btnPrint.Type" xml:space="preserve">
+    <value>MetroFramework.Controls.MetroLink, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
   </data>
-  <data name="&gt;&gt;tableLayoutPanel1.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="&gt;&gt;btnPrint.Parent" xml:space="preserve">
+    <value>mfpBottomCenter</value>
   </data>
-  <data name="&gt;&gt;tableLayoutPanel1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;btnPrint.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="tableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="metroFlowLayoutPanel3" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="metroLink9" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,AutoSize,0,Percent,50" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  <data name="mfpBottomCenter.Location" type="System.Drawing.Point, System.Drawing">
+    <value>566, 3</value>
+  </data>
+  <data name="mfpBottomCenter.Size" type="System.Drawing.Size, System.Drawing">
+    <value>76, 37</value>
+  </data>
+  <data name="mfpBottomCenter.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;mfpBottomCenter.Name" xml:space="preserve">
+    <value>mfpBottomCenter</value>
+  </data>
+  <data name="&gt;&gt;mfpBottomCenter.Type" xml:space="preserve">
+    <value>MetroFramework.Extender.MetroFlowLayoutPanel, MetroFramework.Extender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;mfpBottomCenter.Parent" xml:space="preserve">
+    <value>tlpBottom</value>
+  </data>
+  <data name="&gt;&gt;mfpBottomCenter.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="mfpBottomLeft.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="mfpBottomLeft.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="mfpBottomLeft.Size" type="System.Drawing.Size, System.Drawing">
+    <value>557, 37</value>
+  </data>
+  <data name="mfpBottomLeft.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="&gt;&gt;mfpBottomLeft.Name" xml:space="preserve">
+    <value>mfpBottomLeft</value>
+  </data>
+  <data name="&gt;&gt;mfpBottomLeft.Type" xml:space="preserve">
+    <value>MetroFramework.Extender.MetroFlowLayoutPanel, MetroFramework.Extender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;mfpBottomLeft.Parent" xml:space="preserve">
+    <value>tlpBottom</value>
+  </data>
+  <data name="&gt;&gt;mfpBottomLeft.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="tlpBottom.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Bottom</value>
+  </data>
+  <data name="tlpBottom.Location" type="System.Drawing.Point, System.Drawing">
+    <value>20, 362</value>
+  </data>
+  <data name="tlpBottom.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="tlpBottom.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1208, 43</value>
+  </data>
+  <data name="tlpBottom.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;tlpBottom.Name" xml:space="preserve">
+    <value>tlpBottom</value>
+  </data>
+  <data name="&gt;&gt;tlpBottom.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tlpBottom.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;tlpBottom.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tlpBottom.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="mfpBottomRight" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="mfpBottomCenter" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="mfpBottomLeft" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,AutoSize,0,Percent,50" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

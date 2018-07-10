@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ERPManager.Forms
+namespace ERPFramework.Forms
 {
     public partial class DataEntryForm : MetroForm
     {
@@ -18,14 +18,58 @@ namespace ERPManager.Forms
             InitializeComponent();
         }
 
-        private void DataEntryForm_Load(object sender, EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
+            base.OnLoad(e);
 
+            if (DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Designtime)
+                return;
+
+            OnBindData();
         }
 
-        private void metroFlowLayoutPanel2_Paint(object sender, PaintEventArgs e)
-        {
+        public virtual void OnBindData() { }
 
+        #region Panel Management
+
+        public bool PanelsInEdit
+        {
+            set
+            {
+                btnEdit.Visible = !value;
+                BottomVisible = value;
+                BottomRightVisible = value;
+                BottomCenterVisible = value && DocumentHasReport;
+                BottomLeftVisible = false;
+            }
         }
+
+        public bool BottomVisible
+        {
+            set => tlpBottom.Visible = value;
+        }
+
+        public bool BottomLeftVisible
+        {
+            set => mfpBottomLeft.Visible = value;
+        }
+
+        public bool BottomCenterVisible
+        {
+            set => mfpBottomCenter.Visible = value;
+        }
+
+        public bool BottomRightVisible
+        {
+            set => mfpBottomRight.Visible = value;
+        }
+
+        public bool ButtonEditVisible
+        {
+            set => btnEdit.Visible = value;
+        }
+        public bool DocumentHasReport { get; private set; } = false;
+        #endregion
+
     }
 }

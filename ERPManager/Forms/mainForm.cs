@@ -273,7 +273,9 @@ namespace ERPManager.Forms
                     userControlHelper.ShowControl(rF, true, OpenControlHelper.ControlPosition.Owner, sender as Control);
                     break;
                 case settingForm.SettingButton.LastUser:
-                    DontRememberUser();
+                    //DontRememberUser();
+                    var provaForm = new ProvaForm();
+                    userControlHelper.ShowControl(provaForm, false, OpenControlHelper.ControlPosition.Center, sender as Control);
                     break;
                 case settingForm.SettingButton.Info:
                     var iF = new InfoForm();
