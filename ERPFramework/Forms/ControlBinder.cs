@@ -8,40 +8,43 @@ using ERPFramework.Data;
 
 namespace ERPFramework.Forms
 {
-    public class BindingCollection : CollectionBase
+    public class BindingCollection : List<BindingSource>
     {
         public BindingSource this[string nameBinding]
         {
             get
             {
-                foreach (BindingSource bindingSource in List)
-                    if (bindingSource != null && bindingSource.DataMember == nameBinding)
-                        return bindingSource;
+                return Find(bs => bs.DataMember == nameBinding);
+                //foreach (BindingSource bindingSource in List)
+                //    if (bindingSource != null && bindingSource.DataMember == nameBinding)
+                //        return bindingSource;
 
-                return null;
+                //return null;
             }
         }
 
         public BindingSource Add(BindingSource bindingSource)
         {
-            List.Add(bindingSource);
+            Add(bindingSource);
             return bindingSource;
         }
 
         public void EndEdit()
         {
-            foreach (BindingSource bindingSource in List)
-                if (bindingSource != null)
-                    bindingSource.EndEdit();
+            ForEach(bs => bs.EndEdit());
+            //foreach (BindingSource bindingSource in List)
+            //    if (bindingSource != null)
+            //        bindingSource.EndEdit();
         }
 
         public bool AllowNew
         {
             set
             {
-                foreach (BindingSource bindingSource in List)
-                    if (bindingSource != null)
-                        bindingSource.AllowNew = value;
+                ForEach(bs => bs.AllowNew = value);
+                //foreach (BindingSource bindingSource in List)
+                //    if (bindingSource != null)
+                //        bindingSource.AllowNew = value;
             }
         }
     }
@@ -60,17 +63,14 @@ namespace ERPFramework.Forms
 
         public string Property { get; private set; }
 
-        public Findable Findable { get; set; }
-
         #endregion
 
-        public BinderCollectorItem(object control, string table, string column, string property, Findable findable)
+        public BinderCollectorItem(object control, string table, string column, string property)
         {
             this.Control = control;
             this.Table = table;
             this.Column = column;
             this.Property = property;
-            this.Findable = findable;
         }
     }
 
@@ -80,104 +80,71 @@ namespace ERPFramework.Forms
 
     public class BinderCollector : List<BinderCollectorItem>
     {
-        public BinderCollectorItem Add(object control, string table, string column, string property, Findable findable)
+        public BinderCollectorItem Add(object control, string table, string column, string property)
         {
-            BinderCollectorItem bind = new BinderCollectorItem(control, table, column, property, findable);
+            var bind = new BinderCollectorItem(control, table, column, property);
             this.Add(bind);
 
             return bind;
         }
-
-        //public BinderCollectorItem this[string control]
-        //{
-        //    get
-        //    {
-        //        List.
-        //    }
-        //}
     }
 
     #endregion
 
     internal class ControlBinder
     {
-        private BinderCollector bCollection;
+        private readonly BinderCollector bCollection;
 
         public ControlBinder()
         {
             bCollection = new BinderCollector();
         }
 
-        /// <summary>
-        /// Only for Enable/Disable Controls
-        /// </summary>
         public BinderCollectorItem Bind(object control)
         {
-            return bCollection.Add(control, string.Empty, string.Empty, string.Empty, Findable.NO);
+            return bCollection.Add(control, string.Empty, string.Empty, string.Empty);
         }
 
-        public BinderCollectorItem Bind(object control, IColumn column)
+        public BinderCollectorItem Bind(object control, IColumn column, string property = "Text")
         {
-            return bCollection.Add(control, column.Tablename, column.Name, "Text", Findable.NO);
+            return bCollection.Add(control, column.Tablename, column.Name, property);
         }
 
-        public BinderCollectorItem Bind(object control, IColumn column, string property)
-        {
-            return bCollection.Add(control, column.Tablename, column.Name, property, Findable.NO);
-        }
-
-        public BinderCollectorItem Bind(object control, IColumn column, Findable findable)
-        {
-            return bCollection.Add(control, column.Tablename, column.Name, "Text", findable);
-        }
-
-        public BinderCollectorItem Bind(object control, IColumn column, string property, Findable findable)
-        {
-            return bCollection.Add(control, column.Tablename, column.Name, property, findable);
-        }
-
-        public BinderCollectorItem Bind(object control, string table, string column, string property)
-        {
-            return bCollection.Add(control, table, column, property, Findable.NO);
-        }
+        //public BinderCollectorItem Bind(object control, string table, string column, string property)
+        //{
+        //    return bCollection.Add(control, table, column, property);
+        //}
 
         public BinderCollectorItem Bind(object control, string table)
         {
-            return bCollection.Add(control, table, string.Empty, "Text", Findable.NO);
+            return bCollection.Add(control, table, string.Empty, "Text");
         }
 
-        public BinderCollectorItem Bind(BinderCollector binderCollection, object control, IColumn column)
-        {
-            return binderCollection.Add(control, column.Tablename, column.Name, "Text", Findable.NO);
-        }
+        //public BinderCollectorItem Bind(BinderCollector binderCollection, object control, IColumn column)
+        //{
+        //    return binderCollection.Add(control, column.Tablename, column.Name, "Text");
+        //}
 
-        public BinderCollectorItem Bind(BinderCollector binderCollection, object control, IColumn column, string property)
-        {
-            return binderCollection.Add(control, column.Tablename, column.Name, property, Findable.NO);
-        }
+        //public BinderCollectorItem Bind(BinderCollector binderCollection, object control, IColumn column, string property)
+        //{
+        //    return binderCollection.Add(control, column.Tablename, column.Name, property);
+        //}
 
-        public BinderCollectorItem Bind(BinderCollector binderCollection, object control, string table, string column, string property, Findable findable)
-        {
-            return binderCollection.Add(control, table, column, property, findable);
-        }
-
-        public void SetFindable(object control, Findable findable)
-        {
-            BinderCollectorItem item = bCollection.Find(p => p.Control == control);
-            if (item != null)
-                item.Findable = findable;
-        }
+        //public BinderCollectorItem Bind(BinderCollector binderCollection, object control, string table, string column, string property)
+        //{
+        //    return binderCollection.Add(control, table, column, property);
+        //}
 
         public bool Enable(bool status)
         {
             System.Reflection.PropertyInfo pInfo = null;
-            foreach (BinderCollectorItem de in bCollection)
+            bCollection.ForEach(de =>
             {
-                object obj = de.Control;
+                var obj = de.Control;
                 pInfo = obj.GetType().GetProperty("Enabled");
                 if (pInfo != null &&
-                    !(obj.GetType().BaseType == typeof(ERPFramework.Controls.ExtendedDataGridView) ||
-                     obj.GetType() == typeof(ERPFramework.Controls.ExtendedDataGridView)))
+                    !(obj.GetType().BaseType == typeof(Controls.ExtendedDataGridView) ||
+                     obj.GetType() == typeof(Controls.ExtendedDataGridView)))
                     pInfo.SetValue(obj, status, null);
                 else
                 {
@@ -186,104 +153,13 @@ namespace ERPFramework.Forms
                         pInfo.SetValue(obj, !status, null);
                 }
 
-                if (obj.GetType().BaseType == typeof(ERPFramework.Controls.ExtendedDataGridView))
+                if (obj.GetType().BaseType == typeof(Controls.ExtendedDataGridView))
                 {
-                    ERPFramework.Controls.ExtendedDataGridView dgw = (ERPFramework.Controls.ExtendedDataGridView)obj;
+                    var dgw = obj as Controls.ExtendedDataGridView;
                     dgw.AllowUserToDeleteRows = status;
                 }
-            }
+            });
             return true;
-        }
-
-        public bool SetFindable(bool finding)
-        {
-            if (!finding)
-                return true;
-
-            System.Reflection.PropertyInfo pInfo = null;
-            System.Reflection.MethodInfo mInfo = null;
-            foreach (BinderCollectorItem de in bCollection)
-            {
-                if (de.Findable == Findable.NO)
-                    continue;
-
-                object obj = de.Control;
-                pInfo = obj.GetType().GetProperty("Enabled");
-                if (pInfo != null)
-                    pInfo.SetValue(obj, true, null);
-                else
-                {
-                    pInfo = obj.GetType().GetProperty("ReadOnly");
-                    if (pInfo != null)
-                        pInfo.SetValue(obj, false, null);
-                }
-
-                mInfo = obj.GetType().GetMethod("Clean");
-                if (mInfo != null)
-                    mInfo.Invoke(obj, new object[] { });
-            }
-            return true;
-        }
-
-        public string GetFindableString()
-        {
-            string findableQuery = string.Empty;
-
-            foreach (BinderCollectorItem de in bCollection)
-            {
-                if (de.Findable == Findable.NO)
-                    continue;
-
-                string compareString = CompareString(de);
-                if (findableQuery != string.Empty && compareString != string.Empty)
-                    findableQuery += " AND ";
-
-                findableQuery += compareString;
-            }
-
-            return findableQuery;
-        }
-
-        private string CompareString(BinderCollectorItem item)
-        {
-            string sVal = string.Empty;
-
-            // Controllo se Empty
-            if (item.Control.GetType().BaseType == typeof(CodesControl) ||
-                item.Control.GetType() == typeof(CodesControl))
-            {
-                CodesControl codes = (CodesControl)item.Control;
-                sVal = codes.IsEmpty
-                            ? ""
-                            : codes.Findable;
-            }
-            //else if (item.Control.GetType() == typeof(CounterControl))
-            //{
-            //    CounterControl counter = (CounterControl)item.Control;
-            //    sVal = counter.IsEmpty
-            //                ? ""
-            //                : counter.ToString();
-            //}
-            else
-            {
-                object obj = item.Control;
-                System.Reflection.PropertyInfo pInfo = obj.GetType().GetProperty(item.Property);
-                sVal = (pInfo == null)
-                    ? ""
-                    : pInfo.GetValue(obj, null).ToString();
-            }
-
-            if (item.Property == "Text")
-            {
-                if (sVal.Length > 0)
-                    return string.Format("[{0}].[{1}] LIKE '{2}%'", item.Table, item.Column, sVal);
-            }
-            else
-            {
-                if (sVal.Length > 0)
-                    return string.Format("[{0}].[{1}] = '{2}'", item.Table, item.Column, sVal);
-            }
-            return string.Empty;
         }
 
         public void SetFocus()
@@ -291,10 +167,10 @@ namespace ERPFramework.Forms
             System.Reflection.MethodInfo mInfo = null;
             System.Reflection.PropertyInfo pInfo = null;
 
-            foreach (BinderCollectorItem de in bCollection)
+            bCollection.ForEach(de =>
             {
-                object obj = de.Control;
-                bool enabled = false;
+                var obj = de.Control;
+                var enabled = false;
                 pInfo = obj.GetType().GetProperty("Enabled");
                 if (pInfo != null)
                     enabled = (bool)pInfo.GetValue(obj, null);
@@ -309,9 +185,9 @@ namespace ERPFramework.Forms
                 if (mInfo != null && enabled)
                 {
                     mInfo.Invoke(obj, null);
-                    break;
+                    return;
                 }
-            }
+            });
         }
     }
 
@@ -393,10 +269,10 @@ namespace ERPFramework.Forms
                     break;
 
                 case DBOperation.New:
-                        if (StatesButton)
-                            GetNewValue();
+                    if (StatesButton)
+                        GetNewValue();
 
-                        counterUpdater.SetValue(val);
+                    counterUpdater.SetValue(val);
                     break;
 
                 case DBOperation.Delete:

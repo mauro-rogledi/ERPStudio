@@ -24,7 +24,9 @@ namespace ERPFramework
         public static ComputerInfo ComputerInfo = new ComputerInfo();
         public static GlobalPreferences globalPref;
 
-        public static Dictionary<string,TableDefinition> Tables = new Dictionary<string, TableDefinition>();
+        public static Dictionary<string, TableDefinition> Tables = new Dictionary<string, TableDefinition>();
+
+        private static int connectionOpened = 0;
 
         public static SqlProxyConnection SqlConnection
         {
@@ -41,7 +43,10 @@ namespace ERPFramework
         {
             try
             {
-                DBaseInfo.SqlManager.DB_Connection.Open();
+                if (DBaseInfo.SqlManager.DB_Connection.State == System.Data.ConnectionState.Closed)
+                    DBaseInfo.SqlManager.DB_Connection.Open();
+
+                connectionOpened++;
             }
             catch (Exception)
             {
@@ -54,7 +59,14 @@ namespace ERPFramework
         {
             try
             {
-                DBaseInfo.SqlManager.DB_Connection.Close();
+                if (DBaseInfo.SqlManager.DB_Connection.State == System.Data.ConnectionState.Open)
+                {
+                    connectionOpened--;
+                    if (connectionOpened == 0)
+                        DBaseInfo.SqlManager.DB_Connection.Close();
+                }
+                else
+                    connectionOpened = 0;
             }
             catch (Exception)
             {

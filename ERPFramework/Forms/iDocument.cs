@@ -5,6 +5,10 @@ using System.Windows.Forms;
 
 namespace ERPFramework.Forms
 {
+    public interface IDataEntryBase
+    {
+
+    }
 
     public interface IDocumentBase
     {

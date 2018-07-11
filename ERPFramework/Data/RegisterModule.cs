@@ -35,8 +35,8 @@ namespace ERPFramework.Data
             return null;
         }
 
-        protected SqlProxyConnection SqlProxyConnection;
-        protected ProviderType ProviderType;
+        protected SqlProxyConnection sqlProxyConnection;
+        protected ProviderType providerType;
         protected int dbVersion;
 
         public void AddTable<T>(bool toExport = true)
@@ -68,10 +68,9 @@ namespace ERPFramework.Data
 
         }
 
-        public bool CreateTable(SqlProxyConnection Connection, UserType user)
+        public bool CreateTable(SqlProxyConnection connection, UserType user)
         {
-
-            SqlProxyConnection = Connection;
+            sqlProxyConnection = connection;
             CreateDBTables();
 
             dbVersion = ReadDBVersion;

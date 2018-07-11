@@ -14,8 +14,6 @@
 
     public enum PrintType { Letter, Envelope, Label, Pdf, Email }
 
-    public enum Findable { YES, NO }
-
     public enum ZoomLevel
     {
         E_Page_Width = 1,

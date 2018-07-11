@@ -77,6 +77,9 @@ namespace ProvaProviders
             //    DataSource = @"D:\Utenti\Mauro\Desktop\Clothes.db"
             //};
 
+            var conn2 = new SqlProxyConnection(sqlconnectiostring.ConnectionString);
+            conn2.Open();
+
             using (var connection = new SqlProxyConnection(sqlconnectiostring.ConnectionString))
             {
                 connection.Open();
@@ -136,6 +139,7 @@ namespace ProvaProviders
                 }
 
                 connection.Close();
+                conn2.Close();
             }
         }
 

@@ -646,11 +646,11 @@ namespace ERPFramework.Data
 
         public QueryBuilder Is(string operators, object val, string qualified = "")
         {
-            if (val is ISqlProviderParameter)
+            if (val is SqlProxyParameter)
             {
-                sb.AppendFormat("{0} {1} ", operators, (val as ISqlProviderParameter).ParameterName);
+                sb.AppendFormat("{0} {1} ", operators, (val as SqlProxyParameter).ParameterName);
                 if (_hasExecuter && scc != null)
-                    scc.Parameters.Add((val as ISqlProviderParameter));
+                    scc.Parameters.Add((val as SqlProxyParameter));
 
             }
             else if (val is double || val is int)

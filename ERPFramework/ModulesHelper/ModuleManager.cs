@@ -108,6 +108,7 @@ namespace ERPFramework.ModulesHelper
 
         private static bool RegisterModule(NameSpace nameSpace)
         {
+            GlobalInfo.OpenConnection();
             var nspace = new NameSpace(nameSpace)
             {
                 Application = "ModuleData.RegisterModule"
@@ -125,8 +126,9 @@ namespace ERPFramework.ModulesHelper
                         registerTable.RegisterCountersAndCodes();
                 }
                 else
-                    return false;
+                    bOk = false;
             }
+            GlobalInfo.CloseConnection();
             return bOk;
         }
     }

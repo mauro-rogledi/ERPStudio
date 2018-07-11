@@ -345,43 +345,21 @@ namespace ERPFramework.Forms
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
-        public Binding BindControl(Control control, IColumn column, NullValue nullValue)
-        {
-            return BindControl(control, column, GetProperty(control), nullValue);
-        }
+        //public Binding BindControl(Control control, IColumn column)
+        //{
+        //    return BindControl(control, column, GetProperty(control), NullValue.SetNull);
+        //}
 
-        public Binding BindControl(Control control, IColumn column)
-        {
-            return BindControl(control, column, GetProperty(control), NullValue.SetNull);
-        }
+        //public Binding BindControl(Control control, IColumn column, string property)
+        //{
+        //    return BindControl(control, column, property, NullValue.SetNull);
+        //}
 
-        public Binding BindControl(Control control, IColumn column, string property)
+        public Binding BindControl(Control control, IColumn column, string property = "", NullValue nullValue = NullValue.SetNull)
         {
-            return BindControl(control, column, property, NullValue.SetNull);
-        }
+            if (property.IsEmpty())
+                property = GetProperty(control);
 
-        public Binding BindControl(Control control, IColumn column, string property, NullValue nullValue)
-        {
-            return BindControl(control, column, property, nullValue, Findable.NO);
-        }
-
-        public Binding BindControl(Control control, IColumn column, NullValue nullValue, Findable findable)
-        {
-            return BindControl(control, column, GetProperty(control), nullValue, findable);
-        }
-
-        public Binding BindControl(Control control, IColumn column, Findable findable)
-        {
-            return BindControl(control, column, GetProperty(control), NullValue.SetNull, findable);
-        }
-
-        public Binding BindControl(Control control, IColumn column, string property, Findable findable)
-        {
-            return BindControl(control, column, property, NullValue.SetNull, findable);
-        }
-
-        public Binding BindControl(Control control, IColumn column, string property, NullValue nullValue, Findable findable)
-        {
             if (column.Len > 0)
             {
                 if (control is MetroTextBox)
@@ -390,7 +368,7 @@ namespace ERPFramework.Forms
                     ((TextBox)control).MaxLength = column.Len;
             }
 
-            controlBinder.Bind(control, column, property, findable);
+            controlBinder.Bind(control, column, property);
             if (dbManager.GetDataColumn(column).DefaultValue is System.DBNull && nullValue == NullValue.SetNull)
                 dbManager.GetDataColumn(column).DefaultValue = column.DefaultValue;
             return control.DataBindings.Add(property, dbManager.MasterBinding, column.Name);
@@ -426,16 +404,6 @@ namespace ERPFramework.Forms
         {
             controlBinder.Bind(control);
             return control.DataBindings.Add(property, this, datamember);
-        }
-
-        public void FindableControl(Control control)
-        {
-            controlBinder.SetFindable(control, Findable.YES);
-        }
-
-        public void FindableControl(Control control, Findable findable)
-        {
-            controlBinder.SetFindable(control, findable);
         }
 
         /// <summary>
@@ -483,11 +451,6 @@ namespace ERPFramework.Forms
                 throw new Exception("Unknow type");
         }
 
-
-        private string PrepareFindQuery()
-        {
-            return controlBinder.GetFindableString();
-        }
 
         #region Virtual Function
 
@@ -791,8 +754,8 @@ namespace ERPFramework.Forms
             myRadar.FindQuery = string.Empty;
             ERPFramework.GlobalInfo.StyleManager.Clone(myRadar);
 
-            if (dbManager.Status == DBMode.Find)
-                myRadar.FindQuery = PrepareFindQuery();
+            //if (dbManager.Status == DBMode.Find)
+            //    myRadar.FindQuery = PrepareFindQuery();
 
             myRadar.RadarFormRowSelected += new RadarForm.RadarFormRowSelectedEventHandler(myRadar_RadarFormRowSelected);
             myRadar.ShowDialog(GlobalInfo.MainForm);
@@ -1086,7 +1049,6 @@ namespace ERPFramework.Forms
             if (controlBinder != null)
             {
                 controlBinder.Enable(dbManager.Status == DBMode.Edit);
-                controlBinder.SetFindable(dbManager.Status == DBMode.Find);
             }
 
 

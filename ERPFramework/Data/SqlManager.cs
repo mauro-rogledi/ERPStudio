@@ -203,11 +203,11 @@ namespace ERPFramework.Data
             return newConn;
         }
 
-        public void CloseConnection(SqlProxyConnection connection)
-        {
-            if (connection.State == ConnectionState.Open)
-                connection.Close();
-        }
+        //public void CloseConnection(SqlProxyConnection connection)
+        //{
+        //    if (connection.State == ConnectionState.Open)
+        //        connection.Close();
+        //}
 
         /// <summary>
         /// SetDataBaseParameter.

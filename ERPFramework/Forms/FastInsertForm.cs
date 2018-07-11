@@ -265,43 +265,12 @@ namespace ERPFramework.Forms
                 dbManager.Dispose();
         }
 
-        public Binding BindControl(Control control, IColumn column, NullValue nullValue)
-        {
-            return BindControl(control, column, GetProperty(control), nullValue);
-        }
 
-        public Binding BindControl(Control control, IColumn column)
+        public Binding BindControl(Control control, IColumn column, string property = "", NullValue nullValue = NullValue.SetNull)
         {
-            return BindControl(control, column, GetProperty(control), NullValue.SetNull);
-        }
+            if (property.IsEmpty())
+                GetProperty(control);
 
-        public Binding BindControl(Control control, IColumn column, string property)
-        {
-            return BindControl(control, column, property, NullValue.SetNull);
-        }
-
-        public Binding BindControl(Control control, IColumn column, string property, NullValue nullValue)
-        {
-            return BindControl(control, column, property, nullValue, Findable.NO);
-        }
-
-        public Binding BindControl(Control control, IColumn column, NullValue nullValue, Findable findable)
-        {
-            return BindControl(control, column, GetProperty(control), nullValue, findable);
-        }
-
-        public Binding BindControl(Control control, IColumn column, Findable findable)
-        {
-            return BindControl(control, column, GetProperty(control), NullValue.SetNull, findable);
-        }
-
-        public Binding BindControl(Control control, IColumn column, string property, Findable findable)
-        {
-            return BindControl(control, column, property, NullValue.SetNull, findable);
-        }
-
-        public Binding BindControl(Control control, IColumn column, string property, NullValue nullValue, Findable findable)
-        {
             if (column.Len > 0)
             {
                 if (control is MetroTextBox)
@@ -310,7 +279,7 @@ namespace ERPFramework.Forms
                     ((TextBox)control).MaxLength = column.Len;
             }
 
-            controlBinder.Bind(control, column, property, findable);
+            controlBinder.Bind(control, column, property);
             if (dbManager.GetDataColumn(column).DefaultValue is System.DBNull && nullValue == NullValue.SetNull)
                 dbManager.GetDataColumn(column).DefaultValue = column.DefaultValue;
             return control.DataBindings.Add(property, dbManager.MasterBinding, column.Name);
@@ -392,11 +361,6 @@ namespace ERPFramework.Forms
                 throw new Exception("Unknow type");
         }
 
-
-        private string PrepareFindQuery()
-        {
-            return controlBinder.GetFindableString();
-        }
 
         #region Virtual Function
 
@@ -699,7 +663,6 @@ namespace ERPFramework.Forms
             if (controlBinder != null)
             {
                 controlBinder.Enable(dbManager.Status == DBMode.Edit);
-                controlBinder.SetFindable(dbManager.Status == DBMode.Find);
             }
 
             if (dbManager.Status == DBMode.Edit)

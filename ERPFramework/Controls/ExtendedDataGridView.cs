@@ -28,6 +28,9 @@ namespace ERPFramework.Controls
 
         public IDocumentBase DocumentForm{ get; set; }
 
+        // todo Gestire al posto di documentForm
+        public IDataEntryBase DataEntryBase { get; set; }
+
         public bool NoMessage { get; set; }
 
         private MetroGridContainerPanel containerPanel = null;
