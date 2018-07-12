@@ -15,18 +15,15 @@ namespace ERPFramework.Data
         readonly DataSet documentDataSet = null;
         readonly IDataEntryBase dataEntry = null;
         readonly bool useTransaction = false;
-
         readonly SqlProxyConnection documentConnection = null;
 
-        Action<SqlProxyParameterCollection, DataRow> setMasterParam = null;
+        Action<SqlProxyParameterCollection, DataRow> setMasterParam;
 
         List <IDisposable> disposableObject = new List<IDisposable>();
-        SqlProxyCommand masterCommand;
-        SqlProxyDataAdapter masterDataAdapter;
-        string masterTable;
 
         Dictionary<string, BindingSource> slaveBinding = new Dictionary<string, BindingSource>();
-        Dictionary<string, SqlProxyDataAdapter> slaveDataAdapter = new Dictionary<string, SqlProxyDataAdapter>();
+        Dictionary<string, DataModelProperties> datamodelProperties = new Dictionary<string, DataModelProperties>();
+        string masterTable;
 
         #region public properties
         public BindingSource BindingMaster { get; private set; }
@@ -37,18 +34,19 @@ namespace ERPFramework.Data
         public DataModelManager MasterTable<M>(Func<SqlProxyParameterCollection, string> CreateMasterQuery, Action<SqlProxyParameterCollection> DeclareParam = null, Action<SqlProxyParameterCollection, DataRow> SetParam = null)
         {
             masterTable = typeof(M).GetType().Name;
+            datamodelProperties[masterTable] = new DataModelProperties(masterTable);
 
-            masterCommand = new SqlProxyCommand(documentConnection);
-            DeclareParam?.Invoke(masterCommand.Parameters);
-            masterCommand.CommandText = CreateMasterQuery?.Invoke(masterCommand.Parameters);
+            datamodelProperties[masterTable].Command = new SqlProxyCommand(documentConnection);
+            DeclareParam?.Invoke(datamodelProperties[masterTable].Parameters);
+            datamodelProperties[masterTable].Command.CommandText = CreateMasterQuery?.Invoke(datamodelProperties[masterTable].Parameters);
 
             setMasterParam = SetParam;
 
-            masterDataAdapter = CreateDataAdapter(masterTable, masterCommand);
+            CreateDataAdapter(datamodelProperties[masterTable]);
 
             BindingMaster = new BindingSource(documentDataSet, masterTable);
 
-            disposableObject.Add(masterCommand);
+            disposableObject.Add(datamodelProperties[masterTable].Command);
 
             return this;
         }
@@ -65,8 +63,8 @@ namespace ERPFramework.Data
 
         public bool Find(DataRow dr)
         {
-            setMasterParam?.Invoke(masterCommand.Parameters, dr);
-            var count = masterDataAdapter.Fill(documentDataSet, masterTable);
+            setMasterParam?.Invoke(datamodelProperties[masterTable].Parameters, dr);
+            var count = datamodelProperties[masterTable].DataAdapter.Fill(documentDataSet, masterTable);
 
             return count > 0;
         }
@@ -82,9 +80,10 @@ namespace ERPFramework.Data
             if (dataSet?.HasChanges() ?? false)
             {
                 dataSet.AcceptChanges();
-                slaveDataAdapter.ToList().ForEach(da =>
+                datamodelProperties.Values.ToList().ForEach(da =>
                {
-                   da.Value.Update(documentDataSet, da.Key);
+                   //if (da.TableName != masterTable)
+                   da.DataAdapter.Update(documentDataSet, da.TableName);
                });
             }
         }
@@ -136,6 +135,10 @@ namespace ERPFramework.Data
             GC.SuppressFinalize(this);
         }
 
+        private void CreateDataAdapter(DataModelProperties property)
+        {
+            property.DataAdapter = CreateDataAdapter(property.TableName, property.Command);
+        }
         private SqlProxyDataAdapter CreateDataAdapter(string name, SqlProxyCommand sqlCommand)
         {
             SqlProxyDataAdapter dAdapter = null;

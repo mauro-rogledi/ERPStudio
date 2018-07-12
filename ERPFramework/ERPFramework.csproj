@@ -375,6 +375,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Data\DataModelManager.cs" />
+    <Compile Include="Data\DataModelProperties.cs" />
     <Compile Include="Data\ImportExportData.cs" />
     <Compile Include="Data\ImportExportForm.cs">
       <SubType>Form</SubType>

@@ -19,14 +19,15 @@ namespace ERPFramework.Forms
 {
     public partial class DataEntryForm : MetroForm , IDataEntryBase
     {
-        public DataModelManager DataModelManager { get; private set; }
-        private ControlBinder controlBinder;
+        public DataModelManager DataModelManager { get; }
+        private readonly ControlBinder controlBinder;
 
         public DataEntryForm()
         {
             InitializeComponent();
 
             DataModelManager = new DataModelManager(this);
+            controlBinder = new ControlBinder();
         }
 
         protected override void OnLoad(EventArgs e)
@@ -197,6 +198,7 @@ namespace ERPFramework.Forms
             set => btnEdit.Visible = value;
         }
         public bool DocumentHasReport { get; private set; } = false;
+
         #endregion
 
     }

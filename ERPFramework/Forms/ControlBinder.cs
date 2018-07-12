@@ -23,7 +23,7 @@ namespace ERPFramework.Forms
             }
         }
 
-        public BindingSource Add(BindingSource bindingSource)
+        public new BindingSource Add(BindingSource bindingSource)
         {
             Add(bindingSource);
             return bindingSource;
